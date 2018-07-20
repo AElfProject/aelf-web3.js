@@ -1,0 +1,15 @@
+{
+    "options": {
+        "csharp_namespace": "AElf.Kernel"
+    },
+    "nested": {
+        "Hash": {
+            "fields": {
+                "Value": {
+                    "type": "bytes",
+                    "id": 1
+                }
+            }
+        }
+    }
+}

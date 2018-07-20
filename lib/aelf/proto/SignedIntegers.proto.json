@@ -1,0 +1,23 @@
+{
+    "options": {
+        "csharp_namespace": "AElf.Kernel"
+    },
+    "nested": {
+        "SInt32Value": {
+            "fields": {
+                "value": {
+                    "type": "sint32",
+                    "id": 1
+                }
+            }
+        },
+        "SInt64Value": {
+            "fields": {
+                "value": {
+                    "type": "sint64",
+                    "id": 1
+                }
+            }
+        }
+    }
+}

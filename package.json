@@ -1,0 +1,31 @@
+{
+  "name": "aelf-sdk",
+  "version": "1.0.0",
+  "description": "aelf-sdk js library",
+  "main": "./lib/aelf.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "dependencies": {
+    "bignumber": "^1.1.0",
+    "bignumber.js": "^2.0.7",
+    "bip39": "^2.5.0",
+    "buffer": "^5.1.0",
+    "crypto-js": "^3.1.9-1",
+    "elliptic": "^6.4.0",
+    "js-sha256": "^0.9.0",
+    "protobufjs": "^6.8.6",
+    "utf8": "^3.0.0",
+    "xhr2-cookies": "^1.1.0",
+    "xmlhttprequest": "^1.8.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "aelf-sdk"
+  ],
+  "author": "huangzongzhe,hzz780",
+  "license": "MIT"
+}
