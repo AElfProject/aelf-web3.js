@@ -14,7 +14,7 @@
     "crypto-js": "^3.1.9-1",
     "elliptic": "^6.4.0",
     "js-sha256": "^0.9.0",
-    "protobufjs": "^6.8.6",
+    "protobufjs": "git+https://github.com/hzz780/protobuf.js.git",
     "utf8": "^3.0.0",
     "xhr2-cookies": "^1.1.0",
     "xmlhttprequest": "^1.8.0"
