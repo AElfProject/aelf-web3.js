@@ -1,94 +1,98 @@
 {
-    "options": {
-        "csharp_namespace": "AElf.ABI.CSharp"
-    },
-    "nested": {
-        "Field": {
-            "fields": {
-                "Type": {
-                    "type": "string",
-                    "id": 1
-                },
-                "Name": {
-                    "type": "string",
-                    "id": 2
-                }
-            }
-        },
+  "options": {
+    "csharp_namespace": "AElf.ABI.CSharp"
+  },
+  "nested": {
+    "Field": {
+      "fields": {
         "Type": {
-            "fields": {
-                "Name": {
-                    "type": "string",
-                    "id": 1
-                },
-                "Fields": {
-                    "rule": "repeated",
-                    "type": "Field",
-                    "id": 2
-                }
-            }
+          "type": "string",
+          "id": 1
         },
-        "Event": {
-            "fields": {
-                "Name": {
-                    "type": "string",
-                    "id": 1
-                },
-                "Indexed": {
-                    "rule": "repeated",
-                    "type": "Field",
-                    "id": 2
-                },
-                "NonIndexed": {
-                    "rule": "repeated",
-                    "type": "Field",
-                    "id": 3
-                }
-            }
-        },
-        "Method": {
-            "fields": {
-                "Name": {
-                    "type": "string",
-                    "id": 1
-                },
-                "Params": {
-                    "rule": "repeated",
-                    "type": "Field",
-                    "id": 2
-                },
-                "ReturnType": {
-                    "type": "string",
-                    "id": 3
-                },
-                "IsAsync": {
-                    "type": "bool",
-                    "id": 4
-                }
-            }
-        },
-        "Module": {
-            "fields": {
-                "Name": {
-                    "type": "string",
-                    "id": 1
-                },
-                "Methods": {
-                    "rule": "repeated",
-                    "type": "Method",
-                    "id": 2
-                },
-                "Events": {
-                    "rule": "repeated",
-                    "type": "Event",
-                    "id": 3
-                },
-                "Types": {
-                    "rule": "repeated",
-                    "type": "Type",
-                    "id": 4
-                }
-            }
+        "Name": {
+          "type": "string",
+          "id": 2
         }
+      }
+    },
+    "Type": {
+      "fields": {
+        "Name": {
+          "type": "string",
+          "id": 1
+        },
+        "Fields": {
+          "rule": "repeated",
+          "type": "Field",
+          "id": 2
+        }
+      }
+    },
+    "Event": {
+      "fields": {
+        "Name": {
+          "type": "string",
+          "id": 1
+        },
+        "Indexed": {
+          "rule": "repeated",
+          "type": "Field",
+          "id": 2
+        },
+        "NonIndexed": {
+          "rule": "repeated",
+          "type": "Field",
+          "id": 3
+        }
+      }
+    },
+    "Method": {
+      "fields": {
+        "Name": {
+          "type": "string",
+          "id": 1
+        },
+        "Params": {
+          "rule": "repeated",
+          "type": "Field",
+          "id": 2
+        },
+        "ReturnType": {
+          "type": "string",
+          "id": 3
+        },
+        "IsView": {
+          "type": "bool",
+          "id": 4
+        },
+        "IsAsync": {
+          "type": "bool",
+          "id": 5
+        }
+      }
+    },
+    "Module": {
+      "fields": {
+        "Name": {
+          "type": "string",
+          "id": 1
+        },
+        "Methods": {
+          "rule": "repeated",
+          "type": "Method",
+          "id": 2
+        },
+        "Events": {
+          "rule": "repeated",
+          "type": "Event",
+          "id": 3
+        },
+        "Types": {
+          "rule": "repeated",
+          "type": "Type",
+          "id": 4
+        }
+      }
     }
+  }
 }
