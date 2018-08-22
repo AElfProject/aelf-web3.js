@@ -1,6 +1,6 @@
 {
   "name": "aelf-sdk",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "aelf-sdk js library",
   "main": "./lib/aelf.js",
   "directories": {
@@ -17,7 +17,7 @@
     "protobufjs": "git+https://github.com/hzz780/protobuf.js.git",
     "utf8": "^3.0.0",
     "xhr2-cookies": "^1.1.0",
-    "xmlhttprequest": "^1.8.0"
+    "xmlhttprequest": "git+https://github.com/hzz780/node-XMLHttpRequest.git"
   },
   "devDependencies": {},
   "scripts": {
