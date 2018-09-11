@@ -12,15 +12,18 @@ aelf.chain.connectChain();
 console.log('contractAt start');
 var wallet = Aelf.wallet.getWalletByPrivateKey('f6e512a3c259e5f9af981d7f99d245aa5bc52fe448495e0b0dd56e8406be6f71');
 
-var tokenc = aelf.chain.contractAt('0x50bddb454c1278b038630fb8d41a27488f54', wallet);
+var tokenc = aelf.chain.contractAt('0x59fc1e10b97d6ef49dd3744cbe4631941f98', wallet);
+
+
+console.log('tokenc: ', tokenc.TokenName());
 
 // let contractAbi = aelf.chain.getContractAbi('0xdb458e5db5db1b0ecad3408acc344c96794c');
 // console.log('contractAbi: ', contractAbi);
 //
-let increment = aelf.chain.getIncrement('0x04bb9c6c297ea90b1bc3e6af2c87d416583e');
+// let increment = aelf.chain.getIncrement('0x04bb9c6c297ea90b1bc3e6af2c87d416583e');
 // console.log('getIncrement: ', increment);
-let totalSupply = tokenc.TotalSupply();
-console.log('totalSupply: ', JSON.stringify(totalSupply));
+// let totalSupply = tokenc.TotalSupply();
+// console.log('totalSupply: ', JSON.stringify(totalSupply));
 // let txResult = aelf.chain.getTxResult('0x9e3d580f6e3e09041cb7987dee8c7261237dd6d71812364407fc70971969645e');
 // console.log('txResult: ', JSON.stringify(txResult));
 //

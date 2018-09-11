@@ -1,480 +1,596 @@
 {
-    "options": {
-        "csharp_namespace": "AElf.Kernel"
+  "options": {
+    "csharp_namespace": "AElf.Kernel"
+  },
+  "nested": {
+    "Transaction": {
+      "fields": {
+        "From": {
+          "type": "Hash",
+          "id": 1
+        },
+        "To": {
+          "type": "Hash",
+          "id": 2
+        },
+        "RefBlockNumber": {
+          "type": "uint64",
+          "id": 3
+        },
+        "RefBlockPrefix": {
+          "type": "bytes",
+          "id": 4
+        },
+        "IncrementId": {
+          "type": "uint64",
+          "id": 5
+        },
+        "MethodName": {
+          "type": "string",
+          "id": 6
+        },
+        "Params": {
+          "type": "bytes",
+          "id": 7
+        },
+        "Fee": {
+          "type": "uint64",
+          "id": 8
+        },
+        "R": {
+          "type": "bytes",
+          "id": 9
+        },
+        "S": {
+          "type": "bytes",
+          "id": 10
+        },
+        "P": {
+          "type": "bytes",
+          "id": 11
+        },
+        "type": {
+          "type": "TransactionType",
+          "id": 12
+        }
+      }
     },
-    "nested": {
-        "Transaction": {
-            "fields": {
-                "From": {
-                    "type": "Hash",
-                    "id": 1
-                },
-                "To": {
-                    "type": "Hash",
-                    "id": 2
-                },
-                "IncrementId": {
-                    "type": "uint64",
-                    "id": 3
-                },
-                "MethodName": {
-                    "type": "string",
-                    "id": 4
-                },
-                "Params": {
-                    "type": "bytes",
-                    "id": 5
-                },
-                "Fee": {
-                    "type": "uint64",
-                    "id": 6
-                },
-                "R": {
-                    "type": "bytes",
-                    "id": 7
-                },
-                "S": {
-                    "type": "bytes",
-                    "id": 8
-                },
-                "P": {
-                    "type": "bytes",
-                    "id": 9
-                }
-            }
+    "TransactionList": {
+      "fields": {
+        "Transactions": {
+          "rule": "repeated",
+          "type": "Transaction",
+          "id": 1
+        }
+      }
+    },
+    "TransactionType": {
+      "values": {
+        "ContractTransaction": 0,
+        "DposTransaction": 1
+      }
+    },
+    "Status": {
+      "values": {
+        "NotExisted": 0,
+        "Pending": 1,
+        "Failed": 2,
+        "Mined": 3
+      }
+    },
+    "TransactionResult": {
+      "fields": {
+        "TransactionId": {
+          "type": "Hash",
+          "id": 1
         },
-        "StateValueChange": {
-            "fields": {
-                "Path": {
-                    "type": "Hash",
-                    "id": 1
-                },
-                "BeforeValue": {
-                    "type": "bytes",
-                    "id": 2
-                },
-                "AfterValue": {
-                    "type": "bytes",
-                    "id": 3
-                }
-            }
+        "Status": {
+          "type": "Status",
+          "id": 2
         },
-        "EventField": {
-            "fields": {
-                "Name": {
-                    "type": "string",
-                    "id": 1
-                },
-                "Value": {
-                    "type": "google.protobuf.Any",
-                    "id": 2
-                }
-            }
+        "Logs": {
+          "rule": "repeated",
+          "type": "LogEvent",
+          "id": 3
         },
-        "LogEvent": {
-            "fields": {
-                "Address": {
-                    "type": "Hash",
-                    "id": 1
-                },
-                "Topic": {
-                    "type": "Hash",
-                    "id": 2
-                },
-                "Details": {
-                    "rule": "repeated",
-                    "type": "EventField",
-                    "id": 3
-                }
-            }
+        "Bloom": {
+          "type": "bytes",
+          "id": 4
         },
         "RetVal": {
-            "fields": {
-                "Type": {
-                    "type": "RetType",
-                    "id": 1
-                },
-                "Data": {
-                    "type": "bytes",
-                    "id": 2
-                }
-            },
-            "nested": {
-                "RetType": {
-                    "values": {
-                        "Void": 0,
-                        "Bool": 1,
-                        "Int32": 2,
-                        "UInt32": 3,
-                        "Int64": 4,
-                        "UInt64": 5,
-                        "String": 6,
-                        "Bytes": 7,
-                        "PbMessage": 8,
-                        "UserType": 9
-                    }
-                }
-            }
+          "type": "bytes",
+          "id": 5
         },
-        "BlockHeader": {
-            "fields": {
-                "Version": {
-                    "type": "int32",
-                    "id": 1
-                },
-                "PreviousBlockHash": {
-                    "type": "Hash",
-                    "id": 2
-                },
-                "MerkleTreeRootOfTransactions": {
-                    "type": "Hash",
-                    "id": 3
-                },
-                "MerkleTreeRootOfWorldState": {
-                    "type": "Hash",
-                    "id": 4
-                },
-                "Index": {
-                    "type": "uint64",
-                    "id": 5
-                },
-                "R": {
-                    "type": "bytes",
-                    "id": 6
-                },
-                "S": {
-                    "type": "bytes",
-                    "id": 7
-                },
-                "P": {
-                    "type": "bytes",
-                    "id": 8
-                },
-                "Time": {
-                    "type": "google.protobuf.Timestamp",
-                    "id": 9
-                },
-                "ChainId": {
-                    "type": "Hash",
-                    "id": 10
-                }
-            }
+        "BlockNumber": {
+          "type": "uint64",
+          "id": 6
         },
-        "BlockBody": {
-            "fields": {
-                "BlockHeader": {
-                    "type": "Hash",
-                    "id": 1
-                },
-                "Transactions": {
-                    "rule": "repeated",
-                    "type": "Hash",
-                    "id": 2
-                }
-            }
-        },
-        "Block": {
-            "fields": {
-                "Header": {
-                    "type": "BlockHeader",
-                    "id": 1
-                },
-                "Body": {
-                    "type": "BlockBody",
-                    "id": 2
-                },
-                "fullTransactions": {
-                    "rule": "repeated",
-                    "type": "Transaction",
-                    "id": 3
-                }
-            }
-        },
-        "SmartContractRegistration": {
-            "fields": {
-                "Category": {
-                    "type": "int32",
-                    "id": 1
-                },
-                "ContractHash": {
-                    "type": "Hash",
-                    "id": 2
-                },
-                "ContractBytes": {
-                    "type": "bytes",
-                    "id": 3
-                }
-            }
-        },
-        "SmartContractDeployment": {
-            "fields": {
-                "ContractHash": {
-                    "type": "Hash",
-                    "id": 1
-                },
-                "Caller": {
-                    "type": "Hash",
-                    "id": 2
-                },
-                "ConstructParams": {
-                    "type": "bytes",
-                    "id": 3
-                },
-                "IncrementId": {
-                    "type": "uint64",
-                    "id": 4
-                }
-            }
-        },
-        "Parameters": {
-            "fields": {
-                "Params": {
-                    "rule": "repeated",
-                    "type": "Param",
-                    "id": 1
-                }
-            }
-        },
-        "Param": {
-            "oneofs": {
-                "data": {
-                    "oneof": [
-                        "intVal",
-                        "uintVal",
-                        "longVal",
-                        "ulongVal",
-                        "boolVal",
-                        "bytesVal",
-                        "strVal",
-                        "dVal",
-                        "hashVal",
-                        "registerVal",
-                        "deploymentVal"
-                    ]
-                }
-            },
-            "fields": {
-                "intVal": {
-                    "type": "int32",
-                    "id": 1
-                },
-                "uintVal": {
-                    "type": "uint32",
-                    "id": 2
-                },
-                "longVal": {
-                    "type": "int64",
-                    "id": 3
-                },
-                "ulongVal": {
-                    "type": "uint64",
-                    "id": 4
-                },
-                "boolVal": {
-                    "type": "bool",
-                    "id": 5
-                },
-                "bytesVal": {
-                    "type": "bytes",
-                    "id": 6
-                },
-                "strVal": {
-                    "type": "string",
-                    "id": 7
-                },
-                "dVal": {
-                    "type": "double",
-                    "id": 8
-                },
-                "hashVal": {
-                    "type": "Hash",
-                    "id": 9
-                },
-                "registerVal": {
-                    "type": "SmartContractRegistration",
-                    "id": 10
-                },
-                "deploymentVal": {
-                    "type": "SmartContractDeployment",
-                    "id": 11
-                }
-            }
-        },
-        "SmartContractInvokeContext": {
-            "fields": {
-                "Caller": {
-                    "type": "Hash",
-                    "id": 1
-                },
-                "IncrementId": {
-                    "type": "uint64",
-                    "id": 2
-                },
-                "MethodName": {
-                    "type": "string",
-                    "id": 3
-                },
-                "Params": {
-                    "type": "bytes",
-                    "id": 4
-                }
-            }
-        },
-        "Change": {
-            "fields": {
-                "Befores": {
-                    "rule": "repeated",
-                    "type": "Hash",
-                    "id": 1
-                },
-                "After": {
-                    "type": "Hash",
-                    "id": 2
-                },
-                "TransactionIds": {
-                    "type": "Hash",
-                    "id": 3
-                },
-                "LatestChangedBlockHash": {
-                    "type": "Hash",
-                    "id": 4
-                }
-            }
-        },
-        "PairHashChange": {
-            "fields": {
-                "Key": {
-                    "type": "Hash",
-                    "id": 1
-                },
-                "Value": {
-                    "type": "Change",
-                    "id": 2
-                }
-            }
-        },
-        "ChangesDict": {
-            "fields": {
-                "Dict": {
-                    "rule": "repeated",
-                    "type": "PairHashChange",
-                    "id": 1
-                }
-            }
-        },
-        "Chain": {
-            "fields": {
-                "Id": {
-                    "type": "Hash",
-                    "id": 1
-                },
-                "GenesisBlockHash": {
-                    "type": "Hash",
-                    "id": 2
-                }
-            }
-        },
-        "BlockProducer": {
-            "fields": {
-                "Nodes": {
-                    "rule": "repeated",
-                    "type": "string",
-                    "id": 1
-                }
-            }
-        },
-        "BPInfo": {
-            "fields": {
-                "Order": {
-                    "type": "int32",
-                    "id": 1
-                },
-                "IsEBP": {
-                    "type": "bool",
-                    "id": 2
-                },
-                "InValue": {
-                    "type": "Hash",
-                    "id": 3
-                },
-                "OutValue": {
-                    "type": "Hash",
-                    "id": 4
-                },
-                "Signature": {
-                    "type": "Hash",
-                    "id": 5
-                },
-                "TimeSlot": {
-                    "type": "google.protobuf.Timestamp",
-                    "id": 6
-                }
-            }
-        },
-        "RoundInfo": {
-            "fields": {
-                "Info": {
-                    "keyType": "string",
-                    "type": "BPInfo",
-                    "id": 1
-                }
-            }
-        },
-        "DPoSInfo": {
-            "fields": {
-                "RoundInfo": {
-                    "rule": "repeated",
-                    "type": "RoundInfo",
-                    "id": 1
-                }
-            }
-        },
-        "DataAccessMode": {
-            "values": {
-                "ReadOnlyAccountSharing": 0,
-                "ReadWriteAccountSharing": 1,
-                "AccountSpecific": 2
-            }
-        },
-        "google": {
-            "nested": {
-                "protobuf": {
-                    "nested": {
-                        "Any": {
-                            "fields": {
-                                "type_url": {
-                                    "type": "string",
-                                    "id": 1
-                                },
-                                "value": {
-                                    "type": "bytes",
-                                    "id": 2
-                                }
-                            }
-                        },
-                        "Timestamp": {
-                            "fields": {
-                                "seconds": {
-                                    "type": "int64",
-                                    "id": 1
-                                },
-                                "nanos": {
-                                    "type": "int32",
-                                    "id": 2
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "Hash": {
-            "fields": {
-                "Value": {
-                    "type": "bytes",
-                    "id": 1
-                }
-            }
+        "BlockHash": {
+          "type": "Hash",
+          "id": 7
         }
+      }
+    },
+    "StateValueChange": {
+      "fields": {
+        "Path": {
+          "type": "DataPath",
+          "id": 1
+        },
+        "CurrentValue": {
+          "type": "bytes",
+          "id": 2
+        }
+      }
+    },
+    "LogEvent": {
+      "fields": {
+        "Address": {
+          "type": "Hash",
+          "id": 1
+        },
+        "Topics": {
+          "rule": "repeated",
+          "type": "bytes",
+          "id": 2
+        },
+        "Data": {
+          "type": "bytes",
+          "id": 3
+        }
+      }
+    },
+    "RetVal": {
+      "fields": {
+        "Type": {
+          "type": "RetType",
+          "id": 1
+        },
+        "Data": {
+          "type": "bytes",
+          "id": 2
+        }
+      },
+      "nested": {
+        "RetType": {
+          "values": {
+            "Void": 0,
+            "Bool": 1,
+            "Int32": 2,
+            "UInt32": 3,
+            "Int64": 4,
+            "UInt64": 5,
+            "String": 6,
+            "Bytes": 7,
+            "PbMessage": 8,
+            "UserType": 9
+          }
+        }
+      }
+    },
+    "BlockHeader": {
+      "fields": {
+        "Version": {
+          "type": "int32",
+          "id": 1
+        },
+        "PreviousBlockHash": {
+          "type": "Hash",
+          "id": 2
+        },
+        "MerkleTreeRootOfTransactions": {
+          "type": "Hash",
+          "id": 3
+        },
+        "MerkleTreeRootOfWorldState": {
+          "type": "Hash",
+          "id": 4
+        },
+        "Bloom": {
+          "type": "bytes",
+          "id": 5
+        },
+        "Index": {
+          "type": "uint64",
+          "id": 6
+        },
+        "R": {
+          "type": "bytes",
+          "id": 7
+        },
+        "S": {
+          "type": "bytes",
+          "id": 8
+        },
+        "P": {
+          "type": "bytes",
+          "id": 9
+        },
+        "Time": {
+          "type": "google.protobuf.Timestamp",
+          "id": 10
+        },
+        "ChainId": {
+          "type": "Hash",
+          "id": 11
+        },
+        "IndexedInfo": {
+          "rule": "repeated",
+          "type": "SideChainIndexedInfo",
+          "id": 12
+        }
+      }
+    },
+    "BlockBody": {
+      "fields": {
+        "BlockHeader": {
+          "type": "Hash",
+          "id": 1
+        },
+        "Transactions": {
+          "rule": "repeated",
+          "type": "Hash",
+          "id": 2
+        }
+      }
+    },
+    "Block": {
+      "fields": {
+        "Header": {
+          "type": "BlockHeader",
+          "id": 1
+        },
+        "Body": {
+          "type": "BlockBody",
+          "id": 2
+        }
+      }
+    },
+    "SideChainIndexedInfo": {
+      "fields": {
+        "Height": {
+          "type": "uint64",
+          "id": 1
+        },
+        "BlockHeaderHash": {
+          "type": "Hash",
+          "id": 2
+        },
+        "TransactionMKRoot": {
+          "type": "Hash",
+          "id": 3
+        },
+        "ChainId": {
+          "type": "Hash",
+          "id": 4
+        }
+      }
+    },
+    "SmartContractRegistration": {
+      "fields": {
+        "Category": {
+          "type": "int32",
+          "id": 1
+        },
+        "ContractHash": {
+          "type": "Hash",
+          "id": 2
+        },
+        "ContractBytes": {
+          "type": "bytes",
+          "id": 3
+        },
+        "Type": {
+          "type": "int32",
+          "id": 4
+        }
+      }
+    },
+    "SmartContractDeployment": {
+      "fields": {
+        "ContractHash": {
+          "type": "Hash",
+          "id": 1
+        },
+        "Caller": {
+          "type": "Hash",
+          "id": 2
+        },
+        "ConstructParams": {
+          "type": "bytes",
+          "id": 3
+        },
+        "IncrementId": {
+          "type": "uint64",
+          "id": 4
+        }
+      }
+    },
+    "Parameters": {
+      "fields": {
+        "Params": {
+          "rule": "repeated",
+          "type": "Param",
+          "id": 1
+        }
+      }
+    },
+    "Param": {
+      "oneofs": {
+        "data": {
+          "oneof": [
+            "intVal",
+            "uintVal",
+            "longVal",
+            "ulongVal",
+            "boolVal",
+            "bytesVal",
+            "strVal",
+            "dVal",
+            "hashVal",
+            "registerVal",
+            "deploymentVal"
+          ]
+        }
+      },
+      "fields": {
+        "intVal": {
+          "type": "int32",
+          "id": 1
+        },
+        "uintVal": {
+          "type": "uint32",
+          "id": 2
+        },
+        "longVal": {
+          "type": "int64",
+          "id": 3
+        },
+        "ulongVal": {
+          "type": "uint64",
+          "id": 4
+        },
+        "boolVal": {
+          "type": "bool",
+          "id": 5
+        },
+        "bytesVal": {
+          "type": "bytes",
+          "id": 6
+        },
+        "strVal": {
+          "type": "string",
+          "id": 7
+        },
+        "dVal": {
+          "type": "double",
+          "id": 8
+        },
+        "hashVal": {
+          "type": "Hash",
+          "id": 9
+        },
+        "registerVal": {
+          "type": "SmartContractRegistration",
+          "id": 10
+        },
+        "deploymentVal": {
+          "type": "SmartContractDeployment",
+          "id": 11
+        }
+      }
+    },
+    "SmartContractInvokeContext": {
+      "fields": {
+        "Caller": {
+          "type": "Hash",
+          "id": 1
+        },
+        "IncrementId": {
+          "type": "uint64",
+          "id": 2
+        },
+        "MethodName": {
+          "type": "string",
+          "id": 3
+        },
+        "Params": {
+          "type": "bytes",
+          "id": 4
+        }
+      }
+    },
+    "DataItem": {
+      "fields": {
+        "ResourcePath": {
+          "type": "Hash",
+          "id": 1
+        },
+        "ResourcePointer": {
+          "type": "Hash",
+          "id": 2
+        },
+        "StateMerkleTreeLeaf": {
+          "type": "Hash",
+          "id": 3
+        }
+      }
+    },
+    "WorldState": {
+      "fields": {
+        "Data": {
+          "rule": "repeated",
+          "type": "DataItem",
+          "id": 1
+        }
+      }
+    },
+    "Chain": {
+      "fields": {
+        "Id": {
+          "type": "Hash",
+          "id": 1
+        },
+        "GenesisBlockHash": {
+          "type": "Hash",
+          "id": 2
+        }
+      }
+    },
+    "Miners": {
+      "fields": {
+        "Nodes": {
+          "rule": "repeated",
+          "type": "string",
+          "id": 1
+        }
+      }
+    },
+    "BlockProducer": {
+      "fields": {
+        "Order": {
+          "type": "int32",
+          "id": 1
+        },
+        "IsEBP": {
+          "type": "bool",
+          "id": 2
+        },
+        "InValue": {
+          "type": "Hash",
+          "id": 3
+        },
+        "OutValue": {
+          "type": "Hash",
+          "id": 4
+        },
+        "Signature": {
+          "type": "Hash",
+          "id": 5
+        },
+        "TimeSlot": {
+          "type": "google.protobuf.Timestamp",
+          "id": 6
+        }
+      }
+    },
+    "Round": {
+      "fields": {
+        "BlockProducers": {
+          "keyType": "string",
+          "type": "BlockProducer",
+          "id": 1
+        }
+      }
+    },
+    "AElfDPoSInformation": {
+      "fields": {
+        "Rounds": {
+          "rule": "repeated",
+          "type": "Round",
+          "id": 1
+        }
+      }
+    },
+    "DataAccessMode": {
+      "values": {
+        "ReadOnlyAccountSharing": 0,
+        "ReadWriteAccountSharing": 1,
+        "AccountSpecific": 2
+      }
+    },
+    "Key": {
+      "fields": {
+        "Value": {
+          "type": "bytes",
+          "id": 1
+        },
+        "type": {
+          "type": "string",
+          "id": 2
+        },
+        "HashType": {
+          "type": "uint32",
+          "id": 3
+        }
+      }
+    },
+    "SideChainIdList": {
+      "fields": {
+        "chainIds": {
+          "rule": "repeated",
+          "type": "Hash",
+          "id": 1
+        }
+      }
+    },
+    "DataPath": {
+      "fields": {
+        "ChainId": {
+          "type": "Hash",
+          "id": 1
+        },
+        "BlockHeight": {
+          "type": "uint64",
+          "id": 2
+        },
+        "BlockProducerAddress": {
+          "type": "Hash",
+          "id": 3
+        },
+        "ContractAddress": {
+          "type": "Hash",
+          "id": 4
+        },
+        "DataProviderHash": {
+          "type": "Hash",
+          "id": 5
+        },
+        "KeyHash": {
+          "type": "Hash",
+          "id": 6
+        }
+      }
+    },
+    "google": {
+      "nested": {
+        "protobuf": {
+          "nested": {
+            "Any": {
+              "fields": {
+                "type_url": {
+                  "type": "string",
+                  "id": 1
+                },
+                "value": {
+                  "type": "bytes",
+                  "id": 2
+                }
+              }
+            },
+            "Timestamp": {
+              "fields": {
+                "seconds": {
+                  "type": "int64",
+                  "id": 1
+                },
+                "nanos": {
+                  "type": "int32",
+                  "id": 2
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "Hash": {
+      "fields": {
+        "Value": {
+          "type": "bytes",
+          "id": 1
+        }
+      }
     }
+  }
 }
