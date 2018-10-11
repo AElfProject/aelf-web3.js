@@ -2,13 +2,12 @@ syntax = "proto3";
 
 option csharp_namespace = "AElf.Kernel";
 
-import "google/protobuf/any.proto";
 import "google/protobuf/timestamp.proto";
-import "hash.proto";
+import "common.proto";
 
 message Transaction {
-    Hash From = 1;
-    Hash To = 2;
+    Address From = 1;
+    Address To = 2;
     uint64 RefBlockNumber = 3;
     bytes RefBlockPrefix = 4;
     uint64 IncrementId = 5;
@@ -28,6 +27,7 @@ message TransactionList {
 enum TransactionType {
     ContractTransaction = 0;
     DposTransaction = 1;
+    CrossChainBlockInfoTransaction = 2;
 }
 
 enum Status {
@@ -45,6 +45,10 @@ message TransactionResult {
     bytes RetVal = 5;
     uint64 BlockNumber = 6;
     Hash BlockHash = 7;
+    int32 Index = 8;
+
+    // Merkle proof path for this transaction
+    MerklePath MerklePath = 9;
 }
 
 message StateValueChange{
@@ -53,7 +57,7 @@ message StateValueChange{
 }
 
 message LogEvent {
-    Hash Address = 1;
+    Address Address = 1;
     repeated bytes Topics = 2;
     bytes Data = 3;
 }
@@ -87,12 +91,14 @@ message BlockHeader {
     bytes P = 9;
     google.protobuf.Timestamp Time = 10;
     Hash ChainId = 11;
-    repeated SideChainIndexedInfo IndexedInfo = 12;
+    Hash SideChainBlockHeadersRoot = 12;
+    Hash SideChainTransactionsRoot =13;
 }
 
 message BlockBody {
     Hash BlockHeader = 1;
     repeated Hash Transactions = 2;
+    repeated SideChainBlockInfo IndexedInfo = 3;
 }
 
 message Block {
@@ -100,10 +106,28 @@ message Block {
     BlockBody Body = 2;
 }
 
-message SideChainIndexedInfo{
+message SideChainBlockInfo{
     uint64 Height = 1;
     Hash BlockHeaderHash = 2;
     Hash TransactionMKRoot = 3;
+    Hash ChainId = 4;
+}
+
+message ParentChainBlockInfo{
+    ParentChainBlockRootInfo Root = 1;
+
+    // Indexed block height from side chain and merkle path for this side chain block
+    map<uint64, MerklePath> IndexedBlockInfo = 2;
+}
+
+message ParentChainBlockRootInfo
+{
+    uint64 Height = 1;
+    // Merkle tree root of side chain block headers
+    Hash SideChainBlockHeadersRoot = 2;
+
+    // Merkle tree root of side chain block transaction roots
+    Hash SideChainTransactionsRoot = 3;
     Hash ChainId = 4;
 }
 
@@ -177,7 +201,8 @@ message BlockProducer {
 }
 
 message Round {
-    map<string, BlockProducer> BlockProducers = 1;
+    uint64 RoundNumber = 1;
+    map<string, BlockProducer> BlockProducers = 2;
 }
 
 message AElfDPoSInformation {
@@ -203,8 +228,18 @@ message SideChainIdList {
 message DataPath {
     Hash ChainId = 1;
     uint64 BlockHeight = 2;
-    Hash BlockProducerAddress = 3;
-    Hash ContractAddress = 4;
+    Address BlockProducerAddress = 3;
+    Address ContractAddress = 4;
     Hash DataProviderHash = 5;
     Hash KeyHash = 6;
+}
+
+message BinaryMerkleTree{
+    repeated Hash Nodes = 1;
+    Hash Root = 2;
+    int32 LeafCount = 3;
+}
+
+message MerklePath{
+    repeated Hash Path = 1;
 }

@@ -1,16 +1,16 @@
 {
   "options": {
-    "csharp_namespace": "AElf.Kernel"
+    "csharp_namespace": "AElf.Common"
   },
   "nested": {
     "Transaction": {
       "fields": {
         "From": {
-          "type": "Hash",
+          "type": "Address",
           "id": 1
         },
         "To": {
-          "type": "Hash",
+          "type": "Address",
           "id": 2
         },
         "RefBlockNumber": {
@@ -67,7 +67,8 @@
     "TransactionType": {
       "values": {
         "ContractTransaction": 0,
-        "DposTransaction": 1
+        "DposTransaction": 1,
+        "CrossChainBlockInfoTransaction": 2
       }
     },
     "Status": {
@@ -108,6 +109,14 @@
         "BlockHash": {
           "type": "Hash",
           "id": 7
+        },
+        "Index": {
+          "type": "int32",
+          "id": 8
+        },
+        "MerklePath": {
+          "type": "MerklePath",
+          "id": 9
         }
       }
     },
@@ -126,7 +135,7 @@
     "LogEvent": {
       "fields": {
         "Address": {
-          "type": "Hash",
+          "type": "Address",
           "id": 1
         },
         "Topics": {
@@ -214,10 +223,13 @@
           "type": "Hash",
           "id": 11
         },
-        "IndexedInfo": {
-          "rule": "repeated",
-          "type": "SideChainIndexedInfo",
+        "SideChainBlockHeadersRoot": {
+          "type": "Hash",
           "id": 12
+        },
+        "SideChainTransactionsRoot": {
+          "type": "Hash",
+          "id": 13
         }
       }
     },
@@ -231,6 +243,11 @@
           "rule": "repeated",
           "type": "Hash",
           "id": 2
+        },
+        "IndexedInfo": {
+          "rule": "repeated",
+          "type": "SideChainBlockInfo",
+          "id": 3
         }
       }
     },
@@ -246,7 +263,7 @@
         }
       }
     },
-    "SideChainIndexedInfo": {
+    "SideChainBlockInfo": {
       "fields": {
         "Height": {
           "type": "uint64",
@@ -257,6 +274,39 @@
           "id": 2
         },
         "TransactionMKRoot": {
+          "type": "Hash",
+          "id": 3
+        },
+        "ChainId": {
+          "type": "Hash",
+          "id": 4
+        }
+      }
+    },
+    "ParentChainBlockInfo": {
+      "fields": {
+        "Root": {
+          "type": "ParentChainBlockRootInfo",
+          "id": 1
+        },
+        "IndexedBlockInfo": {
+          "keyType": "uint64",
+          "type": "MerklePath",
+          "id": 2
+        }
+      }
+    },
+    "ParentChainBlockRootInfo": {
+      "fields": {
+        "Height": {
+          "type": "uint64",
+          "id": 1
+        },
+        "SideChainBlockHeadersRoot": {
+          "type": "Hash",
+          "id": 2
+        },
+        "SideChainTransactionsRoot": {
           "type": "Hash",
           "id": 3
         },
@@ -476,10 +526,14 @@
     },
     "Round": {
       "fields": {
+        "RoundNumber": {
+          "type": "uint64",
+          "id": 1
+        },
         "BlockProducers": {
           "keyType": "string",
           "type": "BlockProducer",
-          "id": 1
+          "id": 2
         }
       }
     },
@@ -535,11 +589,11 @@
           "id": 2
         },
         "BlockProducerAddress": {
-          "type": "Hash",
+          "type": "Address",
           "id": 3
         },
         "ContractAddress": {
-          "type": "Hash",
+          "type": "Address",
           "id": 4
         },
         "DataProviderHash": {
@@ -552,22 +606,36 @@
         }
       }
     },
+    "BinaryMerkleTree": {
+      "fields": {
+        "Nodes": {
+          "rule": "repeated",
+          "type": "Hash",
+          "id": 1
+        },
+        "Root": {
+          "type": "Hash",
+          "id": 2
+        },
+        "LeafCount": {
+          "type": "int32",
+          "id": 3
+        }
+      }
+    },
+    "MerklePath": {
+      "fields": {
+        "Path": {
+          "rule": "repeated",
+          "type": "Hash",
+          "id": 1
+        }
+      }
+    },
     "google": {
       "nested": {
         "protobuf": {
           "nested": {
-            "Any": {
-              "fields": {
-                "type_url": {
-                  "type": "string",
-                  "id": 1
-                },
-                "value": {
-                  "type": "bytes",
-                  "id": 2
-                }
-              }
-            },
             "Timestamp": {
               "fields": {
                 "seconds": {
@@ -584,10 +652,58 @@
         }
       }
     },
+    "Address": {
+      "fields": {
+        "Value": {
+          "type": "bytes",
+          "id": 1
+        }
+      }
+    },
     "Hash": {
       "fields": {
         "Value": {
           "type": "bytes",
+          "id": 1
+        },
+        "HashType": {
+          "type": "HashType",
+          "id": 2
+        }
+      }
+    },
+    "HashType": {
+      "values": {
+        "General": 0,
+        "AccountAddress": 1,
+        "ResourcePath": 2,
+        "ResourcePointer": 3,
+        "StateHash": 4,
+        "BlockHash": 5,
+        "AccountZero": 6,
+        "ChainHeight": 7,
+        "PreviousBlockHash": 8,
+        "CallingGraph": 9,
+        "TxResult": 10,
+        "CanonicalHash": 11,
+        "CurrentHash": 12,
+        "GenesisHash": 13,
+        "BlockHeaderHash": 14,
+        "BlockBodyHash": 15
+      }
+    },
+    "SInt32Value": {
+      "fields": {
+        "value": {
+          "type": "sint32",
+          "id": 1
+        }
+      }
+    },
+    "SInt64Value": {
+      "fields": {
+        "value": {
+          "type": "sint64",
           "id": 1
         }
       }

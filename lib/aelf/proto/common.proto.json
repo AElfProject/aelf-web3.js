@@ -1,8 +1,16 @@
 {
   "options": {
-    "csharp_namespace": "AElf.Kernel"
+    "csharp_namespace": "AElf.Common"
   },
   "nested": {
+    "Address": {
+      "fields": {
+        "Value": {
+          "type": "bytes",
+          "id": 1
+        }
+      }
+    },
     "Hash": {
       "fields": {
         "Value": {
@@ -33,6 +41,22 @@
         "GenesisHash": 13,
         "BlockHeaderHash": 14,
         "BlockBodyHash": 15
+      }
+    },
+    "SInt32Value": {
+      "fields": {
+        "value": {
+          "type": "sint32",
+          "id": 1
+        }
+      }
+    },
+    "SInt64Value": {
+      "fields": {
+        "value": {
+          "type": "sint64",
+          "id": 1
+        }
       }
     }
   }
