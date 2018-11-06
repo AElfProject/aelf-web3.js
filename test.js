@@ -10,17 +10,17 @@ aelf.chain.connectChain();
 
 // var tokenc = aelf.chain.contractAt('0x75b19ac4415c072512d011634ac86a9c58cf');
 console.log('contractAt start');
-var wallet = Aelf.wallet.getWalletByPrivateKey('90badb6866fd4df0ec1fcfc9fd1505703bd1a1681caaaba0f9f1f7ed2f4b30d4');
+var wallet = Aelf.wallet.getWalletByPrivateKey('30e65ca0db9bba3242086af94fd15123fdda29e392e4d3250279f38d694326c0');
 // var wallet = Aelf.wallet.getWalletByPrivateKey('f6e512a3c259e5f9af981d7f99d245aa5bc52fe448495e0b0dd56e8406be6f71');
 
-var tokenc = aelf.chain.contractAt('0x6b6235a76ffb7cf9df18c0dad5d144222078', wallet);
+var tokenc = aelf.chain.contractAt('30748a6c59c1309eacd1eaf86feb3ea16074', wallet);
 
 
 // console.log('TokenName: ', tokenc.TokenName());
 //
 // console.log('BalanceOf: ', tokenc.BalanceOf('0x0424421b90fdacf9470ee049f50113a56656'));
 
-console.log('Tranfer: ', tokenc.Transfer('0x0489da3cad42c556cddf672d6719c8add3ac', 10));
+console.log('Tranfer: ', tokenc.Transfer('70b721ac293f0d3787561828688d860dde4a', 10));
 
 // let contractAbi = aelf.chain.getContractAbi('0xdb458e5db5db1b0ecad3408acc344c96794c');
 // console.log('contractAbi: ', contractAbi);

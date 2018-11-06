@@ -37,21 +37,123 @@
           "type": "uint64",
           "id": 8
         },
-        "R": {
-          "type": "bytes",
+        "Sig": {
+          "type": "Signature",
           "id": 9
-        },
-        "S": {
-          "type": "bytes",
-          "id": 10
-        },
-        "P": {
-          "type": "bytes",
-          "id": 11
         },
         "type": {
           "type": "TransactionType",
-          "id": 12
+          "id": 10
+        },
+        "Time": {
+          "type": "google.protobuf.Timestamp",
+          "id": 11
+        }
+      }
+    },
+    "Signature": {
+      "fields": {
+        "R": {
+          "type": "bytes",
+          "id": 1
+        },
+        "S": {
+          "type": "bytes",
+          "id": 2
+        },
+        "P": {
+          "type": "bytes",
+          "id": 3
+        }
+      }
+    },
+    "TransactionReceipt": {
+      "fields": {
+        "TransactionId": {
+          "type": "Hash",
+          "id": 1
+        },
+        "Transaction": {
+          "type": "Transaction",
+          "id": 2
+        },
+        "SignatureSt": {
+          "type": "SignatureStatus",
+          "id": 3
+        },
+        "RefBlockSt": {
+          "type": "RefBlockStatus",
+          "id": 4
+        },
+        "Status": {
+          "type": "TransactionStatus",
+          "id": 5
+        },
+        "IsSystemTxn": {
+          "type": "bool",
+          "id": 6
+        },
+        "ExecutedBlockNumber": {
+          "type": "uint64",
+          "id": 7
+        }
+      },
+      "nested": {
+        "TransactionStatus": {
+          "values": {
+            "UnknownTransactionStatus": 0,
+            "TransactionExecuting": 1,
+            "TransactionExecuted": 2
+          }
+        },
+        "SignatureStatus": {
+          "values": {
+            "UnknownSignatureStatus": 0,
+            "SignatureValid": 1,
+            "SignatureInvalid": -1
+          }
+        },
+        "RefBlockStatus": {
+          "values": {
+            "UnknownRefBlockStatus": 0,
+            "RefBlockValid": 1,
+            "RefBlockInvalid": -1,
+            "RefBlockExpired": -2,
+            "FutureRefBlock": -3
+          }
+        }
+      }
+    },
+    "StatePath": {
+      "fields": {
+        "Path": {
+          "rule": "repeated",
+          "type": "bytes",
+          "id": 1
+        }
+      }
+    },
+    "StateValue": {
+      "fields": {
+        "CurrentValue": {
+          "type": "bytes",
+          "id": 1
+        },
+        "OriginalValue": {
+          "type": "bytes",
+          "id": 2
+        }
+      }
+    },
+    "StateChange": {
+      "fields": {
+        "StatePath": {
+          "type": "StatePath",
+          "id": 1
+        },
+        "StateValue": {
+          "type": "StateValue",
+          "id": 2
         }
       }
     },
@@ -114,21 +216,76 @@
           "type": "int32",
           "id": 8
         },
+        "StateHash": {
+          "type": "Hash",
+          "id": 9
+        },
         "MerklePath": {
           "type": "MerklePath",
-          "id": 9
+          "id": 10
         }
       }
     },
-    "StateValueChange": {
+    "ExecutionStatus": {
+      "values": {
+        "Undefined": 0,
+        "ExecutedAndCommitted": 1,
+        "ExecutedButNotCommitted": 2,
+        "SystemError": -1,
+        "ContractError": -2,
+        "ExceededMaxCallDepth": -3,
+        "Canceled": -4
+      }
+    },
+    "TransactionTrace": {
       "fields": {
-        "Path": {
-          "type": "DataPath",
+        "TransactionId": {
+          "type": "Hash",
           "id": 1
         },
-        "CurrentValue": {
-          "type": "bytes",
+        "RetVal": {
+          "type": "RetVal",
           "id": 2
+        },
+        "StdOut": {
+          "type": "string",
+          "id": 3
+        },
+        "StdErr": {
+          "type": "string",
+          "id": 4
+        },
+        "StateHash": {
+          "type": "Hash",
+          "id": 5
+        },
+        "Logs": {
+          "rule": "repeated",
+          "type": "LogEvent",
+          "id": 6
+        },
+        "InlineTransactions": {
+          "rule": "repeated",
+          "type": "Transaction",
+          "id": 7
+        },
+        "InlineTraces": {
+          "rule": "repeated",
+          "type": "TransactionTrace",
+          "id": 8
+        },
+        "StateChanges": {
+          "rule": "repeated",
+          "type": "StateChange",
+          "id": 9
+        },
+        "Elapsed": {
+          "type": "int64",
+          "id": 10
+        },
+        "ExecutionStatus": {
+          "type": "ExecutionStatus",
+          "id": 11
         }
       }
     },
@@ -174,6 +331,15 @@
             "PbMessage": 8,
             "UserType": 9
           }
+        }
+      }
+    },
+    "BlockHeaderList": {
+      "fields": {
+        "Headers": {
+          "rule": "repeated",
+          "type": "BlockHeader",
+          "id": 1
         }
       }
     },
@@ -244,10 +410,15 @@
           "type": "Hash",
           "id": 2
         },
+        "TransactionList": {
+          "rule": "repeated",
+          "type": "Transaction",
+          "id": 3
+        },
         "IndexedInfo": {
           "rule": "repeated",
           "type": "SideChainBlockInfo",
-          "id": 3
+          "id": 4
         }
       }
     },
@@ -603,6 +774,10 @@
         "KeyHash": {
           "type": "Hash",
           "id": 6
+        },
+        "StatePath": {
+          "type": "StatePath",
+          "id": 7
         }
       }
     },
