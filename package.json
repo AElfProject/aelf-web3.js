@@ -19,7 +19,10 @@
     "xhr2-cookies": "^1.1.0",
     "xmlhttprequest": "git+https://github.com/hzz780/node-XMLHttpRequest.git"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "webpack": "^4.25.1",
+    "webpack-cli": "^3.1.2"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
