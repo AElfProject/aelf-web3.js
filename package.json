@@ -1,6 +1,6 @@
 {
   "name": "aelf-sdk",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "aelf-sdk js library",
   "main": "./lib/aelf.js",
   "directories": {
@@ -21,7 +21,16 @@
   },
   "devDependencies": {
     "webpack": "^4.25.1",
-    "webpack-cli": "^3.1.2"
+    "webpack-cli": "^3.1.2",
+    "browserify": "^16.2.3",
+    "del": "^3.0.0",
+    "exorcist": "^1.0.1",
+    "gulp": "^3.9.1",
+    "gulp-jshint": "^2.1.0",
+    "gulp-rename": "^1.4.0",
+    "gulp-streamify": "^1.0.2",
+    "gulp-uglify": "^3.0.1",
+    "vinyl-source-stream": "^2.0.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
