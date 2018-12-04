@@ -2,3 +2,5 @@
 .idea/
 clitest.js
 .node-xmlhttprequest-*
+dist/
+test.html

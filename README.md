@@ -6,6 +6,7 @@ AElf Javascript SDK
 # browser: need browserify or webpack ...
 /output/aelf.web.js is for web.
 
+browserify aelf.js > aelf.browserify.js
 
 # pbjs
 #### how to use pbjs convert proto to json.

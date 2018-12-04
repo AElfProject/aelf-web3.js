@@ -4153,7 +4153,7 @@ module.exports = {
 
 },{"bignumber.js":42,"utf8":194}],30:[function(require,module,exports){
 module.exports={
-    "version": "0.1.0"
+    "version": "1.0.11"
 }
 
 },{}],31:[function(require,module,exports){
