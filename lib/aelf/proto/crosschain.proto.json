@@ -1,0 +1,125 @@
+{
+  "options": {
+    "csharp_namespace": "AElf.Common"
+  },
+  "nested": {
+    "SideChainBlockInfo": {
+      "fields": {
+        "Height": {
+          "type": "uint64",
+          "id": 1
+        },
+        "BlockHeaderHash": {
+          "type": "Hash",
+          "id": 2
+        },
+        "TransactionMKRoot": {
+          "type": "Hash",
+          "id": 3
+        },
+        "ChainId": {
+          "type": "Hash",
+          "id": 4
+        }
+      }
+    },
+    "ParentChainBlockInfo": {
+      "fields": {
+        "Root": {
+          "type": "ParentChainBlockRootInfo",
+          "id": 1
+        },
+        "IndexedBlockInfo": {
+          "keyType": "uint64",
+          "type": "MerklePath",
+          "id": 2
+        }
+      }
+    },
+    "ParentChainBlockRootInfo": {
+      "fields": {
+        "Height": {
+          "type": "uint64",
+          "id": 1
+        },
+        "SideChainBlockHeadersRoot": {
+          "type": "Hash",
+          "id": 2
+        },
+        "SideChainTransactionsRoot": {
+          "type": "Hash",
+          "id": 3
+        },
+        "ChainId": {
+          "type": "Hash",
+          "id": 4
+        }
+      }
+    },
+    "MerklePath": {
+      "fields": {
+        "Path": {
+          "rule": "repeated",
+          "type": "Hash",
+          "id": 1
+        }
+      }
+    },
+    "Address": {
+      "fields": {
+        "Value": {
+          "type": "bytes",
+          "id": 1
+        }
+      }
+    },
+    "Hash": {
+      "fields": {
+        "Value": {
+          "type": "bytes",
+          "id": 1
+        },
+        "HashType": {
+          "type": "HashType",
+          "id": 2
+        }
+      }
+    },
+    "HashType": {
+      "values": {
+        "General": 0,
+        "AccountAddress": 1,
+        "ResourcePath": 2,
+        "ResourcePointer": 3,
+        "StateHash": 4,
+        "BlockHash": 5,
+        "AccountZero": 6,
+        "ChainHeight": 7,
+        "PreviousBlockHash": 8,
+        "CallingGraph": 9,
+        "TxResult": 10,
+        "CanonicalHash": 11,
+        "CurrentHash": 12,
+        "GenesisHash": 13,
+        "BlockHeaderHash": 14,
+        "BlockBodyHash": 15
+      }
+    },
+    "SInt32Value": {
+      "fields": {
+        "value": {
+          "type": "sint32",
+          "id": 1
+        }
+      }
+    },
+    "SInt64Value": {
+      "fields": {
+        "value": {
+          "type": "sint64",
+          "id": 1
+        }
+      }
+    }
+  }
+}
