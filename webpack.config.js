@@ -1,5 +1,4 @@
 const path = require('path');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
 	mode: 'production',
@@ -8,8 +7,5 @@ module.exports = {
 	output: {
 		path: path.resolve(__dirname, 'output'), // equal to __diname + '/build'
         filename: 'aelf.web.js'
-	},
-	optimization: {
-		minimizer: [new UglifyJsPlugin()]
 	}
 }
