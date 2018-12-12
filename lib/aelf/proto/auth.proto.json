@@ -47,7 +47,7 @@
           "id": 2
         },
         "TxnData": {
-          "type": "PendingTxn",
+          "type": "bytes",
           "id": 3
         },
         "ExpiredTime": {
@@ -69,18 +69,6 @@
         "ToBeDecided": 0,
         "Decided": 1,
         "Released": 2
-      }
-    },
-    "PendingTxn": {
-      "fields": {
-        "ProposalName": {
-          "type": "string",
-          "id": 1
-        },
-        "TxnData": {
-          "type": "bytes",
-          "id": 2
-        }
       }
     },
     "Approved": {
