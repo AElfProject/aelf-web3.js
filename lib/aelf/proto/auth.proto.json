@@ -51,7 +51,7 @@
           "id": 3
         },
         "ExpiredTime": {
-          "type": "google.protobuf.Timestamp",
+          "type": "double",
           "id": 4
         },
         "Status": {
@@ -93,26 +93,6 @@
         "Signature": {
           "type": "bytes",
           "id": 2
-        }
-      }
-    },
-    "google": {
-      "nested": {
-        "protobuf": {
-          "nested": {
-            "Timestamp": {
-              "fields": {
-                "seconds": {
-                  "type": "int64",
-                  "id": 1
-                },
-                "nanos": {
-                  "type": "int32",
-                  "id": 2
-                }
-              }
-            }
-          }
         }
       }
     },
@@ -1006,6 +986,26 @@
         "LeafCount": {
           "type": "int32",
           "id": 3
+        }
+      }
+    },
+    "google": {
+      "nested": {
+        "protobuf": {
+          "nested": {
+            "Timestamp": {
+              "fields": {
+                "seconds": {
+                  "type": "int64",
+                  "id": 1
+                },
+                "nanos": {
+                  "type": "int32",
+                  "id": 2
+                }
+              }
+            }
+          }
         }
       }
     },
