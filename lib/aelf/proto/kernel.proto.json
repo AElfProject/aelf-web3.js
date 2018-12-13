@@ -42,7 +42,7 @@
           "type": "bytes",
           "id": 9
         },
-        "type": {
+        "Type": {
           "type": "TransactionType",
           "id": 10
         },
