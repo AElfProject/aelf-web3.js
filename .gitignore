@@ -4,4 +4,4 @@ clitest.js
 .node-xmlhttprequest-*
 dist/
 test.html
-yarn.lock
+yarn*
