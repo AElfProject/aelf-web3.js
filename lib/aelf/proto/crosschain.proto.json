@@ -65,6 +65,67 @@
         }
       }
     },
+    "SideChainStatus": {
+      "values": {
+        "Apply": 0,
+        "Review": 1,
+        "Active": 2,
+        "Terminated": 3
+      }
+    },
+    "SideChainInfo": {
+      "fields": {
+        "IndexingPrice": {
+          "type": "uint64",
+          "id": 1
+        },
+        "LockedTokenAmount": {
+          "type": "uint64",
+          "id": 2
+        },
+        "ResourceBalances": {
+          "rule": "repeated",
+          "type": "ResourceTypeBalancePair",
+          "id": 3
+        },
+        "ContractCode": {
+          "type": "bytes",
+          "id": 4
+        },
+        "Proposer": {
+          "type": "Address",
+          "id": 5
+        },
+        "SideChainStatus": {
+          "type": "SideChainStatus",
+          "id": 6
+        },
+        "ChainId": {
+          "type": "Hash",
+          "id": 7
+        }
+      }
+    },
+    "ResourceType": {
+      "values": {
+        "UndefinedResourceType": 0,
+        "Ram": 1,
+        "Cpu": 2,
+        "Net": 3
+      }
+    },
+    "ResourceTypeBalancePair": {
+      "fields": {
+        "Type": {
+          "type": "ResourceType",
+          "id": 1
+        },
+        "Amount": {
+          "type": "uint64",
+          "id": 2
+        }
+      }
+    },
     "Address": {
       "fields": {
         "Value": {

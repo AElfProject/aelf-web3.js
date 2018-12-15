@@ -3,6 +3,155 @@
     "csharp_namespace": "AElf.Kernel"
   },
   "nested": {
+    "Authorization": {
+      "fields": {
+        "MultiSigAccount": {
+          "type": "Address",
+          "id": 1
+        },
+        "ExecutionThreshold": {
+          "type": "uint32",
+          "id": 2
+        },
+        "ProposerThreshold": {
+          "type": "uint32",
+          "id": 3
+        },
+        "Reviewers": {
+          "rule": "repeated",
+          "type": "Reviewer",
+          "id": 4
+        }
+      }
+    },
+    "Reviewer": {
+      "fields": {
+        "PubKey": {
+          "type": "bytes",
+          "id": 1
+        },
+        "Weight": {
+          "type": "uint32",
+          "id": 2
+        }
+      }
+    },
+    "Proposal": {
+      "fields": {
+        "MultiSigAccount": {
+          "type": "Address",
+          "id": 1
+        },
+        "Name": {
+          "type": "string",
+          "id": 2
+        },
+        "TxnData": {
+          "type": "bytes",
+          "id": 3
+        },
+        "ExpiredTime": {
+          "type": "double",
+          "id": 4
+        },
+        "Status": {
+          "type": "ProposalStatus",
+          "id": 5
+        },
+        "Proposer": {
+          "type": "Address",
+          "id": 6
+        }
+      }
+    },
+    "ProposalStatus": {
+      "values": {
+        "ToBeDecided": 0,
+        "Decided": 1,
+        "Released": 2
+      }
+    },
+    "Approved": {
+      "fields": {
+        "ProposalHash": {
+          "type": "Hash",
+          "id": 1
+        },
+        "Approvals": {
+          "rule": "repeated",
+          "type": "Approval",
+          "id": 5
+        }
+      }
+    },
+    "Approval": {
+      "fields": {
+        "ProposalHash": {
+          "type": "Hash",
+          "id": 1
+        },
+        "Signature": {
+          "type": "bytes",
+          "id": 2
+        }
+      }
+    },
+    "Address": {
+      "fields": {
+        "Value": {
+          "type": "bytes",
+          "id": 1
+        }
+      }
+    },
+    "Hash": {
+      "fields": {
+        "Value": {
+          "type": "bytes",
+          "id": 1
+        },
+        "HashType": {
+          "type": "HashType",
+          "id": 2
+        }
+      }
+    },
+    "HashType": {
+      "values": {
+        "General": 0,
+        "AccountAddress": 1,
+        "ResourcePath": 2,
+        "ResourcePointer": 3,
+        "StateHash": 4,
+        "BlockHash": 5,
+        "AccountZero": 6,
+        "ChainHeight": 7,
+        "PreviousBlockHash": 8,
+        "CallingGraph": 9,
+        "TxResult": 10,
+        "CanonicalHash": 11,
+        "CurrentHash": 12,
+        "GenesisHash": 13,
+        "BlockHeaderHash": 14,
+        "BlockBodyHash": 15
+      }
+    },
+    "SInt32Value": {
+      "fields": {
+        "value": {
+          "type": "sint32",
+          "id": 1
+        }
+      }
+    },
+    "SInt64Value": {
+      "fields": {
+        "value": {
+          "type": "sint64",
+          "id": 1
+        }
+      }
+    },
     "Transaction": {
       "fields": {
         "From": {
@@ -42,7 +191,7 @@
           "type": "bytes",
           "id": 9
         },
-        "Type": {
+        "type": {
           "type": "TransactionType",
           "id": 10
         },
@@ -857,62 +1006,6 @@
               }
             }
           }
-        }
-      }
-    },
-    "Address": {
-      "fields": {
-        "Value": {
-          "type": "bytes",
-          "id": 1
-        }
-      }
-    },
-    "Hash": {
-      "fields": {
-        "Value": {
-          "type": "bytes",
-          "id": 1
-        },
-        "HashType": {
-          "type": "HashType",
-          "id": 2
-        }
-      }
-    },
-    "HashType": {
-      "values": {
-        "General": 0,
-        "AccountAddress": 1,
-        "ResourcePath": 2,
-        "ResourcePointer": 3,
-        "StateHash": 4,
-        "BlockHash": 5,
-        "AccountZero": 6,
-        "ChainHeight": 7,
-        "PreviousBlockHash": 8,
-        "CallingGraph": 9,
-        "TxResult": 10,
-        "CanonicalHash": 11,
-        "CurrentHash": 12,
-        "GenesisHash": 13,
-        "BlockHeaderHash": 14,
-        "BlockBodyHash": 15
-      }
-    },
-    "SInt32Value": {
-      "fields": {
-        "value": {
-          "type": "sint32",
-          "id": 1
-        }
-      }
-    },
-    "SInt64Value": {
-      "fields": {
-        "value": {
-          "type": "sint64",
-          "id": 1
         }
       }
     },

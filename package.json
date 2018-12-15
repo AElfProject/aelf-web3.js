@@ -34,9 +34,7 @@
     "gulp-uglify-es": "^1.0.4",
     "gutil": "^1.6.4",
     "jshint": "^2.9.6",
-    "vinyl-source-stream": "^2.0.0",
-    "webpack": "^4.25.1",
-    "webpack-cli": "^3.1.2"
+    "vinyl-source-stream": "^2.0.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
