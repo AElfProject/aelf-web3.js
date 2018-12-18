@@ -1,3 +1,4 @@
-./clitest.js
-./test.js
 ./dist
+.idea/
+.node-xmlhttprequest-*
+test.html
