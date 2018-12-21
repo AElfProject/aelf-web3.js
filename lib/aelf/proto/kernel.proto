@@ -49,8 +49,8 @@ message TransactionReceipt {
 
 message StatePath {
     repeated bytes Path = 1;
-//    Address ContractAddress = 2;
-//    Hash ChainId = 3;
+    //    Address ContractAddress = 2;
+    //    Hash ChainId = 3;
 }
 
 message StateValue {
@@ -70,9 +70,8 @@ message TransactionList {
 enum TransactionType {
     ContractTransaction = 0;
     DposTransaction = 1;
-    CrossChainBlockInfoTransaction = 2;
-    MsigTransaction = 3;
-    ContractDeployTransaction=4;
+    MsigTransaction = 2;
+    ContractDeployTransaction=3;
 }
 
 enum Status {
@@ -93,19 +92,25 @@ message TransactionResult {
     int32 Index = 8;
     Hash StateHash = 9;
     // Merkle proof path for this transaction
-    MerklePath MerklePath = 10;
-    Hash DeferredTxnId = 11; 
+    Hash DeferredTxnId = 10;
 }
 
-
+// For failed transactions, its status follows the Min of
+// its own status and its inline transactions'
 enum ExecutionStatus {
     Undefined = 0;
-    ExecutedAndCommitted = 1;
-    ExecutedButNotCommitted = 2;
-    SystemError = -1;
-    ContractError = -2;
-    ExceededMaxCallDepth = -3;
-    Canceled = -4;
+    // Successful =>
+    ExecutedButNotCommitted = 1;
+    ExecutedAndCommitted = 2;
+
+    // Failed =>
+    //   Infrastructure reasons
+    Canceled = -1;
+    SystemError = -2;
+
+    //   Contract reasons
+    ContractError = -10;
+    ExceededMaxCallDepth = -11;
 }
 
 message TransactionTrace {
@@ -161,8 +166,7 @@ message BlockHeader {
     bytes P = 8;
     google.protobuf.Timestamp Time = 9;
     Hash ChainId = 10;
-    Hash SideChainBlockHeadersRoot = 11;
-    Hash SideChainTransactionsRoot = 12;
+    Hash SideChainTransactionsRoot = 11;
 }
 
 message BlockBody {
@@ -233,67 +237,6 @@ message Chain {
     Hash GenesisBlockHash = 2;
 }
 
-message OngoingMiners {
-    repeated Miners Miners = 1;
-}
-
-message Candidates {
-    repeated Address Nodes = 1;
-}
-
-message Tickets {
-    uint64 RemainingTickets = 1;
-    repeated VotingRecord VotingRecord = 2;
-}
-
-message VotingRecord {
-    Address From = 1;
-    Address To = 2;
-    uint64 TicketsCount = 3;
-    uint64 RoundNumber = 4;
-    Hash TransactionId = 5;
-    bool State = 6;
-}
-
-message Miners {
-    uint64 TakeEffectRoundNumber = 1;
-    repeated Address Nodes = 2;
-}
-
-message ElectionSnapshot {
-    uint64 StartRoundNumber = 1;
-    uint64 EndRoundNumber = 2;
-    uint64 Blocks = 3;
-    repeated TicketsMap TicketsMap = 4;
-}
-
-message TicketsMap {
-    Address CandidateAddress = 1;
-    uint64 TicketsCount = 2;
-    uint64 TotalWeights = 3;
-}
-
-message BlockProducer {
-    int32 Order = 1;
-    bool IsEBP = 2; //EBP: Extra Block Producer
-    Hash InValue = 3;
-    Hash OutValue = 4;
-    Hash Signature = 5;
-    google.protobuf.Timestamp TimeSlot = 6;
-    repeated uint64 Terms = 7;
-    uint64 BlocksOfCurrentTerm = 8;
-    uint64 BlocksOfAllTerms = 9;
-}
-
-message Round {
-    uint64 RoundNumber = 1;
-    map<string, BlockProducer> BlockProducers = 2;
-}
-
-message AElfDPoSInformation {
-    repeated Round Rounds = 1;
-}
-
 enum DataAccessMode {
     ReadOnlyAccountSharing = 0;
     ReadWriteAccountSharing = 1;
@@ -320,4 +263,8 @@ message BinaryMerkleTree{
     repeated Hash Nodes = 1;
     Hash Root = 2;
     int32 LeafCount = 3;
+}
+
+message StringList {
+    repeated string Values = 1;
 }

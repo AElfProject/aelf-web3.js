@@ -155,9 +155,8 @@
       "values": {
         "ContractTransaction": 0,
         "DposTransaction": 1,
-        "CrossChainBlockInfoTransaction": 2,
-        "MsigTransaction": 3,
-        "ContractDeployTransaction": 4
+        "MsigTransaction": 2,
+        "ContractDeployTransaction": 3
       }
     },
     "Status": {
@@ -207,25 +206,21 @@
           "type": "Hash",
           "id": 9
         },
-        "MerklePath": {
-          "type": "MerklePath",
-          "id": 10
-        },
         "DeferredTxnId": {
           "type": "Hash",
-          "id": 11
+          "id": 10
         }
       }
     },
     "ExecutionStatus": {
       "values": {
         "Undefined": 0,
-        "ExecutedAndCommitted": 1,
-        "ExecutedButNotCommitted": 2,
-        "SystemError": -1,
-        "ContractError": -2,
-        "ExceededMaxCallDepth": -3,
-        "Canceled": -4
+        "ExecutedButNotCommitted": 1,
+        "ExecutedAndCommitted": 2,
+        "Canceled": -1,
+        "SystemError": -2,
+        "ContractError": -10,
+        "ExceededMaxCallDepth": -11
       }
     },
     "TransactionTrace": {
@@ -380,13 +375,9 @@
           "type": "Hash",
           "id": 10
         },
-        "SideChainBlockHeadersRoot": {
-          "type": "Hash",
-          "id": 11
-        },
         "SideChainTransactionsRoot": {
           "type": "Hash",
-          "id": 12
+          "id": 11
         }
       }
     },
@@ -596,178 +587,6 @@
         }
       }
     },
-    "OngoingMiners": {
-      "fields": {
-        "Miners": {
-          "rule": "repeated",
-          "type": "Miners",
-          "id": 1
-        }
-      }
-    },
-    "Candidates": {
-      "fields": {
-        "Nodes": {
-          "rule": "repeated",
-          "type": "Address",
-          "id": 1
-        }
-      }
-    },
-    "Tickets": {
-      "fields": {
-        "RemainingTickets": {
-          "type": "uint64",
-          "id": 1
-        },
-        "VotingRecord": {
-          "rule": "repeated",
-          "type": "VotingRecord",
-          "id": 2
-        }
-      }
-    },
-    "VotingRecord": {
-      "fields": {
-        "From": {
-          "type": "Address",
-          "id": 1
-        },
-        "To": {
-          "type": "Address",
-          "id": 2
-        },
-        "TicketsCount": {
-          "type": "uint64",
-          "id": 3
-        },
-        "RoundNumber": {
-          "type": "uint64",
-          "id": 4
-        },
-        "TransactionId": {
-          "type": "Hash",
-          "id": 5
-        },
-        "State": {
-          "type": "bool",
-          "id": 6
-        }
-      }
-    },
-    "Miners": {
-      "fields": {
-        "TakeEffectRoundNumber": {
-          "type": "uint64",
-          "id": 1
-        },
-        "Nodes": {
-          "rule": "repeated",
-          "type": "Address",
-          "id": 2
-        }
-      }
-    },
-    "ElectionSnapshot": {
-      "fields": {
-        "StartRoundNumber": {
-          "type": "uint64",
-          "id": 1
-        },
-        "EndRoundNumber": {
-          "type": "uint64",
-          "id": 2
-        },
-        "Blocks": {
-          "type": "uint64",
-          "id": 3
-        },
-        "TicketsMap": {
-          "rule": "repeated",
-          "type": "TicketsMap",
-          "id": 4
-        }
-      }
-    },
-    "TicketsMap": {
-      "fields": {
-        "CandidateAddress": {
-          "type": "Address",
-          "id": 1
-        },
-        "TicketsCount": {
-          "type": "uint64",
-          "id": 2
-        },
-        "TotalWeights": {
-          "type": "uint64",
-          "id": 3
-        }
-      }
-    },
-    "BlockProducer": {
-      "fields": {
-        "Order": {
-          "type": "int32",
-          "id": 1
-        },
-        "IsEBP": {
-          "type": "bool",
-          "id": 2
-        },
-        "InValue": {
-          "type": "Hash",
-          "id": 3
-        },
-        "OutValue": {
-          "type": "Hash",
-          "id": 4
-        },
-        "Signature": {
-          "type": "Hash",
-          "id": 5
-        },
-        "TimeSlot": {
-          "type": "google.protobuf.Timestamp",
-          "id": 6
-        },
-        "Terms": {
-          "rule": "repeated",
-          "type": "uint64",
-          "id": 7
-        },
-        "BlocksOfCurrentTerm": {
-          "type": "uint64",
-          "id": 8
-        },
-        "BlocksOfAllTerms": {
-          "type": "uint64",
-          "id": 9
-        }
-      }
-    },
-    "Round": {
-      "fields": {
-        "RoundNumber": {
-          "type": "uint64",
-          "id": 1
-        },
-        "BlockProducers": {
-          "keyType": "string",
-          "type": "BlockProducer",
-          "id": 2
-        }
-      }
-    },
-    "AElfDPoSInformation": {
-      "fields": {
-        "Rounds": {
-          "rule": "repeated",
-          "type": "Round",
-          "id": 1
-        }
-      }
-    },
     "DataAccessMode": {
       "values": {
         "ReadOnlyAccountSharing": 0,
@@ -837,6 +656,15 @@
         "LeafCount": {
           "type": "int32",
           "id": 3
+        }
+      }
+    },
+    "StringList": {
+      "fields": {
+        "Values": {
+          "rule": "repeated",
+          "type": "string",
+          "id": 1
         }
       }
     },
@@ -975,6 +803,67 @@
           "rule": "repeated",
           "type": "Hash",
           "id": 1
+        }
+      }
+    },
+    "SideChainStatus": {
+      "values": {
+        "Apply": 0,
+        "Review": 1,
+        "Active": 2,
+        "Terminated": 3
+      }
+    },
+    "SideChainInfo": {
+      "fields": {
+        "IndexingPrice": {
+          "type": "uint64",
+          "id": 1
+        },
+        "LockedTokenAmount": {
+          "type": "uint64",
+          "id": 2
+        },
+        "ResourceBalances": {
+          "rule": "repeated",
+          "type": "ResourceTypeBalancePair",
+          "id": 3
+        },
+        "ContractCode": {
+          "type": "bytes",
+          "id": 4
+        },
+        "Proposer": {
+          "type": "Address",
+          "id": 5
+        },
+        "SideChainStatus": {
+          "type": "SideChainStatus",
+          "id": 6
+        },
+        "ChainId": {
+          "type": "Hash",
+          "id": 7
+        }
+      }
+    },
+    "ResourceType": {
+      "values": {
+        "UndefinedResourceType": 0,
+        "Ram": 1,
+        "Cpu": 2,
+        "Net": 3
+      }
+    },
+    "ResourceTypeBalancePair": {
+      "fields": {
+        "Type": {
+          "type": "ResourceType",
+          "id": 1
+        },
+        "Amount": {
+          "type": "uint64",
+          "id": 2
         }
       }
     }
