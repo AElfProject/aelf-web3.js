@@ -1,6 +1,6 @@
 {
   "options": {
-    "csharp_namespace": "AElf.Common"
+    "csharp_namespace": "AElf.Kernel"
   },
   "nested": {
     "SideChainBlockInfo": {
@@ -106,26 +106,6 @@
         }
       }
     },
-    "ResourceType": {
-      "values": {
-        "UndefinedResourceType": 0,
-        "Ram": 1,
-        "Cpu": 2,
-        "Net": 3
-      }
-    },
-    "ResourceTypeBalancePair": {
-      "fields": {
-        "Type": {
-          "type": "ResourceType",
-          "id": 1
-        },
-        "Amount": {
-          "type": "uint64",
-          "id": 2
-        }
-      }
-    },
     "Address": {
       "fields": {
         "Value": {
@@ -179,6 +159,26 @@
         "value": {
           "type": "sint64",
           "id": 1
+        }
+      }
+    },
+    "ResourceType": {
+      "values": {
+        "UndefinedResourceType": 0,
+        "Ram": 1,
+        "Cpu": 2,
+        "Net": 3
+      }
+    },
+    "ResourceTypeBalancePair": {
+      "fields": {
+        "Type": {
+          "type": "ResourceType",
+          "id": 1
+        },
+        "Amount": {
+          "type": "uint64",
+          "id": 2
         }
       }
     }

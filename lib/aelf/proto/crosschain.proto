@@ -45,22 +45,9 @@ enum SideChainStatus
 message SideChainInfo{
     uint64 IndexingPrice = 1;
     uint64 LockedTokenAmount = 2;
-    repeated ResourceTypeBalancePair ResourceBalances = 3; // this must be set as order of enum ResourceType
+    repeated ResourceTypeBalancePair ResourceBalances = 3;
     bytes ContractCode = 4;
     Address Proposer = 5;
     SideChainStatus SideChainStatus = 6;
     Hash ChainId = 7;
-}
-
-enum ResourceType
-{
-    UndefinedResourceType = 0;
-    Ram = 1;
-    Cpu = 2;
-    Net = 3;
-}
-
-message ResourceTypeBalancePair{
-    ResourceType Type = 1;
-    uint64 Amount = 2;
 }

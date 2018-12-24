@@ -1,6 +1,7 @@
 syntax = "proto3";
 
 option csharp_namespace = "AElf.Kernel";
+import "google/protobuf/timestamp.proto";
 import "common.proto";
 import "kernel.proto";
 
@@ -22,7 +23,7 @@ message Proposal {
     Address MultiSigAccount = 1;
     string Name = 2;
     bytes TxnData = 3;
-    double ExpiredTime = 4;
+    double ExpiredTime = 4; //in second
     ProposalStatus Status = 5;
     Address Proposer = 6;
 }
