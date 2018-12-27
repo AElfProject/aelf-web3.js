@@ -151,8 +151,6 @@ module.exports = {
 var protobuf = require('protobufjs');
 var abiDescriptor = require('./proto/abi.proto.json')
 var ModuleMessage = protobuf.Root.fromJSON(abiDescriptor).Module;
-var authDescriptor = require('./proto/auth.proto.json')
-var proposalMessage = protobuf.Root.fromJSON(authDescriptor).Proposal;
 
 var inputAddressFormatter = function (address) {
     // if (address.startsWith('ELF_')) {
@@ -180,7 +178,7 @@ module.exports = {
 
 }).call(this,require("buffer").Buffer)
 
-},{"./proto/abi.proto.json":9,"./proto/auth.proto.json":10,"buffer":66,"protobufjs":130}],4:[function(require,module,exports){
+},{"./proto/abi.proto.json":9,"buffer":66,"protobufjs":130}],4:[function(require,module,exports){
 (function (Buffer){
 /*
     This file is part of web3.js.
@@ -892,11 +890,16 @@ var encodeTransaction = function(tx){
 };
 
 var getTransaction = function(from, to, methodName, params){
+    var parsedTime = Date.parse(new Date(Date.now()).toISOString());
     var txn = {
         "From": getAddressFromRep(from),
         "To": getAddressFromRep(to),
         "MethodName": methodName,
-        "Params": params
+        "Params": params,
+        "Time" : {
+            seconds: Math.floor(parsedTime/1000),
+            nanos: (parsedTime % 1000) * 1000
+        }
     };
     return kernelRoot.Transaction.create(txn);
 };
