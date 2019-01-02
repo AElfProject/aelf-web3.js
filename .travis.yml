@@ -2,7 +2,7 @@
 #sudo: required
 #script:
 #  - chmod a+x ./build-npm.sh
-#  - ./build-npm.sh $user $password $email
+#  - ./build-npm.sh $NPM_USER $NPM_PASSWD $NPM_EMAIL
   
 language: csharp
 dotnet: 2.1.400
