@@ -5,7 +5,7 @@
 #  - ./build-npm.sh $NPM_USER $NPM_PASSWD $NPM_EMAIL
   
 language: csharp
-dotnet: 2.1.400
+dotnet: 2.1
 protoc: 3.6.1
 nuget: 4.9.2
 sudo: required
