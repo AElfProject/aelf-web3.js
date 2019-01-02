@@ -1,0 +1,14 @@
+#language: node
+#sudo: required
+#script:
+#  - chmod a+x ./build-npm.sh
+#  - ./build-npm.sh $user $password $email
+  
+language: csharp
+dotnet: 2.1.400
+protoc: 3.6.1
+nuget: 4.9.2
+sudo: required
+script:
+  - chmod a+x ./build-nuget.sh
+  - ./build-nuget.sh AELf.JSDK $NUGET_API_KEY
