@@ -1,14 +1,16 @@
-#language: node
-#sudo: required
-#script:
-#  - chmod a+x ./build-npm.sh
-#  - ./build-npm.sh $NPM_USER $NPM_PASSWD $NPM_EMAIL
-  
 language: csharp
-dotnet: 2.1
-protoc: 3.6.1
-nuget: 4.9.2
 sudo: required
+mono: none
+dotnet: 2.1.400
+dist: trusty
+before_script:
+  - chmod a+x ./build.sh
+  - chmod a+x ./.nuget/deploy.sh
 script:
-  - chmod a+x ./build-nuget.sh
-  - ./build-nuget.sh AELf.JSDK $NUGET_API_KEY
+  - ./build.sh
+deploy:
+  - provider: script
+    script: ./.nuget/deploy.sh $TRAVIS_TAG $NUGET_API_KEY
+    skip_cleanup: true
+    on:
+      tags: true
