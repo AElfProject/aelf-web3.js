@@ -2,16 +2,13 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
-
   <ItemGroup>
      <Content Include="content\**" PackagePath="content" Visible="true" />
   </ItemGroup>
-
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <PackageId>Rosona.JSDK</PackageId>
-    <Authors>Rosona</Authors>
+    <PackageId>AElf.JSDK</PackageId>
+    <Authors>AElf</Authors>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
-
 </Project>

@@ -9,7 +9,7 @@ NUGET_API_KEY=$2
 # TODO: verify version
 VERSION=`echo $TAG | cut -b 2-`
 
-NUPKG="${HERE}/Rosona.JSDK.${VERSION}.nupkg"
+NUPKG="${HERE}/AElf.JSDK.${VERSION}.nupkg"
 
 # build
 mkdir AElf.JSDK/content
