@@ -2,7 +2,7 @@
 
 namespace AElf.JSDK
 {
-    public class Resource
+    public class StaticResource
     {
     }
 }
