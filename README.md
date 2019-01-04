@@ -1,3 +1,8 @@
+[![Build Status][1]][2]
+
+[1]: https://travis-ci.org/AElfProject/aelf-sdk.js.svg?branch=master
+[2]: https://travis-ci.org/AElfProject/aelf-sdk.js
+
 # aelf-sdk.js
 AElf Javascript SDK
 
