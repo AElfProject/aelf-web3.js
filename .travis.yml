@@ -6,11 +6,14 @@ dist: trusty
 before_script:
   - chmod a+x ./build.sh
   - chmod a+x ./.nuget/deploy.sh
+  - chmod a+x ./.npm/deploy.sh
 script:
   - ./build.sh
 deploy:
   - provider: script
-    script: ./.nuget/deploy.sh $TRAVIS_TAG $NUGET_API_KEY
+    script: 
+      - ./.nuget/deploy.sh $TRAVIS_TAG $NUGET_API_KEY
+      - ./.npm/deploy.sh $NPM_USER $NPM_PASSWD $NPM_EMAIL
     skip_cleanup: true
     on:
       tags: true
