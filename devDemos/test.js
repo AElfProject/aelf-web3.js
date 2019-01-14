@@ -1,4 +1,10 @@
 var Aelf = require('../lib/aelf.js');
+var sha256 = require('js-sha256').sha256;
+var proto = require('../lib/aelf/proto');
+var wal = require('../lib/aelf/wallet');
+var elliptic = require('elliptic');
+var ec = new elliptic.ec('secp256k1');
+var wallet = wal.getWalletByPrivateKey('bdb3b39ef4cd18c2697a920eb6d9e8c3cf1a930570beb37d04fb52400092c42b');
 var aelf = new Aelf(new Aelf.providers.HttpProvider("http://localhost:1234/chain"));
 // var aelf = new Aelf(new Aelf.providers.HttpProvider("http://192.168.197.33:8000/chain"));
 aelf.chain.connectChain();
@@ -11,7 +17,6 @@ aelf.chain.connectChain();
 // });
 
 // var tokenc = aelf.chain.contractAt('0x75b19ac4415c072512d011634ac86a9c58cf');
-var wallet = Aelf.wallet.getWalletByPrivateKey('a26fee9d34f3f81ef939ded709d5b0feb776816dd428d02da0631382d4399db2');
 // var wallet = Aelf.wallet.getWalletByPrivateKey('f6e512a3c259e5f9af981d7f99d245aa5bc52fe448495e0b0dd56e8406be6f71');
 
 var tokenc = aelf.chain.contractAt('ELF_29SBBuPHNmZt2bNFcei15Jq5hN5pJdd6Ry48ucHPy5baEwY1RS', wallet);
@@ -113,3 +118,34 @@ let totalSupply = tokenc.TotalSupply();
 // aelf.chain.getIncrement('0x04bb9c6c297ea90b1bc3e6af2c87d416583e');
 // var tokenc = aelf.chain.contractAt('0xdb458e5db5db1b0ecad3408acc344c96794c');
 // var response = tokenc.TotalSupply();
+
+console.log('address - ', wallet.address);
+var rawTxn = proto.getTransaction('ELF_65dDNxzcd35jESiidFXN5JV8Z7pCwaFnepuYQToNefSgqk9', 'ELF_65dDNxzcd35jESiidFXN5JV8Z7pCwaFnepuYQToNefSgqk9', 'test', []);
+var txn = Aelf.wallet.signTransaction(rawTxn, wallet.keyPair);
+var sig = txn.Sigs[0];
+console.log('sig length - ', sig.length);
+console.log('sig - ', sig.toString('hex'));
+// console.log('sigObj.s - ', sigObj.s.toString('hex'));
+// console.log('sigObj.s length - ', sigObj.s.toArray().length);
+//
+// console.log('sigObj.r - ', sigObj.r.toString('hex'));
+// console.log('sigObj.r length - ', sigObj.r.toArray().length);
+// console.log('sigObj.recoveryParam - ', sigObj.recoveryParam);
+rawTxn.Sigs =[];
+var ser = proto.Transaction.encode(rawTxn).finish();
+var msgHash = sha256(ser);
+var r = sig.slice(0, 32);
+var s = sig.slice(32, 64);
+var sigObj = { r: r, s: s, recoveryParam: sig.readInt8(sig.length - 1) };
+console.log('sigObj.r - ', sigObj.r.toString('hex'));
+console.log('sigObj.r length - ', sigObj.r.length);
+
+console.log('sigObj.s - ', sigObj.s.toString('hex'));
+console.log('sigObj.s length - ', sigObj.s.length);
+
+console.log('sigObj.recoveryParam - ', sigObj.recoveryParam);
+console.log('message - ', msgHash);
+var pubkey = ec.recoverPubKey(Buffer.from(msgHash, "hex"), sigObj, sig.readInt8(sig.length - 1));
+console.log('pubkey - ', pubkey.encode("hex"));
+var res = ec.verify(Buffer.from(msgHash, "hex"), sigObj, pubkey);
+console.log(res);
