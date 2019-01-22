@@ -4947,15 +4947,14 @@ var signTransaction = function(rawTxn, keyPair){
     return rawTxn;
 };
 
-// TODO: this sign useless now. 2019.01.14
+
 var sign = function (hexTxn, keyPair) {
     var txnData = Buffer.from(hexTxn.replace('0x', ''), 'hex');
     var privKey = keyPair.getPrivate("hex");
     var msgHash = sha256(txnData);
     var sigObj = ec.sign(Buffer.from(msgHash, "hex"), privKey, "hex", {canonical: true});
     var hex = sigObj.r.toString('hex', 32).concat(sigObj.s.toString('hex', 32)).concat(['0' + sigObj.recoveryParam.toString()]);
-    var sig = Buffer.from(hex, 'hex');
-    return sig;
+    return Buffer.from(hex, 'hex');
 };
 
 module.exports = {
