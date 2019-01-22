@@ -905,12 +905,17 @@ var getTransaction = function(from, to, methodName, params){
 };
 
 var getMsigTransaction = function(from, to, methodName, params){
+    var parsedTime = Date.parse(new Date(Date.now()).toISOString());
     var txn = {
         "From": getAddressFromRep(from),
         "To": getAddressFromRep(to),
         "MethodName": methodName,
         "Params": params,
-        "Type" : kernelRoot.TransactionType.MsigTransaction
+        "Type" : kernelRoot.TransactionType.MsigTransaction,
+        "Time" : {
+            seconds: Math.floor(parsedTime/1000),
+            nanos: (parsedTime % 1000) * 1000
+        }
     };
     return kernelRoot.Transaction.create(txn);
 };
@@ -4942,6 +4947,7 @@ var signTransaction = function(rawTxn, keyPair){
     return rawTxn;
 };
 
+// TODO: this sign useless now. 2019.01.14
 var sign = function (hexTxn, keyPair) {
     var txnData = Buffer.from(hexTxn.replace('0x', ''), 'hex');
     var privKey = keyPair.getPrivate("hex");
