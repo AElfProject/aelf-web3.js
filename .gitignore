@@ -1,4 +1,6 @@
 **/node_modules
 .idea/
+.nuget/
+.vscode/
 .node-xmlhttprequest-*
 yarn*
