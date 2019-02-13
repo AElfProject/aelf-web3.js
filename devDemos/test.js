@@ -41,10 +41,10 @@ aelf.chain.connectChain((err, result) => {console.log(err, result);});
 //     console.log('connectChain: ', err, result);
 // });
 
-// var tokenc = aelf.chain.contractAt('0x75b19ac4415c072512d011634ac86a9c58cf');
+// var tokenc = aelf.chain.contractAt('ELF_3AhZRe8RvTiZUBdcqCsv37K46bMU2L2hH81JF8jKAnAUup9', wallet);
 
 var wallet = Aelf.wallet.getWalletByPrivateKey('0d61b93aa158ee0c7c8876d642689ef6f3663bfb382da1061176a3c6ce89e79b');
-var resourceC = aelf.chain.contractAt('ELF_47dpXA3aEuDj9yeq9Et2E4zjPrSs4uQpzdFkYuBZEEQmob', wallet);
+var resourceC = aelf.chain.contractAt('ELF_4CBbRKd6rkCzTX5aJ2mnGrwJiHLmGdJZinoaVfMvScTEoBR', wallet);
 // var wallet = Aelf.wallet.getWalletByPrivateKey('f6e512a3c259e5f9af981d7f99d245aa5bc52fe448495e0b0dd56e8406be6f71');
 aelf.chain.contractAt('ELF_47dpXA3aEuDj9yeq9Et2E4zjPrSs4uQpzdFkYuBZEEQmob');
 var tokenc = aelf.chain.contractAt('ELF_4Qna4KWEr9XyxewGNHku1gwUvqtfsARSHcwjd3WXBpLw9Yx', wallet);
