@@ -39,7 +39,7 @@ var version = require('./version.json');
 var HttpProvider = require('./aelf/httpprovider');
 var wallet = require('./aelf/wallet');
 
-function Aelf (provider) {
+function Aelf(provider) {
     this._requestManager = new RequestManager(provider);
     this.currentProvider = provider;
     this.chain = new Chain(this);
@@ -67,7 +67,7 @@ Aelf.prototype.reset = function (keepIsSyncing) {
     this.settings = new Settings();
 };
 
-Aelf.prototype.isConnected = function(){
+Aelf.prototype.isConnected = function () {
     return (this.currentProvider && this.currentProvider.isConnected());
 };
 
@@ -165,7 +165,7 @@ var inputAddressFormatter = function (address) {
 var outputAbiFormatter = function (result) {
     // var root = protobuf.Root.fromJSON(abiDescriptor);
     // var ModuleMessage = root.Module;
-    var buffer = Buffer.from(result.abi.replace('0x', ''), 'hex');
+    var buffer = Buffer.from(result.Abi.replace('0x', ''), 'hex');
     result.abi = ModuleMessage.decode(buffer);
     return result.abi;
 };
@@ -728,19 +728,19 @@ Object.defineProperty(Chain.prototype, 'defaultAccount', {
 var methods = function () {
     var getCommands = new Method({
         name: 'getCommands',
-        call: 'get_commands',
-        params: [],
+        call: 'GetCommands',
+        params: []
     });
 
     var connectChain = new Method({
         name: 'connectChain',
-        call: 'connect_chain',
-        params: [],
+        call: 'ConnectChain',
+        params: []
     });
 
     var getContractAbi = new Method({
         name: 'getContractAbi',
-        call: 'get_contract_abi',
+        call: 'GetContractAbi',
         params: ['address'],
         inputFormatter: [formatters.inputAddressFormatter],
         outputFormatter: formatters.outputAbiFormatter
@@ -748,15 +748,15 @@ var methods = function () {
 
     var getBlockHeight = new Method({
         name: 'getBlockHeight',
-        call: 'get_block_height',
+        call: 'GetBlockHeight',
         params: [],
         inputFormatter: []
     });
 
     var getBlockInfo = new Method({
         name: 'getBlockInfo',
-        call: 'get_block_info',
-        params: ['block_height', 'include_txs']
+        call: 'GetBlockInfo',
+        params: ['blockHeight', 'includeTransactions']
     });
 
     var getIncrement = new Method({
@@ -768,28 +768,35 @@ var methods = function () {
 
     var getTxResult = new Method({
         name: 'getTxResult',
-        call: 'get_tx_result',
-        params: ['txhash'],
+        call: 'GetTransactionResult',
+        params: ['transactionId'],
         inputFormatter: [null]
     });
 
     var getTxsResultByBlockhash = new Method({
         name: 'getTxsResult',
-        call: 'get_txs_result',
-        params: ['blockhash', 'offset', 'num']
+        call: 'GetTransactionsResult',
+        params: ['blockHash', 'offset', 'num']
     });
 
     var getMerklePath = new Method({
         name: 'getMerklePath',
-        call: 'get_merkle_path',
-        params: ['txid'],
+        call: 'GetTransactionMerklePath',
+        params: ['transactionId'],
         inputFormatter: [null]
     });
 
     var sendTransaction = new Method({
         name: 'sendTransaction',
-        call: 'broadcast_tx',
-        params: ['rawtx'],
+        call: 'BroadcastTransaction',
+        params: ['rawTransaction'],
+        inputFormatter: [null]
+    });
+
+    var sendTransactions = new Method({
+        name: 'sendTransactions',
+        call: 'BroadcastTransactions',
+        params: ['rawTransaction'],
         inputFormatter: [null]
     });
 
@@ -800,13 +807,59 @@ var methods = function () {
         inputFormatter: [null]
     });
 
-    var callReadOnly = new Method({
-        name: 'callReadOnly',
-        call: 'call',
-        params: ['rawtx'],
+    var getTxPoolSize = new Method({
+        name: 'getTxPoolSize',
+        call: 'GetTransactionPoolSize',
+        params: []
+    });
+
+    var getDposStatus = new Method({
+        name: 'getDposStatus',
+        call: 'GetDposStatus',
+        params: []
+    });
+
+    var getNodeStatus = new Method({
+        name: 'getNodeStatus',
+        call: 'GetNodeStatus',
+        params: []
+    });
+
+    var getBlockStateSet = new Method({
+        name: 'getBlockStateSet',
+        call: 'GetBlockStateSet',
+        params: ['blockHash'],
         inputFormatter: [null]
     });
 
+    var callReadOnly = new Method({
+        name: 'callReadOnly',
+        call: 'Call',
+        params: ['rawTransaction'],
+        inputFormatter: [null]
+    });
+
+    var getPeers = new Method({
+        name: 'getPeers',
+        call: 'GetPeers',
+        params: []
+    });
+
+    var addPeer = new Method({
+        name: 'addPeer',
+        call: 'AddPeer',
+        params: ['address'],
+        inputFormatter: [null]
+    });
+
+    var removePeer = new Method({
+        name: 'removePeer',
+        call: 'RemovePeer',
+        params: ['address'],
+        inputFormatter: [null]
+    });
+
+    // getDposStatus, getNodeStatus, getPeers, addPeer, removePeer not support yet
     return [
         getCommands,
         connectChain,
@@ -815,11 +868,19 @@ var methods = function () {
         getBlockInfo,
         getIncrement,
         sendTransaction,
+        sendTransactions,
         callReadOnly,
         getTxResult,
         getTxsResultByBlockhash,
         getMerklePath,
-        checkProposal
+        checkProposal,
+        getTxPoolSize,
+        getDposStatus,
+        getNodeStatus,
+        getBlockStateSet,
+        getPeers,
+        addPeer,
+        removePeer
     ];
 };
 
@@ -846,7 +907,15 @@ Chain.prototype.contractAt = function (address, wallet) {
     return factory.at(address);
 };
 
-Chain.prototype.initChainInfo = function(){
+Chain.prototype.contractAtAsync = function (address, wallet, callback) {
+    this.getContractAbi(address, (error, abi) => {
+        var factory = new Contract(this, abi, wallet);
+        var contract = factory.at(address);
+        callback(error, contract);
+    });
+};
+
+Chain.prototype.initChainInfo = function (){
     if(this._initialized){
         return;
     }
@@ -898,6 +967,7 @@ var getTransaction = function(from, to, methodName, params){
         "Params": params,
         "Time" : {
             seconds: Math.floor(parsedTime/1000),
+            // this nanos is Microsecond
             nanos: (parsedTime % 1000) * 1000
         }
     };
@@ -3505,7 +3575,6 @@ var checkForContractAddress = function(contract, wallet, callback){
                 else
                     throw new Error('Contract transaction couldn\'t be found after 50 blocks');
 
-
             } else {
 
                 contract._eth.getTransactionReceipt(contract.transactionHash, function(e, receipt){
@@ -3812,6 +3881,44 @@ ContractMethod.prototype.toPayload = function (args) {
     }
 };
 
+/**
+ * Should be used to create payload from arguments
+ *
+ * @method toPayloadAsync
+ * @param {Array} solidity function params
+ * @param {Object} optional payload options
+ */
+ContractMethod.prototype.toPayloadAsync = function (args) {
+    var rawtx = proto.getTransaction(
+        this._wallet.address,
+        this._address,
+        this._name,
+        coder.encodeParams(this._paramTypes, args)
+    );
+    return new Promise((resolve, reject) => {
+        this._chain.getBlockHeight((error, item) => {
+            var blockHeight = parseInt(item.result.block_height, 10);
+            this._chain.getBlockInfo(blockHeight, false, (error, item) => {
+                var blockInfo = item.result;
+
+                rawtx.RefBlockNumber = blockHeight;
+                var blockhash = blockInfo.Blockhash;
+                blockhash = blockhash.match(/^0x/) ? blockhash.substring(2) : blockhash;
+
+                rawtx.RefBlockPrefix = (new Buffer(blockhash, 'hex')).slice(0, 4);
+                var tx = wallet.signTransaction(rawtx, this._wallet.keyPair);
+                tx = proto.Transaction.encode(tx).finish();
+                if (tx.__proto__.constructor === Buffer) {
+                    resolve(tx.toString('hex'));
+                }
+                else {
+                    resolve(utils.uint8ArrayToHex(tx));
+                }
+            });
+        });
+    });
+};
+
 // ContractMethod.prototype.notSignedPayload = function (args) {
 //     var rawtx = proto.getTransaction(this._wallet.address, this._address, this._name, coder.encodeParams(this._paramTypes, args));
 //
@@ -3840,12 +3947,13 @@ ContractMethod.prototype.unpackOutput = function (output) {
 ContractMethod.prototype.sendTransaction = function () {
     var args = Array.prototype.slice.call(arguments).filter(function (a) {return a !== undefined; });
     var callback = this.extractCallback(args);
-    var payload = this.toPayload(args);
     if (!callback) {
+        var payload = this.toPayload(args);
         return this._chain.sendTransaction(payload);
     }
-
-    this._chain.sendTransaction(payload, callback);
+    this.toPayloadAsync(args).then(payload => {
+        this._chain.sendTransaction(payload, callback);
+    });
 };
 
 /**
@@ -3856,13 +3964,14 @@ ContractMethod.prototype.sendTransaction = function () {
 ContractMethod.prototype.callReadOnly = function () {
     var args = Array.prototype.slice.call(arguments).filter(function (a) {return a !== undefined; });
     var callback = this.extractCallback(args);
-    var payload = this.toPayload(args);
-
     if (!callback) {
+        var payload = this.toPayload(args);
         return this._chain.callReadOnly(payload);
     }
 
-    this._chain.callReadOnly(payload, callback);
+    this.toPayloadAsync(args).then(payload => {
+        this._chain.callReadOnly(payload, callback);
+    });
 };
 
 /**
@@ -3894,9 +4003,9 @@ ContractMethod.prototype.displayName = function () {
  * @method typeName
  * @return {String} type name of the function
  */
-ContractMethod.prototype.typeName = function () {
-    return "";
-};
+// ContractMethod.prototype.typeName = function () {
+//     return "";
+// };
 
 /**
  * Should be called to get rpc requests from solidity function
@@ -3946,7 +4055,7 @@ ContractMethod.prototype.attachToContract = function (contract) {
     if (!contract[displayName]) {
         contract[displayName] = execute;
     }
-    contract[displayName][this.typeName()] = execute; // circular!!!!
+    // contract[displayName][this.typeName()] = execute; // circular!!!!
 };
 
 module.exports = ContractMethod;
@@ -5651,7 +5760,7 @@ module.exports = {
 
 },{"./base58check":35,"bignumber.js":65,"buffer":107,"utf8":273}],38:[function(require,module,exports){
 module.exports={
-    "version": "1.1.14"
+    "version": "2.0.0"
 }
 
 },{}],39:[function(require,module,exports){
@@ -43767,7 +43876,7 @@ module.exports={
   "_args": [
     [
       "elliptic@6.4.1",
-      "/Users/swk/Documents/Hoopox/shiwk/aelf-sdk.js"
+      "/Users/huangzongzhe/workspace/hoopox/aelf-sdk.js"
     ]
   ],
   "_from": "elliptic@6.4.1",
@@ -43793,7 +43902,7 @@ module.exports={
   ],
   "_resolved": "https://registry.npmjs.org/elliptic/-/elliptic-6.4.1.tgz",
   "_spec": "6.4.1",
-  "_where": "/Users/swk/Documents/Hoopox/shiwk/aelf-sdk.js",
+  "_where": "/Users/huangzongzhe/workspace/hoopox/aelf-sdk.js",
   "author": {
     "name": "Fedor Indutny",
     "email": "fedor@indutny.com"
@@ -54339,8 +54448,7 @@ util.isSet = function isSet(obj, prop) {
  * @interface Buffer
  * @extends Uint8Array
  */
-// 纯粹为了解决问题做的
-util.BufferTemp = require('buffer').Buffer;
+
 /**
  * Node's Buffer class if available.
  * @type {Constructor<Buffer>}
@@ -54625,11 +54733,7 @@ util._configure = function() {
     var Buffer = util.Buffer;
     /* istanbul ignore if */
     if (!Buffer) {
-        // util._Buffer_from = util._Buffer_allocUnsafe = null;
-        util._Buffer_from = null;
-        util._Buffer_allocUnsafe = function Buffer_allocUnsafe(size) {
-            return new util.BufferTemp(size);
-        };
+        util._Buffer_from = util._Buffer_allocUnsafe = null;
         return;
     }
     // because node 4.x buffers are incompatible & immutable
@@ -54648,7 +54752,7 @@ util._configure = function() {
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{"./longbits":220,"@protobufjs/aspromise":39,"@protobufjs/base64":40,"@protobufjs/eventemitter":42,"@protobufjs/float":44,"@protobufjs/inquire":45,"@protobufjs/pool":47,"@protobufjs/utf8":48,"buffer":107}],222:[function(require,module,exports){
+},{"./longbits":220,"@protobufjs/aspromise":39,"@protobufjs/base64":40,"@protobufjs/eventemitter":42,"@protobufjs/float":44,"@protobufjs/inquire":45,"@protobufjs/pool":47,"@protobufjs/utf8":48}],222:[function(require,module,exports){
 "use strict";
 module.exports = verifier;
 
