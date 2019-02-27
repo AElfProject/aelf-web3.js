@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "bignumber": "^1.1.0",
-    "bignumber.js": "^2.0.7",
+    "bignumber.js": "^8.1.1",
     "bip39": "^2.5.0",
     "bs58": "^4.0.1",
     "buffer": "^5.1.0",
