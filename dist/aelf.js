@@ -73,6 +73,7 @@ Aelf.prototype.isConnected = function () {
 
 Aelf.prototype.wallet = wallet;
 Aelf.wallet = wallet;
+Aelf.version = version.version;
 
 if (typeof window !== 'undefined' && !window.Aelf) {
     window.Aelf = Aelf;
@@ -336,7 +337,7 @@ HttpProvider.prototype.isConnected = function () {
     this.send({
       id: 9999,
       jsonrpc: '2.0',
-      method: 'connect_chain',
+      method: 'ConnectChain',
       params: {}
     });
     return true;
@@ -3856,11 +3857,11 @@ ContractMethod.prototype.validateArgs = function (args) {
 ContractMethod.prototype.toPayload = function (args) {
     var rawtx = proto.getTransaction(this._wallet.address, this._address, this._name, coder.encodeParams(this._paramTypes, args));
 
-    var block_height = JSON.parse(this._chain.getBlockHeight().result.block_height, 10);
-    var block_info = this._chain.getBlockInfo(block_height, false).result;
+    var block_height = JSON.parse(this._chain.getBlockHeight(), 10);
+    var block_info = this._chain.getBlockInfo(block_height, false);
 
     rawtx.RefBlockNumber = block_height;
-    var blockhash = block_info.Blockhash;
+    var blockhash = block_info.BlockHash;
     blockhash = blockhash.match(/^0x/) ? blockhash.substring(2) : blockhash;
 
     rawtx.RefBlockPrefix = (new Buffer(blockhash, 'hex')).slice(0, 4);
@@ -3897,12 +3898,12 @@ ContractMethod.prototype.toPayloadAsync = function (args) {
     );
     return new Promise((resolve, reject) => {
         this._chain.getBlockHeight((error, item) => {
-            var blockHeight = parseInt(item.result.block_height, 10);
+            var blockHeight = parseInt(item, 10);
             this._chain.getBlockInfo(blockHeight, false, (error, item) => {
-                var blockInfo = item.result;
+                var blockInfo = item;
 
                 rawtx.RefBlockNumber = blockHeight;
-                var blockhash = blockInfo.Blockhash;
+                var blockhash = blockInfo.BlockHash;
                 blockhash = blockhash.match(/^0x/) ? blockhash.substring(2) : blockhash;
 
                 rawtx.RefBlockPrefix = (new Buffer(blockhash, 'hex')).slice(0, 4);
@@ -5760,7 +5761,7 @@ module.exports = {
 
 },{"./base58check":35,"bignumber.js":51,"buffer":66,"utf8":204}],38:[function(require,module,exports){
 module.exports={
-    "version": "2.0.0"
+    "version": "2.0.2"
 }
 
 },{}],39:[function(require,module,exports){
@@ -38917,7 +38918,7 @@ module.exports={
   "_args": [
     [
       "elliptic@6.4.1",
-      "/Users/huangzongzhe/workspace/hoopox/aelf-sdk.js"
+      "/Users/steven/repo/AElfProject/aelf-sdk.js"
     ]
   ],
   "_from": "elliptic@6.4.1",
@@ -38943,7 +38944,7 @@ module.exports={
   ],
   "_resolved": "https://registry.npmjs.org/elliptic/-/elliptic-6.4.1.tgz",
   "_spec": "6.4.1",
-  "_where": "/Users/huangzongzhe/workspace/hoopox/aelf-sdk.js",
+  "_where": "/Users/steven/repo/AElfProject/aelf-sdk.js",
   "author": {
     "name": "Fedor Indutny",
     "email": "fedor@indutny.com"
@@ -48951,7 +48952,8 @@ util.isSet = function isSet(obj, prop) {
  * @interface Buffer
  * @extends Uint8Array
  */
-
+// 纯粹为了解决问题做的
+util.BufferTemp = require('buffer').Buffer;
 /**
  * Node's Buffer class if available.
  * @type {Constructor<Buffer>}
@@ -49236,7 +49238,11 @@ util._configure = function() {
     var Buffer = util.Buffer;
     /* istanbul ignore if */
     if (!Buffer) {
-        util._Buffer_from = util._Buffer_allocUnsafe = null;
+        // util._Buffer_from = util._Buffer_allocUnsafe = null;
+        util._Buffer_from = null;
+        util._Buffer_allocUnsafe = function Buffer_allocUnsafe(size) {
+            return new util.BufferTemp(size);
+        };
         return;
     }
     // because node 4.x buffers are incompatible & immutable
@@ -49255,7 +49261,7 @@ util._configure = function() {
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{"./longbits":158,"@protobufjs/aspromise":39,"@protobufjs/base64":40,"@protobufjs/eventemitter":42,"@protobufjs/float":44,"@protobufjs/inquire":45,"@protobufjs/pool":47,"@protobufjs/utf8":48}],160:[function(require,module,exports){
+},{"./longbits":158,"@protobufjs/aspromise":39,"@protobufjs/base64":40,"@protobufjs/eventemitter":42,"@protobufjs/float":44,"@protobufjs/inquire":45,"@protobufjs/pool":47,"@protobufjs/utf8":48,"buffer":66}],160:[function(require,module,exports){
 "use strict";
 module.exports = verifier;
 
