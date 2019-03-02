@@ -5472,6 +5472,7 @@ var decodeAddressRep = function (address) {
         var b58rep = parts[parts.length - 1];
         return base58check.decode(b58rep, 'hex');
     }
+    return base58check.decode(address, 'hex');
 };
 
 /**
@@ -5483,7 +5484,7 @@ var decodeAddressRep = function (address) {
  */
 var encodeAddressRep = function (hex) {
     var buf = Buffer.from(hex.replace('0x', ''), 'hex')
-    return "ELF_" + base58check.encode(buf, '');
+    return base58check.encode(buf, '');
 };
 
 /**
@@ -5761,7 +5762,7 @@ module.exports = {
 
 },{"./base58check":35,"bignumber.js":51,"buffer":66,"utf8":204}],38:[function(require,module,exports){
 module.exports={
-    "version": "2.0.2"
+    "version": "2.0.3"
 }
 
 },{}],39:[function(require,module,exports){
