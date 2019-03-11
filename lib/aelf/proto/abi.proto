@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option csharp_namespace = "AElf.ABI.CSharp";
+option csharp_namespace = "AElf.Kernel.ABI";
 
 message Field
 {
@@ -28,6 +28,7 @@ message Method
     string ReturnType = 3;
     bool IsView = 4;
     bool IsAsync = 5;
+    uint64 Fee = 6;
 }
 
 message Module
