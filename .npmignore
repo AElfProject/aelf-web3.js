@@ -4,3 +4,5 @@
 .vscode/
 .node-xmlhttprequest-*
 test.html
+./devDemos
+./output
