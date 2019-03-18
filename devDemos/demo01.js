@@ -4,18 +4,23 @@
 
 const Aelf = require('../lib/aelf.js');
 const wallet = Aelf.wallet.getWalletByPrivateKey('bdb3b39ef4cd18c2697a920eb6d9e8c3cf1a930570beb37d04fb52400092c42b');
-const aelf = new Aelf(new Aelf.providers.HttpProvider('http://192.168.197.70:8000/chain'));
+// const aelf = new Aelf(new Aelf.providers.HttpProvider('http://192.168.197.70:8000/chain'));
+const aelf = new Aelf(new Aelf.providers.HttpProvider('http://192.168.197.56:8000/chain'));
 // http: //192.168.197.70:8000/chain
 // var aelf = new Aelf(new Aelf.providers.HttpProvider('http://34.212.171.27:8000/chain'));
 
 aelf.chain.connectChain();
+
+aelf.chain.getBlockHeight();
+
+aelf.chain.getTxResult('e06155f0a253da880bea93092b2709718c9942ccc4e91efdfa12ec172df57628');
 
 // aelf.chain.contractAt('ELF_47dpXA3aEuDj9yeq9Et2E4zjPrSs4uQpzdFkYuBZEEQmob', wallet);
 aelf.chain.contractAtAsync('ELF_47dpXA3aEuDj9yeq9Et2E4zjPrSs4uQpzdFkYuBZEEQmob', wallet, (error, contract) => {
     console.log(error, contract);
 });
 
-var result = aelf.chain.getBlockInfo(5107, true);
+var result = aelf.chain.getBlockInfo(100, true);
 aelf.chain.getBlockInfo(181, true, async (err, result) => {
     console.log(err, result);
 });
