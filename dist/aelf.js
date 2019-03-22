@@ -1031,33 +1031,22 @@ var encodeTransaction = function(tx){
 };
 
 var getTransaction = function(from, to, methodName, params){
-    var parsedTime = Date.parse(new Date(Date.now()).toISOString());
     var txn = {
         "From": getAddressFromRep(from),
         "To": getAddressFromRep(to),
         "MethodName": methodName,
-        "Params": params,
-        "Time" : {
-            seconds: Math.floor(parsedTime/1000),
-            // this nanos is Microsecond
-            nanos: (parsedTime % 1000) * 1000
-        }
+        "Params": params
     };
     return kernelRoot.Transaction.create(txn);
 };
 
 var getMsigTransaction = function(from, to, methodName, params){
-    var parsedTime = Date.parse(new Date(Date.now()).toISOString());
     var txn = {
         "From": getAddressFromRep(from),
         "To": getAddressFromRep(to),
         "MethodName": methodName,
         "Params": params,
-        "Type" : kernelRoot.TransactionType.MsigTransaction,
-        "Time" : {
-            seconds: Math.floor(parsedTime/1000),
-            nanos: (parsedTime % 1000) * 1000
-        }
+        "Type" : kernelRoot.TransactionType.MsigTransaction
     };
     return kernelRoot.Transaction.create(txn);
 };
@@ -2468,7 +2457,7 @@ module.exports={
           "id": 2
         },
         "RefBlockNumber": {
-          "type": "uint64",
+          "type": "int64",
           "id": 3
         },
         "RefBlockPrefix": {
@@ -2495,14 +2484,6 @@ module.exports={
           "rule": "repeated",
           "type": "bytes",
           "id": 9
-        },
-        "Type": {
-          "type": "TransactionType",
-          "id": 10
-        },
-        "Time": {
-          "type": "google.protobuf.Timestamp",
-          "id": 11
         }
       }
     },
@@ -2556,7 +2537,7 @@ module.exports={
           "id": 6
         },
         "ExecutedBlockNumber": {
-          "type": "uint64",
+          "type": "int64",
           "id": 7
         }
       }
@@ -2603,14 +2584,6 @@ module.exports={
         }
       }
     },
-    "TransactionType": {
-      "values": {
-        "ContractTransaction": 0,
-        "DposTransaction": 1,
-        "MsigTransaction": 2,
-        "ContractDeployTransaction": 3
-      }
-    },
     "TransactionResultStatus": {
       "values": {
         "NotExisted": 0,
@@ -2638,12 +2611,12 @@ module.exports={
           "type": "bytes",
           "id": 4
         },
-        "RetVal": {
+        "ReturnValue": {
           "type": "bytes",
           "id": 5
         },
         "BlockNumber": {
-          "type": "uint64",
+          "type": "int64",
           "id": 6
         },
         "BlockHash": {
@@ -2666,14 +2639,21 @@ module.exports={
         "DeferredTxnId": {
           "type": "Hash",
           "id": 11
+        },
+        "Error": {
+          "type": "string",
+          "id": 12
+        },
+        "ReadableReturnValue": {
+          "type": "string",
+          "id": 13
         }
       }
     },
     "ExecutionStatus": {
       "values": {
         "Undefined": 0,
-        "ExecutedButNotCommitted": 1,
-        "ExecutedAndCommitted": 2,
+        "Executed": 1,
         "Canceled": -1,
         "SystemError": -2,
         "ContractError": -10,
@@ -2687,8 +2667,8 @@ module.exports={
           "type": "Hash",
           "id": 1
         },
-        "RetVal": {
-          "type": "RetVal",
+        "ReturnValue": {
+          "type": "bytes",
           "id": 2
         },
         "StdOut": {
@@ -2699,49 +2679,40 @@ module.exports={
           "type": "string",
           "id": 4
         },
-        "StateHash": {
-          "type": "Hash",
-          "id": 5
-        },
-        "Logs": {
-          "rule": "repeated",
-          "type": "LogEvent",
-          "id": 6
-        },
         "InlineTransactions": {
           "rule": "repeated",
           "type": "Transaction",
-          "id": 7
+          "id": 5
         },
         "InlineTraces": {
           "rule": "repeated",
           "type": "TransactionTrace",
-          "id": 8
+          "id": 6
         },
-        "StateChanges": {
+        "Logs": {
           "rule": "repeated",
-          "type": "StateChange",
-          "id": 9
+          "type": "LogEvent",
+          "id": 7
         },
         "Elapsed": {
           "type": "int64",
-          "id": 10
+          "id": 8
         },
         "ExecutionStatus": {
           "type": "ExecutionStatus",
-          "id": 11
-        },
-        "DeferredTransaction": {
-          "type": "bytes",
-          "id": 12
-        },
-        "FeeTransactionTrace": {
-          "type": "TransactionTrace",
-          "id": 13
+          "id": 9
         },
         "StateSet": {
           "type": "TransactionExecutingStateSet",
-          "id": 14
+          "id": 10
+        },
+        "DeferredTransaction": {
+          "type": "bytes",
+          "id": 11
+        },
+        "ReadableReturnValue": {
+          "type": "string",
+          "id": 12
         }
       }
     },
@@ -2804,34 +2775,6 @@ module.exports={
         }
       }
     },
-    "RetVal": {
-      "fields": {
-        "Type": {
-          "type": "RetType",
-          "id": 1
-        },
-        "Data": {
-          "type": "bytes",
-          "id": 2
-        }
-      },
-      "nested": {
-        "RetType": {
-          "values": {
-            "Void": 0,
-            "Bool": 1,
-            "Int32": 2,
-            "UInt32": 3,
-            "Int64": 4,
-            "UInt64": 5,
-            "String": 6,
-            "Bytes": 7,
-            "PbMessage": 8,
-            "UserType": 9
-          }
-        }
-      }
-    },
     "BlockHeaderList": {
       "fields": {
         "Headers": {
@@ -2876,7 +2819,7 @@ module.exports={
           "id": 5
         },
         "Height": {
-          "type": "uint64",
+          "type": "int64",
           "id": 6
         },
         "Sig": {
@@ -2895,8 +2838,9 @@ module.exports={
           "type": "int32",
           "id": 10
         },
-        "BlockExtraData": {
-          "type": "BlockExtraData",
+        "BlockExtraDatas": {
+          "rule": "repeated",
+          "type": "bytes",
           "id": 11
         }
       }
@@ -2993,11 +2937,11 @@ module.exports={
         }
       }
     },
-    "ULongList": {
+    "LongList": {
       "fields": {
         "Values": {
           "rule": "repeated",
-          "type": "uint64",
+          "type": "int64",
           "id": 1
         },
         "Remark": {
@@ -3047,7 +2991,7 @@ module.exports={
           "id": 2
         },
         "BlockHeight": {
-          "type": "uint64",
+          "type": "int64",
           "id": 3
         },
         "BlockHash": {
@@ -3071,7 +3015,7 @@ module.exports={
           "id": 2
         },
         "BlockHeight": {
-          "type": "uint64",
+          "type": "int64",
           "id": 3
         },
         "Changes": {
@@ -3109,7 +3053,7 @@ module.exports={
     "ChainStateInfo": {
       "fields": {
         "ChainId": {
-          "type": "int64",
+          "type": "int32",
           "id": 1
         },
         "BlockHash": {
@@ -3117,7 +3061,7 @@ module.exports={
           "id": 2
         },
         "BlockHeight": {
-          "type": "uint64",
+          "type": "int64",
           "id": 3
         },
         "MergingBlockHash": {
@@ -3156,7 +3100,7 @@ module.exports={
           "id": 1
         },
         "Height": {
-          "type": "uint64",
+          "type": "int64",
           "id": 2
         },
         "PreviousBlockHash": {
@@ -3196,12 +3140,12 @@ module.exports={
           "id": 3
         },
         "LongestChainHeight": {
-          "type": "uint64",
+          "type": "int64",
           "id": 4
         },
         "Branches": {
           "keyType": "string",
-          "type": "uint64",
+          "type": "int64",
           "id": 5
         },
         "NotLinkedBlocks": {
@@ -3214,7 +3158,7 @@ module.exports={
           "id": 7
         },
         "LastIrreversibleBlockHeight": {
-          "type": "uint64",
+          "type": "int64",
           "id": 8
         },
         "BestChainHash": {
@@ -3222,7 +3166,7 @@ module.exports={
           "id": 9
         },
         "BestChainHeight": {
-          "type": "uint64",
+          "type": "int64",
           "id": 10
         }
       }
@@ -3235,17 +3179,108 @@ module.exports={
         }
       }
     },
-    "BranchSwitch": {
+    "TransactionBlockIndex": {
       "fields": {
-        "RollBack": {
-          "rule": "repeated",
+        "BlockHash": {
           "type": "Hash",
           "id": 1
+        }
+      }
+    },
+    "SystemTransactionMethodCall": {
+      "fields": {
+        "MethodName": {
+          "type": "string",
+          "id": 1
         },
-        "RollForward": {
-          "rule": "repeated",
-          "type": "Hash",
+        "Params": {
+          "type": "bytes",
           "id": 2
+        }
+      }
+    },
+    "SystemTransactionMethodCallList": {
+      "fields": {
+        "Value": {
+          "rule": "repeated",
+          "type": "SystemTransactionMethodCall",
+          "id": 1
+        }
+      }
+    },
+    "ContractDeploymentInput": {
+      "fields": {
+        "category": {
+          "type": "sint32",
+          "id": 1
+        },
+        "code": {
+          "type": "bytes",
+          "id": 2
+        }
+      }
+    },
+    "SystemContractDeploymentInput": {
+      "fields": {
+        "category": {
+          "type": "sint32",
+          "id": 1
+        },
+        "code": {
+          "type": "bytes",
+          "id": 2
+        },
+        "name": {
+          "type": "Hash",
+          "id": 3
+        },
+        "transactionMethodCallList": {
+          "type": "SystemTransactionMethodCallList",
+          "id": 4
+        }
+      }
+    },
+    "ContractUpdateInput": {
+      "fields": {
+        "address": {
+          "type": "Address",
+          "id": 1
+        },
+        "code": {
+          "type": "bytes",
+          "id": 2
+        }
+      }
+    },
+    "ChangeContractOwnerInput": {
+      "fields": {
+        "contractAddress": {
+          "type": "Address",
+          "id": 1
+        },
+        "newOwner": {
+          "type": "Address",
+          "id": 2
+        }
+      }
+    },
+    "ContractInfo": {
+      "fields": {
+        "SerialNumber": {
+          "type": "uint64",
+          "id": 1
+        },
+        "Owner": {
+          "type": "Address",
+          "id": 2
+        },
+        "Category": {
+          "type": "int32",
+          "id": 3
+        },
+        "CodeHash": {
+          "type": "Hash",
+          "id": 4
         }
       }
     },
@@ -5642,6 +5677,10 @@ var signTransaction = function(rawTxn, keyPair){
         rawTxn.IncrementId = null;
     }
 
+    if(rawTxn.Fee == 0){
+        rawTxn.Fee = null;
+    }
+
     var ser = proto.Transaction.encode(rawTxn).finish();
     var msgHash = sha256(ser);
 
@@ -6358,7 +6397,7 @@ module.exports = {
 
 },{"./base58check":37,"bignumber.js":90,"buffer":105,"utf8":209}],40:[function(require,module,exports){
 module.exports={
-    "version": "2.1.4"
+    "version": "2.1.7"
 }
 
 },{}],41:[function(require,module,exports){
