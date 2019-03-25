@@ -22,6 +22,27 @@ var proto = require('../lib/aelf/proto');
 var wal = require('../lib/aelf/wallet');
 var elliptic = require('elliptic');
 var ec = new elliptic.ec('secp256k1');
+var merkletree = require('../lib/utils/merkletree');
+var hex1 ='5a7d71da020cae179a0dfe82bd3c967e1573377578f4cc87bc21f74f2556c0ef';
+var hex2 ='a28bf94d0491a234d1e99abc62ed344eb55bb11aeecacc35c1b75bfa85c8983f';
+var hex3 ='bf6ae8809d017f07b27ad1620839c6503666fb55f7fe7ac70881e8864ce5a3ff';
+var hex4 ='bac4adcf8066921237320cdcddb721f5ba5d34065b9c54fe7f9893d8dfe52f17';
+var hex5 ='bac4adcf8066921237320cdcddb721f5ba5d34065b9c54fe7f9893d8dfe52f17';
+
+//var hash = proto.Hash.create({'Value': Buffer.from(hex.replace('0x', ''), 'hex')});
+var buffer = Buffer.concat([Buffer.from(hex5.replace('0x', ''), 'hex'), Buffer.from('Mined', 'utf8')]);
+console.log(buffer.toString('hex'));
+
+var buffers = [
+    Buffer.from(hex1.replace('0x', ''), 'hex'),
+    Buffer.from(hex2.replace('0x', ''), 'hex'),
+    Buffer.from(hex3.replace('0x', ''), 'hex'),
+    Buffer.from(hex4.replace('0x', ''), 'hex'),
+    Buffer.from(sha256(buffer), 'hex')
+];
+
+var merkleTreeroot = merkletree.ComputeRoot(buffers);
+console.log(merkleTreeroot.toString('hex'));
 var wallet = wal.getWalletByPrivateKey('bdb3b39ef4cd18c2697a920eb6d9e8c3cf1a930570beb37d04fb52400092c42b');
 var aelf = new Aelf(new Aelf.providers.HttpProvider("http://localhost:1234/chain"));
 // var aelf = new Aelf(new Aelf.providers.HttpProvider("http://192.168.199.210:5000/chain"));
@@ -31,7 +52,7 @@ aelf.chain.connectChain();
 // var aelf = new Aelf(new Aelf.providers.HttpProvider("http://192.168.197.70:8001/chain"));
 
 // var aelf = new Aelf(new Aelf.providers.HttpProvider("http://192.168.197.23:8000/chain"));
-var aelf = new Aelf(new Aelf.providers.HttpProvider("http://localhost:8001/chain"));
+var aelf = new Aelf(new Aelf.providers.HttpProvider("http://localhost:8000/chain"));
 
 // just to get chain information; we can use aelf.chain[methods] without aelf.chain.connectChain();
 // Or we can use connectChain to check network... 233
