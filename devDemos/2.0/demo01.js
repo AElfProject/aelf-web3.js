@@ -37,6 +37,9 @@ tokenC.Transfer({
     to: '58h3RwTfaE8RDpRNMAMiMv8jUjanCeYHBzKuQfHbrfSFTCn',
     amount: '1000'
 });
+
+// 不再使用 aelf.chain.connectChain();
+aelf.chain.getChainInformation();
 // const resourceC = aelf.chain.contractAt('2Xg2HKh8vusnFMQsHCXW1q3vys5JxG5ZnjiGwNDLrrpb9Mb', wallet);
 
 // tokenC.Symbol();
