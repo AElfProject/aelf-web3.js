@@ -58,6 +58,31 @@ const aelf = new Aelf(
 );
 ```
 
+init contract and call methods
+
+```js
+// contractAddress = xxx; wallet = xxx;
+// We use token contract for example.
+aelf.chain.contractAtAsync(contractAddress, wallet, (err, result) => {
+    const contractoktMethods = result;
+    // contractMethods.methodName(param01, ..., paramN, callback);
+    // contractMethods.methodName.call(param01, ..., paramN, callback);
+    contractoktMethods.Transfer({
+        symbol: 'ELF',
+        to: '58h3RwTfaE8RDpRNMAMiMv8jUjanCeYHBzKuQfHbrfSFTCn',
+        amount: '1000'
+    }, (err, result) => {
+    });
+
+    // will not send transaction when use .call
+    contractMethods.GetBalance.call({
+        symbol: 'ELF',
+        owner: '58h3RwTfaE8RDpRNMAMiMv8jUjanCeYHBzKuQfHbrfSFTCn'
+    }, (err, result) => {
+    });
+});
+```
+
 Additionally you can set a provider using aelf.setProvider()
 
 ```js
@@ -93,7 +118,7 @@ Some basic format methods of aelf.
 For more information, please see the code in ./lib/aelf/proto.js. It is simple and easy to understand.
 
 ```js
-    // provider methods.
+    // methods.
     getRepForAddress
     getAddressFromRep
     getAddressObjectFromRep
@@ -127,7 +152,7 @@ For more information, please see the code in ./lib/aelf/proto.js. It is simple a
 
 ```js
 import Aelf from 'aelf-sdk';
-Aelf.version // eg. 2.1.9
+Aelf.version // eg. 2.1.10
 ```
 
 ## Contributing
