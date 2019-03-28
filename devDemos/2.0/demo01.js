@@ -39,7 +39,16 @@ tokenC.Transfer({
 });
 
 // 不再使用 aelf.chain.connectChain();
-aelf.chain.getChainInformation();
+let chainInformation = aelf.chain.getChainInformation();
+
+let zeroContract = aelf.chain.contractAt(chainInformation.GenesisContractAddress, wallet);
+// var protobuf = require('@aelfqueen/protobufjs');
+// var commonProto = require('../../lib/aelf/proto/common.proto.json');
+// var HashMessage = protobuf.Root.fromJSON(commonProto).Hash;
+// var nameHash = HashMessage.encode(Buffer.from('AElf.Contracts.MultiToken'));
+// zeroContract.GetContractAddressByName.call(Buffer.from('AElf.Contracts.MultiToken'));
+zeroContract.GetContractAddressByName.call('41456c662e436f6e7472616374732e4d756c7469546f6b656e');
+
 // const resourceC = aelf.chain.contractAt('2Xg2HKh8vusnFMQsHCXW1q3vys5JxG5ZnjiGwNDLrrpb9Mb', wallet);
 
 // tokenC.Symbol();

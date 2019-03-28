@@ -17,7 +17,7 @@ var temp10 = new Uint8Array(['10', '0xa0', '0x8d', '0x06']); // error
 var temp10 = new Uint8Array(['8', '0x98', '0xa5', '0xe2', '0x04']); // 98a5e204
 
 // protobuf
-var proto = require('protobufjs');
+var proto = require('@aelfqueen/protobufjs');
 function stringToBuffer(input) {
     let resultArray = [];
     if (typeof input !== 'string' || input.length % 2 !== 0) {
