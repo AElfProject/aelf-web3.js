@@ -1,48 +1,102 @@
+# aelf-sdk.js - AELF JavaScript API
+
 [![Build Status][1]][2]
 
 [1]: https://travis-ci.org/AElfProject/aelf-sdk.js.svg?branch=master
 [2]: https://travis-ci.org/AElfProject/aelf-sdk.js
 
-## aelf-sdk.js
-AElf Javascript SDK
+## Introduction
 
-## support node & browser
+This is the AELF JavaScript API which connects to the Generic JSON RPC spec.
 
-## browser: need browserify or webpack ...
-/output/aelf.web.js is for web.
+You need to run a local or remote AELF node to use this library.
 
-browserify aelf.js > aelf.browserify.js
+Please read the documentation(need add link) for more.
 
-## Methods of Chain
+## Installaction
 
-```javascript
-//https://github.com/AElfProject/AElf/wiki/JSON-RPC2#23-get-contract-abi---getcontractabi-address
-getCommands,
-connectChain,
-getContractAbi,
-getBlockHeight,
-getBlockInfo,
-getIncrement,
-sendTransaction,
-sendTransactions,
-callReadOnly,
-getTxResult,
-getTxsResultByBlockhash,
-getMerklePath,
-checkProposal,
-getTxPoolSize,
-getDposStatus,
-getNodeStatus,
-getBlockStateSet,
-getPeers,
-addPeer,
-removePeer
+### Node
+
+```js
+npm install aelf-sdk
 ```
 
-## pbjs
-#### how to use pbjs convert proto to json.
+### Yarn
+
+```js
+yarn add aelf-sdk
+```
+
+## Usage
+
+### Basic
+
+```js
+import Aelf from 'aelf-sdk';
+
+// host, timeout, user, password, headers
+const aelf = new Aelf(
+    new Aelf.providers.HttpProvider(
+        host, // https://127.0.0.1:8000/chain
+        timeout, // 300
+        user, // hzz780
+        password, // passowrd
+        // header
+        [{
+            name: 'x-csrf-token',
+            value: document.cookie.match(/csrfToken=[^;]*/)[0].replace('csrfToken=', '')
+        }]
+    )
+);
+```
+
+Additionally you can set a provider using aelf.setProvider()
+
+```js
+import Aelf from 'aelf-sdk';
+
+const aelf = new Aelf(new Aelf.providers.HttpProvider('https://127.0.0.1:8000/chain'));
+aelf.setProvider(new Aelf.providers.HttpProvider('https://127.0.0.1:8010/chain'));
+```
+
+### Wallet
+
+base on bip39.
+
+```js
+import Aelf from 'aelf-sdk';
+
+Aelf.wallet.createNewWallet();
+// wallet.AESDecrypto            wallet.AESEncrypto            wallet.bip39
+// wallet.createNewWallet        wallet.getWalletByMnemonic    wallet.getWalletByPrivateKey
+// wallet.sign                   wallet.signTransaction
+```
+
+## Contributing
+
+- All contributions have to go into the dev-2.0 branch
+
+- Please follow the code style of the other files, we use 4 spaces as tabs.
+
+### Requirements
+
+- [Node.js](https://nodejs.org)
+
+- npm
+
+### Support
+
+![browsers](https://img.shields.io/badge/browsers-latest%202%20versions-brightgreen.svg)
+![node](https://img.shields.io/badge/node->=6-green.svg)
+
+## Somthing more
+
+### pbjs
+
+#### how to use pbjs convert proto to json
+
 node ./node_modules/protobufjs/bin/pbjs -t json ./lib/aelf/proto/abi.proto > ./lib/aelf/proto/abi.proto.json
 
-
 ## About Version
+
 https://semver.org/
