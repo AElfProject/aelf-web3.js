@@ -13,6 +13,8 @@ You need to run a local or remote AELF node to use this library.
 
 Please read the documentation(need add link) for more.
 
+Get the demos in ./demos
+
 ## Installaction
 
 ### Node
@@ -29,7 +31,13 @@ yarn add aelf-sdk
 
 ## Usage
 
-### Basic
+Five modules.
+
+```js
+Aelf, Aelf.wallet, Aelf.pbjs, Aelf.pbUtils, Aelf.version
+```
+
+### basic
 
 ```js
 import Aelf from 'aelf-sdk';
@@ -59,7 +67,7 @@ const aelf = new Aelf(new Aelf.providers.HttpProvider('https://127.0.0.1:8000/ch
 aelf.setProvider(new Aelf.providers.HttpProvider('https://127.0.0.1:8010/chain'));
 ```
 
-### Wallet
+### wallet
 
 base on bip39.
 
@@ -70,6 +78,56 @@ Aelf.wallet.createNewWallet();
 // wallet.AESDecrypto            wallet.AESEncrypto            wallet.bip39
 // wallet.createNewWallet        wallet.getWalletByMnemonic    wallet.getWalletByPrivateKey
 // wallet.sign                   wallet.signTransaction
+```
+
+### pbjs
+
+almost the same as protobufjs
+
+Sometimes we have to deal with some protobuf data.
+
+### pbUtils
+
+Some basic format methods of aelf.
+
+For more information, please see the code in ./lib/aelf/proto.js. It is simple and easy to understand.
+
+```js
+    // provider methods.
+    getRepForAddress
+    getAddressFromRep
+    getAddressObjectFromRep
+    getRepForHash
+    getHashFromHex
+    getHashObjectFromHex
+    getTransaction
+    getMsigTransaction
+    getAuthorization
+    getReviewer
+    encodeTransaction
+    getProposal
+    encodeProposal
+    getApproval
+    encodeApproval
+    getSideChainInfo
+    getBalance
+    encodeSideChainInfo
+    Transaction
+    Hash
+    Address
+    Authorization
+    Proposal
+    ProposalStatus
+    SideChainInfo
+    SideChainStatus
+    ResourceTypeBalancePair
+```
+
+### version
+
+```js
+import Aelf from 'aelf-sdk';
+Aelf.version // eg. 2.1.9
 ```
 
 ## Contributing
