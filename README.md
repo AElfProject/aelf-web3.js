@@ -11,7 +11,7 @@ This is the AELF JavaScript API which connects to the Generic JSON RPC spec.
 
 You need to run a local or remote AELF node to use this library.
 
-Please read the documentation(need add link) for more.
+Please read the ./docs for more.
 
 Get the demos in ./demos
 
