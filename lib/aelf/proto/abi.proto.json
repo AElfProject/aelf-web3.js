@@ -1,6 +1,6 @@
 {
   "options": {
-    "csharp_namespace": "AElf.ABI.CSharp"
+    "csharp_namespace": "AElf.Kernel.ABI"
   },
   "nested": {
     "Field": {
@@ -68,6 +68,10 @@
         "IsAsync": {
           "type": "bool",
           "id": 5
+        },
+        "Fee": {
+          "type": "uint64",
+          "id": 6
         }
       }
     },
