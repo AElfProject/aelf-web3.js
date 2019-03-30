@@ -24,7 +24,7 @@ Advanced Encryption Standard need crypto-js
 
 | Param | Type | Description |
 | --- | --- | --- |
-| input | <code>string</code> | input |
+| input | <code>string</code> | anything you want to encrypt |
 | password | <code>string</code> | password |
 
 **Example**  
@@ -35,14 +35,14 @@ const AESEncryptoMnemonic = alef.wallet.AESEncrypto('hello world', '123');
 <a name="exp_module_Aelf/wallet--AESDecrypto"></a>
 
 ### AESDecrypto(input, password) ⇒ <code>string</code> ⏏
-Decrypt message
+Decrypt any encrypted information you want to decrypt
 
 **Kind**: Exported function  
 **Returns**: <code>string</code> - decrypted input  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| input | <code>string</code> | input |
+| input | <code>string</code> | anything you want to decrypt |
 | password | <code>string</code> | password |
 
 **Example**  
@@ -60,7 +60,7 @@ the same as in C#
 
 | Param | Type | Description |
 | --- | --- | --- |
-| pubKey | <code>Object</code> | input |
+| pubKey | <code>Object</code> | get the pubKey you want through keyPair |
 
 **Example**  
 ```js
@@ -126,7 +126,7 @@ sign a transaction
 | Param | Type | Description |
 | --- | --- | --- |
 | rawTxn | <code>Object</code> | rawTxn |
-| keyPair | <code>Object</code> | keyPair |
+| keyPair | <code>Object</code> | any keypair that meets the criteria |
 
 **Example**  
 ```js
@@ -149,7 +149,7 @@ just sign
 | Param | Type | Description |
 | --- | --- | --- |
 | hexTxn | <code>string</code> | hex string |
-| keyPair | <code>Object</code> | keyPair |
+| keyPair | <code>Object</code> | any keypair that meets the criteria |
 
 **Example**  
 ```js
