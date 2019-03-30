@@ -136,7 +136,7 @@ const keyPair = a: {
     pub: u {curve: c, type: "affine", precomputed: null, x: a, y: a, …}
  }
 const rawTxn = proto.getTransaction('ELF_65dDNxzcd35jESiidFXN5JV8Z7pCwaFnepuYQToNefSgqk9', 'ELF_65dDNxzcd35jESiidFXN5JV8Z7pCwaFnepuYQToNefSgqk9', 'test', []);
-aelf.wallet.signTransaction(rawTxn, keyPair)
+const wallet = aelf.wallet.signTransaction(rawTxn, keyPair);
 ```
 <a name="exp_module_Aelf/wallet--sign"></a>
 
@@ -158,5 +158,5 @@ const keyPair = a: {
     priv: a {negative: 0, words: Array(11), length: 10, red: null}
     pub: u {curve: c, type: "affine", precomputed: null, x: a, y: a, …}
  }
-aelf.wallet.sign('68656c6c6f20776f726c64', keyPair)
+aelf.wallet.sign('68656c6c6f20776f726c64', keyPair);
 ```
