@@ -1,3 +1,4 @@
+<a name="Aelf"></a>
 
 ## Aelf
 **Kind**: global class  
@@ -24,6 +25,10 @@ Aelf
 | --- | --- | --- |
 | provider | <code>Object</code> | the instance of HttpProvider |
 
+**Example**  
+```js
+const aelf = new Aelf(new Aelf.providers.HttpProvider('https://127.0.0.1:8000/chain'))
+```
 <a name="Aelf+setProvider"></a>
 
 ### aelf.setProvider(provider)
@@ -35,17 +40,27 @@ change the provider of the instance of Aelf
 | --- | --- | --- |
 | provider | <code>Object</code> | the instance of HttpProvider |
 
+**Example**  
+```js
+const aelf = new Aelf(new Aelf.providers.HttpProvider('https://127.0.0.1:8000/chain'));
+aelf.setProvider(new Aelf.providers.HttpProvider('https://127.0.0.1:8010/chain'))
+```
 <a name="Aelf+reset"></a>
 
 ### aelf.reset(keepIsSyncing)
-change the provider of the instance of Aelf
+reset
 
 **Kind**: instance method of [<code>Aelf</code>](#Aelf)  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| keepIsSyncing | <code>Object</code> | the instance of HttpProvider |
+| keepIsSyncing | <code>boolean</code> | true/false |
 
+**Example**  
+```js
+// keepIsSyncing = true/false
+aelf.reset(keepIsSyncing);
+```
 <a name="Aelf+isConnected"></a>
 
 ### aelf.isConnected() ⇒ <code>boolean</code>
@@ -53,6 +68,11 @@ check the rpc node is work or not
 
 **Kind**: instance method of [<code>Aelf</code>](#Aelf)  
 **Returns**: <code>boolean</code> - true/false whether can connect to the rpc.  
+**Example**  
+```js
+aelf.isConnected()
+// return true / false
+```
 <a name="Aelf.wallet"></a>
 
 ### Aelf.wallet
