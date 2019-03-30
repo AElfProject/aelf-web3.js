@@ -126,7 +126,7 @@ sign a transaction
 | Param | Type | Description |
 | --- | --- | --- |
 | rawTxn | <code>Object</code> | rawTxn |
-| keyPair | <code>Object</code> | any keypair that meets the criteria |
+| keyPair | <code>Object</code> | Any standard key pair |
 
 **Example**  
 ```js
@@ -149,7 +149,7 @@ just sign
 | Param | Type | Description |
 | --- | --- | --- |
 | hexTxn | <code>string</code> | hex string |
-| keyPair | <code>Object</code> | any keypair that meets the criteria |
+| keyPair | <code>Object</code> | Any standard key pair |
 
 **Example**  
 ```js
