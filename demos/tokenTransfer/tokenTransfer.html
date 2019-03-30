@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>AELF - TokenTransfer</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    <h1>Token Contract Demo</h1>
+
+    <p>You need click the button step by step.</p>
+    <p>And please see the output in chrome devtools.</p>
+
+    <p>How to initialize Aelf.</p>
+    <p>How to connect the RPC node.</p>
+    <button id="init-aelf" type="button">init aelf</button>
+    <br>
+
+    <p>How to get a Wallet</p>
+    <p>Needs serveral seconds to create the wallet.</p>
+    <button id="create-wallet" type="button">create wallet</button>
+    <br>
+
+    <p>How to initialize a contract</p>
+    <p>use aelf.chain.contractAtAsync to init contract methods.</p>
+    <button id="init-token-contract" type="button">init token contract</button>
+    <br>
+
+    <p>How to use contract method.</p>
+    <button id="transfer-token" type="button">transfer token</button>
+    <br>
+
+    <p>get tx result</p>
+    <button id="get-tx-result" type="button">get the tx result of transfer token</button>
+    <br>
+
+    <p>How to use contract method without tx send.</p>
+    <button id="get-balance" type="button">get the balance of the address</button>
+    <br>
+
+    <script src="./dist//tokenTransfer.bundle.js"></script>
+</body>
+</html>
