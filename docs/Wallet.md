@@ -4,15 +4,15 @@
 wallet module.
 
 
-- [Aelf/wallet](#aelfwallet)
-  - [AESEncrypto(input, password) ⇒ <code>string</code> ⏏](#aesencryptoinput-password-%E2%87%92-codestringcode-%E2%8F%8F)
-  - [AESDecrypto(input, password) ⇒ <code>string</code> ⏏](#aesdecryptoinput-password-%E2%87%92-codestringcode-%E2%8F%8F)
-  - [getAddressFromPubKey(pubKey) ⇒ <code>string</code> ⏏](#getaddressfrompubkeypubkey-%E2%87%92-codestringcode-%E2%8F%8F)
-  - [createNewWallet() ⇒ <code>Object</code> ⏏](#createnewwallet-%E2%87%92-codeobjectcode-%E2%8F%8F)
-  - [getWalletByMnemonic(mnemonic) ⇒ <code>Object</code> ⏏](#getwalletbymnemonicmnemonic-%E2%87%92-codeobjectcode-%E2%8F%8F)
-  - [getWalletByPrivateKey(privateKey) ⇒ <code>Object</code> ⏏](#getwalletbyprivatekeyprivatekey-%E2%87%92-codeobjectcode-%E2%8F%8F)
-  - [signTransaction(rawTxn, keyPair) ⇒ <code>Object</code> ⏏](#signtransactionrawtxn-keypair-%E2%87%92-codeobjectcode-%E2%8F%8F)
-  - [sign(hexTxn, keyPair) ⇒ <code>Buffer</code> ⏏](#signhextxn-keypair-%E2%87%92-codebuffercode-%E2%8F%8F)
+* [Aelf/wallet](#module_Aelf/wallet)
+    * [AESEncrypto(input, password)](#exp_module_Aelf/wallet--AESEncrypto) ⇒ <code>string</code> ⏏
+    * [AESDecrypto(input, password)](#exp_module_Aelf/wallet--AESDecrypto) ⇒ <code>string</code> ⏏
+    * [getAddressFromPubKey(pubKey)](#exp_module_Aelf/wallet--getAddressFromPubKey) ⇒ <code>string</code> ⏏
+    * [createNewWallet()](#exp_module_Aelf/wallet--createNewWallet) ⇒ <code>Object</code> ⏏
+    * [getWalletByMnemonic(mnemonic)](#exp_module_Aelf/wallet--getWalletByMnemonic) ⇒ <code>Object</code> ⏏
+    * [getWalletByPrivateKey(privateKey)](#exp_module_Aelf/wallet--getWalletByPrivateKey) ⇒ <code>Object</code> ⏏
+    * [signTransaction(rawTxn, keyPair)](#exp_module_Aelf/wallet--signTransaction) ⇒ <code>Object</code> ⏏
+    * [sign(hexTxn, keyPair)](#exp_module_Aelf/wallet--sign) ⇒ <code>Buffer</code> ⏏
 
 <a name="exp_module_Aelf/wallet--AESEncrypto"></a>
 

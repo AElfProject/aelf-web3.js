@@ -3,15 +3,17 @@
 ## Aelf
 **Kind**: global class  
 
-- [Aelf](#aelf)
-  - [new Aelf(provider)](#new-aelfprovider)
-  - [aelf.setProvider(provider)](#aelfsetproviderprovider)
-  - [aelf.reset(keepIsSyncing)](#aelfresetkeepissyncing)
-  - [aelf.isConnected() ⇒ <code>boolean</code>](#aelfisconnected-%E2%87%92-codebooleancode)
-  - [Aelf.wallet](#aelfwallet)
-  - [Aelf.pbjs](#aelfpbjs)
-  - [Aelf.pbUtils](#aelfpbutils)
-  - [Aelf.version](#aelfversion)
+* [Aelf](#Aelf)
+    * [new Aelf(provider)](#new_Aelf_new)
+    * _instance_
+        * [.setProvider(provider)](#Aelf+setProvider)
+        * [.reset(keepIsSyncing)](#Aelf+reset)
+        * [.isConnected()](#Aelf+isConnected) ⇒ <code>boolean</code>
+    * _static_
+        * [.wallet](#Aelf.wallet)
+        * [.pbjs](#Aelf.pbjs)
+        * [.pbUtils](#Aelf.pbUtils)
+        * [.version](#Aelf.version)
 
 <a name="new_Aelf_new"></a>
 
