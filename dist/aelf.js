@@ -41,7 +41,18 @@ var wallet = require('./aelf/wallet');
 var protobuf = require('@aelfqueen/protobufjs');
 var pbUtils = require('./aelf/proto');
 
-function Aelf(provider) {
+/**
+ * AElf
+ *
+ * @constructor
+ *
+ * @param {Object} provider the instance of HttpProvider
+ *
+ * @Example
+ * const aelf = new AElf(new AElf.providers.HttpProvider('https://127.0.0.1:8000/chain'))
+ *
+ */
+function AElf(provider) {
     this._requestManager = new RequestManager(provider);
     this.currentProvider = provider;
     this.chain = new Chain(this);
@@ -55,35 +66,82 @@ function Aelf(provider) {
 }
 
 // expose providers on the class
-Aelf.providers = {
+AElf.providers = {
     HttpProvider: HttpProvider
 };
 
-Aelf.prototype.setProvider = function (provider) {
+/**
+ * change the provider of the instance of AElf
+ *
+ * @param {Object} provider the instance of HttpProvider
+ *
+ * @Example
+ * const aelf = new AElf(new AElf.providers.HttpProvider('https://127.0.0.1:8000/chain'));
+ * aelf.setProvider(new AElf.providers.HttpProvider('https://127.0.0.1:8010/chain'))
+ *
+ */
+AElf.prototype.setProvider = function (provider) {
     this._requestManager.setProvider(provider);
     this.currentProvider = provider;
 };
 
-Aelf.prototype.reset = function (keepIsSyncing) {
+/**
+ * reset
+ *
+ * @param {boolean} keepIsSyncing true/false
+ *
+ * @Example
+ * // keepIsSyncing = true/false
+ * aelf.reset(keepIsSyncing);
+ *
+ */
+
+AElf.prototype.reset = function (keepIsSyncing) {
     this._requestManager.reset(keepIsSyncing);
     this.settings = new Settings();
 };
 
-Aelf.prototype.isConnected = function () {
+/**
+ * check the rpc node is work or not
+ *
+ * @return {boolean} true/false whether can connect to the rpc.
+ *
+ * @Example
+ * aelf.isConnected()
+ * // return true / false
+ *
+ */
+AElf.prototype.isConnected = function () {
     return (this.currentProvider && this.currentProvider.isConnected());
 };
 
-Aelf.prototype.wallet = wallet;
-Aelf.wallet = wallet;
-Aelf.pbjs = protobuf;
-Aelf.pbUtils = pbUtils;
-Aelf.version = version.version;
+AElf.prototype.wallet = wallet;
 
-if (typeof window !== 'undefined' && !window.Aelf) {
-    window.Aelf = Aelf;
+/**
+ * wallet tool
+ */
+AElf.wallet = wallet;
+
+/**
+ * protobufjs
+ */
+AElf.pbjs = protobuf;
+
+/**
+ * some method about protobufjs of AElf
+ */
+AElf.pbUtils = pbUtils;
+
+/**
+ * get the verion of the SDK
+ */
+AElf.version = version.version;
+
+if (typeof window !== 'undefined' && !window.AElf) {
+    window.AElf = AElf;
 }
 
-module.exports = Aelf;
+module.exports = AElf;
 
 },{"../package.json":217,"./aelf/httpprovider":4,"./aelf/methods/chain":7,"./aelf/proto":8,"./aelf/requestmanager":13,"./aelf/settings":14,"./aelf/wallet":36,"@aelfqueen/protobufjs":42}],2:[function(require,module,exports){
 /*
@@ -957,30 +1015,23 @@ Chain.prototype.contract = function (abi, wallet) {
 
 Chain.prototype.contractAt = function (address, wallet) {
     var fds = this.getFileDescriptorSet(address);
-    if (fds.file && fds.file.length > 0) {
+    if (fds && fds.file && fds.file.length > 0) {
         var factory = new Contract1(this, fds, wallet);
         return factory.at(address);
     }
 
-    var abi = this.getContractAbi(address);
-    var factory = new Contract(this, abi, wallet);
-    return factory.at(address);
+    return fds;
 };
 
 // TODO: 2019.03.24前替换了所有合约之后，都使用getFileDescriptorSet
 Chain.prototype.contractAtAsync = function (address, wallet, callback) {
     this.getFileDescriptorSet(address, (err, result) => {
-        if (result.file && result.file.length > 0) {
+        if (result && result.file && result.file.length > 0) {
             var factory = new Contract1(this, result, wallet);
             callback(err, factory.at(address));
+            return;
         }
-        else {
-            this.getContractAbi(address, (error, abi) => {
-                var factory = new Contract(this, abi, wallet);
-                var contract = factory.at(address);
-                callback(error, contract);
-            });
-        }
+        callback(err, 'getFileDescriptorSet failed');
     });
 };
 
@@ -1000,7 +1051,15 @@ module.exports = Chain;
 
 },{"../../utils/config":38,"../formatters":3,"../method":6,"../shims/contract.js":15,"../shims/contract1.js":16}],8:[function(require,module,exports){
 (function (Buffer){
+/**
+ * @file proto.js
+ * @author gldeng, swk, hzz780
+ */
 
+/**
+ * wallet module.
+ * @module AElf/pbUtils
+ */
 'use strict';
 
 var utils = require('../utils/utils');
@@ -1014,6 +1073,13 @@ var auth = protobuf.Root.fromJSON(authDescriptor);
 var crossChainDescriptor = require('./proto/crosschain.proto.json');
 var crosschain = protobuf.Root.fromJSON(crossChainDescriptor);
 
+/**
+ * arrayBuffer To Hex
+ *
+ * @alias module:AElf/pbUtils
+ * @param {Buffer} arrayBuffer arrayBuffer
+ * @return {string} hex string
+ */
 var arrayBufferToHex = function (arrayBuffer) {
     return Array.prototype.map.call(
         new Uint8Array(arrayBuffer),
@@ -1021,6 +1087,13 @@ var arrayBufferToHex = function (arrayBuffer) {
     ).join("");
 };
 
+/**
+ * get hex rep From Address
+ *
+ * @alias module:AElf/pbUtils
+ * @param {protobuf} address kernel.Address
+ * @return {string} hex rep of address
+ */
 var getRepForAddress = function (address) {
     var message = kernelRoot.Address.fromObject(address);
     var hex = '';
@@ -1035,16 +1108,37 @@ var getRepForAddress = function (address) {
     return utils.encodeAddressRep(hex);
 };
 
+/**
+ * get address From hex rep
+ *
+ * @alias module:AElf/pbUtils
+ * @param {string} rep address
+ * @return {protobuf} address kernel.Address
+ */
 var getAddressFromRep = function (rep) {
     var hex = utils.decodeAddressRep(rep);
     return kernelRoot.Address.create({'Value': Buffer.from(hex.replace('0x', ''), 'hex')});
 };
 
+/**
+ * get address From hex rep
+ *
+ * @alias module:AElf/pbUtils
+ * @param {string} rep address
+ * @return {protobuf} address kernel.Address
+ */
 var getAddressObjectFromRep = function (rep) {
     var output = kernelRoot.Address.toObject(getAddressFromRep(rep));
     return output;
 };
 
+/**
+ * get hex rep From hash
+ *
+ * @alias module:AElf/pbUtils
+ * @param {protobuf} hash kernel.Hash
+ * @return {string} hex rep
+ */
 var getRepForHash = function (hash) {
     var message = kernelRoot.Address.fromObject(hash);
     var hex = '';
@@ -1059,18 +1153,49 @@ var getRepForHash = function (hash) {
     return hex;
 };
 
+/**
+ * get Hash From Hex
+ *
+ * @alias module:AElf/pbUtils
+ * @param {string} hex string
+ * @return {protobuf} kernel.Hash
+ */
 var getHashFromHex = function (hex) {
     return kernelRoot.Hash.create({'Value': Buffer.from(hex.replace('0x', ''), 'hex')});
 };
 
+/**
+ * get Hash Object From Hex
+ *
+ * @alias module:AElf/pbUtils
+ * @param {string} hex string
+ * @return {Object} kernel.Hash Hash ot Object
+ */
 var getHashObjectFromHex = function (hex) {
     return kernelRoot.Hash.toObject(getHashFromHex(hex));
 };
 
+/**
+ * encode Transaction to protobuf type
+ *
+ * @alias module:AElf/pbUtils
+ * @param {Object} tx object
+ * @return {protobuf} kernel.Transaction
+ */
 var encodeTransaction = function (tx) {
     return kernelRoot.Transaction.encode(tx).finish();
 };
 
+/**
+ * get Transaction
+ *
+ * @alias module:AElf/pbUtils
+ * @param {string} from
+ * @param {string} to
+ * @param {string} methodName
+ * @param {string} params
+ * @return {protobuf} kernel.Transaction
+ */
 var getTransaction = function (from, to, methodName, params) {
     var txn = {
         "From": getAddressFromRep(from),
@@ -1081,6 +1206,16 @@ var getTransaction = function (from, to, methodName, params) {
     return kernelRoot.Transaction.create(txn);
 };
 
+/**
+ * get MultiSign Transaction
+ *
+ * @alias module:AElf/pbUtils
+ * @param {string} from
+ * @param {string} to
+ * @param {string} methodName
+ * @param {string} params
+ * @return {protobuf} kernel.Transaction
+ */
 var getMsigTransaction = function (from, to, methodName, params) {
     var txn = {
         "From": getAddressFromRep(from),
@@ -1092,6 +1227,16 @@ var getMsigTransaction = function (from, to, methodName, params) {
     return kernelRoot.Transaction.create(txn);
 };
 
+/**
+ * get Reviewer
+ *
+ * @alias module:AElf/pbUtils
+ * @param {Object} reviewer
+ * @param {string} to
+ * @param {string} methodName
+ * @param {string} params
+ * @return {protobuf} auth.Reviewer
+ */
 var getReviewer = function (reviewer) {
     var value = {
         'PubKey': Buffer.from(reviewer.PubKey.replace('0x', ''), 'hex'),
@@ -1100,6 +1245,15 @@ var getReviewer = function (reviewer) {
     return auth.Reviewer.create(value);
 };
 
+/**
+ * get Authorization
+ *
+ * @alias module:AElf/pbUtils
+ * @param {string} decided_threshold
+ * @param {string} proposer_threshold
+ * @param {string} reviewers
+ * @return {protobuf} auth.Authorization
+ */
 var getAuthorization = function (decided_threshold, proposer_threshold, reviewers) {
     var authorization = {
         "ExecutionThreshold" : decided_threshold,
@@ -1109,6 +1263,17 @@ var getAuthorization = function (decided_threshold, proposer_threshold, reviewer
     return auth.Authorization.create(authorization);
 };
 
+/**
+ * get Proposal
+ *
+ * @alias module:AElf/pbUtils
+ * @param {string} multisig_account
+ * @param {string} proposal_name
+ * @param {string} raw_txn
+ * @param {string} expired_time
+ * @param {protobuf} proposer kernel.Address
+ * @return {protobuf} auth.Proposal
+ */
 var getProposal = function (multisig_account, proposal_name, raw_txn, expired_time, proposer) {
     var txn_data = encodeTransaction(raw_txn);
     var proposal = {
@@ -1122,6 +1287,14 @@ var getProposal = function (multisig_account, proposal_name, raw_txn, expired_ti
     return auth.Proposal.create(proposal);
 };
 
+/**
+ * get Approval
+ *
+ * @alias module:AElf/pbUtils
+ * @param {string} proposalHash
+ * @param {string} signature
+ * @return {protobuf} auth.Approval
+ */
 var getApproval = function (proposalHash, signature) {
     var approval = {
         'ProposalHash' : getHashFromHex(proposalHash),
@@ -1131,6 +1304,17 @@ var getApproval = function (proposalHash, signature) {
     return auth.Approval.create(approval);
 };
 
+/**
+ * get Side Chain Info
+ *
+ * @alias module:AElf/pbUtils
+ * @param {string} locked_token_amount
+ * @param {string} indexing_price
+ * @param {string} indexing_price
+ * @param {string} code
+ * @param {string} proposer hex string
+ * @return {protobuf} crosschain.SideChainInfo
+ */
 var getSideChainInfo = function (locked_token_amount, indexing_price, pairs, code, proposer) {
     var sideChainInfo ={
         'IndexingPrice': indexing_price,
@@ -1143,6 +1327,13 @@ var getSideChainInfo = function (locked_token_amount, indexing_price, pairs, cod
     return crosschain.SideChainInfo.create(sideChainInfo);
 };
 
+/**
+ * get balance
+ *
+ * @alias module:AElf/pbUtils
+ * @param {object} resource_balance
+ * @return {protobuf} crosschain.ResourceTypeBalancePair
+ */
 var getBalance = function (resource_balance) {
     var pair = {
         'Type' : resource_balance.Type,
@@ -1151,6 +1342,14 @@ var getBalance = function (resource_balance) {
     return crosschain.ResourceTypeBalancePair.create(pair);
 };
 
+/**
+ * encode Proposal
+ *
+ * @alias module:AElf/pbUtils
+ * @param {object} proposal
+ * @param {number} fieldNumber
+ * @return {Buffer} buffer
+ */
 var encodeProposal = function (proposal, fieldNumber) {
     var value = auth.Proposal.encode(proposal).finish();
     var w = new protobuf.BufferWriter();
@@ -1161,6 +1360,14 @@ var encodeProposal = function (proposal, fieldNumber) {
     return w.finish();
 };
 
+/**
+ * encode Side Chain Info
+ *
+ * @alias module:AElf/pbUtils
+ * @param {object} sideChainInfo
+ * @param {number} fieldNumber
+ * @return {Buffer} buffer
+ */
 var encodeSideChainInfo = function (sideChainInfo, fieldNumber) {
     var value = crosschain.SideChainInfo.encode(sideChainInfo).finish();
     var w = new protobuf.BufferWriter();
@@ -1171,6 +1378,14 @@ var encodeSideChainInfo = function (sideChainInfo, fieldNumber) {
     return w.finish();
 };
 
+/**
+ * encode Approval
+ *
+ * @alias module:AElf/pbUtils
+ * @param {object} approval
+ * @param {number} fieldNumber
+ * @return {Buffer} buffer
+ */
 var encodeApproval = function (approval, fieldNumber) {
     var value = auth.Approval.encode(approval).finish();
     var w = new protobuf.BufferWriter();
@@ -5591,12 +5806,16 @@ module.exports = TypeULong;
 
 },{"./base":22,"./formatters.js":26}],36:[function(require,module,exports){
 (function (global,Buffer){
-/*!
- * aelf.js - AELF JavaScript API
- *
+/**
+ * @file aelf.js - AELF JavaScript API
+ * @author gl,hzz780
  * @license lgpl-3.0
  * @see https://github.com/aelf/aelf.js
 */
+/**
+ * wallet module.
+ * @module AElf/wallet
+ */
 var sha256 = require('js-sha256').sha256;
 var elliptic = require('elliptic');
 var proto = require('./proto.js');
@@ -5605,7 +5824,7 @@ var utils = require('../utils/utils');
 
 var bip39 = require('bip39');
 var createHmac = require('crypto').createHmac;
-if(createHmac === undefined){
+if (createHmac === undefined) {
     // Used in CLI
     createHmac = global.crypto.createHmac;
 }
@@ -5613,13 +5832,41 @@ if(createHmac === undefined){
 var AES = require("crypto-js/aes");
 var encUtf8 = require("crypto-js/enc-utf8");
 
-// Advanced Encryption Standard need crypto-js
+/**
+ * Advanced Encryption Standard need crypto-js
+ *
+ * @alias module:AElf/wallet
+ * @param {string} input anything you want to encrypt
+ * @param {string} password password
+ * @return {string} crypted input
+ *
+ * @Example
+ * const AESEncryptoPrivateKey = aelf.wallet.AESEncrypto('123', '123');
+ * // AESEncryptoPrivateKey = "U2FsdGVkX1+RYovrVJVEEl8eiIUA3vx4GrNR+3sqOow="
+ * const AESEncryptoMnemonic = alef.wallet.AESEncrypto('hello world', '123');
+ * // AESEncryptoMnemonic = U2FsdGVkX19gCjHzYmoY5FGZA1ArXG+eGZIR77dK2GE=
+ *
+ */
 function AESEncrypto (input, password) {
     var ciphertext = AES.encrypt(input, password);
     // no encUtf8 here.
     return ciphertext.toString();
 }
 
+/**
+ * Decrypt any encrypted information you want to decrypt
+ *
+ * @alias module:AElf/wallet
+ * @param {string} input anything you want to decrypt
+ * @param {string} password password
+ * @return {string} decrypted input
+ *
+ * @Example
+ * const AESDecryptoPrivateKey = aelf.wallet.AESDecrypto('U2FsdGVkX18+tvF7t4rhGOi5cbUvdTH2U5a6Tbu4Ojg=', '123');
+ * // AESDecryptoPrivateKey = "123"
+ * const AESDecryptoMnemonic = aelf.wallet.AESDecrypto('U2FsdGVkX19gCjHzYmoY5FGZA1ArXG+eGZIR77dK2GE=', '123');
+ * // AESDecryptoMnemonic = "hello world"
+ */
 function AESDecrypto(input, password) {
     var bytes  = AES.decrypt(input, password);
     return bytes.toString(encUtf8);
@@ -5673,20 +5920,60 @@ function _getWallet(type, value) {
         xPrivateKey: xPrivateKey || privateKey,
         privateKey: privateKey,
         address: address
-    }
+    };
 }
 
-// 和C#保持同步
+
+/**
+ * create a wallet
+ *
+ * @alias module:AElf/wallet
+ * @return {Object} wallet
+ *
+ * @Example
+ * const wallet = aelf.wallet.createNewWallet();
+ * // The format returned is similar to this
+ * // wallet = {
+ * //     address: "5uhk3434242424"
+ * //     keyPair: KeyPair {ec: EC, priv: BN, pub: Point}
+ * //     mnemonic: "hello world"
+ * //     privateKey: "123f7c123"
+ * //     xPrivateKey: "475f7c475"
+ * // }
+ */
+var createNewWallet = function () {
+    return _getWallet('createNewWallet', '');
+};
+
+
+/**
+ * the same as in C#
+ *
+ * @alias module:AElf/wallet
+ * @param {Object} pubKey get the pubKey you want through keyPair
+ * @return {string} address encoded address
+ *
+ * @Example
+ * const pubKey = wallet.keyPair.getPublic();
+ * const address = aelf.wallet.getAddressFromPubKey(pubKey);
+ */
 var getAddressFromPubKey = function (pubKey) {
     var pubKeyEncoded = pubKey.encode();
     var hash = sha256(sha256.arrayBuffer(pubKeyEncoded)).slice(0, 60);
     return utils.encodeAddressRep(hash);
 };
 
-var createNewWallet = function () {
-    return _getWallet('createNewWallet', '');
-};
-
+/**
+ * create a wallet by mnemonic
+ *
+ * @alias module:AElf/wallet
+ * @param {string} mnemonic base on bip39
+ * @return {Object} wallet
+ *
+ * @Example
+ * 
+ * const mnemonicWallet = aelf.wallet.getWalletByMnemonic('hallo world');
+ */
 var getWalletByMnemonic = function (mnemonic) {
     if (bip39.validateMnemonic(mnemonic)) {
         return _getWallet('getWalletByMnemonic', mnemonic);
@@ -5694,6 +5981,17 @@ var getWalletByMnemonic = function (mnemonic) {
     return false;
 };
 
+/**
+ * create a wallet by private key
+ *
+ * @alias module:AElf/wallet
+ * @param {string} privateKey privateKey
+ * @return {Object} wallet
+ *
+ * @Example
+ * const privateKeyWallet = aelf.wallet.getWalletByPrivateKey('123');
+ *
+ */
 var getWalletByPrivateKey = function (privateKey) {
     if (privateKey.length == 64) {
         return _getWallet('getWalletByPrivateKey', privateKey);
@@ -5701,7 +5999,40 @@ var getWalletByPrivateKey = function (privateKey) {
     return false;
 };
 
-var signTransaction = function(rawTxn, keyPair){
+/**
+ * sign a transaction
+ *
+ * @alias module:AElf/wallet
+ * @param {Object} rawTxn rawTxn
+ * @param {Object} keyPair Any standard key pair
+ * @return {Object} wallet
+ *
+ * @Example
+ * const rawTxn = proto.getTransaction('ELF_65dDNxzcd35jESiidFXN5JV8Z7pCwaFnepuYQToNefSgqk9', 'ELF_65dDNxzcd35jESiidFXN5JV8Z7pCwaFnepuYQToNefSgqk9', 'test', []);
+ * const signWallet = aelf.wallet.signTransaction(rawTxn, wallet.keyPair);
+ * // signWallet = {
+ * //     Transaction: {
+ * //    Sigs:
+ * //     [ <Buffer af 61 1a fa 9c 94 8f 23 e7 f5 b5 03 dc ca 62 b1 94 05 e9 cc 28 ed 9b 6c af 1f 4f 1b 78 14 5e 52 72 35 81 ba b1 51 35 4c 63 c5 38 0a 1f b9 b9 ab d8 22 ... > ],
+ * //     From:
+ * //     Address {
+ * //         Value: <Buffer e0 b4 0d dc 35 20 d0 b5 36 3b d9 77 50 14 d7 7e 4b 8f e8 32 94 6d 0e 38 25 73 1d 89 12 7b>
+ * //     },
+ * //     To:
+ * //         Address {
+ * //            Value: <Buffer e0 b4 0d dc 35 20 d0 b5 36 3b d9 77 50 14 d7 7e 4b 8f e8 32 94 6d 0e 38 25 73 1d 89 12 7b> 
+ * //         },
+ * //         MethodName: 'test',
+ * //         Params: null,
+ * //         R: null,
+ * //         S: null,
+ * //         P: null,
+ * //         IncrementId: null,
+ * //         Fee: null
+ * //     }
+ * //  }
+ */
+var signTransaction = function (rawTxn, keyPair) {
     var privKey = keyPair.getPrivate('hex');
     var pubKey = keyPair.getPublic();
 
@@ -5719,7 +6050,7 @@ var signTransaction = function(rawTxn, keyPair){
         rawTxn.IncrementId = null;
     }
 
-    if (rawTxn.Fee == 0){
+    if (rawTxn.Fee == 0) {
         rawTxn.Fee = null;
     }
 
@@ -5734,7 +6065,18 @@ var signTransaction = function(rawTxn, keyPair){
     return rawTxn;
 };
 
-
+/**
+ * just sign
+ *
+ * @alias module:AElf/wallet
+ * @param {string} hexTxn hex string
+ * @param {Object} keyPair Any standard key pair
+ * @return {Buffer} Buffer.from(hex, 'hex')
+ *
+ * @Example
+ * const buffer = aelf.wallet.sign('68656c6c6f20776f726c64', wallet.keyPair);
+ * // buffer = [65, 246, 49, 108, 122, 252, 66, 187, 240, 7, 14, 48, 89, 38, 103, 42, 58, 0, 46, 182, 180, 194, 200, 208, 141, 15, 95, 67, 234, 248, 31, 199, 73, 151, 2, 133, 233, 84, 180, 216, 116, 9, 153, 208, 254, 175, 96, 123, 76, 184, 224, 87, 69, 220, 172, 170, 239, 232, 188, 123, 168, 163, 244, 151, 1]
+ */
 var sign = function (hexTxn, keyPair) {
     var txnData = Buffer.from(hexTxn.replace('0x', ''), 'hex');
     var privKey = keyPair.getPrivate("hex");
@@ -49645,7 +49987,7 @@ module.exports={
   "_args": [
     [
       "elliptic@6.4.1",
-      "/Users/huangzongzhe/workspace/hoopox/aelf-sdk.js"
+      "/Users/zhouminghui/WorkSpace/aelf-sdk"
     ]
   ],
   "_from": "elliptic@6.4.1",
@@ -49667,11 +50009,12 @@ module.exports={
   "_requiredBy": [
     "/",
     "/browserify-sign",
-    "/create-ecdh"
+    "/create-ecdh",
+    "/key-encoder"
   ],
   "_resolved": "https://registry.npmjs.org/elliptic/-/elliptic-6.4.1.tgz",
   "_spec": "6.4.1",
-  "_where": "/Users/huangzongzhe/workspace/hoopox/aelf-sdk.js",
+  "_where": "/Users/zhouminghui/WorkSpace/aelf-sdk",
   "author": {
     "name": "Fedor Indutny",
     "email": "fedor@indutny.com"
@@ -60664,7 +61007,7 @@ function extend() {
 },{}],217:[function(require,module,exports){
 module.exports={
   "name": "aelf-sdk",
-  "version": "2.1.10",
+  "version": "2.1.12",
   "description": "aelf-sdk js library",
   "main": "./lib/aelf.js",
   "directories": {
@@ -60697,6 +61040,7 @@ module.exports={
     "gulp-uglify": "^3.0.2",
     "gulp-uglify-es": "^1.0.4",
     "gutil": "^1.6.4",
+    "jsdoc-to-markdown": "^4.0.1",
     "jshint": "^2.10.2",
     "vinyl-source-stream": "^2.0.0"
   },
