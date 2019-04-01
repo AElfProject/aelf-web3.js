@@ -1,13 +1,13 @@
 {
   "name": "aelf-sdk",
-  "version": "2.1.12",
+  "version": "2.1.13",
   "description": "aelf-sdk js library",
   "main": "./lib/aelf.js",
   "directories": {
     "lib": "lib"
   },
   "dependencies": {
-    "@aelfqueen/protobufjs": "^6.8.8",
+    "@aelfqueen/protobufjs": "^6.8.9",
     "@aelfqueen/xmlhttprequest": "^1.8.1",
     "bignumber": "^1.1.0",
     "bignumber.js": "^2.0.7",
