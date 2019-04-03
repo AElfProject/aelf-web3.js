@@ -7190,7 +7190,7 @@ Field.fromDescriptor = function fromDescriptor(descriptor, syntax) {
 		extendee = extendee.length ? extendee : undefined;
 	}
     var field = new Field(
-        descriptor.name.length ? descriptor.name : "field" + descriptor.number,
+        $protobuf.util.camelCase(descriptor.name.length ? descriptor.name : "field" + descriptor.number),
         descriptor.number,
         fieldType,
         fieldRule,
@@ -54946,7 +54946,7 @@ module.exports={
   "_args": [
     [
       "elliptic@6.4.1",
-      "/Users/zhouminghui/WorkSpace/aelf-sdk"
+      "/Users/huangzongzhe/workspace/hoopox/aelf-sdk.js"
     ]
   ],
   "_from": "elliptic@6.4.1",
@@ -54973,7 +54973,7 @@ module.exports={
   ],
   "_resolved": "https://registry.npmjs.org/elliptic/-/elliptic-6.4.1.tgz",
   "_spec": "6.4.1",
-  "_where": "/Users/zhouminghui/WorkSpace/aelf-sdk",
+  "_where": "/Users/huangzongzhe/workspace/hoopox/aelf-sdk.js",
   "author": {
     "name": "Fedor Indutny",
     "email": "fedor@indutny.com"
@@ -67029,7 +67029,7 @@ module.exports={
     "lib": "lib"
   },
   "dependencies": {
-    "@aelfqueen/protobufjs": "^6.8.8",
+    "@aelfqueen/protobufjs": "^6.8.9",
     "@aelfqueen/xmlhttprequest": "^1.8.1",
     "bignumber": "^1.1.0",
     "bignumber.js": "^2.0.7",
