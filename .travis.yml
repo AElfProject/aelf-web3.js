@@ -12,7 +12,6 @@ script:
 deploy:
   - provider: script
     script: 
-      - ./.nuget/deploy.sh $TRAVIS_TAG $NUGET_API_KEY
       - ./.npm/deploy.sh $NPM_USER $NPM_PASSWD $NPM_EMAIL
     skip_cleanup: true
     on:
