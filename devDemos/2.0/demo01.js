@@ -17,11 +17,18 @@ const privateKey = '097fc2e1eea2bfe258e7962c644f6d87ac58bfbd80301e10740baf52f451
 const wallet = Wallet.getWalletByPrivateKey(defaultPrivateKey);
 
 // const aelf = new Aelf(new Aelf.providers.HttpProvider('http://192.168.197.56:8000/chain'));http://192.168.197.56:8101/chain
-// const aelf = new Aelf(new Aelf.providers.HttpProvider('http://192.168.197.56:8101/chain'));
-const aelf = new Aelf(new Aelf.providers.HttpProvider('http://192.168.197.70:8000/chain'));
-const aelf = new Aelf(new Aelf.providers.HttpProvider('http://192.168.199.113:8000/chain'));
+// const aelf = new Aelf(new Aelf.providers.HttpProvider('http://34.212.171.27:8000/chain'));
+// const aelf = new Aelf(new Aelf.providers.HttpProvider('http://192.168.197.70:8000/chain'));
+const aelf = new Aelf(new Aelf.providers.HttpProvider('http://192.168.197.56:8101/chain'));
+// const aelf = new Aelf(new Aelf.providers.HttpProvider('http://192.168.199.113:8000/chain'));
 
 const tokenC = aelf.chain.contractAt('4rkKQpsRFt1nU6weAHuJ6CfQDqo6dxruU3K3wNUFr6ZwZYc', wallet);
+
+var test;
+aelf.chain.contractAtAsync('4rkKQpsRFt1nU6weAHuJ6CfQDqo6dxruU3K3wNUFr6ZwZYc', wallet, (err, result) => {
+	test = result;
+	console.log(err, result);
+});
 
 tokenC.GetBalance({symbol:'AELF', owner: '65dDNxzcd35jESiidFXN5JV8Z7pCwaFnepuYQToNefSgqk9'});
 console.log(11111);
@@ -49,6 +56,8 @@ let zeroContract = aelf.chain.contractAt(chainInformation.GenesisContractAddress
 // var nameHash = HashMessage.encode(Buffer.from('AElf.Contracts.MultiToken'));
 // zeroContract.GetContractAddressByName.call(Buffer.from('AElf.Contracts.MultiToken'));
 zeroContract.GetContractAddressByName.call('41456c662e436f6e7472616374732e4d756c7469546f6b656e');
+
+aelf.chain.getTxsResult('2e82822fbf38dd64d51d648a8254ee70c1a282ce67c1a58baf949f665aaa6a93', 0, 10, (err, result) => {console.log(err, result);});
 
 // const resourceC = aelf.chain.contractAt('2Xg2HKh8vusnFMQsHCXW1q3vys5JxG5ZnjiGwNDLrrpb9Mb', wallet);
 
