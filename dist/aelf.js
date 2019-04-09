@@ -40,6 +40,7 @@ var HttpProvider = require('./aelf/httpprovider');
 var wallet = require('./aelf/wallet');
 var protobuf = require('@aelfqueen/protobufjs');
 var pbUtils = require('./aelf/proto');
+var utils = require('./utils/utils');
 
 /**
  * AElf
@@ -133,6 +134,11 @@ AElf.pbjs = protobuf;
 AElf.pbUtils = pbUtils;
 
 /**
+ * some utils for AElf
+ */
+AElf.utils = utils;
+
+/**
  * get the verion of the SDK
  */
 AElf.version = version.version;
@@ -143,7 +149,7 @@ if (typeof window !== 'undefined' && !window.AElf) {
 
 module.exports = AElf;
 
-},{"../package.json":218,"./aelf/httpprovider":4,"./aelf/methods/chain":7,"./aelf/proto":8,"./aelf/requestmanager":13,"./aelf/settings":14,"./aelf/wallet":36,"@aelfqueen/protobufjs":43}],2:[function(require,module,exports){
+},{"../package.json":218,"./aelf/httpprovider":4,"./aelf/methods/chain":7,"./aelf/proto":8,"./aelf/requestmanager":13,"./aelf/settings":14,"./aelf/wallet":36,"./utils/utils":40,"@aelfqueen/protobufjs":43}],2:[function(require,module,exports){
 /*
     This file is part of web3.js.
 
@@ -972,12 +978,6 @@ var methods = function () {
         inputFormatter: [null]
     });
 
-    var getChainInformation = new Method({
-        name: 'getChainInformation',
-        call: 'GetChainInformation',
-        params: []
-    });
-
     // getDposStatus, getNodeStatus, getPeers, addPeer, removePeer not support yet
     return [
         getCommands,
@@ -1001,8 +1001,7 @@ var methods = function () {
         getBlockStateSet,
         getPeers,
         addPeer,
-        removePeer,
-        getChainInformation
+        removePeer
     ];
 };
 
@@ -4896,6 +4895,7 @@ ContractMethod.prototype.sendTransaction = function () {
     var callback = this.extractCallback(args);
     if (!callback) {
         var payload = this.toPayload(args);
+        // TODO: 是否在发送完之后，在返回结果带上payload.
         console.log('transaction payload', payload);
         return this._chain.sendTransaction(payload);
     }
@@ -7329,7 +7329,7 @@ Field.fromDescriptor = function fromDescriptor(descriptor, syntax) {
 		extendee = extendee.length ? extendee : undefined;
 	}
     var field = new Field(
-        descriptor.name.length ? descriptor.name : "field" + descriptor.number,
+        $protobuf.util.camelCase(descriptor.name.length ? descriptor.name : "field" + descriptor.number),
         descriptor.number,
         fieldType,
         fieldRule,
@@ -41165,7 +41165,6 @@ var ALPHABET = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
 module.exports = basex(ALPHABET)
 
 },{"base-x":88}],105:[function(require,module,exports){
-(function (Buffer){
 /*!
  * The buffer module from node.js, for the browser.
  *
@@ -42944,9 +42943,7 @@ function numberIsNaN (obj) {
   return obj !== obj // eslint-disable-line no-self-compare
 }
 
-}).call(this,require("buffer").Buffer)
-
-},{"base64-js":89,"buffer":105,"ieee754":153}],106:[function(require,module,exports){
+},{"base64-js":89,"ieee754":153}],106:[function(require,module,exports){
 module.exports = {
   "100": "Continue",
   "101": "Switching Protocols",
@@ -50126,37 +50123,54 @@ utils.intFromLE = intFromLE;
 
 },{"bn.js":100,"minimalistic-assert":159,"minimalistic-crypto-utils":160}],136:[function(require,module,exports){
 module.exports={
-  "name": "elliptic",
-  "version": "6.4.1",
-  "description": "EC cryptography",
-  "main": "lib/elliptic.js",
-  "files": [
-    "lib"
+  "_args": [
+    [
+      "elliptic@6.4.1",
+      "/Users/huangzongzhe/workspace/hoopox/aelf-sdk.js"
+    ]
   ],
-  "scripts": {
-    "jscs": "jscs benchmarks/*.js lib/*.js lib/**/*.js lib/**/**/*.js test/index.js",
-    "jshint": "jscs benchmarks/*.js lib/*.js lib/**/*.js lib/**/**/*.js test/index.js",
-    "lint": "npm run jscs && npm run jshint",
-    "unit": "istanbul test _mocha --reporter=spec test/index.js",
-    "test": "npm run lint && npm run unit",
-    "version": "grunt dist && git add dist/"
+  "_from": "elliptic@6.4.1",
+  "_id": "elliptic@6.4.1",
+  "_inBundle": false,
+  "_integrity": "sha512-BsXLz5sqX8OHcsh7CqBMztyXARmGQ3LWPtGjJi6DiJHq5C/qvi9P3OqgswKSDftbu8+IoI/QDTAm2fFnQ9SZSQ==",
+  "_location": "/elliptic",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "version",
+    "registry": true,
+    "raw": "elliptic@6.4.1",
+    "name": "elliptic",
+    "escapedName": "elliptic",
+    "rawSpec": "6.4.1",
+    "saveSpec": null,
+    "fetchSpec": "6.4.1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:indutny/elliptic"
-  },
-  "keywords": [
-    "EC",
-    "Elliptic",
-    "curve",
-    "Cryptography"
+  "_requiredBy": [
+    "/",
+    "/browserify-sign",
+    "/create-ecdh",
+    "/key-encoder"
   ],
-  "author": "Fedor Indutny <fedor@indutny.com>",
-  "license": "MIT",
+  "_resolved": "https://registry.npmjs.org/elliptic/-/elliptic-6.4.1.tgz",
+  "_spec": "6.4.1",
+  "_where": "/Users/huangzongzhe/workspace/hoopox/aelf-sdk.js",
+  "author": {
+    "name": "Fedor Indutny",
+    "email": "fedor@indutny.com"
+  },
   "bugs": {
     "url": "https://github.com/indutny/elliptic/issues"
   },
-  "homepage": "https://github.com/indutny/elliptic",
+  "dependencies": {
+    "bn.js": "^4.4.0",
+    "brorand": "^1.0.1",
+    "hash.js": "^1.0.0",
+    "hmac-drbg": "^1.0.0",
+    "inherits": "^2.0.1",
+    "minimalistic-assert": "^1.0.0",
+    "minimalistic-crypto-utils": "^1.0.0"
+  },
+  "description": "EC cryptography",
   "devDependencies": {
     "brfs": "^1.4.3",
     "coveralls": "^2.11.3",
@@ -50173,15 +50187,32 @@ module.exports={
     "jshint": "^2.6.0",
     "mocha": "^2.1.0"
   },
-  "dependencies": {
-    "bn.js": "^4.4.0",
-    "brorand": "^1.0.1",
-    "hash.js": "^1.0.0",
-    "hmac-drbg": "^1.0.0",
-    "inherits": "^2.0.1",
-    "minimalistic-assert": "^1.0.0",
-    "minimalistic-crypto-utils": "^1.0.0"
-  }
+  "files": [
+    "lib"
+  ],
+  "homepage": "https://github.com/indutny/elliptic",
+  "keywords": [
+    "EC",
+    "Elliptic",
+    "curve",
+    "Cryptography"
+  ],
+  "license": "MIT",
+  "main": "lib/elliptic.js",
+  "name": "elliptic",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/indutny/elliptic.git"
+  },
+  "scripts": {
+    "jscs": "jscs benchmarks/*.js lib/*.js lib/**/*.js lib/**/**/*.js test/index.js",
+    "jshint": "jscs benchmarks/*.js lib/*.js lib/**/*.js lib/**/**/*.js test/index.js",
+    "lint": "npm run jscs && npm run jshint",
+    "test": "npm run lint && npm run unit",
+    "unit": "istanbul test _mocha --reporter=spec test/index.js",
+    "version": "grunt dist && git add dist/"
+  },
+  "version": "6.4.1"
 }
 
 },{}],137:[function(require,module,exports){
@@ -54341,14 +54372,6 @@ exports.encode = exports.stringify = require('./encode');
 (function (process,global){
 'use strict'
 
-// limit of Crypto.getRandomValues()
-// https://developer.mozilla.org/en-US/docs/Web/API/Crypto/getRandomValues
-var MAX_BYTES = 65536
-
-// Node supports requesting up to this number of bytes
-// https://github.com/nodejs/node/blob/master/lib/internal/crypto/random.js#L48
-var MAX_UINT32 = 4294967295
-
 function oldBrowser () {
   throw new Error('Secure random number generation is not supported by this browser.\nUse Chrome, Firefox or Internet Explorer 11')
 }
@@ -54364,22 +54387,18 @@ if (crypto && crypto.getRandomValues) {
 
 function randomBytes (size, cb) {
   // phantomjs needs to throw
-  if (size > MAX_UINT32) throw new RangeError('requested too many random bytes')
+  if (size > 65536) throw new Error('requested too many random bytes')
+  // in case browserify  isn't using the Uint8Array version
+  var rawBytes = new global.Uint8Array(size)
 
-  var bytes = Buffer.allocUnsafe(size)
-
+  // This will not work in older browsers.
+  // See https://developer.mozilla.org/en-US/docs/Web/API/window.crypto.getRandomValues
   if (size > 0) {  // getRandomValues fails on IE if size == 0
-    if (size > MAX_BYTES) { // this is the max bytes crypto.getRandomValues
-      // can do at once see https://developer.mozilla.org/en-US/docs/Web/API/window.crypto.getRandomValues
-      for (var generated = 0; generated < size; generated += MAX_BYTES) {
-        // buffer.slice automatically checks if the end is past the end of
-        // the buffer so we don't have to here
-        crypto.getRandomValues(bytes.slice(generated, generated + MAX_BYTES))
-      }
-    } else {
-      crypto.getRandomValues(bytes)
-    }
+    crypto.getRandomValues(rawBytes)
   }
+
+  // XXX: phantomjs doesn't like a buffer being passed here
+  var bytes = Buffer.from(rawBytes.buffer)
 
   if (typeof cb === 'function') {
     return process.nextTick(function () {
@@ -59407,27 +59426,22 @@ UChar.udata={
     unorm.shimApplied = false;
 
    if (!String.prototype.normalize) {
-      Object.defineProperty(String.prototype, "normalize", {
-         enumerable: false,
-         configurable: true,
-         writable: true,
-         value: function(form) {
-            var str = "" + this;
-            form =  form === undefined ? "NFC" : form;
-            
-            if (form === "NFC") {
-               return unorm.nfc(str);
-            } else if (form === "NFD") {
-               return unorm.nfd(str);
-            } else if (form === "NFKC") {
-               return unorm.nfkc(str);
-            } else if (form === "NFKD") {
-               return unorm.nfkd(str);
-            } else {
-               throw new RangeError("Invalid normalization form: " + form);
-            }
+      String.prototype.normalize = function(form) {
+         var str = "" + this;
+         form =  form === undefined ? "NFC" : form;
+
+         if (form === "NFC") {
+            return unorm.nfc(str);
+         } else if (form === "NFD") {
+            return unorm.nfd(str);
+         } else if (form === "NFKC") {
+            return unorm.nfkc(str);
+         } else if (form === "NFKD") {
+            return unorm.nfkd(str);
+         } else {
+            throw new RangeError("Invalid normalization form: " + form);
          }
-      });
+      };
 
       unorm.shimApplied = true;
    }
@@ -61132,7 +61146,7 @@ function extend() {
 },{}],218:[function(require,module,exports){
 module.exports={
   "name": "aelf-sdk",
-  "version": "2.1.15",
+  "version": "2.1.17",
   "description": "aelf-sdk js library",
   "main": "./lib/aelf.js",
   "directories": {
