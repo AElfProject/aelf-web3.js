@@ -1,8 +1,9 @@
-./dist
+# ./dist
 .idea/
 .nuget/
 .vscode/
 .node-xmlhttprequest-*
 test.html
-./devDemos
-./output
+devDemos/
+demos/
+output/

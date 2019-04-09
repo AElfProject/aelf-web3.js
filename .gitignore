@@ -4,3 +4,4 @@
 .vscode/
 .node-xmlhttprequest-*
 yarn*
+demos/package-lock.json

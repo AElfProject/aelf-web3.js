@@ -1,13 +1,13 @@
 {
   "name": "aelf-sdk",
-  "version": "2.1.5",
+  "version": "2.1.15",
   "description": "aelf-sdk js library",
   "main": "./lib/aelf.js",
   "directories": {
     "lib": "lib"
   },
   "dependencies": {
-    "@aelfqueen/protobufjs": "^6.8.8",
+    "@aelfqueen/protobufjs": "^6.8.9",
     "@aelfqueen/xmlhttprequest": "^1.8.1",
     "bignumber": "^1.1.0",
     "bignumber.js": "^2.0.7",
@@ -33,6 +33,7 @@
     "gulp-uglify": "^3.0.2",
     "gulp-uglify-es": "^1.0.4",
     "gutil": "^1.6.4",
+    "jsdoc-to-markdown": "^4.0.1",
     "jshint": "^2.10.2",
     "vinyl-source-stream": "^2.0.0"
   },
