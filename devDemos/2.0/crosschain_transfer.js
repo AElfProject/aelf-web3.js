@@ -1,7 +1,7 @@
 /**
  * 调用合约方法就是调用broadcast_tx
  * 签名处理前的rawtx:
-   var txn = {
+ var txn = {
         "From": getAddressFromRep(from),
         "To": getAddressFromRep(to),
         "MethodName": methodName,
@@ -19,10 +19,10 @@ var Aelf = require('../lib/aelf.js');
 var proto = require('../lib/aelf/proto');
 var wal = require('../lib/aelf/wallet');
 var elliptic = require('elliptic');
+var sha256 = require('js-sha256').sha256;
 
 //var ec = new elliptic.ec('secp256k1');
 // var merkletree = require('../lib/utils/merkletree');
-// var sha256 = require('js-sha256').sha256;
 // var hex1 ='5a7d71da020cae179a0dfe82bd3c967e1573377578f4cc87bc21f74f2556c0ef';
 // var hex2 ='a28bf94d0491a234d1e99abc62ed344eb55bb11aeecacc35c1b75bfa85c8983f';
 // var hex3 ='bf6ae8809d017f07b27ad1620839c6503666fb55f7fe7ac70881e8864ce5a3ff';
@@ -54,7 +54,6 @@ var tokenSystemName = sha256(Buffer.from('AElf.ContractNames.Token', 'utf8'));
 var tokenContract = aelf.chain.contractAt('4rkKQpsRFt1nU6weAHuJ6CfQDqo6dxruU3K3wNUFr6ZwZYc', wallet);
 //tokenContract.Issue(            'ELF', 1000000, 'ELF token', '2ttnmC14FcoLe8dgwsJBSHYH5mgT5uwa6bbyG4HQeinKX4E');
 var crossChainContract = aelf.chain.contractAt('2ErQEpj6v63LRSBwijZkHQVkRt1JH6P5Tuz6a6Jzg5DDiDF', wallet);
-tokenContract.GetBalance({'symbol': 'ELF', 'owner' : '569JPjr9hSrzJFdEqQCpHtEsakM61MsgDBjoU4Fkm9GSSLV'});
 //tokenContract.Initialize('ELF', 'ELF Token', 100000, 0);
 var sideChainInfo = {
     'IndexingPrice' : 1,
@@ -68,17 +67,44 @@ tokenContract.Approve({'symbol':'ELF', 'amount': 10000, 'spender':'2ErQEpj6v63LR
 crossChainContract.RequestChainCreation(sideChainInfo);
 crossChainContract.CreateSideChain({'Value':2750978});
 crossChainContract.CreateSideChain({'Value':2816514});
-var main_height =52;
-var merklePath_main_chain = aelf.chain.getMerklePath('b3d2da4313c0ce469a63ec8bce4daa467335005a28f98c37b27ddb6b08e352ab', main_height);
+
+tokenContract.GetTokenInfo({'symbol': 'ELF'});
+var tokenInfo ={ 'symbol': 'ELF', 'tokenName': 'elf token', 'supply': 1000000000, 'totalSupply': 1000000000, 'decimals': 2, 'issuer': '61W3AF3Voud7cLY2mejzRuZ4WEN8mrDMioA9kZv3H8taKxF', 'isBurnable': true }
+
+var crossChainTransferInput_main_chain = {
+    'to' : '2ttnmC14FcoLe8dgwsJBSHYH5mgT5uwa6bbyG4HQeinKX4E',
+    'tokenInfo' : tokenInfo,
+    'amount' : 100,
+    'toChainId' : 2750978
+};
+tokenContract.CrossChainTransfer(crossChainTransferInput_main_chain);
+
+
+var main_height = 64;
+var merklePath_main_chain = aelf.chain.getMerklePath('58dd8bee7435c0942ef0cbf8986001baf03db931f8d237f2b9de1e602f2c5df4', main_height);
 merklePath_main_chain.forEach(function (path) {
     console.log(path.toString('hex'));
 });
 var verificationInput_main_chain ={
-    'transactionId' : 'b3d2da4313c0ce469a63ec8bce4daa467335005a28f98c37b27ddb6b08e352ab',
-    'path' : ['8ac04a2022fa63942a2f5cf23fad1e162a11841bfe3e9fcda194c9dae0758ea5'],
+    'transactionId' : '56ffd8f727eaf588fffe72aa4534ca4b34cfe8cc086f8023f48a6da3b0c63fda',
+    'path' : ['3212deb55ad1b18ec9031bcf2efcc155398298800fba9b4136a41094d133e28e', 'd2391d4c3e45530b2046f609ac176b8e9869c1e9a71303580b9a28a3d5a7089c'],
     'parentChainHeight' : main_height,
     'verifiedChainId' : 9992731
 };
+
+var txInHex ='0a200a1eb4dd19c50944c42351c230175b5063596e6ff219853c358962b0532a285512200a1eaaa58b6cf58d4ef337f6dc55b701fd57d622015a3548a91a4e40892aa355183f22047bf5df9a321243726f7373436861696e5472616e736665723a6e0a200a1e53d0161d3dcfcc68ee03595afdecba5f815176a642fac8a9c1dc37f571c312420a03454c461209656c6620746f6b656e1880a8d6b9072080a8d6b907280432200a1edd8eea50c31966e06e4a2662bebef7ed81d09a47b2eb1eb3729f2f0cc781380118c8012882f4a7014a412b43695977a3fa05ca884ecc51d910ce333fb19f513db4857b8b2b9b550d825c7ddd6beadb9c2cfaf7caf7e24760f91e1e3522190ece9d862aed63cdede4ae2e00';
+var bytes = Buffer.from(txInHex, 'hex');
+
+var crossChainReceiveInPut_from_mainchain = {
+    'fromChainId' : 9992731,
+    'parentChainHeight' : main_height,
+    'transferTransactionBytes': bytes,
+    'merklePath' : ['02e87a17aae1a61eabd977a5a6743382bf9f44cde7056e9d7d8eb698ef371ebd', '62dc4ebc778745caf81a3abdd68c421ec220124a49234d96c5cf8b774b45cdcb'],
+};
+
+var tokenContract_main_1 = aelf.chain.contractAt('4rkKQpsRFt1nU6weAHuJ6CfQDqo6dxruU3K3wNUFr6ZwZYc', wallet1);
+tokenContract_main_1.CrossChainReceiveToken(crossChainReceiveInPut_from_sidechain2);
+tokenContract_main_1.GetBalance({'symbol': 'ELF', 'owner' : '2ttnmC14FcoLe8dgwsJBSHYH5mgT5uwa6bbyG4HQeinKX4E'});
 
 
 
@@ -91,9 +117,9 @@ var aelf_side1 = new Aelf(new Aelf.providers.HttpProvider("http://localhost:8010
 // });
 
 var wallet1 = wal.getWalletByPrivateKey('7c2627b14e41b7aa2998c1125b9a9b74f682a45438cf4c8566a9ec0465a00a7f');
-var crosschainContract_side1 = aelf_side1.chain.contractAt('xAepYRxjU5pQPVdjzR59ntKouVH4heaKddQJLdpBQMTtJR', wallet1);
+var crosschainContract_side1 = aelf_side1.chain.contractAt('6NRUWAMzAv2hFNwEfSKqnihQ1XSw2KKJAyZfXG1cr3b9T6n', wallet1);
 crosschainContract_side1.GetBoundParentChainHeightAndMerklePathByHeight({'Value':20});
-var parent_height = 52;
+var parent_height = main_height;
 var verificationInput ={
     'transactionId' : '8b9d3a1f8497233df41b942f7184c59d54292720938a7428f0c20ff0696c0922',
     'path' : ['18aa01396b3035748a9f564c979d028593879a8f0aa070cd6a28f662b37b0a85', '2185b6c486e79be38cf2e823d1b7dfaf9965035f0b80be2501f283296011c6a3', 'a50ffd2e03f0b36add6dbeeeed3f1a8921e7a2d6c2a76a8f78bf81a88fd2ddc5'],
@@ -102,39 +128,52 @@ var verificationInput ={
 };
 crosschainContract_side1.VerifyTransaction(verificationInput);
 
-var side_1_height = 241;
-var merklePath_side_chain_1 = aelf_side1.chain.getMerklePath('9aca860bffefd27f5d923162a3a4b40992081f5dcfd4f765150a4144d761af41', side_1_height);
-merklePath_side_chain_1.forEach(function (path) {
-    console.log(path.toString('hex'));
-});
-crosschainContract_side1.GetBoundParentChainHeightAndMerklePathByHeight({'Value': side_1_height});
+
 
 var verificationInput_side_chain_1 = {
     'transactionId' : '9aca860bffefd27f5d923162a3a4b40992081f5dcfd4f765150a4144d761af41',
     'path' : ['a87273725e0aa50abe9adec84f91d70d429bb4b868d90f22c5c9daf6d02b5d87', '54552e12299003e6885751442576d37a20c95e7c897e3618f8c0800f937c8d68', 'fc2bc07a2e66414effe71764efa0326a9c354201c1684c7addc8542453efdb46'],
     'parentChainHeight' : 272,
-    'verifiedChainId' : 2750978
+    'verifiedChainId' : 9992731
 };
 crossChainContract.VerifyTransaction(verificationInput_side_chain_1);
 
 crosschainContract_side1.VerifyTransaction(verificationInput_side_chain_1);
 
-
+var crossChainSystemName = sha256(Buffer.from('AElf.ContractNames.CrossChain', 'utf8'));
 var contractZero_side1 = aelf_side1.chain.contractAt('4Vsgwe6NeHDVkRkGqgMWv2fXt3GYF71ncWDFKHaMaA4iDJ7', wallet1);
 contractZero_side1.GetContractAddressByName({"Value": Buffer.from(tokenSystemName, 'hex')});
-var tokenContract_side1 = aelf_side1.chain.contractAt('6NRUWAMzAv2hFNwEfSKqnihQ1XSw2KKJAyZfXG1cr3b9T6n', wallet1);
+contractZero_side1.GetContractAddressByName({"Value": Buffer.from(crossChainSystemName, 'hex')});
 
-var txInHex ='0a200a1e53d0161d3dcfcc68ee03595afdecba5f815176a642fac8a9c1dc37f571c312200a1e8f327b198e6a1f5f4bde148f006966553b0298d7c694852676103fe17af218102204656f335a321243726f7373436861696e5472616e736665723a2e0a200a1e53d0161d3dcfcc68ee03595afdecba5f815176a642fac8a9c1dc37f571c31203454c46181e2882f4a7014a4127e5e6ff1b9fa8bbc5fdd2c65a545bf43b0c139319cb7c0be3c0181189bfb9e95acb7ce819233de73be57059383ac58eb027620a88c54e30c4a75ddcf5ec42ad01';
-var bytes = Buffer.from(txInHex, 'hex');
+var tokenContract_side1 = aelf_side1.chain.contractAt('3v3tzwWfS384bSvyDZU1PyVjgXJzPj5Xgj1N55jRrVGmzA9', wallet1);
 
-var crossChainReceiveInPut = {
-    'fromChainId' : 2816514,
-    'parentChainHeight' : parent_height,
-    'transferTransactionBytes': bytes,
-    'merklePath' : ['18aa01396b3035748a9f564c979d028593879a8f0aa070cd6a28f662b37b0a85', '2185b6c486e79be38cf2e823d1b7dfaf9965035f0b80be2501f283296011c6a3', 'a50ffd2e03f0b36add6dbeeeed3f1a8921e7a2d6c2a76a8f78bf81a88fd2ddc5'],
-};
-tokenContract_side1.CrossChainReceiveToken(crossChainReceiveInPut);
+
+tokenContract_side1.CrossChainReceiveToken(crossChainReceiveInPut_from_mainchain);
 tokenContract_side1.GetBalance({'symbol': 'ELF', 'owner' : '2ttnmC14FcoLe8dgwsJBSHYH5mgT5uwa6bbyG4HQeinKX4E'});
+
+var crossChainTransferInput_side_chain_1 = {
+    'to' : '2ttnmC14FcoLe8dgwsJBSHYH5mgT5uwa6bbyG4HQeinKX4E',
+    'tokenInfo' : tokenInfo,
+    'amount' : 50,
+    'toChainId' : 2816514
+};
+tokenContract_side1.CrossChainTransfer(crossChainTransferInput_side_chain_1);
+
+var side_1_height = 79;
+var merklePath_side_chain_1 = aelf_side1.chain.getMerklePath('220ea021adb0caacbcd21fd587740c0a18ca9e634450fdd93d20b2e4234fd8b8', side_1_height);
+merklePath_side_chain_1.forEach(function (path) {
+    console.log(path.toString('hex'));
+});
+crosschainContract_side1.GetBoundParentChainHeightAndMerklePathByHeight({'Value': side_1_height});
+
+var txInHex_from_sidechain1 ='0a200a1e53d0161d3dcfcc68ee03595afdecba5f815176a642fac8a9c1dc37f571c312200a1e80ee395414cb759fc3a997f2b1a3db506aa9779bebbdef653aec7121fd68184e22047f5ecde1321243726f7373436861696e5472616e736665723a6d0a200a1e53d0161d3dcfcc68ee03595afdecba5f815176a642fac8a9c1dc37f571c312420a03454c461209656c6620746f6b656e1880a8d6b9072080a8d6b907280432200a1edd8eea50c31966e06e4a2662bebef7ed81d09a47b2eb1eb3729f2f0cc781380118642882f4ab014a41527a251b7c84bad87d1e06ca8adf1d7ded9c08107edd9ac48294bbca940ed3d5388a777e5461babf40d97e7afeaa06a53c80ddfc9e910eb3975dc8427832a67801';
+var bytes_from_sidechain1 = Buffer.from(txInHex_from_sidechain1, 'hex');
+var crossChainReceiveInPut_from_sidechain1 = {
+    'fromChainId' : 2750978,
+    'parentChainHeight' : 118,
+    'transferTransactionBytes': bytes_from_sidechain1,
+    'merklePath' : ['f0fea95b3a689c30a8afcc3dd1a9fcc6d1d9367d0db2af807614db6a2da159e7', 'f3dd55ba14ea376f8868d3ad6b33467085605e2866d1bf9255fcfd503b750892','1479febe35e0da1c0e5fba73ffa7c510d30d232406b75fbf12779087509add59'],
+};
 
 
 
@@ -146,28 +185,40 @@ aelf_side2.chain.GetChainInformation();
 var wallet2 = wal.getWalletByPrivateKey('7c2627b14e41b7aa2998c1125b9a9b74f682a45438cf4c8566a9ec0465a00a7f');
 var contractZero_side2 = aelf_side2.chain.contractAt('6Jqy3Yr5HfPLEydQ45xbnmzBzcfGLHMkN3GJb5ccHTuuhvo', wallet2);
 contractZero_side2.GetContractAddressByName({"Value": Buffer.from(tokenSystemName, 'hex')});
-var crossChainSystemName = sha256(Buffer.from('AElf.ContractNames.CrossChain', 'utf8'));
 contractZero_side2.GetContractAddressByName({"Value": Buffer.from(crossChainSystemName, 'hex')});
-var crossChainContract_side2 =aelf_side2.chain.contractAt('6Qib5QjEKhnkrSEc4mzq5VH4jEpxeZbr1EmH3UMJhkbp5wd', wallet2);
-var tokenContract_side2 = aelf_side2.chain.contractAt('4EkqvQBy99QHySsUVbvx5uJaMyPvMjizLxWF66zWTtDzJL1', wallet2);
+var crossChainContract_side2 =aelf_side2.chain.contractAt('4EkqvQBy99QHySsUVbvx5uJaMyPvMjizLxWF66zWTtDzJL1', wallet2);
+var tokenContract_side2 = aelf_side2.chain.contractAt('3hkwLTqfS1qvesDLLfFiBiuWaVMhjrvdT7zrQ1u75u9az33', wallet2);
 
-var height = 17;
-var merklePath2 = aelf_side2.chain.getMerklePath('8b9d3a1f8497233df41b942f7184c59d54292720938a7428f0c20ff0696c0922', height);
-merklePath2.forEach(function (path) {
-    console.log(path.toString('hex'));
-});
 
-crossChainContract_side2.GetBoundParentChainHeightAndMerklePathByHeight({'Value':height});
+tokenContract_side2.CrossChainReceiveToken(crossChainReceiveInPut_from_sidechain1);
 
-var crossChainTransferInput = {
+var crossChainTransferInput_side_chain_2 = {
     'to' : '2ttnmC14FcoLe8dgwsJBSHYH5mgT5uwa6bbyG4HQeinKX4E',
-    'symbol' : 'ELF',
+    'tokenInfo' : tokenInfo,
     'amount' : 15,
-    'toChainId' : 2750978
+    'toChainId' : 9992731
 };
 
-tokenContract_side2.CrossChainTransfer(crossChainTransferInput);
+tokenContract_side2.CrossChainTransfer(crossChainTransferInput_side_chain_2);
+var side_2_height = 251;
+var merklePath_side_chain_2 = aelf_side2.chain.getMerklePath('4fb960dd52008d381b7c64a6ff93af5ccc0a14587d2d7a5e1080a1fc40426a4e', side_2_height);
+merklePath_side_chain_2.forEach(function (path) {
+    console.log(path.toString('hex'));
+});
+crossChainContract_side2.GetBoundParentChainHeightAndMerklePathByHeight({'Value': side_2_height});
+
+var txInHex_from_sidechain2 ='0a200a1e53d0161d3dcfcc68ee03595afdecba5f815176a642fac8a9c1dc37f571c312200a1e778e3006a12cc609d78bad825f6bc18ff1e354ec7fdaaa02de71c0983abb18fa01220400e58e08321243726f7373436861696e5472616e736665723a6d0a200a1e53d0161d3dcfcc68ee03595afdecba5f815176a642fac8a9c1dc37f571c312420a03454c461209656c6620746f6b656e1880a8d6b9072080a8d6b907280432200a1edd8eea50c31966e06e4a2662bebef7ed81d09a47b2eb1eb3729f2f0cc7813801181e289bf4e1044a4176b5bbdc76244bc77efb103fe4c1e8980a6e605af0912556c80070d44cf227902fd761d858b14895464541a51498aee610fdf651356aadad6a52a613bb6f640800';
+var bytes_from_sidechain2 = Buffer.from(txInHex_from_sidechain2, 'hex');
+var crossChainReceiveInPut_from_sidechain2 = {
+    'fromChainId' : 2816514,
+    'parentChainHeight' : 295,
+    'transferTransactionBytes': bytes_from_sidechain2,
+    'merklePath' : ['0f16329b6f8653594439e11b7c4e35b018b4a6fd85cad94d9615bb58282f9df5', '99c41e8841e677cac47630547eb79212f8a5bfac66165d8a5896a488a6672109','3e50407709bbee096ebf34d22bbf3bc3ad41cc68187540ee242ba129cdfe57fa'],
+};
+
 tokenContract_side2.GetBalance({'symbol': 'ELF', 'owner' : '2ttnmC14FcoLe8dgwsJBSHYH5mgT5uwa6bbyG4HQeinKX4E'});
+
+
 
 // var Aelf = require('../lib/aelf.js');
 // var aelf = new Aelf(new Aelf.providers.HttpProvider("http://localhost:8000/chain"));
