@@ -47,7 +47,7 @@ const aelf = new Aelf(
     new Aelf.providers.HttpProvider(
         host, // https://127.0.0.1:8000/chain
         timeout, // 300
-        user, // hzz780
+        user, // username
         password, // passowrd
         // header
         [{
