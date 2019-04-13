@@ -58,6 +58,24 @@ const aelf = new Aelf(
 );
 ```
 
+If you want to use the WebAPI of AElf.
+
+```js
+const aelf = new Aelf(
+    new Aelf.providers.HttpProvider(
+        host, // https://127.0.0.1:8000/chain
+        timeout, // 300
+        user, // username
+        password, // passowrd
+        // header
+        [{
+            name: 'Accept',
+            value: 'text/plain;v=1.0'
+        }]
+    )
+);
+```
+
 init contract and call methods
 
 ```js
