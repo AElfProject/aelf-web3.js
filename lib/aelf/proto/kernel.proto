@@ -10,10 +10,8 @@ message Transaction {
     Address To = 2;
     int64 RefBlockNumber = 3;
     bytes RefBlockPrefix = 4;
-    uint64 IncrementId = 5;
     string MethodName = 6;
     bytes Params = 7;
-    uint64 Fee = 8;
     repeated bytes Sigs = 9;
 }
 
@@ -48,7 +46,12 @@ message TransactionReceipt {
 }
 
 message StatePath {
-    repeated bytes Path = 1;
+    repeated string parts = 1;
+}
+
+message ScopedStatePath {
+    Address address = 1;
+    StatePath path = 2;
 }
 
 message StateValue {
@@ -70,6 +73,7 @@ enum TransactionResultStatus {
     Pending = 1;
     Failed = 2;
     Mined = 3;
+    Unexecutable = 4;
 }
 
 message TransactionResult {
@@ -106,6 +110,9 @@ enum ExecutionStatus {
     ContractError = -10;
     ExceededMaxCallDepth = -11;
     InsufficientTransactionFees = -12;
+
+    // Pre-failed
+    Prefailed = -99;
 }
 
 message TransactionTrace {
@@ -113,14 +120,16 @@ message TransactionTrace {
     bytes ReturnValue = 2;
     string StdOut = 3;
     string StdErr = 4;
-    repeated Transaction InlineTransactions = 5;
-    repeated TransactionTrace InlineTraces = 6;
-    repeated LogEvent Logs = 7;
-    int64 Elapsed = 8;
-    ExecutionStatus ExecutionStatus = 9;
-    TransactionExecutingStateSet StateSet = 10;
-    bytes DeferredTransaction = 11;
-    string ReadableReturnValue = 12;
+    repeated Transaction PreTransactions = 5;
+    repeated TransactionTrace PreTraces = 6;
+    repeated Transaction InlineTransactions = 7;
+    repeated TransactionTrace InlineTraces = 8;
+    repeated LogEvent Logs = 9;
+    int64 Elapsed = 10;
+    ExecutionStatus ExecutionStatus = 11;
+    TransactionExecutingStateSet StateSet = 12;
+    bytes DeferredTransaction = 13;
+    string ReadableReturnValue = 14;
 }
 
 message ExecutionReturnSet {
@@ -134,13 +143,9 @@ message ExecutionReturnSet {
 
 message LogEvent {
     Address Address = 1;
-    repeated bytes Topics = 2;
-    bytes Data = 3;
-}
-
-message TransactionLogEvent {
-    Hash Transaction = 1;
-    LogEvent LogEvent = 2;
+    string Name = 2;
+    repeated bytes Indexed = 3;
+    bytes NonIndexed = 4;
 }
 
 message BlockHeaderList {
@@ -202,6 +207,10 @@ message MerklePath {
 message StringList {
     repeated string Values = 1;
     string Remark = 2;
+}
+
+message HashList {
+    repeated Hash Values = 1;
 }
 
 message LongList {

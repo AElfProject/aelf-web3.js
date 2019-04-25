@@ -1,6 +1,6 @@
 {
   "options": {
-    "csharp_namespace": "AElf.Common"
+    "csharp_namespace": "AElf"
   },
   "nested": {
     "Transaction": {
@@ -21,10 +21,6 @@
           "type": "bytes",
           "id": 4
         },
-        "IncrementId": {
-          "type": "uint64",
-          "id": 5
-        },
         "MethodName": {
           "type": "string",
           "id": 6
@@ -32,10 +28,6 @@
         "Params": {
           "type": "bytes",
           "id": 7
-        },
-        "Fee": {
-          "type": "uint64",
-          "id": 8
         },
         "Sigs": {
           "rule": "repeated",
@@ -101,10 +93,22 @@
     },
     "StatePath": {
       "fields": {
-        "Path": {
+        "parts": {
           "rule": "repeated",
-          "type": "bytes",
+          "type": "string",
           "id": 1
+        }
+      }
+    },
+    "ScopedStatePath": {
+      "fields": {
+        "address": {
+          "type": "Address",
+          "id": 1
+        },
+        "path": {
+          "type": "StatePath",
+          "id": 2
         }
       }
     },
@@ -146,7 +150,8 @@
         "NotExisted": 0,
         "Pending": 1,
         "Failed": 2,
-        "Mined": 3
+        "Mined": 3,
+        "Unexecutable": 4
       }
     },
     "TransactionResult": {
@@ -215,7 +220,8 @@
         "SystemError": -2,
         "ContractError": -10,
         "ExceededMaxCallDepth": -11,
-        "InsufficientTransactionFees": -12
+        "InsufficientTransactionFees": -12,
+        "Prefailed": -99
       }
     },
     "TransactionTrace": {
@@ -236,40 +242,50 @@
           "type": "string",
           "id": 4
         },
-        "InlineTransactions": {
+        "PreTransactions": {
           "rule": "repeated",
           "type": "Transaction",
           "id": 5
         },
-        "InlineTraces": {
+        "PreTraces": {
           "rule": "repeated",
           "type": "TransactionTrace",
           "id": 6
         },
+        "InlineTransactions": {
+          "rule": "repeated",
+          "type": "Transaction",
+          "id": 7
+        },
+        "InlineTraces": {
+          "rule": "repeated",
+          "type": "TransactionTrace",
+          "id": 8
+        },
         "Logs": {
           "rule": "repeated",
           "type": "LogEvent",
-          "id": 7
+          "id": 9
         },
         "Elapsed": {
           "type": "int64",
-          "id": 8
+          "id": 10
         },
         "ExecutionStatus": {
           "type": "ExecutionStatus",
-          "id": 9
+          "id": 11
         },
         "StateSet": {
           "type": "TransactionExecutingStateSet",
-          "id": 10
+          "id": 12
         },
         "DeferredTransaction": {
           "type": "bytes",
-          "id": 11
+          "id": 13
         },
         "ReadableReturnValue": {
           "type": "string",
-          "id": 12
+          "id": 14
         }
       }
     },
@@ -309,26 +325,18 @@
           "type": "Address",
           "id": 1
         },
-        "Topics": {
+        "Name": {
+          "type": "string",
+          "id": 2
+        },
+        "Indexed": {
           "rule": "repeated",
           "type": "bytes",
-          "id": 2
-        },
-        "Data": {
-          "type": "bytes",
           "id": 3
-        }
-      }
-    },
-    "TransactionLogEvent": {
-      "fields": {
-        "Transaction": {
-          "type": "Hash",
-          "id": 1
         },
-        "LogEvent": {
-          "type": "LogEvent",
-          "id": 2
+        "NonIndexed": {
+          "type": "bytes",
+          "id": 4
         }
       }
     },
@@ -491,6 +499,15 @@
         "Remark": {
           "type": "string",
           "id": 2
+        }
+      }
+    },
+    "HashList": {
+      "fields": {
+        "Values": {
+          "rule": "repeated",
+          "type": "Hash",
+          "id": 1
         }
       }
     },
