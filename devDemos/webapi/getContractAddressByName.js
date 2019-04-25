@@ -18,8 +18,8 @@ const wallet = Wallet.getWalletByPrivateKey(defaultPrivateKey);
 const aelf = new AElf(new AElf.providers.HttpProvider(
     // 'http://192.168.197.56:8101/chain',
     // 'http://34.212.171.27:8000/chain',
-    'http: //127.0.0.1:1235/chain'
-    // 'http://192.168.197.56:8101/chain',
+    // 'http: //127.0.0.1:1235/chain'
+    'http://192.168.197.56:8101/chain',
     // 'http://192.168.197.70:1728/chain',
     // null,
     // null,
@@ -36,11 +36,13 @@ const {
 
 const zeroC = aelf.chain.contractAt(GenesisContractAddress, wallet);
 
-sha256();
-zeroC.GetContractAddressByName('AElf.ContractNames.Consensus'); // HelloWorldContract
+// zeroC.GetContractAddressByName('AElf.ContractNames.Consensus'); // HelloWorldContract
+zeroC.GetContractAddressByName.call(sha256('AElf.ContractNames.Token')); // HelloWorldContract
+const hzzzzzz = 11111;
+zeroC.GetContractAddressByName(sha256('AElf.ContractNames.Token')); // HelloWorldContract
 
-zeroC.GetContractAddressByName(sha256('HelloWorldContract')); // HelloWorldContract
-
+console.log(zeroC.GetContractAddressByName(sha256('HelloWorldContract'))); // HelloWorldContract
+console.log(hzzzzzz);
 // 679ecba22edfcb0eb1e5f5b249eaea53cee1034278aa42b987d7311e51eff564
 // 15aab24ec3ac12b101abf404a96ba603208631760e3eb51a1ddc18d185941b9c
 // 5jszzRvXNTUj3ctzo4VnLtFSUH7fp4aHLXQQyBRPQdzw5Fw

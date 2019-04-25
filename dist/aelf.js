@@ -6189,7 +6189,7 @@ var createNewWallet = function () {
  */
 var getAddressFromPubKey = function (pubKey) {
     var pubKeyEncoded = pubKey.encode();
-    var hash = sha256(sha256.arrayBuffer(pubKeyEncoded)).slice(0, 60);
+    var hash = sha256(sha256.arrayBuffer(pubKeyEncoded)).slice(0, 64);
     return utils.encodeAddressRep(hash);
 };
 
@@ -6264,11 +6264,11 @@ var getWalletByPrivateKey = function (privateKey) {
  */
 var signTransaction = function (rawTxn, keyPair) {
     var privKey = keyPair.getPrivate('hex');
-    var pubKey = keyPair.getPublic();
+    // var pubKey = keyPair.getPublic();
 
-    rawTxn.R = null;
-    rawTxn.S = null;
-    rawTxn.P = null;
+    // rawTxn.R = null;
+    // rawTxn.S = null;
+    // rawTxn.P = null;
     if (rawTxn.Params.length == 0) {
         rawTxn.Params = null;
     }
@@ -6276,13 +6276,6 @@ var signTransaction = function (rawTxn, keyPair) {
     // proto3 will remove the default value key.
     // The differences between proto2 and proto3:
     // https://blog.csdn.net/huanggang982/article/details/77944174
-    if (rawTxn.IncrementId == 0) {
-        rawTxn.IncrementId = null;
-    }
-
-    if (rawTxn.Fee == 0) {
-        rawTxn.Fee = null;
-    }
 
     var ser = proto.Transaction.encode(rawTxn).finish();
     var msgHash = sha256(ser);
@@ -61411,7 +61404,7 @@ function extend() {
 },{}],220:[function(require,module,exports){
 module.exports={
   "name": "aelf-sdk",
-  "version": "2.1.20",
+  "version": "2.1.21",
   "description": "aelf-sdk js library",
   "main": "./lib/aelf.js",
   "directories": {
