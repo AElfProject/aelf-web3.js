@@ -328,6 +328,27 @@ HttpProvider.prototype.prePrepareRequest = function (async, payload) {
     return this.prepareRequest(async);
 };
 
+const formatWebAPIResult = input => {
+    let result;
+    let resultTemp;
+    try {
+        resultTemp = JSON.parse(input);
+    }
+    catch (e) {
+        resultTemp = input;
+    }
+    if (resultTemp.Error) {
+        result = resultTemp;
+    }
+    else {
+        result = {
+            jsonrpc: '2.0',
+            id: 1,
+            result: resultTemp
+        };
+    }
+    return result;
+};
 // Not Rpc
 // TODO: 后续在大调整的时候，拆分出单独的模块。
 HttpProvider.prototype.prepareRequestWebAPI = function (async, payload) {
@@ -425,18 +446,7 @@ HttpProvider.prototype.send = function (payload) {
 
     try {
         if (this.isWebApi) {
-            let resultTemp;
-            try {
-                resultTemp = JSON.parse(result);
-            }
-            catch (e) {
-                resultTemp = result;
-            }
-            result = {
-                jsonrpc: '2.0',
-                id: 1,
-                result: resultTemp
-            };
+            result = formatWebAPIResult(result);
         }
         else {
             result = JSON.parse(result);
@@ -467,18 +477,7 @@ HttpProvider.prototype.sendAsync = function (payload, callback) {
 
             try {
                 if (this.isWebApi) {
-                    let resultTemp;
-                    try {
-                        resultTemp = JSON.parse(result);
-                    }
-                    catch (e) {
-                        resultTemp = result;
-                    }
-                    result = {
-                        jsonrpc: '2.0',
-                        id: 1,
-                        result: resultTemp
-                    };
+                    result = formatWebAPIResult(result);
                 }
                 else {
                     result = JSON.parse(result);
@@ -61333,7 +61332,7 @@ function extend() {
 },{}],220:[function(require,module,exports){
 module.exports={
   "name": "aelf-sdk",
-  "version": "2.1.18",
+  "version": "2.1.20",
   "description": "aelf-sdk js library",
   "main": "./lib/aelf.js",
   "directories": {

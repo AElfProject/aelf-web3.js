@@ -19,7 +19,17 @@ const wallet = Wallet.getWalletByPrivateKey(defaultPrivateKey);
 // const aelf = new Aelf(new Aelf.providers.HttpProvider('http://192.168.197.56:8000/chain'));http://192.168.197.56:8101/chain
 // const aelf = new Aelf(new Aelf.providers.HttpProvider('http://34.212.171.27:8000/chain'));
 // const aelf = new Aelf(new Aelf.providers.HttpProvider('http://192.168.197.70:8000/chain'));
-const aelf = new Aelf(new Aelf.providers.HttpProvider('http://192.168.197.56:8101/chain'));
+// const aelf = new Aelf(new Aelf.providers.HttpProvider('http://192.168.197.56:8101/chain'));
+const aelf = new Aelf(new Aelf.providers.HttpProvider(
+	"http://192.168.197.56:8101/chain",
+	null,
+	null,
+	null,
+	[{
+	    name: 'Accept',
+	    value: 'text/plain;v=1.0'
+	}]
+));
 // const aelf = new Aelf(new Aelf.providers.HttpProvider('http://192.168.199.113:8000/chain'));
 
 const tokenC = aelf.chain.contractAt('4rkKQpsRFt1nU6weAHuJ6CfQDqo6dxruU3K3wNUFr6ZwZYc', wallet);
