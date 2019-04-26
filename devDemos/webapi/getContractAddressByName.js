@@ -32,17 +32,20 @@ const aelf = new AElf(new AElf.providers.HttpProvider(
 
 const {
     GenesisContractAddress
-} = aelf.chain.getChainInformation();
+} = aelf.chain.getChainStatus();
 
 const zeroC = aelf.chain.contractAt(GenesisContractAddress, wallet);
 
 // zeroC.GetContractAddressByName('AElf.ContractNames.Consensus'); // HelloWorldContract
-zeroC.GetContractAddressByName.call(sha256('AElf.ContractNames.Token')); // HelloWorldContract
-const hzzzzzz = 11111;
-zeroC.GetContractAddressByName(sha256('AElf.ContractNames.Token')); // HelloWorldContract
+const tokenContractAddress = zeroC.GetContractAddressByName.call(sha256('AElf.ContractNames.Token')); // HelloWorldContract
+
+const tokenC = aelf.chain.contractAt(tokenContractAddress, wallet);
+
+tokenC.GetTokenInfo.call({
+    symbol: 'ELF'
+});
 
 console.log(zeroC.GetContractAddressByName(sha256('HelloWorldContract'))); // HelloWorldContract
-console.log(hzzzzzz);
 // 679ecba22edfcb0eb1e5f5b249eaea53cee1034278aa42b987d7311e51eff564
 // 15aab24ec3ac12b101abf404a96ba603208631760e3eb51a1ddc18d185941b9c
 // 5jszzRvXNTUj3ctzo4VnLtFSUH7fp4aHLXQQyBRPQdzw5Fw

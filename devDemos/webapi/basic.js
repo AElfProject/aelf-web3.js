@@ -5,10 +5,9 @@
 /* eslint-disable fecs-camelcase */
 const Aelf = require('../../lib/aelf.js');
 const Wallet = require('../../lib/aelf/wallet');
-// address: 65dDNxzcd35jESiidFXN5JV8Z7pCwaFnepuYQToNefSgqk9
+// address: 2hxkDg6Pd2d4yU1A16PTZVMMrEDYEPR8oQojMDwWdax5LsBaxX
 const defaultPrivateKey = 'bdb3b39ef4cd18c2697a920eb6d9e8c3cf1a930570beb37d04fb52400092c42b';
-// address: 58h3RwTfaE8RDpRNMAMiMv8jUjanCeYHBzKuQfHbrfSFTCn
-// 286izE4MsFWdGZn2xCcPSBaRqwXFB95xu5Urfki3q5xmmCc
+
 const privateKey = '097fc2e1eea2bfe258e7962c644f6d87ac58bfbd80301e10740baf52f45141c1';
 
 const wallet = Wallet.getWalletByPrivateKey(defaultPrivateKey);
@@ -26,22 +25,27 @@ const aelf = new Aelf(new Aelf.providers.HttpProvider(
     }]
 ));
 
-// aelf.chain.getChainInformation();
+// aelf.chain.getTxResult('1cb7a33eefc3c47775b2a6f165cee6d4c3b49369386eeb7238152269ec06bd6b');
+aelf.chain.getTxResult('1c6ca90f13cf2c08349c257debdd19a7f0cbbc7b3bc718aa5979664a7fb511e2');
 
+// aelf.chain.getTransactionPoolStatus();
+// aelf.chain.getChainInformation();
+aelf.chain.getBlock('40259e24c03d81b7c5b8c1c88967a376ddf486dde3af05a5cdd3072cad22b0e7', true);
 // aelf.chain.getChainInformation((err, result) => {
 //     console.log(err, result);
 // });
 
-const tokenC = aelf.chain.contractAt('4rkKQpsRFt1nU6weAHuJ6CfQDqo6dxruU3K3wNUFr6ZwZYc', wallet);
+const tokenC = aelf.chain.contractAt('2J9wWhuyz7Drkmtu9DTegM9rLmamjekmRkCAWz5YYPjm7akfbH', wallet);
 
 tokenC.GetBalance.call({
     symbol: 'ELF',
-    owner: '58h3RwTfaE8RDpRNMAMiMv8jUjanCeYHBzKuQfHbrfSFTCn'
+    owner: '2hxkDg6Pd2d4yU1A16PTZVMMrEDYEPR8oQojMDwWdax5LsBaxX'
 }, (err, result) => {
+
     console.log(err, result);
 });
 
-tokenC;
+// tokenC;
 
 // var test;
 // aelf.chain.contractAtAsync('4rkKQpsRFt1nU6weAHuJ6CfQDqo6dxruU3K3wNUFr6ZwZYc', wallet, (err, result) => {
