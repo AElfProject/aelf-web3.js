@@ -935,35 +935,22 @@ Object.defineProperty(Chain.prototype, 'defaultAccount', {
 });
 
 var methods = function () {
-    var getCommands = new Method({
-        name: 'getCommands',
-        call: 'GetCommands',
+    // call 是match rpc的接口... rpc可能会没有这个接口。
+    // 如果是调用webapi， 会在map文件中找到对应的path。
+    const getChainStatus = new Method({
+        name: 'getChainStatus',
+        call: 'chainStatus',
         params: []
     });
 
-    // TODO: 业务确定后，就直接删了。
-    // var connectChain = new Method({
-    //     name: 'connectChain',
-    //     call: 'ConnectChain',
-    //     params: []
-    // });
-
-    var getChainInformation = new Method({
-        name: 'getChainInformation',
-        call: 'GetChainInformation',
-        params: []
+    const getChainState = new Method({
+        name: 'getChainState',
+        call: 'blockState',
+        params: ['blockHash']
     });
 
-    var getContractAbi = new Method({
-        name: 'getContractAbi',
-        call: 'GetContractAbi',
-        params: ['address'],
-        inputFormatter: [formatters.inputAddressFormatter],
-        outputFormatter: formatters.outputAbiFormatter
-    });
-
-    var getFileDescriptorSet = new Method({
-        name: 'getFileDescriptorSet',
+    var getContractFileDescriptorSet = new Method({
+        name: 'getContractFileDescriptorSet',
         call: 'GetFileDescriptorSet',
         params: ['address'],
         inputFormatter: [formatters.inputAddressFormatter],
@@ -977,17 +964,23 @@ var methods = function () {
         inputFormatter: []
     });
 
+    var getBlock = new Method({
+        name: 'getBlock',
+        call: 'getBlock',
+        params: ['blockHash', 'includeTransactions']
+    });
+
+    // 不推荐使用
     var getBlockInfo = new Method({
         name: 'getBlockInfo',
         call: 'GetBlockInfo',
         params: ['blockHeight', 'includeTransactions']
     });
 
-    var getIncrement = new Method({
-        name: 'getIncrement',
-        call: 'get_increment',
-        params: ['address'],
-        inputFormatter: [formatters.inputAddressFormatter]
+    var getBlockByHeight = new Method({
+        name: 'getBlockByHeight',
+        call: 'getBlockByHeight',
+        params: ['blockHeight', 'includeTransactions']
     });
 
     var getTxResult = new Method({
@@ -998,16 +991,16 @@ var methods = function () {
     });
 
     var getTxsResultByBlockhash = new Method({
-        name: 'getTxsResult',
+        name: 'getTxResults',
         call: 'GetTransactionsResult',
         params: ['blockHash', 'offset', 'num']
     });
 
-    var getMerklePath = new Method({
-        name: 'getMerklePath',
-        call: 'GetTransactionMerklePath',
-        params: ['transactionId'],
-        inputFormatter: [null]
+    // getTransactionPoolStatus
+    var getTransactionPoolStatus = new Method({
+        name: 'getTransactionPoolStatus',
+        call: 'getTransactionPoolStatus',
+        params: []
     });
 
     var sendTransaction = new Method({
@@ -1021,38 +1014,6 @@ var methods = function () {
         name: 'sendTransactions',
         call: 'BroadcastTransactions',
         params: ['rawTransaction'],
-        inputFormatter: [null]
-    });
-
-    var checkProposal = new Method({
-        name: 'checkProposal',
-        call: 'check_proposal',
-        params: ['proposal_id'],
-        inputFormatter: [null]
-    });
-
-    var getTxPoolSize = new Method({
-        name: 'getTxPoolSize',
-        call: 'GetTransactionPoolSize',
-        params: []
-    });
-
-    var getDposStatus = new Method({
-        name: 'getDposStatus',
-        call: 'GetDposStatus',
-        params: []
-    });
-
-    var getNodeStatus = new Method({
-        name: 'getNodeStatus',
-        call: 'GetNodeStatus',
-        params: []
-    });
-
-    var getBlockStateSet = new Method({
-        name: 'getBlockStateSet',
-        call: 'GetBlockStateSet',
-        params: ['blockHash'],
         inputFormatter: [null]
     });
 
@@ -1085,31 +1046,24 @@ var methods = function () {
 
     // getDposStatus, getNodeStatus, getPeers, addPeer, removePeer not support yet
     return [
-        getCommands,
-        // connectChain,
-        getChainInformation,
-        // getContractAbi,
-        getFileDescriptorSet,
+        getChainStatus,
+        getChainState,
+        getContractFileDescriptorSet,
         getBlockHeight,
+        getBlock,
         getBlockInfo,
-        getIncrement,
+        getBlockByHeight,
         sendTransaction,
         sendTransactions,
         callReadOnly,
         getTxResult,
         getTxsResultByBlockhash,
-        // getMerklePath,
-        checkProposal,
-        getTxPoolSize,
-        getDposStatus,
-        getNodeStatus,
-        getBlockStateSet,
+        getTransactionPoolStatus,
         getPeers,
         addPeer,
         removePeer
     ];
 };
-
 
 var properties = function () {
     // TODO: implement
@@ -1127,7 +1081,7 @@ Chain.prototype.contract = function (abi, wallet) {
 };
 
 Chain.prototype.contractAt = function (address, wallet) {
-    var fds = this.getFileDescriptorSet(address);
+    var fds = this.getContractFileDescriptorSet(address);
     if (fds && fds.file && fds.file.length > 0) {
         var factory = new Contract1(this, fds, wallet);
         return factory.at(address);
@@ -1138,7 +1092,7 @@ Chain.prototype.contractAt = function (address, wallet) {
 
 // TODO: 2019.03.24前替换了所有合约之后，都使用getFileDescriptorSet
 Chain.prototype.contractAtAsync = function (address, wallet, callback) {
-    this.getFileDescriptorSet(address, (err, result) => {
+    this.getContractFileDescriptorSet(address, (err, result) => {
         if (result && result.file && result.file.length > 0) {
             var factory = new Contract1(this, result, wallet);
             callback(err, factory.at(address));
@@ -1148,20 +1102,8 @@ Chain.prototype.contractAtAsync = function (address, wallet, callback) {
     });
 };
 
-Chain.prototype.initChainInfo = function () {
-    if (this._initialized) {
-        return;
-    }
-    var chainInfo = this.getChainInformation();
-    this.chainId = chainInfo.ChainId;
-    this.contractZeroAddress = chainInfo.GenesisContractAddress;
-    this.contractZeroAbi = this.getContractAbi(this.contractZeroAddress);
-    this.contractZero = this.contract(this.contractZeroAbi).at(this.contractZeroAddress);
-    this._initialized = true;
-};
-
 Chain.prototype.getMerklePath = function(txid, height){
-    var block = this.getBlockInfo(height, true);
+    var block = this.getBlockByHeight(height, true);
     var txids = block['Body']['Transactions'];
     var index = txids.findIndex(function (id) { return id === txid;});
     var nodes = [];
@@ -4373,7 +4315,7 @@ var ContractMethod = require('./method1.js');
  * serialized FileDescriptorSet.
  * 
  * @method getService
- * @param {FileDescriptorSet} fileDescriptorSet 
+ * @param {FileDescriptorSet} fileDescriptorSet
  */
 var getServices = function (fileDescriptorSet){
     var fds = fileDescriptorSet;
@@ -4398,10 +4340,10 @@ var getServices = function (fileDescriptorSet){
  * Adds functions to contract object
  * @method addMethodsToContract
  * @param {Contract} contract 
- * @param {KeyPair} wallet 
+ * @param {KeyPair} wallet
  */
 var addMethodsToContract = function (contract, wallet) {
-    for(var i = 0; i < contract.services.length; i++){
+    for (var i = 0; i < contract.services.length; i++) {
         contract.services[i].methodsArray.map(function (method) {
             return new ContractMethod(contract._chain, method, contract.address, wallet);
         }).forEach(function (f) {
@@ -4412,11 +4354,11 @@ var addMethodsToContract = function (contract, wallet) {
 
 /**
  * Creates new ContractFactory instance
- * 
+ *
  * @method ContractFactory
- * @param {Chain} chain 
- * @param {FileDescriptorSet} fileDescriptorSet 
- * @param {KeyPair} wallet 
+ * @param {Chain} chain
+ * @param {FileDescriptorSet} fileDescriptorSet
+ * @param {KeyPair} wallet
  */
 var ContractFactory = function (chain, fileDescriptorSet, wallet) {
     this.chain = chain;
@@ -4551,7 +4493,7 @@ ContractMethod.prototype.toPayload = function (args) {
     var rawtx = proto.getTransaction(this._wallet.address, this._address, this._name, coder.encodeParams(this._paramTypes, args));
 
     var block_height = JSON.parse(this._chain.getBlockHeight(), 10);
-    var block_info = this._chain.getBlockInfo(block_height, false);
+    var block_info = this._chain.getBlockByHeight(block_height, false);
 
     rawtx.RefBlockNumber = block_height;
     var blockhash = block_info.BlockHash;
@@ -4592,7 +4534,7 @@ ContractMethod.prototype.toPayloadAsync = function (args) {
     return new Promise((resolve, reject) => {
         this._chain.getBlockHeight((error, item) => {
             var blockHeight = parseInt(item, 10);
-            this._chain.getBlockInfo(blockHeight, false, (error, item) => {
+            this._chain.getBlockByHeight(blockHeight, false, (error, item) => {
                 var blockInfo = item;
 
                 rawtx.RefBlockNumber = blockHeight;
@@ -4965,15 +4907,15 @@ ContractMethod.prototype.validateArgs = function (args) {
  * @param {Object} optional payload options
  */
 ContractMethod.prototype.toPayload = function (args) {
-    var encoded = this.packInput(args[0]);
-    var rawtx = proto.getTransaction(this._wallet.address, this._address, this._name, encoded);
+    let encoded = this.packInput(args[0]);
+    let rawtx = proto.getTransaction(this._wallet.address, this._address, this._name, encoded);
 
     // TODO: Move this chunk into utils
-    var block_height = JSON.parse(this._chain.getBlockHeight(), 10);
-    var block_info = this._chain.getBlockInfo(block_height, false);
+    let block_height = JSON.parse(this._chain.getBlockHeight(), 10);
+    let block_info = this._chain.getBlockByHeight(block_height, false);
 
     rawtx.RefBlockNumber = block_height;
-    var blockhash = block_info.BlockHash;
+    let blockhash = block_info.BlockHash;
     blockhash = blockhash.match(/^0x/) ? blockhash.substring(2) : blockhash;
 
     rawtx.RefBlockPrefix = (new Buffer(blockhash, 'hex')).slice(0, 4);
@@ -4985,14 +4927,13 @@ ContractMethod.prototype.toPayload = function (args) {
     // options.To = this._address;
     // options.MethodName = this._name;
     // options.Params = coder.encodeParams(this._paramTypes, args);
-    var tx = wallet.signTransaction(rawtx, this._wallet.keyPair);
+    let tx = wallet.signTransaction(rawtx, this._wallet.keyPair);
 
     tx = proto.Transaction.encode(tx).finish();
     if (tx.__proto__.constructor === Buffer) {
         return tx.toString('hex');
-    } else {
-        return utils.uint8ArrayToHex(tx);
     }
+    return utils.uint8ArrayToHex(tx);
 };
 
 /**
@@ -5011,16 +4952,16 @@ ContractMethod.prototype.toPayloadAsync = function (args) {
     );
     return new Promise((resolve, reject) => {
         this._chain.getBlockHeight((error, item) => {
-            var blockHeight = parseInt(item, 10);
-            this._chain.getBlockInfo(blockHeight, false, (error, item) => {
-                var blockInfo = item;
+            let blockHeight = parseInt(item, 10);
+            this._chain.getBlockByHeight(blockHeight, false, (error, item) => {
+                let blockInfo = item;
 
                 rawtx.RefBlockNumber = blockHeight;
-                var blockhash = blockInfo.BlockHash || blockInfo.blockHash;
+                let blockhash = blockInfo.BlockHash || blockInfo.blockHash;
                 blockhash = blockhash.match(/^0x/) ? blockhash.substring(2) : blockhash;
 
                 rawtx.RefBlockPrefix = (new Buffer(blockhash, 'hex')).slice(0, 4);
-                var tx = wallet.signTransaction(rawtx, this._wallet.keyPair);
+                let tx = wallet.signTransaction(rawtx, this._wallet.keyPair);
                 tx = proto.Transaction.encode(tx).finish();
                 if (tx.__proto__.constructor === Buffer) {
                     resolve(tx.toString('hex'));
@@ -5040,8 +4981,8 @@ ContractMethod.prototype.packInput = function (input) {
 
     input = maybeUglifyAddress(input, this._isInputTypeAddress, this._inputTypeAddressFieldPaths);
     input = maybeUglifyHash(input, this._isInputTypeHash, this._inputTypeHashFieldPaths);
-    var message = this._inputType.fromObject(input);
-    var bytes = this._inputType.encode(message).finish();
+    let message = this._inputType.fromObject(input);
+    let bytes = this._inputType.encode(message).finish();
     return bytes;
 };
 
@@ -6250,25 +6191,16 @@ var getWalletByPrivateKey = function (privateKey) {
  * //     },
  * //     To:
  * //         Address {
- * //            Value: <Buffer e0 b4 0d dc 35 20 d0 b5 36 3b d9 77 50 14 d7 7e 4b 8f e8 32 94 6d 0e 38 25 73 1d 89 12 7b> 
+ * //            Value: <Buffer e0 b4 0d dc 35 20 d0 b5 36 3b d9 77 50 14 d7 7e 4b 8f e8 32 94 6d 0e 38 25 73 1d 89 12 7b>
  * //         },
  * //         MethodName: 'test',
- * //         Params: null,
- * //         R: null,
- * //         S: null,
- * //         P: null,
- * //         IncrementId: null,
- * //         Fee: null
+ * //         Params: null
  * //     }
  * //  }
  */
 var signTransaction = function (rawTxn, keyPair) {
     var privKey = keyPair.getPrivate('hex');
-    // var pubKey = keyPair.getPublic();
 
-    // rawTxn.R = null;
-    // rawTxn.S = null;
-    // rawTxn.P = null;
     if (rawTxn.Params.length == 0) {
         rawTxn.Params = null;
     }
@@ -7116,9 +7048,13 @@ module.exports = {
  */
 const objectToUrlParams = require('../utils/objectToUrlParams').objectToUrlParams;
 module.exports.getWebApiInfo = (host, method, params) => {
-    const map = {
-        'GetChainInformation': {
-            name: 'chainInformation',
+    const chainMap = {
+        'chainStatus': {
+            name: 'chainStatus',
+            method: 'GET'
+        },
+        'blockState': {
+            name: 'blockState',
             method: 'GET'
         },
         'Call': {
@@ -7126,7 +7062,7 @@ module.exports.getWebApiInfo = (host, method, params) => {
             method: 'POST'
         },
         'GetFileDescriptorSet': {
-            name: 'fileDescriptorSet',
+            name: 'contractFileDescriptorSet',
             method: 'GET'
         },
         'BroadcastTransaction': {
@@ -7142,24 +7078,61 @@ module.exports.getWebApiInfo = (host, method, params) => {
             method: 'GET'
         },
         'GetTransactionsResult': {
-            name: 'transactionsResult',
+            name: 'transactionResults',
+            method: 'GET'
+        },
+        'getTransactionPoolStatus': {
+            name: 'transactionPoolStatus',
             method: 'GET'
         },
         'GetBlockHeight': {
             name: 'blockHeight',
             method: 'GET'
         },
+        'getBlockByHeight': {
+            name: 'blockByHeight',
+            method: 'GET'
+        },
         'GetBlockInfo': {
-            name: 'blockInfo',
+            name: 'blockByHeight',
+            method: 'GET'
+        },
+        'getBlock': {
+            name: 'block',
             method: 'GET'
         }
     };
 
-    const output = map[method] || {
+    const netMap = {
+        'GetPeers': {
+            name: 'peers',
+            method: 'GET'
+        },
+        'AddPeer': {
+            name: 'peer',
+            method: 'POST'
+        },
+        'RemovePeer': {
+            name: 'peer',
+            method: 'DELETE'
+        }
+    };
+
+    let mapType = 'blockChain';
+    let output = chainMap[method] || {
         name: '',
         method: 'GET'
     };
-    output.url = host.replace('/chain', '/api/chain') + '/' + output.name;
+
+    if (!output.name) {
+        mapType = 'net';
+        output = netMap[method] || {
+            name: '',
+            method: 'GET'
+        };
+    }
+
+    output.url = host.replace('/chain', `/api/${mapType}`) + '/' + output.name;
     if (output.method === 'GET') {
         output.url += '?' + objectToUrlParams(params);
     }
@@ -61404,7 +61377,7 @@ function extend() {
 },{}],220:[function(require,module,exports){
 module.exports={
   "name": "aelf-sdk",
-  "version": "2.1.21",
+  "version": "3.0.0",
   "description": "aelf-sdk js library",
   "main": "./lib/aelf.js",
   "directories": {
