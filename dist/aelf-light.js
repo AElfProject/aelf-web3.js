@@ -983,7 +983,7 @@ var methods = function () {
         inputFormatter: [null]
     });
 
-    var getTxsResultByBlockhash = new Method({
+    var getTxResults = new Method({
         name: 'getTxResults',
         call: 'GetTransactionsResult',
         params: ['blockHash', 'offset', 'num']
@@ -1049,7 +1049,7 @@ var methods = function () {
         sendTransactions,
         callReadOnly,
         getTxResult,
-        getTxsResultByBlockhash,
+        getTxResults,
         getTransactionPoolStatus,
         getPeers,
         addPeer,
@@ -67384,7 +67384,7 @@ function extend() {
 },{}],290:[function(require,module,exports){
 module.exports={
   "name": "aelf-sdk",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "aelf-sdk js library",
   "main": "./lib/aelf.js",
   "directories": {
