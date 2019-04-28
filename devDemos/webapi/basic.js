@@ -3,7 +3,7 @@
  * @author huangzongzhe
  */
 /* eslint-disable fecs-camelcase */
-const Aelf = require('../../lib/aelf.js');
+const AElf = require('../../lib/aelf.js');
 const Wallet = require('../../lib/aelf/wallet');
 // address: 2hxkDg6Pd2d4yU1A16PTZVMMrEDYEPR8oQojMDwWdax5LsBaxX
 const defaultPrivateKey = 'bdb3b39ef4cd18c2697a920eb6d9e8c3cf1a930570beb37d04fb52400092c42b';
@@ -12,7 +12,7 @@ const privateKey = '097fc2e1eea2bfe258e7962c644f6d87ac58bfbd80301e10740baf52f451
 
 const wallet = Wallet.getWalletByPrivateKey(defaultPrivateKey);
 
-const aelf = new Aelf(new Aelf.providers.HttpProvider(
+const aelf = new AElf(new AElf.providers.HttpProvider(
     // 'http://192.168.197.56:8101/chain',
     // 'http://34.212.171.27:8000/chain',
     'http://192.168.197.56:8101/chain',

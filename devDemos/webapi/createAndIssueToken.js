@@ -9,7 +9,7 @@ const Wallet = AElf.wallet;
 const sha256 = AElf.utils.sha256;
 // address: 2hxkDg6Pd2d4yU1A16PTZVMMrEDYEPR8oQojMDwWdax5LsBaxX
 const defaultPrivateKey = 'bdb3b39ef4cd18c2697a920eb6d9e8c3cf1a930570beb37d04fb52400092c42b';
-// 286izE4MsFWdGZn2xCcPSBaRqwXFB95xu5Urfki3q5xmmCc
+// address: 2PWYbaiJkfgUcP3zVEKuuPejz4QiBJoZpFy7LkMHnxukggZYE7
 const privateKey = '097fc2e1eea2bfe258e7962c644f6d87ac58bfbd80301e10740baf52f45141c1';
 
 const wallet = Wallet.getWalletByPrivateKey(defaultPrivateKey);
@@ -38,18 +38,34 @@ const tokenContractAddress = zeroC.GetContractAddressByName.call(sha256('AElf.Co
 
 const tokenC = aelf.chain.contractAt(tokenContractAddress, wallet);
 
+tokenC.Create({
+    symbol: 'QLLA',
+    tokenName: 'QLLA',
+    totalSupply: 100000000,
+    decimals: 2,
+    issuer: '2hxkDg6Pd2d4yU1A16PTZVMMrEDYEPR8oQojMDwWdax5LsBaxX',
+    isBurnable: true
+});
+
 tokenC.GetTokenInfo.call({
-    symbol: 'ELF'
+    symbol: 'QLLA'
 });
 
 tokenC.GetBalance.call({
-    symbol: 'ELF',
-    owner: '2gaQh4uxg6tzyH1ADLoDxvHA14FMpzEiMqsQ6sDG5iHT8cmjp8'
+    symbol: 'QLLA',
+    owner: '2hxkDg6Pd2d4yU1A16PTZVMMrEDYEPR8oQojMDwWdax5LsBaxX'
 });
 
-console.log(zeroC.GetContractAddressByName(sha256('HelloWorldContract'))); // HelloWorldContract
-// 679ecba22edfcb0eb1e5f5b249eaea53cee1034278aa42b987d7311e51eff564
-// 15aab24ec3ac12b101abf404a96ba603208631760e3eb51a1ddc18d185941b9c
-// 5jszzRvXNTUj3ctzo4VnLtFSUH7fp4aHLXQQyBRPQdzw5Fw
-const nameHashed = sha256('AElf.ContractNames.CrossChain');
-zeroC.GetContractAddressByName.call(nameHashed);
+tokenC.Issue({
+    symbol: 'QLLA',
+    amount: 700700,
+    memo: 'Issue',
+    to: '2hxkDg6Pd2d4yU1A16PTZVMMrEDYEPR8oQojMDwWdax5LsBaxX'
+});
+
+tokenC.Transfer({
+    to: '2PWYbaiJkfgUcP3zVEKuuPejz4QiBJoZpFy7LkMHnxukggZYE7',
+    symbol: 'QLLA',
+    amount: 700,
+    memo: 'hzz780'
+});

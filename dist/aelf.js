@@ -970,13 +970,6 @@ var methods = function () {
         params: ['blockHash', 'includeTransactions']
     });
 
-    // 不推荐使用
-    var getBlockInfo = new Method({
-        name: 'getBlockInfo',
-        call: 'GetBlockInfo',
-        params: ['blockHeight', 'includeTransactions']
-    });
-
     var getBlockByHeight = new Method({
         name: 'getBlockByHeight',
         call: 'getBlockByHeight',
@@ -1051,7 +1044,6 @@ var methods = function () {
         getContractFileDescriptorSet,
         getBlockHeight,
         getBlock,
-        getBlockInfo,
         getBlockByHeight,
         sendTransaction,
         sendTransactions,
