@@ -9,7 +9,7 @@ const Wallet = require('../../lib/aelf/wallet');
 const defaultPrivateKey = 'bdb3b39ef4cd18c2697a920eb6d9e8c3cf1a930570beb37d04fb52400092c42b';
 const wallet = Wallet.getWalletByPrivateKey(defaultPrivateKey);
 
-const aelf = new Aelf(new Aelf.providers.HttpProvider('http://192.168.197.56:8000/chain'));
+const aelf = new Aelf(new Aelf.providers.HttpProvider('http://192.168.197.56:8101/chain'));
 
 // aelf.chain.getCommands((err, result) => {
 //     console.log('--- get commands ---');
