@@ -38,6 +38,9 @@ const tokenContractAddress = zeroC.GetContractAddressByName.call(sha256('AElf.Co
 
 const tokenC = aelf.chain.contractAt(tokenContractAddress, wallet);
 
+// tokenC.GetTokenInfo({
+//     symbol: 'ELF'
+// });
 tokenC.GetTokenInfo.call({
     symbol: 'ELF'
 });
