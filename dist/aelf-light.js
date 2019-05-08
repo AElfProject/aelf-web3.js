@@ -274,7 +274,7 @@ module.exports = {
 
 var errors = require('./errors');
 var getWebApiInfo = require('../utils/webApiRpcMap').getWebApiInfo;
-const objectToUrlParams = require('../utils/objectToUrlParams').objectToUrlParams;
+// const objectToUrlParams = require('../utils/objectToUrlParams').objectToUrlParams;
 // workaround to use httpprovider in different envs
 
 let XMLHttpRequest;
@@ -490,7 +490,7 @@ HttpProvider.prototype.sendAsync = function (payload, callback) {
                 request.send(null);
             }
             else {
-                request.send(objectToUrlParams(payload.params));
+                request.send(JSON.stringify(payload.params));
             }
         }
         else {
@@ -525,7 +525,7 @@ HttpProvider.prototype.isConnected = function () {
 module.exports = HttpProvider;
 }).call(this,require("buffer").Buffer)
 
-},{"../utils/objectToUrlParams":39,"../utils/webApiRpcMap":41,"./errors":2,"@aelfqueen/xmlhttprequest":78,"buffer":147,"xhr2-cookies":283}],5:[function(require,module,exports){
+},{"../utils/webApiRpcMap":41,"./errors":2,"@aelfqueen/xmlhttprequest":78,"buffer":147,"xhr2-cookies":283}],5:[function(require,module,exports){
 /*
     This file is part of web3.js.
 
@@ -66827,7 +66827,7 @@ function extend() {
 },{}],289:[function(require,module,exports){
 module.exports={
   "name": "aelf-sdk",
-  "version": "3.0.4",
+  "version": "3.0.5",
   "description": "aelf-sdk js library",
   "main": "./lib/aelf.js",
   "directories": {
