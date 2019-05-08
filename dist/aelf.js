@@ -357,7 +357,8 @@ HttpProvider.prototype.prepareRequestWebAPI = function (async, payload) {
     this.method = webApiInfo.method;
 
     if (this.method === 'POST') {
-        request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        // request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        request.setRequestHeader('Content-Type', 'application/json');
     }
     if (this.headers) {
         this.headers.forEach(function (header) {
@@ -419,7 +420,7 @@ HttpProvider.prototype.send = function (payload) {
                 request.send(null);
             }
             else {
-                request.send(objectToUrlParams(payload.params));
+                request.send(JSON.stringify(payload.params));
             }
         }
         else {
@@ -512,7 +513,7 @@ HttpProvider.prototype.isConnected = function () {
     this.send({
       id: 9999,
       jsonrpc: '2.0',
-      method: 'ConnectChain',
+      method: 'getChainStatus',
       params: {}
     });
     return true;
@@ -1074,7 +1075,7 @@ Chain.prototype.contractAt = function (address, wallet) {
 Chain.prototype.contractAtAsync = function (address, wallet, callback) {
     this.getContractFileDescriptorSet(address, (err, result) => {
         if (result && result.file && result.file.length > 0) {
-            var factory = new Contract1(this, result, wallet);
+            const factory = new Contract1(this, result, wallet);
             callback(err, factory.at(address));
             return;
         }
@@ -49791,7 +49792,7 @@ module.exports={
   "_args": [
     [
       "elliptic@6.4.1",
-      "/Users/huangzongzhe/workspace/hoopox/aelf-sdk.js"
+      "/Users/huangzongzhe/workspace/hoopox/test/aelf-sdk-demo/aelf-sdk.js"
     ]
   ],
   "_from": "elliptic@6.4.1",
@@ -49818,7 +49819,7 @@ module.exports={
   ],
   "_resolved": "https://registry.npmjs.org/elliptic/-/elliptic-6.4.1.tgz",
   "_spec": "6.4.1",
-  "_where": "/Users/huangzongzhe/workspace/hoopox/aelf-sdk.js",
+  "_where": "/Users/huangzongzhe/workspace/hoopox/test/aelf-sdk-demo/aelf-sdk.js",
   "author": {
     "name": "Fedor Indutny",
     "email": "fedor@indutny.com"
@@ -60811,7 +60812,7 @@ function extend() {
 },{}],219:[function(require,module,exports){
 module.exports={
   "name": "aelf-sdk",
-  "version": "3.0.3",
+  "version": "3.0.4",
   "description": "aelf-sdk js library",
   "main": "./lib/aelf.js",
   "directories": {
@@ -60836,7 +60837,7 @@ module.exports={
     "browserify": "^16.2.3",
     "del": "^3.0.0",
     "exorcist": "^1.0.1",
-    "gulp": "^4.0.0",
+    "gulp": "^4.0.2",
     "gulp-jshint": "^2.1.0",
     "gulp-rename": "^1.4.0",
     "gulp-replace": "^1.0.0",

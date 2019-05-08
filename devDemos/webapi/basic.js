@@ -4,7 +4,8 @@
  */
 /* eslint-disable fecs-camelcase */
 const AElf = require('../../lib/aelf.js');
-const Wallet = require('../../lib/aelf/wallet');
+const Wallet = AElf.wallet;
+const sha256 = AElf.utils.sha256;
 // address: 2hxkDg6Pd2d4yU1A16PTZVMMrEDYEPR8oQojMDwWdax5LsBaxX
 const defaultPrivateKey = 'bdb3b39ef4cd18c2697a920eb6d9e8c3cf1a930570beb37d04fb52400092c42b';
 
@@ -34,8 +35,6 @@ aelf.chain.getBlock('40259e24c03d81b7c5b8c1c88967a376ddf486dde3af05a5cdd3072cad2
 // aelf.chain.getChainInformation((err, result) => {
 //     console.log(err, result);
 // });
-
-const tokenC = aelf.chain.contractAt('2J9wWhuyz7Drkmtu9DTegM9rLmamjekmRkCAWz5YYPjm7akfbH', wallet);
 
 tokenC.GetBalance.call({
     symbol: 'ELF',

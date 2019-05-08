@@ -17,7 +17,8 @@ const wallet = Wallet.getWalletByPrivateKey(defaultPrivateKey);
 const aelf = new AElf(new AElf.providers.HttpProvider(
     // 'http://192.168.197.56:8101/chain',
     // 'http://34.212.171.27:8000/chain',
-    'http://192.168.197.56:8101/chain',
+    'http://54.149.84.199:8000/chain',
+    // 'http://192.168.197.56:8101/chain',
     null,
     null,
     null,
@@ -32,22 +33,27 @@ const {
 } = aelf.chain.getChainStatus();
 
 const zeroC = aelf.chain.contractAt(GenesisContractAddress, wallet);
+// aelf.chain.contractAtAsync(GenesisContractAddress, wallet, (err, result) => {
+//     let test = 1;
+//     console.log(err, result, test);
+// });
 
 // zeroC.GetContractAddressByName('AElf.ContractNames.Consensus'); // HelloWorldContract
 const tokenContractAddress = zeroC.GetContractAddressByName.call(sha256('AElf.ContractNames.Token')); // HelloWorldContract
+// const tokenContractAddress = zeroC.GetContractAddressByName.call(sha256('AElf.ContractNames.TokenConverter')); // HelloWorldContract
+// const tokenContractAddress = zeroC.GetContractAddressByName.call(sha256('TokenConverterContract')); // HelloWorldContract
 
+// const tokenC = aelf.chain.contractAt(tokenContractAddress, wallet);
 const tokenC = aelf.chain.contractAt(tokenContractAddress, wallet);
 
-// tokenC.GetTokenInfo({
-//     symbol: 'ELF'
-// });
 tokenC.GetTokenInfo.call({
     symbol: 'ELF'
 });
 
 tokenC.GetBalance.call({
     symbol: 'ELF',
-    owner: '2gaQh4uxg6tzyH1ADLoDxvHA14FMpzEiMqsQ6sDG5iHT8cmjp8'
+    owner: '2hxkDg6Pd2d4yU1A16PTZVMMrEDYEPR8oQojMDwWdax5LsBaxX'
+    // owner: '2gaQh4uxg6tzyH1ADLoDxvHA14FMpzEiMqsQ6sDG5iHT8cmjp8'
 });
 
 console.log(zeroC.GetContractAddressByName(sha256('HelloWorldContract'))); // HelloWorldContract
