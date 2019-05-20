@@ -149,7 +149,7 @@ if (typeof window !== 'undefined' && !window.AElf) {
 
 module.exports = AElf;
 
-},{"../package.json":220,"./aelf/httpprovider":4,"./aelf/methods/chain":7,"./aelf/proto":8,"./aelf/requestmanager":13,"./aelf/settings":14,"./aelf/wallet":36,"./utils/utils":41,"@aelfqueen/protobufjs":45}],2:[function(require,module,exports){
+},{"../package.json":219,"./aelf/httpprovider":4,"./aelf/methods/chain":7,"./aelf/proto":8,"./aelf/requestmanager":12,"./aelf/settings":13,"./aelf/wallet":35,"./utils/utils":40,"@aelfqueen/protobufjs":44}],2:[function(require,module,exports){
 /*
     This file is part of web3.js.
 
@@ -216,10 +216,7 @@ module.exports = {
  */
 
 'use strict';
-var protobuf = require('@aelfqueen/protobufjs');
 var descriptor = require("@aelfqueen/protobufjs/ext/descriptor");
-var abiDescriptor = require('./proto/abi.proto.json')
-var ModuleMessage = protobuf.Root.fromJSON(abiDescriptor).Module;
 
 var inputAddressFormatter = function (address) {
     // if (address.startsWith('ELF_')) {
@@ -229,14 +226,6 @@ var inputAddressFormatter = function (address) {
     // }
     // throw new Error('invalid address');
     return address;
-};
-
-var outputAbiFormatter = function (result) {
-    // var root = protobuf.Root.fromJSON(abiDescriptor);
-    // var ModuleMessage = root.Module;
-    var buffer = Buffer.from(result.Abi.replace('0x', ''), 'hex');
-    result.abi = ModuleMessage.decode(buffer);
-    return result.abi;
 };
 
 /**
@@ -251,14 +240,13 @@ var outputFileDescriptorSetFormatter = function (result) {
 
 module.exports = {
     inputAddressFormatter: inputAddressFormatter,
-    outputAbiFormatter: outputAbiFormatter,
     outputFileDescriptorSetFormatter: outputFileDescriptorSetFormatter
 };
 
 
 }).call(this,require("buffer").Buffer)
 
-},{"./proto/abi.proto.json":9,"@aelfqueen/protobufjs":45,"@aelfqueen/protobufjs/ext/descriptor":43,"buffer":107}],4:[function(require,module,exports){
+},{"@aelfqueen/protobufjs/ext/descriptor":42,"buffer":106}],4:[function(require,module,exports){
 (function (Buffer){
 /*
     This file is part of web3.js.
@@ -286,7 +274,7 @@ module.exports = {
 
 var errors = require('./errors');
 var getWebApiInfo = require('../utils/webApiRpcMap').getWebApiInfo;
-const objectToUrlParams = require('../utils/objectToUrlParams').objectToUrlParams;
+// const objectToUrlParams = require('../utils/objectToUrlParams').objectToUrlParams;
 // workaround to use httpprovider in different envs
 
 let XMLHttpRequest;
@@ -369,7 +357,8 @@ HttpProvider.prototype.prepareRequestWebAPI = function (async, payload) {
     this.method = webApiInfo.method;
 
     if (this.method === 'POST') {
-        request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        // request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        request.setRequestHeader('Content-Type', 'application/json');
     }
     if (this.headers) {
         this.headers.forEach(function (header) {
@@ -431,7 +420,7 @@ HttpProvider.prototype.send = function (payload) {
                 request.send(null);
             }
             else {
-                request.send(objectToUrlParams(payload.params));
+                request.send(JSON.stringify(payload.params));
             }
         }
         else {
@@ -501,7 +490,7 @@ HttpProvider.prototype.sendAsync = function (payload, callback) {
                 request.send(null);
             }
             else {
-                request.send(objectToUrlParams(payload.params));
+                request.send(JSON.stringify(payload.params));
             }
         }
         else {
@@ -524,7 +513,7 @@ HttpProvider.prototype.isConnected = function () {
     this.send({
       id: 9999,
       jsonrpc: '2.0',
-      method: 'ConnectChain',
+      method: 'getChainStatus',
       params: {}
     });
     return true;
@@ -536,7 +525,7 @@ HttpProvider.prototype.isConnected = function () {
 module.exports = HttpProvider;
 }).call(this,require("buffer").Buffer)
 
-},{"../utils/objectToUrlParams":40,"../utils/webApiRpcMap":42,"./errors":2,"@aelfqueen/xmlhttprequest":79,"buffer":107,"xhr2-cookies":214}],5:[function(require,module,exports){
+},{"../utils/webApiRpcMap":41,"./errors":2,"@aelfqueen/xmlhttprequest":78,"buffer":106,"xhr2-cookies":213}],5:[function(require,module,exports){
 /*
     This file is part of web3.js.
 
@@ -811,7 +800,7 @@ Method.prototype.request = function () {
 
 module.exports = Method;
 
-},{"../utils/utils":41,"./errors":2}],7:[function(require,module,exports){
+},{"../utils/utils":40,"./errors":2}],7:[function(require,module,exports){
 (function (Buffer){
 /*
     This file is part of web3.js.
@@ -935,35 +924,22 @@ Object.defineProperty(Chain.prototype, 'defaultAccount', {
 });
 
 var methods = function () {
-    var getCommands = new Method({
-        name: 'getCommands',
-        call: 'GetCommands',
+    // call 是match rpc的接口... rpc可能会没有这个接口。
+    // 如果是调用webapi， 会在map文件中找到对应的path。
+    const getChainStatus = new Method({
+        name: 'getChainStatus',
+        call: 'chainStatus',
         params: []
     });
 
-    // TODO: 业务确定后，就直接删了。
-    // var connectChain = new Method({
-    //     name: 'connectChain',
-    //     call: 'ConnectChain',
-    //     params: []
-    // });
-
-    var getChainInformation = new Method({
-        name: 'getChainInformation',
-        call: 'GetChainInformation',
-        params: []
+    const getChainState = new Method({
+        name: 'getChainState',
+        call: 'blockState',
+        params: ['blockHash']
     });
 
-    var getContractAbi = new Method({
-        name: 'getContractAbi',
-        call: 'GetContractAbi',
-        params: ['address'],
-        inputFormatter: [formatters.inputAddressFormatter],
-        outputFormatter: formatters.outputAbiFormatter
-    });
-
-    var getFileDescriptorSet = new Method({
-        name: 'getFileDescriptorSet',
+    var getContractFileDescriptorSet = new Method({
+        name: 'getContractFileDescriptorSet',
         call: 'GetFileDescriptorSet',
         params: ['address'],
         inputFormatter: [formatters.inputAddressFormatter],
@@ -977,17 +953,16 @@ var methods = function () {
         inputFormatter: []
     });
 
-    var getBlockInfo = new Method({
-        name: 'getBlockInfo',
-        call: 'GetBlockInfo',
-        params: ['blockHeight', 'includeTransactions']
+    var getBlock = new Method({
+        name: 'getBlock',
+        call: 'getBlock',
+        params: ['blockHash', 'includeTransactions']
     });
 
-    var getIncrement = new Method({
-        name: 'getIncrement',
-        call: 'get_increment',
-        params: ['address'],
-        inputFormatter: [formatters.inputAddressFormatter]
+    var getBlockByHeight = new Method({
+        name: 'getBlockByHeight',
+        call: 'getBlockByHeight',
+        params: ['blockHeight', 'includeTransactions']
     });
 
     var getTxResult = new Method({
@@ -997,17 +972,17 @@ var methods = function () {
         inputFormatter: [null]
     });
 
-    var getTxsResultByBlockhash = new Method({
-        name: 'getTxsResult',
+    var getTxResults = new Method({
+        name: 'getTxResults',
         call: 'GetTransactionsResult',
         params: ['blockHash', 'offset', 'num']
     });
 
-    var getMerklePath = new Method({
-        name: 'getMerklePath',
-        call: 'GetTransactionMerklePath',
-        params: ['transactionId'],
-        inputFormatter: [null]
+    // getTransactionPoolStatus
+    var getTransactionPoolStatus = new Method({
+        name: 'getTransactionPoolStatus',
+        call: 'getTransactionPoolStatus',
+        params: []
     });
 
     var sendTransaction = new Method({
@@ -1021,38 +996,6 @@ var methods = function () {
         name: 'sendTransactions',
         call: 'BroadcastTransactions',
         params: ['rawTransaction'],
-        inputFormatter: [null]
-    });
-
-    var checkProposal = new Method({
-        name: 'checkProposal',
-        call: 'check_proposal',
-        params: ['proposal_id'],
-        inputFormatter: [null]
-    });
-
-    var getTxPoolSize = new Method({
-        name: 'getTxPoolSize',
-        call: 'GetTransactionPoolSize',
-        params: []
-    });
-
-    var getDposStatus = new Method({
-        name: 'getDposStatus',
-        call: 'GetDposStatus',
-        params: []
-    });
-
-    var getNodeStatus = new Method({
-        name: 'getNodeStatus',
-        call: 'GetNodeStatus',
-        params: []
-    });
-
-    var getBlockStateSet = new Method({
-        name: 'getBlockStateSet',
-        call: 'GetBlockStateSet',
-        params: ['blockHash'],
         inputFormatter: [null]
     });
 
@@ -1085,31 +1028,23 @@ var methods = function () {
 
     // getDposStatus, getNodeStatus, getPeers, addPeer, removePeer not support yet
     return [
-        getCommands,
-        // connectChain,
-        getChainInformation,
-        // getContractAbi,
-        getFileDescriptorSet,
+        getChainStatus,
+        getChainState,
+        getContractFileDescriptorSet,
         getBlockHeight,
-        getBlockInfo,
-        getIncrement,
+        getBlock,
+        getBlockByHeight,
         sendTransaction,
         sendTransactions,
         callReadOnly,
         getTxResult,
-        getTxsResultByBlockhash,
-        // getMerklePath,
-        checkProposal,
-        getTxPoolSize,
-        getDposStatus,
-        getNodeStatus,
-        getBlockStateSet,
+        getTxResults,
+        getTransactionPoolStatus,
         getPeers,
         addPeer,
         removePeer
     ];
 };
-
 
 var properties = function () {
     // TODO: implement
@@ -1127,7 +1062,7 @@ Chain.prototype.contract = function (abi, wallet) {
 };
 
 Chain.prototype.contractAt = function (address, wallet) {
-    var fds = this.getFileDescriptorSet(address);
+    var fds = this.getContractFileDescriptorSet(address);
     if (fds && fds.file && fds.file.length > 0) {
         var factory = new Contract1(this, fds, wallet);
         return factory.at(address);
@@ -1138,9 +1073,9 @@ Chain.prototype.contractAt = function (address, wallet) {
 
 // TODO: 2019.03.24前替换了所有合约之后，都使用getFileDescriptorSet
 Chain.prototype.contractAtAsync = function (address, wallet, callback) {
-    this.getFileDescriptorSet(address, (err, result) => {
+    this.getContractFileDescriptorSet(address, (err, result) => {
         if (result && result.file && result.file.length > 0) {
-            var factory = new Contract1(this, result, wallet);
+            const factory = new Contract1(this, result, wallet);
             callback(err, factory.at(address));
             return;
         }
@@ -1148,20 +1083,8 @@ Chain.prototype.contractAtAsync = function (address, wallet, callback) {
     });
 };
 
-Chain.prototype.initChainInfo = function () {
-    if (this._initialized) {
-        return;
-    }
-    var chainInfo = this.getChainInformation();
-    this.chainId = chainInfo.ChainId;
-    this.contractZeroAddress = chainInfo.GenesisContractAddress;
-    this.contractZeroAbi = this.getContractAbi(this.contractZeroAddress);
-    this.contractZero = this.contract(this.contractZeroAbi).at(this.contractZeroAddress);
-    this._initialized = true;
-};
-
 Chain.prototype.getMerklePath = function(txid, height){
-    var block = this.getBlockInfo(height, true);
+    var block = this.getBlockByHeight(height, true);
     var txids = block['Body']['Transactions'];
     var index = txids.findIndex(function (id) { return id === txid;});
     var nodes = [];
@@ -1181,7 +1104,7 @@ module.exports = Chain;
 
 }).call(this,require("buffer").Buffer)
 
-},{"../../utils/config":38,"../../utils/merkletree":39,"../formatters":3,"../method":6,"../shims/contract.js":15,"../shims/contract1.js":16,"buffer":107}],8:[function(require,module,exports){
+},{"../../utils/config":37,"../../utils/merkletree":38,"../formatters":3,"../method":6,"../shims/contract.js":14,"../shims/contract1.js":15,"buffer":106}],8:[function(require,module,exports){
 (function (Buffer){
 /**
  * @file proto.js
@@ -1560,110 +1483,7 @@ module.exports = {
 
 }).call(this,require("buffer").Buffer)
 
-},{"../utils/utils":41,"./proto/auth.proto.json":10,"./proto/crosschain.proto.json":11,"./proto/kernel.proto.json":12,"@aelfqueen/protobufjs":45,"buffer":107}],9:[function(require,module,exports){
-module.exports={
-  "options": {
-    "csharp_namespace": "AElf.Kernel.ABI"
-  },
-  "nested": {
-    "Field": {
-      "fields": {
-        "Type": {
-          "type": "string",
-          "id": 1
-        },
-        "Name": {
-          "type": "string",
-          "id": 2
-        }
-      }
-    },
-    "Type": {
-      "fields": {
-        "Name": {
-          "type": "string",
-          "id": 1
-        },
-        "Fields": {
-          "rule": "repeated",
-          "type": "Field",
-          "id": 2
-        }
-      }
-    },
-    "Event": {
-      "fields": {
-        "Name": {
-          "type": "string",
-          "id": 1
-        },
-        "Indexed": {
-          "rule": "repeated",
-          "type": "Field",
-          "id": 2
-        },
-        "NonIndexed": {
-          "rule": "repeated",
-          "type": "Field",
-          "id": 3
-        }
-      }
-    },
-    "Method": {
-      "fields": {
-        "Name": {
-          "type": "string",
-          "id": 1
-        },
-        "Params": {
-          "rule": "repeated",
-          "type": "Field",
-          "id": 2
-        },
-        "ReturnType": {
-          "type": "string",
-          "id": 3
-        },
-        "IsView": {
-          "type": "bool",
-          "id": 4
-        },
-        "IsAsync": {
-          "type": "bool",
-          "id": 5
-        },
-        "Fee": {
-          "type": "uint64",
-          "id": 6
-        }
-      }
-    },
-    "Module": {
-      "fields": {
-        "Name": {
-          "type": "string",
-          "id": 1
-        },
-        "Methods": {
-          "rule": "repeated",
-          "type": "Method",
-          "id": 2
-        },
-        "Events": {
-          "rule": "repeated",
-          "type": "Event",
-          "id": 3
-        },
-        "Types": {
-          "rule": "repeated",
-          "type": "Type",
-          "id": 4
-        }
-      }
-    }
-  }
-}
-},{}],10:[function(require,module,exports){
+},{"../utils/utils":40,"./proto/auth.proto.json":9,"./proto/crosschain.proto.json":10,"./proto/kernel.proto.json":11,"@aelfqueen/protobufjs":44,"buffer":106}],9:[function(require,module,exports){
 module.exports={
   "options": {
     "csharp_namespace": "AElf"
@@ -1817,10 +1637,10 @@ module.exports={
     }
   }
 }
-},{}],11:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 module.exports={
   "options": {
-    "csharp_namespace": "AElf.Kernel"
+    "csharp_namespace": "AElf"
   },
   "nested": {
     "SideChainBlockData": {
@@ -1976,58 +1796,10 @@ module.exports={
           "rule": "repeated",
           "type": "bytes",
           "id": 4
-        }
-      }
-    },
-    "google": {
-      "nested": {
-        "protobuf": {
-          "nested": {
-            "Timestamp": {
-              "fields": {
-                "seconds": {
-                  "type": "int64",
-                  "id": 1
-                },
-                "nanos": {
-                  "type": "int32",
-                  "id": 2
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "Address": {
-      "fields": {
-        "Value": {
-          "type": "bytes",
-          "id": 1
-        }
-      }
-    },
-    "Hash": {
-      "fields": {
-        "Value": {
-          "type": "bytes",
-          "id": 1
-        }
-      }
-    },
-    "SInt32Value": {
-      "fields": {
-        "Value": {
-          "type": "sint32",
-          "id": 1
-        }
-      }
-    },
-    "SInt64Value": {
-      "fields": {
-        "Value": {
-          "type": "sint64",
-          "id": 1
+        },
+        "ParentChainHeightOfCreation": {
+          "type": "int64",
+          "id": 5
         }
       }
     },
@@ -2051,71 +1823,15 @@ module.exports={
         },
         "MethodName": {
           "type": "string",
-          "id": 6
+          "id": 5
         },
         "Params": {
           "type": "bytes",
-          "id": 7
-        },
-        "Sigs": {
-          "rule": "repeated",
-          "type": "bytes",
-          "id": 9
-        }
-      }
-    },
-    "TransactionStatus": {
-      "values": {
-        "UnknownTransactionStatus": 0,
-        "TransactionExecuting": 1,
-        "TransactionExecuted": 2
-      }
-    },
-    "SignatureStatus": {
-      "values": {
-        "UnknownSignatureStatus": 0,
-        "SignatureValid": 1,
-        "SignatureInvalid": -1
-      }
-    },
-    "RefBlockStatus": {
-      "values": {
-        "UnknownRefBlockStatus": 0,
-        "RefBlockValid": 1,
-        "RefBlockInvalid": -1,
-        "RefBlockExpired": -2,
-        "FutureRefBlock": -3
-      }
-    },
-    "TransactionReceipt": {
-      "fields": {
-        "TransactionId": {
-          "type": "Hash",
-          "id": 1
-        },
-        "Transaction": {
-          "type": "Transaction",
-          "id": 2
-        },
-        "SignatureStatus": {
-          "type": "SignatureStatus",
-          "id": 3
-        },
-        "RefBlockStatus": {
-          "type": "RefBlockStatus",
-          "id": 4
-        },
-        "TransactionStatus": {
-          "type": "TransactionStatus",
-          "id": 5
-        },
-        "IsSystemTxn": {
-          "type": "bool",
           "id": 6
         },
-        "ExecutedBlockNumber": {
-          "type": "int64",
-          "id": 7
+        "Signature": {
+          "type": "bytes",
+          "id": 10000
         }
       }
     },
@@ -2136,30 +1852,6 @@ module.exports={
         },
         "path": {
           "type": "StatePath",
-          "id": 2
-        }
-      }
-    },
-    "StateValue": {
-      "fields": {
-        "CurrentValue": {
-          "type": "bytes",
-          "id": 1
-        },
-        "OriginalValue": {
-          "type": "bytes",
-          "id": 2
-        }
-      }
-    },
-    "StateChange": {
-      "fields": {
-        "StatePath": {
-          "type": "StatePath",
-          "id": 1
-        },
-        "StateValue": {
-          "type": "StateValue",
           "id": 2
         }
       }
@@ -2237,6 +1929,395 @@ module.exports={
         "ReadableReturnValue": {
           "type": "string",
           "id": 13
+        }
+      }
+    },
+    "LogEvent": {
+      "fields": {
+        "Address": {
+          "type": "Address",
+          "id": 1
+        },
+        "Name": {
+          "type": "string",
+          "id": 2
+        },
+        "Indexed": {
+          "rule": "repeated",
+          "type": "bytes",
+          "id": 3
+        },
+        "NonIndexed": {
+          "type": "bytes",
+          "id": 4
+        }
+      }
+    },
+    "SmartContractRegistration": {
+      "fields": {
+        "Category": {
+          "type": "int32",
+          "id": 1
+        },
+        "Code": {
+          "type": "bytes",
+          "id": 2
+        },
+        "CodeHash": {
+          "type": "Hash",
+          "id": 3
+        }
+      }
+    },
+    "MerklePath": {
+      "fields": {
+        "Path": {
+          "rule": "repeated",
+          "type": "Hash",
+          "id": 1
+        }
+      }
+    },
+    "StringList": {
+      "fields": {
+        "Values": {
+          "rule": "repeated",
+          "type": "string",
+          "id": 1
+        },
+        "Remark": {
+          "type": "string",
+          "id": 2
+        }
+      }
+    },
+    "HashList": {
+      "fields": {
+        "Values": {
+          "rule": "repeated",
+          "type": "Hash",
+          "id": 1
+        }
+      }
+    },
+    "LongList": {
+      "fields": {
+        "Values": {
+          "rule": "repeated",
+          "type": "int64",
+          "id": 1
+        },
+        "Remark": {
+          "type": "string",
+          "id": 2
+        }
+      }
+    },
+    "TransactionExecutingStateSet": {
+      "fields": {
+        "Version": {
+          "type": "int64",
+          "id": 1
+        },
+        "Writes": {
+          "keyType": "string",
+          "type": "bytes",
+          "id": 2
+        },
+        "Reads": {
+          "keyType": "string",
+          "type": "bool",
+          "id": 3
+        }
+      }
+    },
+    "ActionResult": {
+      "fields": {
+        "Success": {
+          "type": "bool",
+          "id": 1
+        },
+        "ErrorMessage": {
+          "type": "string",
+          "id": 2
+        }
+      }
+    },
+    "ContractInfo": {
+      "fields": {
+        "SerialNumber": {
+          "type": "uint64",
+          "id": 1
+        },
+        "Owner": {
+          "type": "Address",
+          "id": 2
+        },
+        "Category": {
+          "type": "int32",
+          "id": 3
+        },
+        "CodeHash": {
+          "type": "Hash",
+          "id": 4
+        }
+      }
+    },
+    "ContractDeploymentInput": {
+      "fields": {
+        "category": {
+          "type": "sint32",
+          "id": 1
+        },
+        "code": {
+          "type": "bytes",
+          "id": 2
+        }
+      }
+    },
+    "SystemContractDeploymentInput": {
+      "fields": {
+        "category": {
+          "type": "sint32",
+          "id": 1
+        },
+        "code": {
+          "type": "bytes",
+          "id": 2
+        },
+        "name": {
+          "type": "Hash",
+          "id": 3
+        },
+        "transactionMethodCallList": {
+          "type": "SystemTransactionMethodCallList",
+          "id": 4
+        }
+      },
+      "nested": {
+        "SystemTransactionMethodCall": {
+          "fields": {
+            "MethodName": {
+              "type": "string",
+              "id": 1
+            },
+            "Params": {
+              "type": "bytes",
+              "id": 2
+            }
+          }
+        },
+        "SystemTransactionMethodCallList": {
+          "fields": {
+            "Value": {
+              "rule": "repeated",
+              "type": "SystemTransactionMethodCall",
+              "id": 1
+            }
+          }
+        }
+      }
+    },
+    "ContractUpdateInput": {
+      "fields": {
+        "address": {
+          "type": "Address",
+          "id": 1
+        },
+        "code": {
+          "type": "bytes",
+          "id": 2
+        }
+      }
+    },
+    "ChangeContractOwnerInput": {
+      "fields": {
+        "contractAddress": {
+          "type": "Address",
+          "id": 1
+        },
+        "newOwner": {
+          "type": "Address",
+          "id": 2
+        }
+      }
+    },
+    "ConsensusCommand": {
+      "fields": {
+        "NextBlockMiningLeftMilliseconds": {
+          "type": "int32",
+          "id": 1
+        },
+        "LimitMillisecondsOfMiningBlock": {
+          "type": "int32",
+          "id": 2
+        },
+        "Hint": {
+          "type": "bytes",
+          "id": 3
+        },
+        "ExpectedMiningTime": {
+          "type": "google.protobuf.Timestamp",
+          "id": 4
+        }
+      }
+    },
+    "ValidationResult": {
+      "fields": {
+        "Success": {
+          "type": "bool",
+          "id": 1
+        },
+        "Message": {
+          "type": "string",
+          "id": 2
+        }
+      }
+    },
+    "ConsensusInformation": {
+      "fields": {
+        "Bytes": {
+          "type": "bytes",
+          "id": 1
+        }
+      }
+    },
+    "google": {
+      "nested": {
+        "protobuf": {
+          "nested": {
+            "Timestamp": {
+              "fields": {
+                "seconds": {
+                  "type": "int64",
+                  "id": 1
+                },
+                "nanos": {
+                  "type": "int32",
+                  "id": 2
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "Address": {
+      "fields": {
+        "Value": {
+          "type": "bytes",
+          "id": 1
+        }
+      }
+    },
+    "Hash": {
+      "fields": {
+        "Value": {
+          "type": "bytes",
+          "id": 1
+        }
+      }
+    },
+    "SInt32Value": {
+      "fields": {
+        "Value": {
+          "type": "sint32",
+          "id": 1
+        }
+      }
+    },
+    "SInt64Value": {
+      "fields": {
+        "Value": {
+          "type": "sint64",
+          "id": 1
+        }
+      }
+    }
+  }
+}
+},{}],11:[function(require,module,exports){
+module.exports={
+  "options": {
+    "csharp_namespace": "AElf.Kernel"
+  },
+  "nested": {
+    "TransactionStatus": {
+      "values": {
+        "UnknownTransactionStatus": 0,
+        "TransactionExecuting": 1,
+        "TransactionExecuted": 2
+      }
+    },
+    "SignatureStatus": {
+      "values": {
+        "UnknownSignatureStatus": 0,
+        "SignatureValid": 1,
+        "SignatureInvalid": -1
+      }
+    },
+    "RefBlockStatus": {
+      "values": {
+        "UnknownRefBlockStatus": 0,
+        "RefBlockValid": 1,
+        "RefBlockInvalid": -1,
+        "RefBlockExpired": -2,
+        "FutureRefBlock": -3
+      }
+    },
+    "TransactionReceipt": {
+      "fields": {
+        "TransactionId": {
+          "type": "Hash",
+          "id": 1
+        },
+        "Transaction": {
+          "type": "Transaction",
+          "id": 2
+        },
+        "SignatureStatus": {
+          "type": "SignatureStatus",
+          "id": 3
+        },
+        "RefBlockStatus": {
+          "type": "RefBlockStatus",
+          "id": 4
+        },
+        "TransactionStatus": {
+          "type": "TransactionStatus",
+          "id": 5
+        },
+        "IsSystemTxn": {
+          "type": "bool",
+          "id": 6
+        },
+        "ExecutedBlockNumber": {
+          "type": "int64",
+          "id": 7
+        }
+      }
+    },
+    "StateValue": {
+      "fields": {
+        "CurrentValue": {
+          "type": "bytes",
+          "id": 1
+        },
+        "OriginalValue": {
+          "type": "bytes",
+          "id": 2
+        }
+      }
+    },
+    "StateChange": {
+      "fields": {
+        "StatePath": {
+          "type": "StatePath",
+          "id": 1
+        },
+        "StateValue": {
+          "type": "StateValue",
+          "id": 2
         }
       }
     },
@@ -2347,27 +2428,6 @@ module.exports={
         }
       }
     },
-    "LogEvent": {
-      "fields": {
-        "Address": {
-          "type": "Address",
-          "id": 1
-        },
-        "Name": {
-          "type": "string",
-          "id": 2
-        },
-        "Indexed": {
-          "rule": "repeated",
-          "type": "bytes",
-          "id": 3
-        },
-        "NonIndexed": {
-          "type": "bytes",
-          "id": 4
-        }
-      }
-    },
     "BlockHeaderList": {
       "fields": {
         "Headers": {
@@ -2377,49 +2437,38 @@ module.exports={
         }
       }
     },
-    "BlockExtraData": {
-      "fields": {
-        "SideChainTransactionsRoot": {
-          "type": "Hash",
-          "id": 1
-        },
-        "ConsensusInformation": {
-          "type": "bytes",
-          "id": 2
-        }
-      }
-    },
     "BlockHeader": {
       "fields": {
         "Version": {
           "type": "int32",
           "id": 1
         },
-        "PreviousBlockHash": {
-          "type": "Hash",
+        "ChainId": {
+          "type": "int32",
           "id": 2
         },
-        "MerkleTreeRootOfTransactions": {
+        "PreviousBlockHash": {
           "type": "Hash",
           "id": 3
         },
-        "MerkleTreeRootOfWorldState": {
+        "MerkleTreeRootOfTransactions": {
           "type": "Hash",
           "id": 4
         },
+        "MerkleTreeRootOfWorldState": {
+          "type": "Hash",
+          "id": 5
+        },
         "Bloom": {
           "type": "bytes",
-          "id": 5
+          "id": 6
         },
         "Height": {
           "type": "int64",
-          "id": 6
-        },
-        "Sig": {
-          "type": "bytes",
           "id": 7
         },
-        "P": {
+        "BlockExtraDatas": {
+          "rule": "repeated",
           "type": "bytes",
           "id": 8
         },
@@ -2427,14 +2476,13 @@ module.exports={
           "type": "google.protobuf.Timestamp",
           "id": 9
         },
-        "ChainId": {
-          "type": "int32",
-          "id": 10
-        },
-        "BlockExtraDatas": {
-          "rule": "repeated",
+        "SignerPubkey": {
           "type": "bytes",
-          "id": 11
+          "id": 9999
+        },
+        "Signature": {
+          "type": "bytes",
+          "id": 10000
         }
       }
     },
@@ -2468,22 +2516,6 @@ module.exports={
         }
       }
     },
-    "SmartContractRegistration": {
-      "fields": {
-        "Category": {
-          "type": "int32",
-          "id": 1
-        },
-        "Code": {
-          "type": "bytes",
-          "id": 2
-        },
-        "CodeHash": {
-          "type": "Hash",
-          "id": 3
-        }
-      }
-    },
     "DataAccessMode": {
       "values": {
         "ReadOnlyAccountSharing": 0,
@@ -2505,50 +2537,6 @@ module.exports={
         "LeafCount": {
           "type": "int32",
           "id": 3
-        }
-      }
-    },
-    "MerklePath": {
-      "fields": {
-        "Path": {
-          "rule": "repeated",
-          "type": "Hash",
-          "id": 1
-        }
-      }
-    },
-    "StringList": {
-      "fields": {
-        "Values": {
-          "rule": "repeated",
-          "type": "string",
-          "id": 1
-        },
-        "Remark": {
-          "type": "string",
-          "id": 2
-        }
-      }
-    },
-    "HashList": {
-      "fields": {
-        "Values": {
-          "rule": "repeated",
-          "type": "Hash",
-          "id": 1
-        }
-      }
-    },
-    "LongList": {
-      "fields": {
-        "Values": {
-          "rule": "repeated",
-          "type": "int64",
-          "id": 1
-        },
-        "Remark": {
-          "type": "string",
-          "id": 2
         }
       }
     },
@@ -2627,24 +2615,6 @@ module.exports={
         }
       }
     },
-    "TransactionExecutingStateSet": {
-      "fields": {
-        "Version": {
-          "type": "int64",
-          "id": 1
-        },
-        "Writes": {
-          "keyType": "string",
-          "type": "bytes",
-          "id": 2
-        },
-        "Reads": {
-          "keyType": "string",
-          "type": "bool",
-          "id": 3
-        }
-      }
-    },
     "ChainStateMergingStatus": {
       "values": {
         "Common": 0,
@@ -2673,18 +2643,6 @@ module.exports={
         "Status": {
           "type": "ChainStateMergingStatus",
           "id": 5
-        }
-      }
-    },
-    "ActionResult": {
-      "fields": {
-        "Success": {
-          "type": "bool",
-          "id": 1
-        },
-        "ErrorMessage": {
-          "type": "string",
-          "id": 2
         }
       }
     },
@@ -2789,24 +2747,315 @@ module.exports={
         }
       }
     },
-    "SystemTransactionMethodCall": {
+    "google": {
+      "nested": {
+        "protobuf": {
+          "nested": {
+            "Timestamp": {
+              "fields": {
+                "seconds": {
+                  "type": "int64",
+                  "id": 1
+                },
+                "nanos": {
+                  "type": "int32",
+                  "id": 2
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "Address": {
       "fields": {
+        "Value": {
+          "type": "bytes",
+          "id": 1
+        }
+      }
+    },
+    "Hash": {
+      "fields": {
+        "Value": {
+          "type": "bytes",
+          "id": 1
+        }
+      }
+    },
+    "SInt32Value": {
+      "fields": {
+        "Value": {
+          "type": "sint32",
+          "id": 1
+        }
+      }
+    },
+    "SInt64Value": {
+      "fields": {
+        "Value": {
+          "type": "sint64",
+          "id": 1
+        }
+      }
+    },
+    "Transaction": {
+      "fields": {
+        "From": {
+          "type": "Address",
+          "id": 1
+        },
+        "To": {
+          "type": "Address",
+          "id": 2
+        },
+        "RefBlockNumber": {
+          "type": "int64",
+          "id": 3
+        },
+        "RefBlockPrefix": {
+          "type": "bytes",
+          "id": 4
+        },
         "MethodName": {
           "type": "string",
-          "id": 1
+          "id": 5
         },
         "Params": {
           "type": "bytes",
+          "id": 6
+        },
+        "Signature": {
+          "type": "bytes",
+          "id": 10000
+        }
+      }
+    },
+    "StatePath": {
+      "fields": {
+        "parts": {
+          "rule": "repeated",
+          "type": "string",
+          "id": 1
+        }
+      }
+    },
+    "ScopedStatePath": {
+      "fields": {
+        "address": {
+          "type": "Address",
+          "id": 1
+        },
+        "path": {
+          "type": "StatePath",
           "id": 2
         }
       }
     },
-    "SystemTransactionMethodCallList": {
+    "TransactionList": {
       "fields": {
-        "Value": {
+        "Transactions": {
           "rule": "repeated",
-          "type": "SystemTransactionMethodCall",
+          "type": "Transaction",
           "id": 1
+        }
+      }
+    },
+    "TransactionResultStatus": {
+      "values": {
+        "NotExisted": 0,
+        "Pending": 1,
+        "Failed": 2,
+        "Mined": 3,
+        "Unexecutable": 4
+      }
+    },
+    "TransactionResult": {
+      "fields": {
+        "TransactionId": {
+          "type": "Hash",
+          "id": 1
+        },
+        "Status": {
+          "type": "TransactionResultStatus",
+          "id": 2
+        },
+        "Logs": {
+          "rule": "repeated",
+          "type": "LogEvent",
+          "id": 3
+        },
+        "Bloom": {
+          "type": "bytes",
+          "id": 4
+        },
+        "ReturnValue": {
+          "type": "bytes",
+          "id": 5
+        },
+        "BlockNumber": {
+          "type": "int64",
+          "id": 6
+        },
+        "BlockHash": {
+          "type": "Hash",
+          "id": 7
+        },
+        "Index": {
+          "type": "int32",
+          "id": 8
+        },
+        "StateHash": {
+          "type": "Hash",
+          "id": 9
+        },
+        "DeferredTransactions": {
+          "rule": "repeated",
+          "type": "Transaction",
+          "id": 10
+        },
+        "DeferredTxnId": {
+          "type": "Hash",
+          "id": 11
+        },
+        "Error": {
+          "type": "string",
+          "id": 12
+        },
+        "ReadableReturnValue": {
+          "type": "string",
+          "id": 13
+        }
+      }
+    },
+    "LogEvent": {
+      "fields": {
+        "Address": {
+          "type": "Address",
+          "id": 1
+        },
+        "Name": {
+          "type": "string",
+          "id": 2
+        },
+        "Indexed": {
+          "rule": "repeated",
+          "type": "bytes",
+          "id": 3
+        },
+        "NonIndexed": {
+          "type": "bytes",
+          "id": 4
+        }
+      }
+    },
+    "SmartContractRegistration": {
+      "fields": {
+        "Category": {
+          "type": "int32",
+          "id": 1
+        },
+        "Code": {
+          "type": "bytes",
+          "id": 2
+        },
+        "CodeHash": {
+          "type": "Hash",
+          "id": 3
+        }
+      }
+    },
+    "MerklePath": {
+      "fields": {
+        "Path": {
+          "rule": "repeated",
+          "type": "Hash",
+          "id": 1
+        }
+      }
+    },
+    "StringList": {
+      "fields": {
+        "Values": {
+          "rule": "repeated",
+          "type": "string",
+          "id": 1
+        },
+        "Remark": {
+          "type": "string",
+          "id": 2
+        }
+      }
+    },
+    "HashList": {
+      "fields": {
+        "Values": {
+          "rule": "repeated",
+          "type": "Hash",
+          "id": 1
+        }
+      }
+    },
+    "LongList": {
+      "fields": {
+        "Values": {
+          "rule": "repeated",
+          "type": "int64",
+          "id": 1
+        },
+        "Remark": {
+          "type": "string",
+          "id": 2
+        }
+      }
+    },
+    "TransactionExecutingStateSet": {
+      "fields": {
+        "Version": {
+          "type": "int64",
+          "id": 1
+        },
+        "Writes": {
+          "keyType": "string",
+          "type": "bytes",
+          "id": 2
+        },
+        "Reads": {
+          "keyType": "string",
+          "type": "bool",
+          "id": 3
+        }
+      }
+    },
+    "ActionResult": {
+      "fields": {
+        "Success": {
+          "type": "bool",
+          "id": 1
+        },
+        "ErrorMessage": {
+          "type": "string",
+          "id": 2
+        }
+      }
+    },
+    "ContractInfo": {
+      "fields": {
+        "SerialNumber": {
+          "type": "uint64",
+          "id": 1
+        },
+        "Owner": {
+          "type": "Address",
+          "id": 2
+        },
+        "Category": {
+          "type": "int32",
+          "id": 3
+        },
+        "CodeHash": {
+          "type": "Hash",
+          "id": 4
         }
       }
     },
@@ -2840,6 +3089,29 @@ module.exports={
           "type": "SystemTransactionMethodCallList",
           "id": 4
         }
+      },
+      "nested": {
+        "SystemTransactionMethodCall": {
+          "fields": {
+            "MethodName": {
+              "type": "string",
+              "id": 1
+            },
+            "Params": {
+              "type": "bytes",
+              "id": 2
+            }
+          }
+        },
+        "SystemTransactionMethodCallList": {
+          "fields": {
+            "Value": {
+              "rule": "repeated",
+              "type": "SystemTransactionMethodCall",
+              "id": 1
+            }
+          }
+        }
       }
     },
     "ContractUpdateInput": {
@@ -2866,944 +3138,49 @@ module.exports={
         }
       }
     },
-    "ContractInfo": {
+    "ConsensusCommand": {
       "fields": {
-        "SerialNumber": {
-          "type": "uint64",
+        "NextBlockMiningLeftMilliseconds": {
+          "type": "int32",
           "id": 1
         },
-        "Owner": {
-          "type": "Address",
+        "LimitMillisecondsOfMiningBlock": {
+          "type": "int32",
           "id": 2
         },
-        "Category": {
-          "type": "int32",
+        "Hint": {
+          "type": "bytes",
           "id": 3
         },
-        "CodeHash": {
-          "type": "Hash",
+        "ExpectedMiningTime": {
+          "type": "google.protobuf.Timestamp",
           "id": 4
+        }
+      }
+    },
+    "ValidationResult": {
+      "fields": {
+        "Success": {
+          "type": "bool",
+          "id": 1
+        },
+        "Message": {
+          "type": "string",
+          "id": 2
+        }
+      }
+    },
+    "ConsensusInformation": {
+      "fields": {
+        "Bytes": {
+          "type": "bytes",
+          "id": 1
         }
       }
     }
   }
 }
 },{}],12:[function(require,module,exports){
-module.exports={
-  "options": {
-    "csharp_namespace": "AElf"
-  },
-  "nested": {
-    "Transaction": {
-      "fields": {
-        "From": {
-          "type": "Address",
-          "id": 1
-        },
-        "To": {
-          "type": "Address",
-          "id": 2
-        },
-        "RefBlockNumber": {
-          "type": "int64",
-          "id": 3
-        },
-        "RefBlockPrefix": {
-          "type": "bytes",
-          "id": 4
-        },
-        "MethodName": {
-          "type": "string",
-          "id": 6
-        },
-        "Params": {
-          "type": "bytes",
-          "id": 7
-        },
-        "Sigs": {
-          "rule": "repeated",
-          "type": "bytes",
-          "id": 9
-        }
-      }
-    },
-    "TransactionStatus": {
-      "values": {
-        "UnknownTransactionStatus": 0,
-        "TransactionExecuting": 1,
-        "TransactionExecuted": 2
-      }
-    },
-    "SignatureStatus": {
-      "values": {
-        "UnknownSignatureStatus": 0,
-        "SignatureValid": 1,
-        "SignatureInvalid": -1
-      }
-    },
-    "RefBlockStatus": {
-      "values": {
-        "UnknownRefBlockStatus": 0,
-        "RefBlockValid": 1,
-        "RefBlockInvalid": -1,
-        "RefBlockExpired": -2,
-        "FutureRefBlock": -3
-      }
-    },
-    "TransactionReceipt": {
-      "fields": {
-        "TransactionId": {
-          "type": "Hash",
-          "id": 1
-        },
-        "Transaction": {
-          "type": "Transaction",
-          "id": 2
-        },
-        "SignatureStatus": {
-          "type": "SignatureStatus",
-          "id": 3
-        },
-        "RefBlockStatus": {
-          "type": "RefBlockStatus",
-          "id": 4
-        },
-        "TransactionStatus": {
-          "type": "TransactionStatus",
-          "id": 5
-        },
-        "IsSystemTxn": {
-          "type": "bool",
-          "id": 6
-        },
-        "ExecutedBlockNumber": {
-          "type": "int64",
-          "id": 7
-        }
-      }
-    },
-    "StatePath": {
-      "fields": {
-        "parts": {
-          "rule": "repeated",
-          "type": "string",
-          "id": 1
-        }
-      }
-    },
-    "ScopedStatePath": {
-      "fields": {
-        "address": {
-          "type": "Address",
-          "id": 1
-        },
-        "path": {
-          "type": "StatePath",
-          "id": 2
-        }
-      }
-    },
-    "StateValue": {
-      "fields": {
-        "CurrentValue": {
-          "type": "bytes",
-          "id": 1
-        },
-        "OriginalValue": {
-          "type": "bytes",
-          "id": 2
-        }
-      }
-    },
-    "StateChange": {
-      "fields": {
-        "StatePath": {
-          "type": "StatePath",
-          "id": 1
-        },
-        "StateValue": {
-          "type": "StateValue",
-          "id": 2
-        }
-      }
-    },
-    "TransactionList": {
-      "fields": {
-        "Transactions": {
-          "rule": "repeated",
-          "type": "Transaction",
-          "id": 1
-        }
-      }
-    },
-    "TransactionResultStatus": {
-      "values": {
-        "NotExisted": 0,
-        "Pending": 1,
-        "Failed": 2,
-        "Mined": 3,
-        "Unexecutable": 4
-      }
-    },
-    "TransactionResult": {
-      "fields": {
-        "TransactionId": {
-          "type": "Hash",
-          "id": 1
-        },
-        "Status": {
-          "type": "TransactionResultStatus",
-          "id": 2
-        },
-        "Logs": {
-          "rule": "repeated",
-          "type": "LogEvent",
-          "id": 3
-        },
-        "Bloom": {
-          "type": "bytes",
-          "id": 4
-        },
-        "ReturnValue": {
-          "type": "bytes",
-          "id": 5
-        },
-        "BlockNumber": {
-          "type": "int64",
-          "id": 6
-        },
-        "BlockHash": {
-          "type": "Hash",
-          "id": 7
-        },
-        "Index": {
-          "type": "int32",
-          "id": 8
-        },
-        "StateHash": {
-          "type": "Hash",
-          "id": 9
-        },
-        "DeferredTransactions": {
-          "rule": "repeated",
-          "type": "Transaction",
-          "id": 10
-        },
-        "DeferredTxnId": {
-          "type": "Hash",
-          "id": 11
-        },
-        "Error": {
-          "type": "string",
-          "id": 12
-        },
-        "ReadableReturnValue": {
-          "type": "string",
-          "id": 13
-        }
-      }
-    },
-    "ExecutionStatus": {
-      "values": {
-        "Undefined": 0,
-        "Executed": 1,
-        "Canceled": -1,
-        "SystemError": -2,
-        "ContractError": -10,
-        "ExceededMaxCallDepth": -11,
-        "InsufficientTransactionFees": -12,
-        "Prefailed": -99
-      }
-    },
-    "TransactionTrace": {
-      "fields": {
-        "TransactionId": {
-          "type": "Hash",
-          "id": 1
-        },
-        "ReturnValue": {
-          "type": "bytes",
-          "id": 2
-        },
-        "StdOut": {
-          "type": "string",
-          "id": 3
-        },
-        "StdErr": {
-          "type": "string",
-          "id": 4
-        },
-        "PreTransactions": {
-          "rule": "repeated",
-          "type": "Transaction",
-          "id": 5
-        },
-        "PreTraces": {
-          "rule": "repeated",
-          "type": "TransactionTrace",
-          "id": 6
-        },
-        "InlineTransactions": {
-          "rule": "repeated",
-          "type": "Transaction",
-          "id": 7
-        },
-        "InlineTraces": {
-          "rule": "repeated",
-          "type": "TransactionTrace",
-          "id": 8
-        },
-        "Logs": {
-          "rule": "repeated",
-          "type": "LogEvent",
-          "id": 9
-        },
-        "Elapsed": {
-          "type": "int64",
-          "id": 10
-        },
-        "ExecutionStatus": {
-          "type": "ExecutionStatus",
-          "id": 11
-        },
-        "StateSet": {
-          "type": "TransactionExecutingStateSet",
-          "id": 12
-        },
-        "DeferredTransaction": {
-          "type": "bytes",
-          "id": 13
-        },
-        "ReadableReturnValue": {
-          "type": "string",
-          "id": 14
-        }
-      }
-    },
-    "ExecutionReturnSet": {
-      "fields": {
-        "TransactionId": {
-          "type": "Hash",
-          "id": 1
-        },
-        "Status": {
-          "type": "TransactionResultStatus",
-          "id": 2
-        },
-        "StateChanges": {
-          "keyType": "string",
-          "type": "bytes",
-          "id": 3
-        },
-        "Bloom": {
-          "type": "bytes",
-          "id": 4
-        },
-        "DeferredTransactions": {
-          "rule": "repeated",
-          "type": "Transaction",
-          "id": 5
-        },
-        "ReturnValue": {
-          "type": "bytes",
-          "id": 6
-        }
-      }
-    },
-    "LogEvent": {
-      "fields": {
-        "Address": {
-          "type": "Address",
-          "id": 1
-        },
-        "Name": {
-          "type": "string",
-          "id": 2
-        },
-        "Indexed": {
-          "rule": "repeated",
-          "type": "bytes",
-          "id": 3
-        },
-        "NonIndexed": {
-          "type": "bytes",
-          "id": 4
-        }
-      }
-    },
-    "BlockHeaderList": {
-      "fields": {
-        "Headers": {
-          "rule": "repeated",
-          "type": "BlockHeader",
-          "id": 1
-        }
-      }
-    },
-    "BlockExtraData": {
-      "fields": {
-        "SideChainTransactionsRoot": {
-          "type": "Hash",
-          "id": 1
-        },
-        "ConsensusInformation": {
-          "type": "bytes",
-          "id": 2
-        }
-      }
-    },
-    "BlockHeader": {
-      "fields": {
-        "Version": {
-          "type": "int32",
-          "id": 1
-        },
-        "PreviousBlockHash": {
-          "type": "Hash",
-          "id": 2
-        },
-        "MerkleTreeRootOfTransactions": {
-          "type": "Hash",
-          "id": 3
-        },
-        "MerkleTreeRootOfWorldState": {
-          "type": "Hash",
-          "id": 4
-        },
-        "Bloom": {
-          "type": "bytes",
-          "id": 5
-        },
-        "Height": {
-          "type": "int64",
-          "id": 6
-        },
-        "Sig": {
-          "type": "bytes",
-          "id": 7
-        },
-        "P": {
-          "type": "bytes",
-          "id": 8
-        },
-        "Time": {
-          "type": "google.protobuf.Timestamp",
-          "id": 9
-        },
-        "ChainId": {
-          "type": "int32",
-          "id": 10
-        },
-        "BlockExtraDatas": {
-          "rule": "repeated",
-          "type": "bytes",
-          "id": 11
-        }
-      }
-    },
-    "BlockBody": {
-      "fields": {
-        "BlockHeader": {
-          "type": "Hash",
-          "id": 1
-        },
-        "Transactions": {
-          "rule": "repeated",
-          "type": "Hash",
-          "id": 2
-        },
-        "TransactionList": {
-          "rule": "repeated",
-          "type": "Transaction",
-          "id": 3
-        }
-      }
-    },
-    "Block": {
-      "fields": {
-        "Header": {
-          "type": "BlockHeader",
-          "id": 1
-        },
-        "Body": {
-          "type": "BlockBody",
-          "id": 2
-        }
-      }
-    },
-    "SmartContractRegistration": {
-      "fields": {
-        "Category": {
-          "type": "int32",
-          "id": 1
-        },
-        "Code": {
-          "type": "bytes",
-          "id": 2
-        },
-        "CodeHash": {
-          "type": "Hash",
-          "id": 3
-        }
-      }
-    },
-    "DataAccessMode": {
-      "values": {
-        "ReadOnlyAccountSharing": 0,
-        "ReadWriteAccountSharing": 1,
-        "AccountSpecific": 2
-      }
-    },
-    "BinaryMerkleTree": {
-      "fields": {
-        "Nodes": {
-          "rule": "repeated",
-          "type": "Hash",
-          "id": 1
-        },
-        "Root": {
-          "type": "Hash",
-          "id": 2
-        },
-        "LeafCount": {
-          "type": "int32",
-          "id": 3
-        }
-      }
-    },
-    "MerklePath": {
-      "fields": {
-        "Path": {
-          "rule": "repeated",
-          "type": "Hash",
-          "id": 1
-        }
-      }
-    },
-    "StringList": {
-      "fields": {
-        "Values": {
-          "rule": "repeated",
-          "type": "string",
-          "id": 1
-        },
-        "Remark": {
-          "type": "string",
-          "id": 2
-        }
-      }
-    },
-    "HashList": {
-      "fields": {
-        "Values": {
-          "rule": "repeated",
-          "type": "Hash",
-          "id": 1
-        }
-      }
-    },
-    "LongList": {
-      "fields": {
-        "Values": {
-          "rule": "repeated",
-          "type": "int64",
-          "id": 1
-        },
-        "Remark": {
-          "type": "string",
-          "id": 2
-        }
-      }
-    },
-    "BlockAbstract": {
-      "fields": {
-        "MinerPublicKey": {
-          "type": "string",
-          "id": 1
-        },
-        "Time": {
-          "type": "google.protobuf.Timestamp",
-          "id": 2
-        }
-      }
-    },
-    "BlockValidationResult": {
-      "values": {
-        "Success": 0,
-        "NotMiner": 11,
-        "InvalidTimeSlot": 12,
-        "FailedToCheckConsensusInvalidation": 13,
-        "DoingRollback": 14,
-        "BlockIsNull": 101,
-        "SameWithCurrentRound": 102,
-        "IncorrectConsensusTransaction": 103,
-        "ParseProblem": 104,
-        "NoTransaction": 105,
-        "IncorrectTxMerkleTreeRoot": 106,
-        "IncorrectSideChainInfo": 107,
-        "IncorrectPoWResult": 108,
-        "NotImplementConsensus": 109
-      }
-    },
-    "VersionedState": {
-      "fields": {
-        "Key": {
-          "type": "string",
-          "id": 1
-        },
-        "Value": {
-          "type": "bytes",
-          "id": 2
-        },
-        "BlockHeight": {
-          "type": "int64",
-          "id": 3
-        },
-        "BlockHash": {
-          "type": "Hash",
-          "id": 4
-        },
-        "OriginBlockHash": {
-          "type": "Hash",
-          "id": 5
-        }
-      }
-    },
-    "BlockStateSet": {
-      "fields": {
-        "BlockHash": {
-          "type": "Hash",
-          "id": 1
-        },
-        "PreviousHash": {
-          "type": "Hash",
-          "id": 2
-        },
-        "BlockHeight": {
-          "type": "int64",
-          "id": 3
-        },
-        "Changes": {
-          "keyType": "string",
-          "type": "bytes",
-          "id": 4
-        }
-      }
-    },
-    "TransactionExecutingStateSet": {
-      "fields": {
-        "Version": {
-          "type": "int64",
-          "id": 1
-        },
-        "Writes": {
-          "keyType": "string",
-          "type": "bytes",
-          "id": 2
-        },
-        "Reads": {
-          "keyType": "string",
-          "type": "bool",
-          "id": 3
-        }
-      }
-    },
-    "ChainStateMergingStatus": {
-      "values": {
-        "Common": 0,
-        "Merging": 1,
-        "Merged": 2
-      }
-    },
-    "ChainStateInfo": {
-      "fields": {
-        "ChainId": {
-          "type": "int32",
-          "id": 1
-        },
-        "BlockHash": {
-          "type": "Hash",
-          "id": 2
-        },
-        "BlockHeight": {
-          "type": "int64",
-          "id": 3
-        },
-        "MergingBlockHash": {
-          "type": "Hash",
-          "id": 4
-        },
-        "Status": {
-          "type": "ChainStateMergingStatus",
-          "id": 5
-        }
-      }
-    },
-    "ActionResult": {
-      "fields": {
-        "Success": {
-          "type": "bool",
-          "id": 1
-        },
-        "ErrorMessage": {
-          "type": "string",
-          "id": 2
-        }
-      }
-    },
-    "ChainBlockLinkExecutionStatus": {
-      "values": {
-        "ExecutionNone": 0,
-        "ExecutionSuccess": 1,
-        "ExecutionFailed": 2
-      }
-    },
-    "ChainBlockLink": {
-      "fields": {
-        "BlockHash": {
-          "type": "Hash",
-          "id": 1
-        },
-        "Height": {
-          "type": "int64",
-          "id": 2
-        },
-        "PreviousBlockHash": {
-          "type": "Hash",
-          "id": 3
-        },
-        "ExecutionStatus": {
-          "type": "ChainBlockLinkExecutionStatus",
-          "id": 4
-        },
-        "IsIrreversibleBlock": {
-          "type": "bool",
-          "id": 5
-        },
-        "IsLinked": {
-          "type": "bool",
-          "id": 6
-        },
-        "IsLightBlock": {
-          "type": "bool",
-          "id": 7
-        }
-      }
-    },
-    "Chain": {
-      "fields": {
-        "Id": {
-          "type": "int32",
-          "id": 1
-        },
-        "GenesisBlockHash": {
-          "type": "Hash",
-          "id": 2
-        },
-        "LongestChainHash": {
-          "type": "Hash",
-          "id": 3
-        },
-        "LongestChainHeight": {
-          "type": "int64",
-          "id": 4
-        },
-        "Branches": {
-          "keyType": "string",
-          "type": "int64",
-          "id": 5
-        },
-        "NotLinkedBlocks": {
-          "keyType": "string",
-          "type": "string",
-          "id": 6
-        },
-        "LastIrreversibleBlockHash": {
-          "type": "Hash",
-          "id": 7
-        },
-        "LastIrreversibleBlockHeight": {
-          "type": "int64",
-          "id": 8
-        },
-        "BestChainHash": {
-          "type": "Hash",
-          "id": 9
-        },
-        "BestChainHeight": {
-          "type": "int64",
-          "id": 10
-        }
-      }
-    },
-    "ChainBlockIndex": {
-      "fields": {
-        "BlockHash": {
-          "type": "Hash",
-          "id": 1
-        }
-      }
-    },
-    "TransactionBlockIndex": {
-      "fields": {
-        "BlockHash": {
-          "type": "Hash",
-          "id": 1
-        }
-      }
-    },
-    "SystemTransactionMethodCall": {
-      "fields": {
-        "MethodName": {
-          "type": "string",
-          "id": 1
-        },
-        "Params": {
-          "type": "bytes",
-          "id": 2
-        }
-      }
-    },
-    "SystemTransactionMethodCallList": {
-      "fields": {
-        "Value": {
-          "rule": "repeated",
-          "type": "SystemTransactionMethodCall",
-          "id": 1
-        }
-      }
-    },
-    "ContractDeploymentInput": {
-      "fields": {
-        "category": {
-          "type": "sint32",
-          "id": 1
-        },
-        "code": {
-          "type": "bytes",
-          "id": 2
-        }
-      }
-    },
-    "SystemContractDeploymentInput": {
-      "fields": {
-        "category": {
-          "type": "sint32",
-          "id": 1
-        },
-        "code": {
-          "type": "bytes",
-          "id": 2
-        },
-        "name": {
-          "type": "Hash",
-          "id": 3
-        },
-        "transactionMethodCallList": {
-          "type": "SystemTransactionMethodCallList",
-          "id": 4
-        }
-      }
-    },
-    "ContractUpdateInput": {
-      "fields": {
-        "address": {
-          "type": "Address",
-          "id": 1
-        },
-        "code": {
-          "type": "bytes",
-          "id": 2
-        }
-      }
-    },
-    "ChangeContractOwnerInput": {
-      "fields": {
-        "contractAddress": {
-          "type": "Address",
-          "id": 1
-        },
-        "newOwner": {
-          "type": "Address",
-          "id": 2
-        }
-      }
-    },
-    "ContractInfo": {
-      "fields": {
-        "SerialNumber": {
-          "type": "uint64",
-          "id": 1
-        },
-        "Owner": {
-          "type": "Address",
-          "id": 2
-        },
-        "Category": {
-          "type": "int32",
-          "id": 3
-        },
-        "CodeHash": {
-          "type": "Hash",
-          "id": 4
-        }
-      }
-    },
-    "google": {
-      "nested": {
-        "protobuf": {
-          "nested": {
-            "Timestamp": {
-              "fields": {
-                "seconds": {
-                  "type": "int64",
-                  "id": 1
-                },
-                "nanos": {
-                  "type": "int32",
-                  "id": 2
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "Address": {
-      "fields": {
-        "Value": {
-          "type": "bytes",
-          "id": 1
-        }
-      }
-    },
-    "Hash": {
-      "fields": {
-        "Value": {
-          "type": "bytes",
-          "id": 1
-        }
-      }
-    },
-    "SInt32Value": {
-      "fields": {
-        "Value": {
-          "type": "sint32",
-          "id": 1
-        }
-      }
-    },
-    "SInt64Value": {
-      "fields": {
-        "Value": {
-          "type": "sint64",
-          "id": 1
-        }
-      }
-    }
-  }
-}
-},{}],13:[function(require,module,exports){
 /*
     This file is part of web3.js.
 
@@ -4069,7 +3446,7 @@ RequestManager.prototype.poll = function () {
 module.exports = RequestManager;
 
 
-},{"../utils/config":38,"./errors":2,"./jsonrpc":5}],14:[function(require,module,exports){
+},{"../utils/config":37,"./errors":2,"./jsonrpc":5}],13:[function(require,module,exports){
 
 
 var Settings = function () {
@@ -4079,7 +3456,7 @@ var Settings = function () {
 module.exports = Settings;
 
 
-},{}],15:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 /*
     This file is part of web3.js.
 
@@ -4342,7 +3719,7 @@ var Contract = function (chain, abi, address) {
 
 module.exports = ContractFactory;
 
-},{"../../utils/utils":41,"./method.js":17}],16:[function(require,module,exports){
+},{"../../utils/utils":40,"./method.js":16}],15:[function(require,module,exports){
 /*
     This file is part of web3.js.
 
@@ -4373,7 +3750,7 @@ var ContractMethod = require('./method1.js');
  * serialized FileDescriptorSet.
  * 
  * @method getService
- * @param {FileDescriptorSet} fileDescriptorSet 
+ * @param {FileDescriptorSet} fileDescriptorSet
  */
 var getServices = function (fileDescriptorSet){
     var fds = fileDescriptorSet;
@@ -4398,10 +3775,10 @@ var getServices = function (fileDescriptorSet){
  * Adds functions to contract object
  * @method addMethodsToContract
  * @param {Contract} contract 
- * @param {KeyPair} wallet 
+ * @param {KeyPair} wallet
  */
 var addMethodsToContract = function (contract, wallet) {
-    for(var i = 0; i < contract.services.length; i++){
+    for (var i = 0; i < contract.services.length; i++) {
         contract.services[i].methodsArray.map(function (method) {
             return new ContractMethod(contract._chain, method, contract.address, wallet);
         }).forEach(function (f) {
@@ -4412,11 +3789,11 @@ var addMethodsToContract = function (contract, wallet) {
 
 /**
  * Creates new ContractFactory instance
- * 
+ *
  * @method ContractFactory
- * @param {Chain} chain 
- * @param {FileDescriptorSet} fileDescriptorSet 
- * @param {KeyPair} wallet 
+ * @param {Chain} chain
+ * @param {FileDescriptorSet} fileDescriptorSet
+ * @param {KeyPair} wallet
  */
 var ContractFactory = function (chain, fileDescriptorSet, wallet) {
     this.chain = chain;
@@ -4463,7 +3840,7 @@ var Contract = function (chain, services, address) {
 
 module.exports = ContractFactory;
 
-},{"./method1.js":18,"@aelfqueen/protobufjs":45}],17:[function(require,module,exports){
+},{"./method1.js":17,"@aelfqueen/protobufjs":44}],16:[function(require,module,exports){
 (function (Buffer){
 /*
     This file is part of web3.js.
@@ -4551,7 +3928,7 @@ ContractMethod.prototype.toPayload = function (args) {
     var rawtx = proto.getTransaction(this._wallet.address, this._address, this._name, coder.encodeParams(this._paramTypes, args));
 
     var block_height = JSON.parse(this._chain.getBlockHeight(), 10);
-    var block_info = this._chain.getBlockInfo(block_height, false);
+    var block_info = this._chain.getBlockByHeight(block_height, false);
 
     rawtx.RefBlockNumber = block_height;
     var blockhash = block_info.BlockHash;
@@ -4592,7 +3969,7 @@ ContractMethod.prototype.toPayloadAsync = function (args) {
     return new Promise((resolve, reject) => {
         this._chain.getBlockHeight((error, item) => {
             var blockHeight = parseInt(item, 10);
-            this._chain.getBlockInfo(blockHeight, false, (error, item) => {
+            this._chain.getBlockByHeight(blockHeight, false, (error, item) => {
                 var blockInfo = item;
 
                 rawtx.RefBlockNumber = blockHeight;
@@ -4754,7 +4131,7 @@ module.exports = ContractMethod;
 
 }).call(this,require("buffer").Buffer)
 
-},{"../../utils/config":38,"../../utils/utils":41,"../errors":2,"../proto.js":8,"../types/coder":25,"../wallet.js":36,"buffer":107}],18:[function(require,module,exports){
+},{"../../utils/config":37,"../../utils/utils":40,"../errors":2,"../proto.js":8,"../types/coder":24,"../wallet.js":35,"buffer":106}],17:[function(require,module,exports){
 (function (Buffer){
 /*
     This file is part of web3.js.
@@ -4965,15 +4342,15 @@ ContractMethod.prototype.validateArgs = function (args) {
  * @param {Object} optional payload options
  */
 ContractMethod.prototype.toPayload = function (args) {
-    var encoded = this.packInput(args[0]);
-    var rawtx = proto.getTransaction(this._wallet.address, this._address, this._name, encoded);
+    let encoded = this.packInput(args[0]);
+    let rawtx = proto.getTransaction(this._wallet.address, this._address, this._name, encoded);
 
     // TODO: Move this chunk into utils
-    var block_height = JSON.parse(this._chain.getBlockHeight(), 10);
-    var block_info = this._chain.getBlockInfo(block_height, false);
+    let block_height = JSON.parse(this._chain.getBlockHeight(), 10);
+    let block_info = this._chain.getBlockByHeight(block_height, false);
 
     rawtx.RefBlockNumber = block_height;
-    var blockhash = block_info.BlockHash;
+    let blockhash = block_info.BlockHash;
     blockhash = blockhash.match(/^0x/) ? blockhash.substring(2) : blockhash;
 
     rawtx.RefBlockPrefix = (new Buffer(blockhash, 'hex')).slice(0, 4);
@@ -4985,14 +4362,13 @@ ContractMethod.prototype.toPayload = function (args) {
     // options.To = this._address;
     // options.MethodName = this._name;
     // options.Params = coder.encodeParams(this._paramTypes, args);
-    var tx = wallet.signTransaction(rawtx, this._wallet.keyPair);
+    let tx = wallet.signTransaction(rawtx, this._wallet.keyPair);
 
     tx = proto.Transaction.encode(tx).finish();
     if (tx.__proto__.constructor === Buffer) {
         return tx.toString('hex');
-    } else {
-        return utils.uint8ArrayToHex(tx);
     }
+    return utils.uint8ArrayToHex(tx);
 };
 
 /**
@@ -5011,16 +4387,16 @@ ContractMethod.prototype.toPayloadAsync = function (args) {
     );
     return new Promise((resolve, reject) => {
         this._chain.getBlockHeight((error, item) => {
-            var blockHeight = parseInt(item, 10);
-            this._chain.getBlockInfo(blockHeight, false, (error, item) => {
-                var blockInfo = item;
+            let blockHeight = parseInt(item, 10);
+            this._chain.getBlockByHeight(blockHeight, false, (error, item) => {
+                let blockInfo = item;
 
                 rawtx.RefBlockNumber = blockHeight;
-                var blockhash = blockInfo.BlockHash || blockInfo.blockHash;
+                let blockhash = blockInfo.BlockHash || blockInfo.blockHash;
                 blockhash = blockhash.match(/^0x/) ? blockhash.substring(2) : blockhash;
 
                 rawtx.RefBlockPrefix = (new Buffer(blockhash, 'hex')).slice(0, 4);
-                var tx = wallet.signTransaction(rawtx, this._wallet.keyPair);
+                let tx = wallet.signTransaction(rawtx, this._wallet.keyPair);
                 tx = proto.Transaction.encode(tx).finish();
                 if (tx.__proto__.constructor === Buffer) {
                     resolve(tx.toString('hex'));
@@ -5040,8 +4416,8 @@ ContractMethod.prototype.packInput = function (input) {
 
     input = maybeUglifyAddress(input, this._isInputTypeAddress, this._inputTypeAddressFieldPaths);
     input = maybeUglifyHash(input, this._isInputTypeHash, this._inputTypeHashFieldPaths);
-    var message = this._inputType.fromObject(input);
-    var bytes = this._inputType.encode(message).finish();
+    let message = this._inputType.fromObject(input);
+    let bytes = this._inputType.encode(message).finish();
     return bytes;
 };
 
@@ -5181,7 +4557,7 @@ module.exports = ContractMethod;
 
 }).call(this,require("buffer").Buffer)
 
-},{"../../utils/config":38,"../../utils/utils":41,"../errors":2,"../proto.js":8,"../types/coder":25,"../wallet.js":36,"buffer":107}],19:[function(require,module,exports){
+},{"../../utils/config":37,"../../utils/utils":40,"../errors":2,"../proto.js":8,"../types/coder":24,"../wallet.js":35,"buffer":106}],18:[function(require,module,exports){
 var f = require('./formatters.js');
 var BaseType = require('./base');
 
@@ -5199,7 +4575,7 @@ TypeAddress.prototype.isType = function (name) {
 
 module.exports = TypeAddress;
 
-},{"./base":22,"./formatters.js":26}],20:[function(require,module,exports){
+},{"./base":21,"./formatters.js":25}],19:[function(require,module,exports){
 var f = require('./formatters.js');
 var BaseType = require('./base');
 
@@ -5214,7 +4590,7 @@ TypeApproval.prototype.isType = function (name) {
     return !!name.match(/^AElf\.Kernel\.Approval$/);
 };
 module.exports = TypeApproval;
-},{"./base":22,"./formatters.js":26}],21:[function(require,module,exports){
+},{"./base":21,"./formatters.js":25}],20:[function(require,module,exports){
 var f = require('./formatters.js');
 var BaseType = require('./base');
 
@@ -5230,7 +4606,7 @@ TypeAuthorization.prototype.isType = function (name) {
 };
 module.exports = TypeAuthorization;
 
-},{"./base":22,"./formatters.js":26}],22:[function(require,module,exports){
+},{"./base":21,"./formatters.js":25}],21:[function(require,module,exports){
 var f = require('./formatters');
 
 /**
@@ -5279,7 +4655,7 @@ BaseType.prototype.decode = function (bytes, name) {
 
 module.exports = BaseType;
 
-},{"./formatters":26}],23:[function(require,module,exports){
+},{"./formatters":25}],22:[function(require,module,exports){
 var f = require('./formatters.js');
 var BaseType = require('./base');
 
@@ -5297,7 +4673,7 @@ TypeBool.prototype.isType = function (name) {
 
 module.exports = TypeBool;
 
-},{"./base":22,"./formatters.js":26}],24:[function(require,module,exports){
+},{"./base":21,"./formatters.js":25}],23:[function(require,module,exports){
 var f = require('./formatters.js');
 var BaseType = require('./base');
 
@@ -5315,7 +4691,7 @@ TypeBytes.prototype.isType = function (name) {
 
 module.exports = TypeBytes;
 
-},{"./base":22,"./formatters.js":26}],25:[function(require,module,exports){
+},{"./base":21,"./formatters.js":25}],24:[function(require,module,exports){
 (function (Buffer){
 /*
     This file is part of web3.js.
@@ -5454,7 +4830,7 @@ module.exports = coder;
 
 }).call(this,require("buffer").Buffer)
 
-},{"./address.js":19,"./approval":20,"./authorization.js":21,"./bool.js":23,"./bytes.js":24,"./formatters":26,"./hash.js":27,"./int.js":28,"./long.js":29,"./merklepath":30,"./proposal":31,"./sidechaininfo":32,"./string.js":33,"./uint.js":34,"./ulong.js":35,"buffer":107}],26:[function(require,module,exports){
+},{"./address.js":18,"./approval":19,"./authorization.js":20,"./bool.js":22,"./bytes.js":23,"./formatters":25,"./hash.js":26,"./int.js":27,"./long.js":28,"./merklepath":29,"./proposal":30,"./sidechaininfo":31,"./string.js":32,"./uint.js":33,"./ulong.js":34,"buffer":106}],25:[function(require,module,exports){
 (function (Buffer){
 /*
     This file is part of web3.js.
@@ -5882,7 +5258,7 @@ module.exports = {
 
 }).call(this,require("buffer").Buffer)
 
-},{"../proto.js":8,"./coder":25,"@aelfqueen/protobufjs":45,"buffer":107}],27:[function(require,module,exports){
+},{"../proto.js":8,"./coder":24,"@aelfqueen/protobufjs":44,"buffer":106}],26:[function(require,module,exports){
 var f = require('./formatters.js');
 var BaseType = require('./base');
 
@@ -5900,7 +5276,7 @@ TypeHash.prototype.isType = function (name) {
 
 module.exports = TypeHash;
 
-},{"./base":22,"./formatters.js":26}],28:[function(require,module,exports){
+},{"./base":21,"./formatters.js":25}],27:[function(require,module,exports){
 var f = require('./formatters.js');
 var BaseType = require('./base');
 
@@ -5918,7 +5294,7 @@ TypeInt.prototype.isType = function (name) {
 
 module.exports = TypeInt;
 
-},{"./base":22,"./formatters.js":26}],29:[function(require,module,exports){
+},{"./base":21,"./formatters.js":25}],28:[function(require,module,exports){
 var f = require('./formatters.js');
 var BaseType = require('./base');
 
@@ -5936,7 +5312,7 @@ TypeLong.prototype.isType = function (name) {
 
 module.exports = TypeLong;
 
-},{"./base":22,"./formatters.js":26}],30:[function(require,module,exports){
+},{"./base":21,"./formatters.js":25}],29:[function(require,module,exports){
 var f = require('./formatters.js');
 var BaseType = require('./base');
 
@@ -5950,7 +5326,7 @@ TypeMerklePath.prototype.isType = function (name) {
     return !!name.match(/^AElf\.Kernel\.MerklePath$/);
 };
 module.exports = TypeMerklePath;
-},{"./base":22,"./formatters.js":26}],31:[function(require,module,exports){
+},{"./base":21,"./formatters.js":25}],30:[function(require,module,exports){
 var f = require('./formatters.js');
 var BaseType = require('./base');
 
@@ -5965,7 +5341,7 @@ TypeProposal.prototype.isType = function (name) {
     return !!name.match(/^AElf\.Kernel\.Proposal$/);
 };
 module.exports = TypeProposal;
-},{"./base":22,"./formatters.js":26}],32:[function(require,module,exports){
+},{"./base":21,"./formatters.js":25}],31:[function(require,module,exports){
 var f = require('./formatters.js');
 var BaseType = require('./base');
 
@@ -5980,7 +5356,7 @@ TypeSideChainInfo.prototype.isType = function (name) {
     return !!name.match(/^AElf\.Kernel\.SideChainInfo$/);
 };
 module.exports = TypeSideChainInfo;
-},{"./base":22,"./formatters.js":26}],33:[function(require,module,exports){
+},{"./base":21,"./formatters.js":25}],32:[function(require,module,exports){
 var f = require('./formatters.js');
 var BaseType = require('./base');
 
@@ -5998,7 +5374,7 @@ TypeString.prototype.isType = function (name) {
 
 module.exports = TypeString;
 
-},{"./base":22,"./formatters.js":26}],34:[function(require,module,exports){
+},{"./base":21,"./formatters.js":25}],33:[function(require,module,exports){
 var f = require('./formatters.js');
 var BaseType = require('./base');
 
@@ -6016,7 +5392,7 @@ TypeUInt.prototype.isType = function (name) {
 
 module.exports = TypeUInt;
 
-},{"./base":22,"./formatters.js":26}],35:[function(require,module,exports){
+},{"./base":21,"./formatters.js":25}],34:[function(require,module,exports){
 var f = require('./formatters.js');
 var BaseType = require('./base');
 
@@ -6034,7 +5410,7 @@ TypeULong.prototype.isType = function (name) {
 
 module.exports = TypeULong;
 
-},{"./base":22,"./formatters.js":26}],36:[function(require,module,exports){
+},{"./base":21,"./formatters.js":25}],35:[function(require,module,exports){
 (function (global,Buffer){
 /**
  * @file aelf.js - AELF JavaScript API
@@ -6250,25 +5626,16 @@ var getWalletByPrivateKey = function (privateKey) {
  * //     },
  * //     To:
  * //         Address {
- * //            Value: <Buffer e0 b4 0d dc 35 20 d0 b5 36 3b d9 77 50 14 d7 7e 4b 8f e8 32 94 6d 0e 38 25 73 1d 89 12 7b> 
+ * //            Value: <Buffer e0 b4 0d dc 35 20 d0 b5 36 3b d9 77 50 14 d7 7e 4b 8f e8 32 94 6d 0e 38 25 73 1d 89 12 7b>
  * //         },
  * //         MethodName: 'test',
- * //         Params: null,
- * //         R: null,
- * //         S: null,
- * //         P: null,
- * //         IncrementId: null,
- * //         Fee: null
+ * //         Params: null
  * //     }
  * //  }
  */
 var signTransaction = function (rawTxn, keyPair) {
     var privKey = keyPair.getPrivate('hex');
-    // var pubKey = keyPair.getPublic();
 
-    // rawTxn.R = null;
-    // rawTxn.S = null;
-    // rawTxn.P = null;
     if (rawTxn.Params.length == 0) {
         rawTxn.Params = null;
     }
@@ -6280,10 +5647,10 @@ var signTransaction = function (rawTxn, keyPair) {
     var ser = proto.Transaction.encode(rawTxn).finish();
     var msgHash = sha256(ser);
 
-    var sigObj = ec.sign(Buffer.from(msgHash, "hex"), privKey, "hex", {canonical: true});
+    var sigObj = ec.sign(Buffer.from(msgHash, 'hex'), privKey, 'hex', {canonical: true});
     var hex = sigObj.r.toString('hex', 32).concat(sigObj.s.toString('hex', 32)).concat(['0' + sigObj.recoveryParam.toString()]);
     var sig = Buffer.from(hex, 'hex');
-    rawTxn.Sigs.push(sig);
+    rawTxn.Signature = sig;
 
     return rawTxn;
 };
@@ -6322,7 +5689,7 @@ module.exports = {
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer)
 
-},{"../utils/utils":41,"./proto.js":8,"bip39":93,"buffer":107,"crypto":105,"crypto-js/aes":114,"crypto-js/enc-utf8":118,"elliptic":123,"js-sha256":159}],37:[function(require,module,exports){
+},{"../utils/utils":40,"./proto.js":8,"bip39":92,"buffer":106,"crypto":104,"crypto-js/aes":113,"crypto-js/enc-utf8":117,"elliptic":122,"js-sha256":158}],36:[function(require,module,exports){
 (function (Buffer){
 'use strict'
 var sha256 = require('js-sha256').sha256;
@@ -6362,7 +5729,7 @@ module.exports.decode = (string, encoding) => {
 }
 }).call(this,require("buffer").Buffer)
 
-},{"bs58":106,"buffer":107,"js-sha256":159}],38:[function(require,module,exports){
+},{"bs58":105,"buffer":106,"js-sha256":158}],37:[function(require,module,exports){
 /*
     This file is part of web3.js.
 
@@ -6409,7 +5776,7 @@ module.exports = {
 };
 
 
-},{}],39:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 (function (Buffer){
 var sha256 = require('js-sha256').sha256;
 
@@ -6500,7 +5867,7 @@ var fromTwoBuffers = function(data){
 };
 }).call(this,require("buffer").Buffer)
 
-},{"buffer":107,"js-sha256":159}],40:[function(require,module,exports){
+},{"buffer":106,"js-sha256":158}],39:[function(require,module,exports){
 /**
  * @file objectToUrlParams.js
  * @author huangzongzhe
@@ -6512,7 +5879,7 @@ module.exports.objectToUrlParams = object => {
     }).join('&');
 };
 
-},{}],41:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 (function (Buffer){
 /*
     This file is part of web3.js.
@@ -7107,7 +6474,7 @@ module.exports = {
 
 }).call(this,require("buffer").Buffer)
 
-},{"./base58check":37,"bignumber.js":92,"buffer":107,"js-sha256":159,"utf8":211}],42:[function(require,module,exports){
+},{"./base58check":36,"bignumber.js":91,"buffer":106,"js-sha256":158,"utf8":210}],41:[function(require,module,exports){
 /**
  * @file webApiRpcMap.js
  * @author huangzongzhe
@@ -7116,9 +6483,13 @@ module.exports = {
  */
 const objectToUrlParams = require('../utils/objectToUrlParams').objectToUrlParams;
 module.exports.getWebApiInfo = (host, method, params) => {
-    const map = {
-        'GetChainInformation': {
-            name: 'chainInformation',
+    const chainMap = {
+        'chainStatus': {
+            name: 'chainStatus',
+            method: 'GET'
+        },
+        'blockState': {
+            name: 'blockState',
             method: 'GET'
         },
         'Call': {
@@ -7126,7 +6497,7 @@ module.exports.getWebApiInfo = (host, method, params) => {
             method: 'POST'
         },
         'GetFileDescriptorSet': {
-            name: 'fileDescriptorSet',
+            name: 'contractFileDescriptorSet',
             method: 'GET'
         },
         'BroadcastTransaction': {
@@ -7142,24 +6513,61 @@ module.exports.getWebApiInfo = (host, method, params) => {
             method: 'GET'
         },
         'GetTransactionsResult': {
-            name: 'transactionsResult',
+            name: 'transactionResults',
+            method: 'GET'
+        },
+        'getTransactionPoolStatus': {
+            name: 'transactionPoolStatus',
             method: 'GET'
         },
         'GetBlockHeight': {
             name: 'blockHeight',
             method: 'GET'
         },
+        'getBlockByHeight': {
+            name: 'blockByHeight',
+            method: 'GET'
+        },
         'GetBlockInfo': {
-            name: 'blockInfo',
+            name: 'blockByHeight',
+            method: 'GET'
+        },
+        'getBlock': {
+            name: 'block',
             method: 'GET'
         }
     };
 
-    const output = map[method] || {
+    const netMap = {
+        'GetPeers': {
+            name: 'peers',
+            method: 'GET'
+        },
+        'AddPeer': {
+            name: 'peer',
+            method: 'POST'
+        },
+        'RemovePeer': {
+            name: 'peer',
+            method: 'DELETE'
+        }
+    };
+
+    let mapType = 'blockChain';
+    let output = chainMap[method] || {
         name: '',
         method: 'GET'
     };
-    output.url = host.replace('/chain', '/api/chain') + '/' + output.name;
+
+    if (!output.name) {
+        mapType = 'net';
+        output = netMap[method] || {
+            name: '',
+            method: 'GET'
+        };
+    }
+
+    output.url = host.replace('/chain', `/api/${mapType}`) + '/' + output.name;
     if (output.method === 'GET') {
         output.url += '?' + objectToUrlParams(params);
     }
@@ -7176,7 +6584,7 @@ module.exports.getWebApiInfo = (host, method, params) => {
 //     }
 // };
 
-},{"../utils/objectToUrlParams":40}],43:[function(require,module,exports){
+},{"../utils/objectToUrlParams":39}],42:[function(require,module,exports){
 "use strict";
 var $protobuf = require("../..");
 module.exports = exports = $protobuf.descriptor = $protobuf.Root.fromJSON(require("../../google/protobuf/descriptor.json")).lookup(".google.protobuf");
@@ -8230,7 +7638,7 @@ function underScore(str) {
  * }
  */
 
-},{"../..":45,"../../google/protobuf/descriptor.json":44}],44:[function(require,module,exports){
+},{"../..":44,"../../google/protobuf/descriptor.json":43}],43:[function(require,module,exports){
 module.exports={
   "nested": {
     "google": {
@@ -8970,13 +8378,13 @@ module.exports={
     }
   }
 }
-},{}],45:[function(require,module,exports){
+},{}],44:[function(require,module,exports){
 // full library entry point.
 
 "use strict";
 module.exports = require("./src/index");
 
-},{"./src/index":54}],46:[function(require,module,exports){
+},{"./src/index":53}],45:[function(require,module,exports){
 "use strict";
 module.exports = common;
 
@@ -9377,7 +8785,7 @@ common.get = function get(file) {
     return common[file] || null;
 };
 
-},{}],47:[function(require,module,exports){
+},{}],46:[function(require,module,exports){
 "use strict";
 /**
  * Runtime message from/to plain object converters.
@@ -9672,7 +9080,7 @@ converter.toObject = function toObject(mtype) {
     /* eslint-enable no-unexpected-multiline, block-scoped-var, no-redeclare */
 };
 
-},{"./enum":50,"./util":72}],48:[function(require,module,exports){
+},{"./enum":49,"./util":71}],47:[function(require,module,exports){
 "use strict";
 module.exports = decoder;
 
@@ -9780,7 +9188,7 @@ function decoder(mtype) {
     /* eslint-enable no-unexpected-multiline */
 }
 
-},{"./enum":50,"./types":71,"./util":72}],49:[function(require,module,exports){
+},{"./enum":49,"./types":70,"./util":71}],48:[function(require,module,exports){
 "use strict";
 module.exports = encoder;
 
@@ -9881,7 +9289,7 @@ function encoder(mtype) {
     ("return w");
     /* eslint-enable no-unexpected-multiline, block-scoped-var, no-redeclare */
 }
-},{"./enum":50,"./types":71,"./util":72}],50:[function(require,module,exports){
+},{"./enum":49,"./types":70,"./util":71}],49:[function(require,module,exports){
 "use strict";
 module.exports = Enum;
 
@@ -10064,7 +9472,7 @@ Enum.prototype.isReservedName = function isReservedName(name) {
     return Namespace.isReservedName(this.reserved, name);
 };
 
-},{"./namespace":58,"./object":59,"./util":72}],51:[function(require,module,exports){
+},{"./namespace":57,"./object":58,"./util":71}],50:[function(require,module,exports){
 "use strict";
 module.exports = Field;
 
@@ -10437,7 +9845,7 @@ Field._configure = function configure(Type_) {
     Type = Type_;
 };
 
-},{"./enum":50,"./object":59,"./types":71,"./util":72}],52:[function(require,module,exports){
+},{"./enum":49,"./object":58,"./types":70,"./util":71}],51:[function(require,module,exports){
 "use strict";
 var protobuf = module.exports = require("./index-minimal");
 
@@ -10543,7 +9951,7 @@ protobuf.Namespace._configure(protobuf.Type, protobuf.Service, protobuf.Enum);
 protobuf.Root._configure(protobuf.Type);
 protobuf.Field._configure(protobuf.Type);
 
-},{"./converter":47,"./decoder":48,"./encoder":49,"./enum":50,"./field":51,"./index-minimal":53,"./mapfield":55,"./message":56,"./method":57,"./namespace":58,"./object":59,"./oneof":60,"./root":64,"./service":68,"./type":70,"./types":71,"./util":72,"./verifier":75,"./wrappers":76}],53:[function(require,module,exports){
+},{"./converter":46,"./decoder":47,"./encoder":48,"./enum":49,"./field":50,"./index-minimal":52,"./mapfield":54,"./message":55,"./method":56,"./namespace":57,"./object":58,"./oneof":59,"./root":63,"./service":67,"./type":69,"./types":70,"./util":71,"./verifier":74,"./wrappers":75}],52:[function(require,module,exports){
 "use strict";
 var protobuf = exports;
 
@@ -10581,7 +9989,7 @@ function configure() {
 protobuf.Writer._configure(protobuf.BufferWriter);
 configure();
 
-},{"./reader":62,"./reader_buffer":63,"./roots":65,"./rpc":66,"./util/minimal":74,"./writer":77,"./writer_buffer":78}],54:[function(require,module,exports){
+},{"./reader":61,"./reader_buffer":62,"./roots":64,"./rpc":65,"./util/minimal":73,"./writer":76,"./writer_buffer":77}],53:[function(require,module,exports){
 "use strict";
 var protobuf = module.exports = require("./index-light");
 
@@ -10595,7 +10003,7 @@ protobuf.common           = require("./common");
 // Configure parser
 protobuf.Root._configure(protobuf.Type, protobuf.parse, protobuf.common);
 
-},{"./common":46,"./index-light":52,"./parse":61,"./tokenize":69}],55:[function(require,module,exports){
+},{"./common":45,"./index-light":51,"./parse":60,"./tokenize":68}],54:[function(require,module,exports){
 "use strict";
 module.exports = MapField;
 
@@ -10723,7 +10131,7 @@ MapField.d = function decorateMapField(fieldId, fieldKeyType, fieldValueType) {
     };
 };
 
-},{"./field":51,"./types":71,"./util":72}],56:[function(require,module,exports){
+},{"./field":50,"./types":70,"./util":71}],55:[function(require,module,exports){
 "use strict";
 module.exports = Message;
 
@@ -10863,7 +10271,7 @@ Message.prototype.toJSON = function toJSON() {
 };
 
 /*eslint-enable valid-jsdoc*/
-},{"./util/minimal":74}],57:[function(require,module,exports){
+},{"./util/minimal":73}],56:[function(require,module,exports){
 "use strict";
 module.exports = Method;
 
@@ -11016,7 +10424,7 @@ Method.prototype.resolve = function resolve() {
     return ReflectionObject.prototype.resolve.call(this);
 };
 
-},{"./object":59,"./util":72}],58:[function(require,module,exports){
+},{"./object":58,"./util":71}],57:[function(require,module,exports){
 "use strict";
 module.exports = Namespace;
 
@@ -11451,7 +10859,7 @@ Namespace._configure = function(Type_, Service_, Enum_) {
     Enum    = Enum_;
 };
 
-},{"./field":51,"./object":59,"./util":72}],59:[function(require,module,exports){
+},{"./field":50,"./object":58,"./util":71}],58:[function(require,module,exports){
 "use strict";
 module.exports = ReflectionObject;
 
@@ -11653,7 +11061,7 @@ ReflectionObject._configure = function(Root_) {
     Root = Root_;
 };
 
-},{"./util":72}],60:[function(require,module,exports){
+},{"./util":71}],59:[function(require,module,exports){
 "use strict";
 module.exports = OneOf;
 
@@ -11858,7 +11266,7 @@ OneOf.d = function decorateOneOf() {
     };
 };
 
-},{"./field":51,"./object":59,"./util":72}],61:[function(require,module,exports){
+},{"./field":50,"./object":58,"./util":71}],60:[function(require,module,exports){
 "use strict";
 module.exports = parse;
 
@@ -12618,7 +12026,7 @@ function parse(source, root, options) {
  * @variation 2
  */
 
-},{"./enum":50,"./field":51,"./mapfield":55,"./method":57,"./oneof":60,"./root":64,"./service":68,"./tokenize":69,"./type":70,"./types":71,"./util":72}],62:[function(require,module,exports){
+},{"./enum":49,"./field":50,"./mapfield":54,"./method":56,"./oneof":59,"./root":63,"./service":67,"./tokenize":68,"./type":69,"./types":70,"./util":71}],61:[function(require,module,exports){
 "use strict";
 module.exports = Reader;
 
@@ -13025,7 +12433,7 @@ Reader._configure = function(BufferReader_) {
     });
 };
 
-},{"./util/minimal":74}],63:[function(require,module,exports){
+},{"./util/minimal":73}],62:[function(require,module,exports){
 "use strict";
 module.exports = BufferReader;
 
@@ -13071,7 +12479,7 @@ BufferReader.prototype.string = function read_string_buffer() {
  * @returns {Buffer} Value read
  */
 
-},{"./reader":62,"./util/minimal":74}],64:[function(require,module,exports){
+},{"./reader":61,"./util/minimal":73}],63:[function(require,module,exports){
 "use strict";
 module.exports = Root;
 
@@ -13424,7 +12832,7 @@ Root._configure = function(Type_, parse_, common_) {
     common = common_;
 };
 
-},{"./enum":50,"./field":51,"./namespace":58,"./oneof":60,"./util":72}],65:[function(require,module,exports){
+},{"./enum":49,"./field":50,"./namespace":57,"./oneof":59,"./util":71}],64:[function(require,module,exports){
 "use strict";
 module.exports = {};
 
@@ -13444,7 +12852,7 @@ module.exports = {};
  * var root = protobuf.roots["myroot"];
  */
 
-},{}],66:[function(require,module,exports){
+},{}],65:[function(require,module,exports){
 "use strict";
 
 /**
@@ -13482,7 +12890,7 @@ var rpc = exports;
 
 rpc.Service = require("./rpc/service");
 
-},{"./rpc/service":67}],67:[function(require,module,exports){
+},{"./rpc/service":66}],66:[function(require,module,exports){
 "use strict";
 module.exports = Service;
 
@@ -13626,7 +13034,7 @@ Service.prototype.end = function end(endedByRPC) {
     return this;
 };
 
-},{"../util/minimal":74}],68:[function(require,module,exports){
+},{"../util/minimal":73}],67:[function(require,module,exports){
 "use strict";
 module.exports = Service;
 
@@ -13795,7 +13203,7 @@ Service.prototype.create = function create(rpcImpl, requestDelimited, responseDe
     return rpcService;
 };
 
-},{"./method":57,"./namespace":58,"./rpc":66,"./util":72}],69:[function(require,module,exports){
+},{"./method":56,"./namespace":57,"./rpc":65,"./util":71}],68:[function(require,module,exports){
 "use strict";
 module.exports = tokenize;
 
@@ -14194,7 +13602,7 @@ function tokenize(source, alternateCommentMode) {
     /* eslint-enable callback-return */
 }
 
-},{}],70:[function(require,module,exports){
+},{}],69:[function(require,module,exports){
 "use strict";
 module.exports = Type;
 
@@ -14785,7 +14193,7 @@ Type.d = function decorateType(typeName) {
     };
 };
 
-},{"./converter":47,"./decoder":48,"./encoder":49,"./enum":50,"./field":51,"./mapfield":55,"./message":56,"./namespace":58,"./oneof":60,"./reader":62,"./service":68,"./util":72,"./verifier":75,"./wrappers":76,"./writer":77}],71:[function(require,module,exports){
+},{"./converter":46,"./decoder":47,"./encoder":48,"./enum":49,"./field":50,"./mapfield":54,"./message":55,"./namespace":57,"./oneof":59,"./reader":61,"./service":67,"./util":71,"./verifier":74,"./wrappers":75,"./writer":76}],70:[function(require,module,exports){
 "use strict";
 
 /**
@@ -14983,7 +14391,7 @@ types.packed = bake([
     /* bool     */ 0
 ]);
 
-},{"./util":72}],72:[function(require,module,exports){
+},{"./util":71}],71:[function(require,module,exports){
 "use strict";
 
 /**
@@ -15163,7 +14571,7 @@ Object.defineProperty(util, "decorateRoot", {
     }
 });
 
-},{"./enum":50,"./root":64,"./roots":65,"./type":70,"./util/minimal":74,"@protobufjs/codegen":82,"@protobufjs/fetch":84,"@protobufjs/path":87}],73:[function(require,module,exports){
+},{"./enum":49,"./root":63,"./roots":64,"./type":69,"./util/minimal":73,"@protobufjs/codegen":81,"@protobufjs/fetch":83,"@protobufjs/path":86}],72:[function(require,module,exports){
 "use strict";
 module.exports = LongBits;
 
@@ -15365,7 +14773,7 @@ LongBits.prototype.length = function length() {
          : part2 < 128 ? 9 : 10;
 };
 
-},{"../util/minimal":74}],74:[function(require,module,exports){
+},{"../util/minimal":73}],73:[function(require,module,exports){
 (function (global){
 "use strict";
 var util = exports;
@@ -15789,7 +15197,7 @@ util._configure = function() {
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{"./longbits":73,"@protobufjs/aspromise":80,"@protobufjs/base64":81,"@protobufjs/eventemitter":83,"@protobufjs/float":85,"@protobufjs/inquire":86,"@protobufjs/pool":88,"@protobufjs/utf8":89,"buffer":107}],75:[function(require,module,exports){
+},{"./longbits":72,"@protobufjs/aspromise":79,"@protobufjs/base64":80,"@protobufjs/eventemitter":82,"@protobufjs/float":84,"@protobufjs/inquire":85,"@protobufjs/pool":87,"@protobufjs/utf8":88,"buffer":106}],74:[function(require,module,exports){
 "use strict";
 module.exports = verifier;
 
@@ -15967,7 +15375,7 @@ function verifier(mtype) {
     ("return null");
     /* eslint-enable no-unexpected-multiline */
 }
-},{"./enum":50,"./util":72}],76:[function(require,module,exports){
+},{"./enum":49,"./util":71}],75:[function(require,module,exports){
 "use strict";
 
 /**
@@ -16052,7 +15460,7 @@ wrappers[".google.protobuf.Any"] = {
     }
 };
 
-},{"./message":56}],77:[function(require,module,exports){
+},{"./message":55}],76:[function(require,module,exports){
 "use strict";
 module.exports = Writer;
 
@@ -16513,7 +15921,7 @@ Writer._configure = function(BufferWriter_) {
     BufferWriter = BufferWriter_;
 };
 
-},{"./util/minimal":74}],78:[function(require,module,exports){
+},{"./util/minimal":73}],77:[function(require,module,exports){
 "use strict";
 module.exports = BufferWriter;
 
@@ -16596,7 +16004,7 @@ BufferWriter.prototype.string = function write_string_buffer(value) {
  * @returns {Buffer} Finished buffer
  */
 
-},{"./util/minimal":74,"./writer":77}],79:[function(require,module,exports){
+},{"./util/minimal":73,"./writer":76}],78:[function(require,module,exports){
 (function (process,Buffer){
 /**
  * Wrapper for built-in http.js to emulate the browser XMLHttpRequest object.
@@ -17230,7 +16638,7 @@ exports.XMLHttpRequest = function() {
 
 }).call(this,require('_process'),require("buffer").Buffer)
 
-},{"_process":170,"buffer":107,"child_process":104,"fs":104,"http":201,"https":154,"url":209}],80:[function(require,module,exports){
+},{"_process":169,"buffer":106,"child_process":103,"fs":103,"http":200,"https":153,"url":208}],79:[function(require,module,exports){
 "use strict";
 module.exports = asPromise;
 
@@ -17284,7 +16692,7 @@ function asPromise(fn, ctx/*, varargs */) {
     });
 }
 
-},{}],81:[function(require,module,exports){
+},{}],80:[function(require,module,exports){
 "use strict";
 
 /**
@@ -17425,7 +16833,7 @@ base64.test = function test(string) {
     return /^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/.test(string);
 };
 
-},{}],82:[function(require,module,exports){
+},{}],81:[function(require,module,exports){
 "use strict";
 module.exports = codegen;
 
@@ -17526,7 +16934,7 @@ function codegen(functionParams, functionName) {
  */
 codegen.verbose = false;
 
-},{}],83:[function(require,module,exports){
+},{}],82:[function(require,module,exports){
 "use strict";
 module.exports = EventEmitter;
 
@@ -17604,7 +17012,7 @@ EventEmitter.prototype.emit = function emit(evt) {
     return this;
 };
 
-},{}],84:[function(require,module,exports){
+},{}],83:[function(require,module,exports){
 "use strict";
 module.exports = fetch;
 
@@ -17721,7 +17129,7 @@ fetch.xhr = function fetch_xhr(filename, options, callback) {
     xhr.send();
 };
 
-},{"@protobufjs/aspromise":80,"@protobufjs/inquire":86}],85:[function(require,module,exports){
+},{"@protobufjs/aspromise":79,"@protobufjs/inquire":85}],84:[function(require,module,exports){
 "use strict";
 
 module.exports = factory(factory);
@@ -18058,7 +17466,7 @@ function readUintBE(buf, pos) {
           | buf[pos + 3]) >>> 0;
 }
 
-},{}],86:[function(require,module,exports){
+},{}],85:[function(require,module,exports){
 "use strict";
 module.exports = inquire;
 
@@ -18077,7 +17485,7 @@ function inquire(moduleName) {
     return null;
 }
 
-},{}],87:[function(require,module,exports){
+},{}],86:[function(require,module,exports){
 "use strict";
 
 /**
@@ -18144,7 +17552,7 @@ path.resolve = function resolve(originPath, includePath, alreadyNormalized) {
     return (originPath = originPath.replace(/(?:\/|^)[^/]+$/, "")).length ? normalize(originPath + "/" + includePath) : includePath;
 };
 
-},{}],88:[function(require,module,exports){
+},{}],87:[function(require,module,exports){
 "use strict";
 module.exports = pool;
 
@@ -18194,7 +17602,7 @@ function pool(alloc, slice, size) {
     };
 }
 
-},{}],89:[function(require,module,exports){
+},{}],88:[function(require,module,exports){
 "use strict";
 
 /**
@@ -18301,7 +17709,7 @@ utf8.write = function utf8_write(string, buffer, offset) {
     return offset - start;
 };
 
-},{}],90:[function(require,module,exports){
+},{}],89:[function(require,module,exports){
 // base-x encoding / decoding
 // Copyright (c) 2018 base-x contributors
 // Copyright (c) 2014-2018 The Bitcoin Core developers (base58.cpp)
@@ -18453,7 +17861,7 @@ module.exports = function base (ALPHABET) {
   }
 }
 
-},{"safe-buffer":191}],91:[function(require,module,exports){
+},{"safe-buffer":190}],90:[function(require,module,exports){
 'use strict'
 
 exports.byteLength = byteLength
@@ -18606,7 +18014,7 @@ function fromByteArray (uint8) {
   return parts.join('')
 }
 
-},{}],92:[function(require,module,exports){
+},{}],91:[function(require,module,exports){
 /*! bignumber.js v2.4.0 https://github.com/MikeMcl/bignumber.js/LICENCE */
 
 ;(function (globalObj) {
@@ -21345,7 +20753,7 @@ function fromByteArray (uint8) {
     }
 })(this);
 
-},{}],93:[function(require,module,exports){
+},{}],92:[function(require,module,exports){
 var Buffer = require('safe-buffer').Buffer
 var createHash = require('create-hash')
 var pbkdf2 = require('pbkdf2').pbkdf2Sync
@@ -21500,7 +20908,7 @@ module.exports = {
   }
 }
 
-},{"./wordlists/chinese_simplified.json":94,"./wordlists/chinese_traditional.json":95,"./wordlists/english.json":96,"./wordlists/french.json":97,"./wordlists/italian.json":98,"./wordlists/japanese.json":99,"./wordlists/korean.json":100,"./wordlists/spanish.json":101,"create-hash":112,"pbkdf2":164,"randombytes":175,"safe-buffer":191,"unorm":208}],94:[function(require,module,exports){
+},{"./wordlists/chinese_simplified.json":93,"./wordlists/chinese_traditional.json":94,"./wordlists/english.json":95,"./wordlists/french.json":96,"./wordlists/italian.json":97,"./wordlists/japanese.json":98,"./wordlists/korean.json":99,"./wordlists/spanish.json":100,"create-hash":111,"pbkdf2":163,"randombytes":174,"safe-buffer":190,"unorm":207}],93:[function(require,module,exports){
 module.exports=[
   "的",
   "一",
@@ -23552,7 +22960,7 @@ module.exports=[
   "歇"
 ]
 
-},{}],95:[function(require,module,exports){
+},{}],94:[function(require,module,exports){
 module.exports=[
   "的",
   "一",
@@ -25604,7 +25012,7 @@ module.exports=[
   "歇"
 ]
 
-},{}],96:[function(require,module,exports){
+},{}],95:[function(require,module,exports){
 module.exports=[
   "abandon",
   "ability",
@@ -27656,7 +27064,7 @@ module.exports=[
   "zoo"
 ]
 
-},{}],97:[function(require,module,exports){
+},{}],96:[function(require,module,exports){
 module.exports=[
   "abaisser",
   "abandon",
@@ -29708,7 +29116,7 @@ module.exports=[
   "zoologie"
 ]
 
-},{}],98:[function(require,module,exports){
+},{}],97:[function(require,module,exports){
 module.exports=[
   "abaco",
   "abbaglio",
@@ -31760,7 +31168,7 @@ module.exports=[
   "zuppa"
 ]
 
-},{}],99:[function(require,module,exports){
+},{}],98:[function(require,module,exports){
 module.exports=[
   "あいこくしん",
   "あいさつ",
@@ -33812,7 +33220,7 @@ module.exports=[
   "われる"
 ]
 
-},{}],100:[function(require,module,exports){
+},{}],99:[function(require,module,exports){
 module.exports=[
   "가격",
   "가끔",
@@ -35864,7 +35272,7 @@ module.exports=[
   "힘껏"
 ]
 
-},{}],101:[function(require,module,exports){
+},{}],100:[function(require,module,exports){
 module.exports=[
   "ábaco",
   "abdomen",
@@ -37916,7 +37324,7 @@ module.exports=[
   "zurdo"
 ]
 
-},{}],102:[function(require,module,exports){
+},{}],101:[function(require,module,exports){
 (function (module, exports) {
   'use strict';
 
@@ -41345,7 +40753,7 @@ module.exports=[
   };
 })(typeof module === 'undefined' || module, this);
 
-},{"buffer":104}],103:[function(require,module,exports){
+},{"buffer":103}],102:[function(require,module,exports){
 var r;
 
 module.exports = function rand(len) {
@@ -41412,17 +40820,17 @@ if (typeof self === 'object') {
   }
 }
 
-},{"crypto":105}],104:[function(require,module,exports){
+},{"crypto":104}],103:[function(require,module,exports){
 
-},{}],105:[function(require,module,exports){
-arguments[4][104][0].apply(exports,arguments)
-},{"dup":104}],106:[function(require,module,exports){
+},{}],104:[function(require,module,exports){
+arguments[4][103][0].apply(exports,arguments)
+},{"dup":103}],105:[function(require,module,exports){
 var basex = require('base-x')
 var ALPHABET = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
 
 module.exports = basex(ALPHABET)
 
-},{"base-x":90}],107:[function(require,module,exports){
+},{"base-x":89}],106:[function(require,module,exports){
 /*!
  * The buffer module from node.js, for the browser.
  *
@@ -43201,7 +42609,7 @@ function numberIsNaN (obj) {
   return obj !== obj // eslint-disable-line no-self-compare
 }
 
-},{"base64-js":91,"ieee754":155}],108:[function(require,module,exports){
+},{"base64-js":90,"ieee754":154}],107:[function(require,module,exports){
 module.exports = {
   "100": "Continue",
   "101": "Switching Protocols",
@@ -43267,7 +42675,7 @@ module.exports = {
   "511": "Network Authentication Required"
 }
 
-},{}],109:[function(require,module,exports){
+},{}],108:[function(require,module,exports){
 var Buffer = require('safe-buffer').Buffer
 var Transform = require('stream').Transform
 var StringDecoder = require('string_decoder').StringDecoder
@@ -43368,7 +42776,7 @@ CipherBase.prototype._toString = function (value, enc, fin) {
 
 module.exports = CipherBase
 
-},{"inherits":156,"safe-buffer":191,"stream":200,"string_decoder":205}],110:[function(require,module,exports){
+},{"inherits":155,"safe-buffer":190,"stream":199,"string_decoder":204}],109:[function(require,module,exports){
 /* jshint node: true */
 (function () {
     "use strict";
@@ -43646,7 +43054,7 @@ module.exports = CipherBase
     };
 }());
 
-},{}],111:[function(require,module,exports){
+},{}],110:[function(require,module,exports){
 (function (Buffer){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -43758,7 +43166,7 @@ function objectToString(o) {
 
 }).call(this,{"isBuffer":require("../../is-buffer/index.js")})
 
-},{"../../is-buffer/index.js":157}],112:[function(require,module,exports){
+},{"../../is-buffer/index.js":156}],111:[function(require,module,exports){
 'use strict'
 var inherits = require('inherits')
 var MD5 = require('md5.js')
@@ -43790,14 +43198,14 @@ module.exports = function createHash (alg) {
   return new Hash(sha(alg))
 }
 
-},{"cipher-base":109,"inherits":156,"md5.js":160,"ripemd160":190,"sha.js":193}],113:[function(require,module,exports){
+},{"cipher-base":108,"inherits":155,"md5.js":159,"ripemd160":189,"sha.js":192}],112:[function(require,module,exports){
 var MD5 = require('md5.js')
 
 module.exports = function (buffer) {
   return new MD5().update(buffer).digest()
 }
 
-},{"md5.js":160}],114:[function(require,module,exports){
+},{"md5.js":159}],113:[function(require,module,exports){
 ;(function (root, factory, undef) {
 	if (typeof exports === "object") {
 		// CommonJS
@@ -44030,7 +43438,7 @@ module.exports = function (buffer) {
 	return CryptoJS.AES;
 
 }));
-},{"./cipher-core":115,"./core":116,"./enc-base64":117,"./evpkdf":119,"./md5":121}],115:[function(require,module,exports){
+},{"./cipher-core":114,"./core":115,"./enc-base64":116,"./evpkdf":118,"./md5":120}],114:[function(require,module,exports){
 ;(function (root, factory, undef) {
 	if (typeof exports === "object") {
 		// CommonJS
@@ -44911,7 +44319,7 @@ module.exports = function (buffer) {
 
 
 }));
-},{"./core":116,"./evpkdf":119}],116:[function(require,module,exports){
+},{"./core":115,"./evpkdf":118}],115:[function(require,module,exports){
 ;(function (root, factory) {
 	if (typeof exports === "object") {
 		// CommonJS
@@ -45672,7 +45080,7 @@ module.exports = function (buffer) {
 	return CryptoJS;
 
 }));
-},{}],117:[function(require,module,exports){
+},{}],116:[function(require,module,exports){
 ;(function (root, factory) {
 	if (typeof exports === "object") {
 		// CommonJS
@@ -45808,7 +45216,7 @@ module.exports = function (buffer) {
 	return CryptoJS.enc.Base64;
 
 }));
-},{"./core":116}],118:[function(require,module,exports){
+},{"./core":115}],117:[function(require,module,exports){
 ;(function (root, factory) {
 	if (typeof exports === "object") {
 		// CommonJS
@@ -45827,7 +45235,7 @@ module.exports = function (buffer) {
 	return CryptoJS.enc.Utf8;
 
 }));
-},{"./core":116}],119:[function(require,module,exports){
+},{"./core":115}],118:[function(require,module,exports){
 ;(function (root, factory, undef) {
 	if (typeof exports === "object") {
 		// CommonJS
@@ -45960,7 +45368,7 @@ module.exports = function (buffer) {
 	return CryptoJS.EvpKDF;
 
 }));
-},{"./core":116,"./hmac":120,"./sha1":122}],120:[function(require,module,exports){
+},{"./core":115,"./hmac":119,"./sha1":121}],119:[function(require,module,exports){
 ;(function (root, factory) {
 	if (typeof exports === "object") {
 		// CommonJS
@@ -46104,7 +45512,7 @@ module.exports = function (buffer) {
 
 
 }));
-},{"./core":116}],121:[function(require,module,exports){
+},{"./core":115}],120:[function(require,module,exports){
 ;(function (root, factory) {
 	if (typeof exports === "object") {
 		// CommonJS
@@ -46373,7 +45781,7 @@ module.exports = function (buffer) {
 	return CryptoJS.MD5;
 
 }));
-},{"./core":116}],122:[function(require,module,exports){
+},{"./core":115}],121:[function(require,module,exports){
 ;(function (root, factory) {
 	if (typeof exports === "object") {
 		// CommonJS
@@ -46524,7 +45932,7 @@ module.exports = function (buffer) {
 	return CryptoJS.SHA1;
 
 }));
-},{"./core":116}],123:[function(require,module,exports){
+},{"./core":115}],122:[function(require,module,exports){
 'use strict';
 
 var elliptic = exports;
@@ -46539,7 +45947,7 @@ elliptic.curves = require('./elliptic/curves');
 elliptic.ec = require('./elliptic/ec');
 elliptic.eddsa = require('./elliptic/eddsa');
 
-},{"../package.json":138,"./elliptic/curve":126,"./elliptic/curves":129,"./elliptic/ec":130,"./elliptic/eddsa":133,"./elliptic/utils":137,"brorand":103}],124:[function(require,module,exports){
+},{"../package.json":137,"./elliptic/curve":125,"./elliptic/curves":128,"./elliptic/ec":129,"./elliptic/eddsa":132,"./elliptic/utils":136,"brorand":102}],123:[function(require,module,exports){
 'use strict';
 
 var BN = require('bn.js');
@@ -46916,7 +46324,7 @@ BasePoint.prototype.dblp = function dblp(k) {
   return r;
 };
 
-},{"../../elliptic":123,"bn.js":102}],125:[function(require,module,exports){
+},{"../../elliptic":122,"bn.js":101}],124:[function(require,module,exports){
 'use strict';
 
 var curve = require('../curve');
@@ -47351,7 +46759,7 @@ Point.prototype.eqXToP = function eqXToP(x) {
 Point.prototype.toP = Point.prototype.normalize;
 Point.prototype.mixedAdd = Point.prototype.add;
 
-},{"../../elliptic":123,"../curve":126,"bn.js":102,"inherits":156}],126:[function(require,module,exports){
+},{"../../elliptic":122,"../curve":125,"bn.js":101,"inherits":155}],125:[function(require,module,exports){
 'use strict';
 
 var curve = exports;
@@ -47361,7 +46769,7 @@ curve.short = require('./short');
 curve.mont = require('./mont');
 curve.edwards = require('./edwards');
 
-},{"./base":124,"./edwards":125,"./mont":127,"./short":128}],127:[function(require,module,exports){
+},{"./base":123,"./edwards":124,"./mont":126,"./short":127}],126:[function(require,module,exports){
 'use strict';
 
 var curve = require('../curve');
@@ -47543,7 +46951,7 @@ Point.prototype.getX = function getX() {
   return this.x.fromRed();
 };
 
-},{"../../elliptic":123,"../curve":126,"bn.js":102,"inherits":156}],128:[function(require,module,exports){
+},{"../../elliptic":122,"../curve":125,"bn.js":101,"inherits":155}],127:[function(require,module,exports){
 'use strict';
 
 var curve = require('../curve');
@@ -48482,7 +47890,7 @@ JPoint.prototype.isInfinity = function isInfinity() {
   return this.z.cmpn(0) === 0;
 };
 
-},{"../../elliptic":123,"../curve":126,"bn.js":102,"inherits":156}],129:[function(require,module,exports){
+},{"../../elliptic":122,"../curve":125,"bn.js":101,"inherits":155}],128:[function(require,module,exports){
 'use strict';
 
 var curves = exports;
@@ -48689,7 +48097,7 @@ defineCurve('secp256k1', {
   ]
 });
 
-},{"../elliptic":123,"./precomputed/secp256k1":136,"hash.js":141}],130:[function(require,module,exports){
+},{"../elliptic":122,"./precomputed/secp256k1":135,"hash.js":140}],129:[function(require,module,exports){
 'use strict';
 
 var BN = require('bn.js');
@@ -48931,7 +48339,7 @@ EC.prototype.getKeyRecoveryParam = function(e, signature, Q, enc) {
   throw new Error('Unable to find valid recovery factor');
 };
 
-},{"../../elliptic":123,"./key":131,"./signature":132,"bn.js":102,"hmac-drbg":153}],131:[function(require,module,exports){
+},{"../../elliptic":122,"./key":130,"./signature":131,"bn.js":101,"hmac-drbg":152}],130:[function(require,module,exports){
 'use strict';
 
 var BN = require('bn.js');
@@ -49052,7 +48460,7 @@ KeyPair.prototype.inspect = function inspect() {
          ' pub: ' + (this.pub && this.pub.inspect()) + ' >';
 };
 
-},{"../../elliptic":123,"bn.js":102}],132:[function(require,module,exports){
+},{"../../elliptic":122,"bn.js":101}],131:[function(require,module,exports){
 'use strict';
 
 var BN = require('bn.js');
@@ -49189,7 +48597,7 @@ Signature.prototype.toDER = function toDER(enc) {
   return utils.encode(res, enc);
 };
 
-},{"../../elliptic":123,"bn.js":102}],133:[function(require,module,exports){
+},{"../../elliptic":122,"bn.js":101}],132:[function(require,module,exports){
 'use strict';
 
 var hash = require('hash.js');
@@ -49309,7 +48717,7 @@ EDDSA.prototype.isPoint = function isPoint(val) {
   return val instanceof this.pointClass;
 };
 
-},{"../../elliptic":123,"./key":134,"./signature":135,"hash.js":141}],134:[function(require,module,exports){
+},{"../../elliptic":122,"./key":133,"./signature":134,"hash.js":140}],133:[function(require,module,exports){
 'use strict';
 
 var elliptic = require('../../elliptic');
@@ -49407,7 +48815,7 @@ KeyPair.prototype.getPublic = function getPublic(enc) {
 
 module.exports = KeyPair;
 
-},{"../../elliptic":123}],135:[function(require,module,exports){
+},{"../../elliptic":122}],134:[function(require,module,exports){
 'use strict';
 
 var BN = require('bn.js');
@@ -49475,7 +48883,7 @@ Signature.prototype.toHex = function toHex() {
 
 module.exports = Signature;
 
-},{"../../elliptic":123,"bn.js":102}],136:[function(require,module,exports){
+},{"../../elliptic":122,"bn.js":101}],135:[function(require,module,exports){
 module.exports = {
   doubles: {
     step: 4,
@@ -50257,7 +49665,7 @@ module.exports = {
   }
 };
 
-},{}],137:[function(require,module,exports){
+},{}],136:[function(require,module,exports){
 'use strict';
 
 var utils = exports;
@@ -50379,12 +49787,12 @@ function intFromLE(bytes) {
 utils.intFromLE = intFromLE;
 
 
-},{"bn.js":102,"minimalistic-assert":161,"minimalistic-crypto-utils":162}],138:[function(require,module,exports){
+},{"bn.js":101,"minimalistic-assert":160,"minimalistic-crypto-utils":161}],137:[function(require,module,exports){
 module.exports={
   "_args": [
     [
       "elliptic@6.4.1",
-      "/Users/huangzongzhe/workspace/hoopox/aelf-sdk.js"
+      "/Users/huangzongzhe/workspace/hoopox/test/aelf-sdk-demo/aelf-sdk.js"
     ]
   ],
   "_from": "elliptic@6.4.1",
@@ -50411,7 +49819,7 @@ module.exports={
   ],
   "_resolved": "https://registry.npmjs.org/elliptic/-/elliptic-6.4.1.tgz",
   "_spec": "6.4.1",
-  "_where": "/Users/huangzongzhe/workspace/hoopox/aelf-sdk.js",
+  "_where": "/Users/huangzongzhe/workspace/hoopox/test/aelf-sdk-demo/aelf-sdk.js",
   "author": {
     "name": "Fedor Indutny",
     "email": "fedor@indutny.com"
@@ -50473,7 +49881,7 @@ module.exports={
   "version": "6.4.1"
 }
 
-},{}],139:[function(require,module,exports){
+},{}],138:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -50998,7 +50406,7 @@ function functionBindPolyfill(context) {
   };
 }
 
-},{}],140:[function(require,module,exports){
+},{}],139:[function(require,module,exports){
 'use strict'
 var Buffer = require('safe-buffer').Buffer
 var Transform = require('stream').Transform
@@ -51095,7 +50503,7 @@ HashBase.prototype._digest = function () {
 
 module.exports = HashBase
 
-},{"inherits":156,"safe-buffer":191,"stream":200}],141:[function(require,module,exports){
+},{"inherits":155,"safe-buffer":190,"stream":199}],140:[function(require,module,exports){
 var hash = exports;
 
 hash.utils = require('./hash/utils');
@@ -51112,7 +50520,7 @@ hash.sha384 = hash.sha.sha384;
 hash.sha512 = hash.sha.sha512;
 hash.ripemd160 = hash.ripemd.ripemd160;
 
-},{"./hash/common":142,"./hash/hmac":143,"./hash/ripemd":144,"./hash/sha":145,"./hash/utils":152}],142:[function(require,module,exports){
+},{"./hash/common":141,"./hash/hmac":142,"./hash/ripemd":143,"./hash/sha":144,"./hash/utils":151}],141:[function(require,module,exports){
 'use strict';
 
 var utils = require('./utils');
@@ -51206,7 +50614,7 @@ BlockHash.prototype._pad = function pad() {
   return res;
 };
 
-},{"./utils":152,"minimalistic-assert":161}],143:[function(require,module,exports){
+},{"./utils":151,"minimalistic-assert":160}],142:[function(require,module,exports){
 'use strict';
 
 var utils = require('./utils');
@@ -51255,7 +50663,7 @@ Hmac.prototype.digest = function digest(enc) {
   return this.outer.digest(enc);
 };
 
-},{"./utils":152,"minimalistic-assert":161}],144:[function(require,module,exports){
+},{"./utils":151,"minimalistic-assert":160}],143:[function(require,module,exports){
 'use strict';
 
 var utils = require('./utils');
@@ -51403,7 +50811,7 @@ var sh = [
   8, 5, 12, 9, 12, 5, 14, 6, 8, 13, 6, 5, 15, 13, 11, 11
 ];
 
-},{"./common":142,"./utils":152}],145:[function(require,module,exports){
+},{"./common":141,"./utils":151}],144:[function(require,module,exports){
 'use strict';
 
 exports.sha1 = require('./sha/1');
@@ -51412,7 +50820,7 @@ exports.sha256 = require('./sha/256');
 exports.sha384 = require('./sha/384');
 exports.sha512 = require('./sha/512');
 
-},{"./sha/1":146,"./sha/224":147,"./sha/256":148,"./sha/384":149,"./sha/512":150}],146:[function(require,module,exports){
+},{"./sha/1":145,"./sha/224":146,"./sha/256":147,"./sha/384":148,"./sha/512":149}],145:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -51488,7 +50896,7 @@ SHA1.prototype._digest = function digest(enc) {
     return utils.split32(this.h, 'big');
 };
 
-},{"../common":142,"../utils":152,"./common":151}],147:[function(require,module,exports){
+},{"../common":141,"../utils":151,"./common":150}],146:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -51520,7 +50928,7 @@ SHA224.prototype._digest = function digest(enc) {
 };
 
 
-},{"../utils":152,"./256":148}],148:[function(require,module,exports){
+},{"../utils":151,"./256":147}],147:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -51627,7 +51035,7 @@ SHA256.prototype._digest = function digest(enc) {
     return utils.split32(this.h, 'big');
 };
 
-},{"../common":142,"../utils":152,"./common":151,"minimalistic-assert":161}],149:[function(require,module,exports){
+},{"../common":141,"../utils":151,"./common":150,"minimalistic-assert":160}],148:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -51664,7 +51072,7 @@ SHA384.prototype._digest = function digest(enc) {
     return utils.split32(this.h.slice(0, 12), 'big');
 };
 
-},{"../utils":152,"./512":150}],150:[function(require,module,exports){
+},{"../utils":151,"./512":149}],149:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -51996,7 +51404,7 @@ function g1_512_lo(xh, xl) {
   return r;
 }
 
-},{"../common":142,"../utils":152,"minimalistic-assert":161}],151:[function(require,module,exports){
+},{"../common":141,"../utils":151,"minimalistic-assert":160}],150:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -52047,7 +51455,7 @@ function g1_256(x) {
 }
 exports.g1_256 = g1_256;
 
-},{"../utils":152}],152:[function(require,module,exports){
+},{"../utils":151}],151:[function(require,module,exports){
 'use strict';
 
 var assert = require('minimalistic-assert');
@@ -52327,7 +51735,7 @@ function shr64_lo(ah, al, num) {
 }
 exports.shr64_lo = shr64_lo;
 
-},{"inherits":156,"minimalistic-assert":161}],153:[function(require,module,exports){
+},{"inherits":155,"minimalistic-assert":160}],152:[function(require,module,exports){
 'use strict';
 
 var hash = require('hash.js');
@@ -52442,7 +51850,7 @@ HmacDRBG.prototype.generate = function generate(len, enc, add, addEnc) {
   return utils.encode(res, enc);
 };
 
-},{"hash.js":141,"minimalistic-assert":161,"minimalistic-crypto-utils":162}],154:[function(require,module,exports){
+},{"hash.js":140,"minimalistic-assert":160,"minimalistic-crypto-utils":161}],153:[function(require,module,exports){
 var http = require('http')
 var url = require('url')
 
@@ -52475,7 +51883,7 @@ function validateParams (params) {
   return params
 }
 
-},{"http":201,"url":209}],155:[function(require,module,exports){
+},{"http":200,"url":208}],154:[function(require,module,exports){
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
   var e, m
   var eLen = (nBytes * 8) - mLen - 1
@@ -52561,7 +51969,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
   buffer[offset + i - d] |= s * 128
 }
 
-},{}],156:[function(require,module,exports){
+},{}],155:[function(require,module,exports){
 if (typeof Object.create === 'function') {
   // implementation from standard node.js 'util' module
   module.exports = function inherits(ctor, superCtor) {
@@ -52586,7 +51994,7 @@ if (typeof Object.create === 'function') {
   }
 }
 
-},{}],157:[function(require,module,exports){
+},{}],156:[function(require,module,exports){
 /*!
  * Determine if an object is a Buffer
  *
@@ -52609,14 +52017,14 @@ function isSlowBuffer (obj) {
   return typeof obj.readFloatLE === 'function' && typeof obj.slice === 'function' && isBuffer(obj.slice(0, 0))
 }
 
-},{}],158:[function(require,module,exports){
+},{}],157:[function(require,module,exports){
 var toString = {}.toString;
 
 module.exports = Array.isArray || function (arr) {
   return toString.call(arr) == '[object Array]';
 };
 
-},{}],159:[function(require,module,exports){
+},{}],158:[function(require,module,exports){
 (function (process,global){
 /**
  * [js-sha256]{@link https://github.com/emn178/js-sha256}
@@ -53139,7 +52547,7 @@ module.exports = Array.isArray || function (arr) {
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{"_process":170}],160:[function(require,module,exports){
+},{"_process":169}],159:[function(require,module,exports){
 'use strict'
 var inherits = require('inherits')
 var HashBase = require('hash-base')
@@ -53287,7 +52695,7 @@ function fnI (a, b, c, d, m, k, s) {
 
 module.exports = MD5
 
-},{"hash-base":140,"inherits":156,"safe-buffer":191}],161:[function(require,module,exports){
+},{"hash-base":139,"inherits":155,"safe-buffer":190}],160:[function(require,module,exports){
 module.exports = assert;
 
 function assert(val, msg) {
@@ -53300,7 +52708,7 @@ assert.equal = function assertEqual(l, r, msg) {
     throw new Error(msg || ('Assertion failed: ' + l + ' != ' + r));
 };
 
-},{}],162:[function(require,module,exports){
+},{}],161:[function(require,module,exports){
 'use strict';
 
 var utils = exports;
@@ -53360,7 +52768,7 @@ utils.encode = function encode(arr, enc) {
     return arr;
 };
 
-},{}],163:[function(require,module,exports){
+},{}],162:[function(require,module,exports){
 exports.endianness = function () { return 'LE' };
 
 exports.hostname = function () {
@@ -53411,11 +52819,11 @@ exports.homedir = function () {
 	return '/'
 };
 
-},{}],164:[function(require,module,exports){
+},{}],163:[function(require,module,exports){
 exports.pbkdf2 = require('./lib/async')
 exports.pbkdf2Sync = require('./lib/sync')
 
-},{"./lib/async":165,"./lib/sync":168}],165:[function(require,module,exports){
+},{"./lib/async":164,"./lib/sync":167}],164:[function(require,module,exports){
 (function (process,global){
 var checkParameters = require('./precondition')
 var defaultEncoding = require('./default-encoding')
@@ -53520,7 +52928,7 @@ module.exports = function (password, salt, iterations, keylen, digest, callback)
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{"./default-encoding":166,"./precondition":167,"./sync":168,"_process":170,"safe-buffer":191}],166:[function(require,module,exports){
+},{"./default-encoding":165,"./precondition":166,"./sync":167,"_process":169,"safe-buffer":190}],165:[function(require,module,exports){
 (function (process){
 var defaultEncoding
 /* istanbul ignore next */
@@ -53535,7 +52943,7 @@ module.exports = defaultEncoding
 
 }).call(this,require('_process'))
 
-},{"_process":170}],167:[function(require,module,exports){
+},{"_process":169}],166:[function(require,module,exports){
 (function (Buffer){
 var MAX_ALLOC = Math.pow(2, 30) - 1 // default in iojs
 
@@ -53568,7 +52976,7 @@ module.exports = function (password, salt, iterations, keylen) {
 
 }).call(this,{"isBuffer":require("../../is-buffer/index.js")})
 
-},{"../../is-buffer/index.js":157}],168:[function(require,module,exports){
+},{"../../is-buffer/index.js":156}],167:[function(require,module,exports){
 var md5 = require('create-hash/md5')
 var RIPEMD160 = require('ripemd160')
 var sha = require('sha.js')
@@ -53674,7 +53082,7 @@ function pbkdf2 (password, salt, iterations, keylen, digest) {
 
 module.exports = pbkdf2
 
-},{"./default-encoding":166,"./precondition":167,"create-hash/md5":113,"ripemd160":190,"safe-buffer":191,"sha.js":193}],169:[function(require,module,exports){
+},{"./default-encoding":165,"./precondition":166,"create-hash/md5":112,"ripemd160":189,"safe-buffer":190,"sha.js":192}],168:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -53723,7 +53131,7 @@ function nextTick(fn, arg1, arg2, arg3) {
 
 }).call(this,require('_process'))
 
-},{"_process":170}],170:[function(require,module,exports){
+},{"_process":169}],169:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -53909,7 +53317,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],171:[function(require,module,exports){
+},{}],170:[function(require,module,exports){
 (function (global){
 /*! https://mths.be/punycode v1.4.1 by @mathias */
 ;(function(root) {
@@ -54447,7 +53855,7 @@ process.umask = function() { return 0; };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{}],172:[function(require,module,exports){
+},{}],171:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -54533,7 +53941,7 @@ var isArray = Array.isArray || function (xs) {
   return Object.prototype.toString.call(xs) === '[object Array]';
 };
 
-},{}],173:[function(require,module,exports){
+},{}],172:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -54620,13 +54028,13 @@ var objectKeys = Object.keys || function (obj) {
   return res;
 };
 
-},{}],174:[function(require,module,exports){
+},{}],173:[function(require,module,exports){
 'use strict';
 
 exports.decode = exports.parse = require('./decode');
 exports.encode = exports.stringify = require('./encode');
 
-},{"./decode":172,"./encode":173}],175:[function(require,module,exports){
+},{"./decode":171,"./encode":172}],174:[function(require,module,exports){
 (function (process,global){
 'use strict'
 
@@ -54669,10 +54077,10 @@ function randomBytes (size, cb) {
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{"_process":170,"safe-buffer":191}],176:[function(require,module,exports){
+},{"_process":169,"safe-buffer":190}],175:[function(require,module,exports){
 module.exports = require('./lib/_stream_duplex.js');
 
-},{"./lib/_stream_duplex.js":177}],177:[function(require,module,exports){
+},{"./lib/_stream_duplex.js":176}],176:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -54804,7 +54212,7 @@ Duplex.prototype._destroy = function (err, cb) {
 
   pna.nextTick(cb, err);
 };
-},{"./_stream_readable":179,"./_stream_writable":181,"core-util-is":111,"inherits":156,"process-nextick-args":169}],178:[function(require,module,exports){
+},{"./_stream_readable":178,"./_stream_writable":180,"core-util-is":110,"inherits":155,"process-nextick-args":168}],177:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -54852,7 +54260,7 @@ function PassThrough(options) {
 PassThrough.prototype._transform = function (chunk, encoding, cb) {
   cb(null, chunk);
 };
-},{"./_stream_transform":180,"core-util-is":111,"inherits":156}],179:[function(require,module,exports){
+},{"./_stream_transform":179,"core-util-is":110,"inherits":155}],178:[function(require,module,exports){
 (function (process,global){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -55875,7 +55283,7 @@ function indexOf(xs, x) {
 }
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{"./_stream_duplex":177,"./internal/streams/BufferList":182,"./internal/streams/destroy":183,"./internal/streams/stream":184,"_process":170,"core-util-is":111,"events":139,"inherits":156,"isarray":158,"process-nextick-args":169,"safe-buffer":191,"string_decoder/":185,"util":104}],180:[function(require,module,exports){
+},{"./_stream_duplex":176,"./internal/streams/BufferList":181,"./internal/streams/destroy":182,"./internal/streams/stream":183,"_process":169,"core-util-is":110,"events":138,"inherits":155,"isarray":157,"process-nextick-args":168,"safe-buffer":190,"string_decoder/":184,"util":103}],179:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -56090,7 +55498,7 @@ function done(stream, er, data) {
 
   return stream.push(null);
 }
-},{"./_stream_duplex":177,"core-util-is":111,"inherits":156}],181:[function(require,module,exports){
+},{"./_stream_duplex":176,"core-util-is":110,"inherits":155}],180:[function(require,module,exports){
 (function (process,global,setImmediate){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -56781,7 +56189,7 @@ Writable.prototype._destroy = function (err, cb) {
 };
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("timers").setImmediate)
 
-},{"./_stream_duplex":177,"./internal/streams/destroy":183,"./internal/streams/stream":184,"_process":170,"core-util-is":111,"inherits":156,"process-nextick-args":169,"safe-buffer":191,"timers":206,"util-deprecate":212}],182:[function(require,module,exports){
+},{"./_stream_duplex":176,"./internal/streams/destroy":182,"./internal/streams/stream":183,"_process":169,"core-util-is":110,"inherits":155,"process-nextick-args":168,"safe-buffer":190,"timers":205,"util-deprecate":211}],181:[function(require,module,exports){
 'use strict';
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -56861,7 +56269,7 @@ if (util && util.inspect && util.inspect.custom) {
     return this.constructor.name + ' ' + obj;
   };
 }
-},{"safe-buffer":191,"util":104}],183:[function(require,module,exports){
+},{"safe-buffer":190,"util":103}],182:[function(require,module,exports){
 'use strict';
 
 /*<replacement>*/
@@ -56936,10 +56344,10 @@ module.exports = {
   destroy: destroy,
   undestroy: undestroy
 };
-},{"process-nextick-args":169}],184:[function(require,module,exports){
+},{"process-nextick-args":168}],183:[function(require,module,exports){
 module.exports = require('events').EventEmitter;
 
-},{"events":139}],185:[function(require,module,exports){
+},{"events":138}],184:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -57236,10 +56644,10 @@ function simpleWrite(buf) {
 function simpleEnd(buf) {
   return buf && buf.length ? this.write(buf) : '';
 }
-},{"safe-buffer":191}],186:[function(require,module,exports){
+},{"safe-buffer":190}],185:[function(require,module,exports){
 module.exports = require('./readable').PassThrough
 
-},{"./readable":187}],187:[function(require,module,exports){
+},{"./readable":186}],186:[function(require,module,exports){
 exports = module.exports = require('./lib/_stream_readable.js');
 exports.Stream = exports;
 exports.Readable = exports;
@@ -57248,13 +56656,13 @@ exports.Duplex = require('./lib/_stream_duplex.js');
 exports.Transform = require('./lib/_stream_transform.js');
 exports.PassThrough = require('./lib/_stream_passthrough.js');
 
-},{"./lib/_stream_duplex.js":177,"./lib/_stream_passthrough.js":178,"./lib/_stream_readable.js":179,"./lib/_stream_transform.js":180,"./lib/_stream_writable.js":181}],188:[function(require,module,exports){
+},{"./lib/_stream_duplex.js":176,"./lib/_stream_passthrough.js":177,"./lib/_stream_readable.js":178,"./lib/_stream_transform.js":179,"./lib/_stream_writable.js":180}],187:[function(require,module,exports){
 module.exports = require('./readable').Transform
 
-},{"./readable":187}],189:[function(require,module,exports){
+},{"./readable":186}],188:[function(require,module,exports){
 module.exports = require('./lib/_stream_writable.js');
 
-},{"./lib/_stream_writable.js":181}],190:[function(require,module,exports){
+},{"./lib/_stream_writable.js":180}],189:[function(require,module,exports){
 'use strict'
 var Buffer = require('buffer').Buffer
 var inherits = require('inherits')
@@ -57419,7 +56827,7 @@ function fn5 (a, b, c, d, e, m, k, s) {
 
 module.exports = RIPEMD160
 
-},{"buffer":107,"hash-base":140,"inherits":156}],191:[function(require,module,exports){
+},{"buffer":106,"hash-base":139,"inherits":155}],190:[function(require,module,exports){
 /* eslint-disable node/no-deprecated-api */
 var buffer = require('buffer')
 var Buffer = buffer.Buffer
@@ -57483,7 +56891,7 @@ SafeBuffer.allocUnsafeSlow = function (size) {
   return buffer.SlowBuffer(size)
 }
 
-},{"buffer":107}],192:[function(require,module,exports){
+},{"buffer":106}],191:[function(require,module,exports){
 var Buffer = require('safe-buffer').Buffer
 
 // prototype class for hash functions
@@ -57566,7 +56974,7 @@ Hash.prototype._update = function () {
 
 module.exports = Hash
 
-},{"safe-buffer":191}],193:[function(require,module,exports){
+},{"safe-buffer":190}],192:[function(require,module,exports){
 var exports = module.exports = function SHA (algorithm) {
   algorithm = algorithm.toLowerCase()
 
@@ -57583,7 +56991,7 @@ exports.sha256 = require('./sha256')
 exports.sha384 = require('./sha384')
 exports.sha512 = require('./sha512')
 
-},{"./sha":194,"./sha1":195,"./sha224":196,"./sha256":197,"./sha384":198,"./sha512":199}],194:[function(require,module,exports){
+},{"./sha":193,"./sha1":194,"./sha224":195,"./sha256":196,"./sha384":197,"./sha512":198}],193:[function(require,module,exports){
 /*
  * A JavaScript implementation of the Secure Hash Algorithm, SHA-0, as defined
  * in FIPS PUB 180-1
@@ -57679,7 +57087,7 @@ Sha.prototype._hash = function () {
 
 module.exports = Sha
 
-},{"./hash":192,"inherits":156,"safe-buffer":191}],195:[function(require,module,exports){
+},{"./hash":191,"inherits":155,"safe-buffer":190}],194:[function(require,module,exports){
 /*
  * A JavaScript implementation of the Secure Hash Algorithm, SHA-1, as defined
  * in FIPS PUB 180-1
@@ -57780,7 +57188,7 @@ Sha1.prototype._hash = function () {
 
 module.exports = Sha1
 
-},{"./hash":192,"inherits":156,"safe-buffer":191}],196:[function(require,module,exports){
+},{"./hash":191,"inherits":155,"safe-buffer":190}],195:[function(require,module,exports){
 /**
  * A JavaScript implementation of the Secure Hash Algorithm, SHA-256, as defined
  * in FIPS 180-2
@@ -57835,7 +57243,7 @@ Sha224.prototype._hash = function () {
 
 module.exports = Sha224
 
-},{"./hash":192,"./sha256":197,"inherits":156,"safe-buffer":191}],197:[function(require,module,exports){
+},{"./hash":191,"./sha256":196,"inherits":155,"safe-buffer":190}],196:[function(require,module,exports){
 /**
  * A JavaScript implementation of the Secure Hash Algorithm, SHA-256, as defined
  * in FIPS 180-2
@@ -57972,7 +57380,7 @@ Sha256.prototype._hash = function () {
 
 module.exports = Sha256
 
-},{"./hash":192,"inherits":156,"safe-buffer":191}],198:[function(require,module,exports){
+},{"./hash":191,"inherits":155,"safe-buffer":190}],197:[function(require,module,exports){
 var inherits = require('inherits')
 var SHA512 = require('./sha512')
 var Hash = require('./hash')
@@ -58031,7 +57439,7 @@ Sha384.prototype._hash = function () {
 
 module.exports = Sha384
 
-},{"./hash":192,"./sha512":199,"inherits":156,"safe-buffer":191}],199:[function(require,module,exports){
+},{"./hash":191,"./sha512":198,"inherits":155,"safe-buffer":190}],198:[function(require,module,exports){
 var inherits = require('inherits')
 var Hash = require('./hash')
 var Buffer = require('safe-buffer').Buffer
@@ -58293,7 +57701,7 @@ Sha512.prototype._hash = function () {
 
 module.exports = Sha512
 
-},{"./hash":192,"inherits":156,"safe-buffer":191}],200:[function(require,module,exports){
+},{"./hash":191,"inherits":155,"safe-buffer":190}],199:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -58422,7 +57830,7 @@ Stream.prototype.pipe = function(dest, options) {
   return dest;
 };
 
-},{"events":139,"inherits":156,"readable-stream/duplex.js":176,"readable-stream/passthrough.js":186,"readable-stream/readable.js":187,"readable-stream/transform.js":188,"readable-stream/writable.js":189}],201:[function(require,module,exports){
+},{"events":138,"inherits":155,"readable-stream/duplex.js":175,"readable-stream/passthrough.js":185,"readable-stream/readable.js":186,"readable-stream/transform.js":187,"readable-stream/writable.js":188}],200:[function(require,module,exports){
 (function (global){
 var ClientRequest = require('./lib/request')
 var response = require('./lib/response')
@@ -58511,7 +57919,7 @@ http.METHODS = [
 ]
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{"./lib/request":203,"./lib/response":204,"builtin-status-codes":108,"url":209,"xtend":219}],202:[function(require,module,exports){
+},{"./lib/request":202,"./lib/response":203,"builtin-status-codes":107,"url":208,"xtend":218}],201:[function(require,module,exports){
 (function (global){
 exports.fetch = isFunction(global.fetch) && isFunction(global.ReadableStream)
 
@@ -58589,7 +57997,7 @@ xhr = null // Help gc
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{}],203:[function(require,module,exports){
+},{}],202:[function(require,module,exports){
 (function (process,global,Buffer){
 var capability = require('./capability')
 var inherits = require('inherits')
@@ -58921,7 +58329,7 @@ var unsafeHeaders = [
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer)
 
-},{"./capability":202,"./response":204,"_process":170,"buffer":107,"inherits":156,"readable-stream":187,"to-arraybuffer":207}],204:[function(require,module,exports){
+},{"./capability":201,"./response":203,"_process":169,"buffer":106,"inherits":155,"readable-stream":186,"to-arraybuffer":206}],203:[function(require,module,exports){
 (function (process,global,Buffer){
 var capability = require('./capability')
 var inherits = require('inherits')
@@ -59150,9 +58558,9 @@ IncomingMessage.prototype._onXHRProgress = function () {
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer)
 
-},{"./capability":202,"_process":170,"buffer":107,"inherits":156,"readable-stream":187}],205:[function(require,module,exports){
-arguments[4][185][0].apply(exports,arguments)
-},{"dup":185,"safe-buffer":191}],206:[function(require,module,exports){
+},{"./capability":201,"_process":169,"buffer":106,"inherits":155,"readable-stream":186}],204:[function(require,module,exports){
+arguments[4][184][0].apply(exports,arguments)
+},{"dup":184,"safe-buffer":190}],205:[function(require,module,exports){
 (function (setImmediate,clearImmediate){
 var nextTick = require('process/browser.js').nextTick;
 var apply = Function.prototype.apply;
@@ -59232,7 +58640,7 @@ exports.clearImmediate = typeof clearImmediate === "function" ? clearImmediate :
 };
 }).call(this,require("timers").setImmediate,require("timers").clearImmediate)
 
-},{"process/browser.js":170,"timers":206}],207:[function(require,module,exports){
+},{"process/browser.js":169,"timers":205}],206:[function(require,module,exports){
 var Buffer = require('buffer').Buffer
 
 module.exports = function (buf) {
@@ -59261,7 +58669,7 @@ module.exports = function (buf) {
 	}
 }
 
-},{"buffer":107}],208:[function(require,module,exports){
+},{"buffer":106}],207:[function(require,module,exports){
 (function (root) {
    "use strict";
 
@@ -59705,7 +59113,7 @@ UChar.udata={
    }
 }(this));
 
-},{}],209:[function(require,module,exports){
+},{}],208:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -60439,7 +59847,7 @@ Url.prototype.parseHost = function() {
   if (host) this.hostname = host;
 };
 
-},{"./util":210,"punycode":171,"querystring":174}],210:[function(require,module,exports){
+},{"./util":209,"punycode":170,"querystring":173}],209:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -60457,7 +59865,7 @@ module.exports = {
   }
 };
 
-},{}],211:[function(require,module,exports){
+},{}],210:[function(require,module,exports){
 /*! https://mths.be/utf8js v3.0.0 by @mathias */
 ;(function(root) {
 
@@ -60661,7 +60069,7 @@ module.exports = {
 
 }(typeof exports === 'undefined' ? this.utf8 = {} : exports));
 
-},{}],212:[function(require,module,exports){
+},{}],211:[function(require,module,exports){
 (function (global){
 
 /**
@@ -60733,7 +60141,7 @@ function config (name) {
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{}],213:[function(require,module,exports){
+},{}],212:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -60779,7 +60187,7 @@ var SyntaxError = /** @class */ (function (_super) {
 }(Error));
 exports.SyntaxError = SyntaxError;
 
-},{}],214:[function(require,module,exports){
+},{}],213:[function(require,module,exports){
 "use strict";
 function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
@@ -60789,7 +60197,7 @@ __export(require("./xml-http-request"));
 var xml_http_request_event_target_1 = require("./xml-http-request-event-target");
 exports.XMLHttpRequestEventTarget = xml_http_request_event_target_1.XMLHttpRequestEventTarget;
 
-},{"./xml-http-request":218,"./xml-http-request-event-target":216}],215:[function(require,module,exports){
+},{"./xml-http-request":217,"./xml-http-request-event-target":215}],214:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var ProgressEvent = /** @class */ (function () {
@@ -60805,7 +60213,7 @@ var ProgressEvent = /** @class */ (function () {
 }());
 exports.ProgressEvent = ProgressEvent;
 
-},{}],216:[function(require,module,exports){
+},{}],215:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var XMLHttpRequestEventTarget = /** @class */ (function () {
@@ -60847,7 +60255,7 @@ var XMLHttpRequestEventTarget = /** @class */ (function () {
 }());
 exports.XMLHttpRequestEventTarget = XMLHttpRequestEventTarget;
 
-},{}],217:[function(require,module,exports){
+},{}],216:[function(require,module,exports){
 (function (Buffer){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
@@ -60929,7 +60337,7 @@ exports.XMLHttpRequestUpload = XMLHttpRequestUpload;
 
 }).call(this,require("buffer").Buffer)
 
-},{"./xml-http-request-event-target":216,"buffer":107}],218:[function(require,module,exports){
+},{"./xml-http-request-event-target":215,"buffer":106}],217:[function(require,module,exports){
 (function (process,Buffer){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
@@ -61380,7 +60788,7 @@ XMLHttpRequest.prototype.nodejsBaseUrl = null;
 
 }).call(this,require('_process'),require("buffer").Buffer)
 
-},{"./errors":213,"./progress-event":215,"./xml-http-request-event-target":216,"./xml-http-request-upload":217,"_process":170,"buffer":107,"cookiejar":110,"http":201,"https":154,"os":163,"url":209}],219:[function(require,module,exports){
+},{"./errors":212,"./progress-event":214,"./xml-http-request-event-target":215,"./xml-http-request-upload":216,"_process":169,"buffer":106,"cookiejar":109,"http":200,"https":153,"os":162,"url":208}],218:[function(require,module,exports){
 module.exports = extend
 
 var hasOwnProperty = Object.prototype.hasOwnProperty;
@@ -61401,10 +60809,10 @@ function extend() {
     return target
 }
 
-},{}],220:[function(require,module,exports){
+},{}],219:[function(require,module,exports){
 module.exports={
   "name": "aelf-sdk",
-  "version": "2.1.21",
+  "version": "3.0.5",
   "description": "aelf-sdk js library",
   "main": "./lib/aelf.js",
   "directories": {
@@ -61429,7 +60837,7 @@ module.exports={
     "browserify": "^16.2.3",
     "del": "^3.0.0",
     "exorcist": "^1.0.1",
-    "gulp": "^4.0.0",
+    "gulp": "^4.0.2",
     "gulp-jshint": "^2.1.0",
     "gulp-rename": "^1.4.0",
     "gulp-replace": "^1.0.0",
