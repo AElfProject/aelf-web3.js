@@ -1,30 +1,30 @@
 
-## Aelf/pbUtils
+## AElf/pbUtils
 wallet module.
 
 
-* [Aelf/pbUtils](#module_Aelf/pbUtils)
-    * [arrayBufferToHex(arrayBuffer)](#exp_module_Aelf/pbUtils--arrayBufferToHex) ⇒ <code>string</code> ⏏
-    * [getRepForAddress(address)](#exp_module_Aelf/pbUtils--getRepForAddress) ⇒ <code>string</code> ⏏
-    * [getAddressFromRep(rep)](#exp_module_Aelf/pbUtils--getAddressFromRep) ⇒ <code>protobuf</code> ⏏
-    * [getAddressObjectFromRep(rep)](#exp_module_Aelf/pbUtils--getAddressObjectFromRep) ⇒ <code>protobuf</code> ⏏
-    * [getRepForHash(hash)](#exp_module_Aelf/pbUtils--getRepForHash) ⇒ <code>string</code> ⏏
-    * [getHashFromHex(hex)](#exp_module_Aelf/pbUtils--getHashFromHex) ⇒ <code>protobuf</code> ⏏
-    * [getHashObjectFromHex(hex)](#exp_module_Aelf/pbUtils--getHashObjectFromHex) ⇒ <code>Object</code> ⏏
-    * [encodeTransaction(tx)](#exp_module_Aelf/pbUtils--encodeTransaction) ⇒ <code>protobuf</code> ⏏
-    * [getTransaction(from, to, methodName, params)](#exp_module_Aelf/pbUtils--getTransaction) ⇒ <code>protobuf</code> ⏏
-    * [getMsigTransaction(from, to, methodName, params)](#exp_module_Aelf/pbUtils--getMsigTransaction) ⇒ <code>protobuf</code> ⏏
-    * [getReviewer(reviewer, to, methodName, params)](#exp_module_Aelf/pbUtils--getReviewer) ⇒ <code>protobuf</code> ⏏
-    * [getAuthorization(decided_threshold, proposer_threshold, reviewers)](#exp_module_Aelf/pbUtils--getAuthorization) ⇒ <code>protobuf</code> ⏏
-    * [getProposal(multisig_account, proposal_name, raw_txn, expired_time, proposer)](#exp_module_Aelf/pbUtils--getProposal) ⇒ <code>protobuf</code> ⏏
-    * [getApproval(proposalHash, signature)](#exp_module_Aelf/pbUtils--getApproval) ⇒ <code>protobuf</code> ⏏
-    * [getSideChainInfo(locked_token_amount, indexing_price, indexing_price, code, proposer)](#exp_module_Aelf/pbUtils--getSideChainInfo) ⇒ <code>protobuf</code> ⏏
-    * [getBalance(resource_balance)](#exp_module_Aelf/pbUtils--getBalance) ⇒ <code>protobuf</code> ⏏
-    * [encodeProposal(proposal, fieldNumber)](#exp_module_Aelf/pbUtils--encodeProposal) ⇒ <code>Buffer</code> ⏏
-    * [encodeSideChainInfo(sideChainInfo, fieldNumber)](#exp_module_Aelf/pbUtils--encodeSideChainInfo) ⇒ <code>Buffer</code> ⏏
-    * [encodeApproval(approval, fieldNumber)](#exp_module_Aelf/pbUtils--encodeApproval) ⇒ <code>Buffer</code> ⏏
+* [AElf/pbUtils](#module_AElf/pbUtils)
+    * [arrayBufferToHex(arrayBuffer)](#exp_module_AElf/pbUtils--arrayBufferToHex) ⇒ <code>string</code> ⏏
+    * [getRepForAddress(address)](#exp_module_AElf/pbUtils--getRepForAddress) ⇒ <code>string</code> ⏏
+    * [getAddressFromRep(rep)](#exp_module_AElf/pbUtils--getAddressFromRep) ⇒ <code>protobuf</code> ⏏
+    * [getAddressObjectFromRep(rep)](#exp_module_AElf/pbUtils--getAddressObjectFromRep) ⇒ <code>protobuf</code> ⏏
+    * [getRepForHash(hash)](#exp_module_AElf/pbUtils--getRepForHash) ⇒ <code>string</code> ⏏
+    * [getHashFromHex(hex)](#exp_module_AElf/pbUtils--getHashFromHex) ⇒ <code>protobuf</code> ⏏
+    * [getHashObjectFromHex(hex)](#exp_module_AElf/pbUtils--getHashObjectFromHex) ⇒ <code>Object</code> ⏏
+    * [encodeTransaction(tx)](#exp_module_AElf/pbUtils--encodeTransaction) ⇒ <code>protobuf</code> ⏏
+    * [getTransaction(from, to, methodName, params)](#exp_module_AElf/pbUtils--getTransaction) ⇒ <code>protobuf</code> ⏏
+    * [getMsigTransaction(from, to, methodName, params)](#exp_module_AElf/pbUtils--getMsigTransaction) ⇒ <code>protobuf</code> ⏏
+    * [getReviewer(reviewer, to, methodName, params)](#exp_module_AElf/pbUtils--getReviewer) ⇒ <code>protobuf</code> ⏏
+    * [getAuthorization(decided_threshold, proposer_threshold, reviewers)](#exp_module_AElf/pbUtils--getAuthorization) ⇒ <code>protobuf</code> ⏏
+    * [getProposal(multisig_account, proposal_name, raw_txn, expired_time, proposer)](#exp_module_AElf/pbUtils--getProposal) ⇒ <code>protobuf</code> ⏏
+    * [getApproval(proposalHash, signature)](#exp_module_AElf/pbUtils--getApproval) ⇒ <code>protobuf</code> ⏏
+    * [getSideChainInfo(locked_token_amount, indexing_price, indexing_price, code, proposer)](#exp_module_AElf/pbUtils--getSideChainInfo) ⇒ <code>protobuf</code> ⏏
+    * [getBalance(resource_balance)](#exp_module_AElf/pbUtils--getBalance) ⇒ <code>protobuf</code> ⏏
+    * [encodeProposal(proposal, fieldNumber)](#exp_module_AElf/pbUtils--encodeProposal) ⇒ <code>Buffer</code> ⏏
+    * [encodeSideChainInfo(sideChainInfo, fieldNumber)](#exp_module_AElf/pbUtils--encodeSideChainInfo) ⇒ <code>Buffer</code> ⏏
+    * [encodeApproval(approval, fieldNumber)](#exp_module_AElf/pbUtils--encodeApproval) ⇒ <code>Buffer</code> ⏏
 
-<a name="exp_module_Aelf/pbUtils--arrayBufferToHex"></a>
+<a name="exp_module_AElf/pbUtils--arrayBufferToHex"></a>
 
 ### arrayBufferToHex(arrayBuffer) ⇒ <code>string</code> ⏏
 arrayBuffer To Hex
@@ -36,7 +36,7 @@ arrayBuffer To Hex
 | --- | --- | --- |
 | arrayBuffer | <code>Buffer</code> | arrayBuffer |
 
-<a name="exp_module_Aelf/pbUtils--getRepForAddress"></a>
+<a name="exp_module_AElf/pbUtils--getRepForAddress"></a>
 
 ### getRepForAddress(address) ⇒ <code>string</code> ⏏
 get hex rep From Address
@@ -48,7 +48,7 @@ get hex rep From Address
 | --- | --- | --- |
 | address | <code>protobuf</code> | kernel.Address |
 
-<a name="exp_module_Aelf/pbUtils--getAddressFromRep"></a>
+<a name="exp_module_AElf/pbUtils--getAddressFromRep"></a>
 
 ### getAddressFromRep(rep) ⇒ <code>protobuf</code> ⏏
 get address From hex rep
@@ -60,7 +60,7 @@ get address From hex rep
 | --- | --- | --- |
 | rep | <code>string</code> | address |
 
-<a name="exp_module_Aelf/pbUtils--getAddressObjectFromRep"></a>
+<a name="exp_module_AElf/pbUtils--getAddressObjectFromRep"></a>
 
 ### getAddressObjectFromRep(rep) ⇒ <code>protobuf</code> ⏏
 get address From hex rep
@@ -72,7 +72,7 @@ get address From hex rep
 | --- | --- | --- |
 | rep | <code>string</code> | address |
 
-<a name="exp_module_Aelf/pbUtils--getRepForHash"></a>
+<a name="exp_module_AElf/pbUtils--getRepForHash"></a>
 
 ### getRepForHash(hash) ⇒ <code>string</code> ⏏
 get hex rep From hash
@@ -84,7 +84,7 @@ get hex rep From hash
 | --- | --- | --- |
 | hash | <code>protobuf</code> | kernel.Hash |
 
-<a name="exp_module_Aelf/pbUtils--getHashFromHex"></a>
+<a name="exp_module_AElf/pbUtils--getHashFromHex"></a>
 
 ### getHashFromHex(hex) ⇒ <code>protobuf</code> ⏏
 get Hash From Hex
@@ -96,7 +96,7 @@ get Hash From Hex
 | --- | --- | --- |
 | hex | <code>string</code> | string |
 
-<a name="exp_module_Aelf/pbUtils--getHashObjectFromHex"></a>
+<a name="exp_module_AElf/pbUtils--getHashObjectFromHex"></a>
 
 ### getHashObjectFromHex(hex) ⇒ <code>Object</code> ⏏
 get Hash Object From Hex
@@ -108,7 +108,7 @@ get Hash Object From Hex
 | --- | --- | --- |
 | hex | <code>string</code> | string |
 
-<a name="exp_module_Aelf/pbUtils--encodeTransaction"></a>
+<a name="exp_module_AElf/pbUtils--encodeTransaction"></a>
 
 ### encodeTransaction(tx) ⇒ <code>protobuf</code> ⏏
 encode Transaction to protobuf type
@@ -120,7 +120,7 @@ encode Transaction to protobuf type
 | --- | --- | --- |
 | tx | <code>Object</code> | object |
 
-<a name="exp_module_Aelf/pbUtils--getTransaction"></a>
+<a name="exp_module_AElf/pbUtils--getTransaction"></a>
 
 ### getTransaction(from, to, methodName, params) ⇒ <code>protobuf</code> ⏏
 get Transaction
@@ -135,7 +135,7 @@ get Transaction
 | methodName | <code>string</code> | 
 | params | <code>string</code> | 
 
-<a name="exp_module_Aelf/pbUtils--getMsigTransaction"></a>
+<a name="exp_module_AElf/pbUtils--getMsigTransaction"></a>
 
 ### getMsigTransaction(from, to, methodName, params) ⇒ <code>protobuf</code> ⏏
 get MultiSign Transaction
@@ -150,7 +150,7 @@ get MultiSign Transaction
 | methodName | <code>string</code> | 
 | params | <code>string</code> | 
 
-<a name="exp_module_Aelf/pbUtils--getReviewer"></a>
+<a name="exp_module_AElf/pbUtils--getReviewer"></a>
 
 ### getReviewer(reviewer, to, methodName, params) ⇒ <code>protobuf</code> ⏏
 get Reviewer
@@ -165,7 +165,7 @@ get Reviewer
 | methodName | <code>string</code> | 
 | params | <code>string</code> | 
 
-<a name="exp_module_Aelf/pbUtils--getAuthorization"></a>
+<a name="exp_module_AElf/pbUtils--getAuthorization"></a>
 
 ### getAuthorization(decided_threshold, proposer_threshold, reviewers) ⇒ <code>protobuf</code> ⏏
 get Authorization
@@ -179,7 +179,7 @@ get Authorization
 | proposer_threshold | <code>string</code> | 
 | reviewers | <code>string</code> | 
 
-<a name="exp_module_Aelf/pbUtils--getProposal"></a>
+<a name="exp_module_AElf/pbUtils--getProposal"></a>
 
 ### getProposal(multisig_account, proposal_name, raw_txn, expired_time, proposer) ⇒ <code>protobuf</code> ⏏
 get Proposal
@@ -195,7 +195,7 @@ get Proposal
 | expired_time | <code>string</code> |  |
 | proposer | <code>protobuf</code> | kernel.Address |
 
-<a name="exp_module_Aelf/pbUtils--getApproval"></a>
+<a name="exp_module_AElf/pbUtils--getApproval"></a>
 
 ### getApproval(proposalHash, signature) ⇒ <code>protobuf</code> ⏏
 get Approval
@@ -208,7 +208,7 @@ get Approval
 | proposalHash | <code>string</code> | 
 | signature | <code>string</code> | 
 
-<a name="exp_module_Aelf/pbUtils--getSideChainInfo"></a>
+<a name="exp_module_AElf/pbUtils--getSideChainInfo"></a>
 
 ### getSideChainInfo(locked_token_amount, indexing_price, indexing_price, code, proposer) ⇒ <code>protobuf</code> ⏏
 get Side Chain Info
@@ -224,7 +224,7 @@ get Side Chain Info
 | code | <code>string</code> |  |
 | proposer | <code>string</code> | hex string |
 
-<a name="exp_module_Aelf/pbUtils--getBalance"></a>
+<a name="exp_module_AElf/pbUtils--getBalance"></a>
 
 ### getBalance(resource_balance) ⇒ <code>protobuf</code> ⏏
 get balance
@@ -236,7 +236,7 @@ get balance
 | --- | --- |
 | resource_balance | <code>object</code> | 
 
-<a name="exp_module_Aelf/pbUtils--encodeProposal"></a>
+<a name="exp_module_AElf/pbUtils--encodeProposal"></a>
 
 ### encodeProposal(proposal, fieldNumber) ⇒ <code>Buffer</code> ⏏
 encode Proposal
@@ -249,7 +249,7 @@ encode Proposal
 | proposal | <code>object</code> | 
 | fieldNumber | <code>number</code> | 
 
-<a name="exp_module_Aelf/pbUtils--encodeSideChainInfo"></a>
+<a name="exp_module_AElf/pbUtils--encodeSideChainInfo"></a>
 
 ### encodeSideChainInfo(sideChainInfo, fieldNumber) ⇒ <code>Buffer</code> ⏏
 encode Side Chain Info
@@ -262,7 +262,7 @@ encode Side Chain Info
 | sideChainInfo | <code>object</code> | 
 | fieldNumber | <code>number</code> | 
 
-<a name="exp_module_Aelf/pbUtils--encodeApproval"></a>
+<a name="exp_module_AElf/pbUtils--encodeApproval"></a>
 
 ### encodeApproval(approval, fieldNumber) ⇒ <code>Buffer</code> ⏏
 encode Approval

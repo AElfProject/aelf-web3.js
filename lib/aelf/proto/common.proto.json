@@ -1,6 +1,6 @@
 {
   "options": {
-    "csharp_namespace": "AElf.Common"
+    "csharp_namespace": "AElf"
   },
   "nested": {
     "Address": {

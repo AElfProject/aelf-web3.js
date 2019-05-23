@@ -47,12 +47,30 @@ const aelf = new Aelf(
     new Aelf.providers.HttpProvider(
         host, // https://127.0.0.1:8000/chain
         timeout, // 300
-        user, // hzz780
+        user, // username
         password, // passowrd
         // header
         [{
             name: 'x-csrf-token',
             value: document.cookie.match(/csrfToken=[^;]*/)[0].replace('csrfToken=', '')
+        }]
+    )
+);
+```
+
+If you want to use the WebAPI of AElf.
+
+```js
+const aelf = new Aelf(
+    new Aelf.providers.HttpProvider(
+        host, // https://127.0.0.1:8000/chain
+        timeout, // 300
+        user, // username
+        password, // passowrd
+        // header
+        [{
+            name: 'Accept',
+            value: 'text/plain;v=1.0'
         }]
     )
 );
