@@ -126,3 +126,11 @@ Scrypt 相比较 PBKDF2 可以使用更多位数的 salt 和 更高的迭代计�
 
 可以看到，用户的口令不再直接通过AES256加密内容，而是通过 scrypt KDF 生成派生密钥哈希值, 然后通过派生密钥对账户信息进行AES256加密, 最终得到密文。
 
+
+## Resources
+
+- [Tarsnap Blurb on Scrypt](http://www.tarsnap.com/scrypt.html)
+
+- [Scrypt Whitepaper](http://www.tarsnap.com/scrypt/scrypt.pdf)
+
+- [IETF Scrypt](https://tools.ietf.org/html/draft-josefsson-scrypt-kdf-00)
