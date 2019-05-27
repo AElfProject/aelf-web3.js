@@ -5809,7 +5809,6 @@ function getKeyStoreFromV1(walletInfoInput, password) {
     var iv = libWordArray.random(128 / 8);
     var salt = libWordArray.random(128 / 8);
     var N = 262144;
-    // var N = 131072;
     var r = 1;
     var p = 8;
     var dkLen = 64;
@@ -5821,10 +5820,11 @@ function getKeyStoreFromV1(walletInfoInput, password) {
     var mac = SHA3(decryptionKey.slice(16, 32) + mnemonicEncrypted + privateKeyEncrypted, {outputLength: 256});
     var end = new Date();
     var time = end - begin;
-    console.log('执行时间 =' + time + 'ms');
+    console.log('get key store run time = ' + time + 'ms');
     return {
         type: 'aelf',
-        address: walletInfoInput.address,
+        nickName: walletInfoInput.nickName || '',
+        address: walletInfoInput.address || '',
         crypto: {
             version: 1,
             cipher: 'AES256',
@@ -5859,6 +5859,12 @@ function getKeyStoreFromV1(walletInfoInput, password) {
 
 function unlockKeyStoreFromV1(keyStoreInput, password) {
     var begin = new Date();
+    if (keyStoreInput.crypto.version !== 1) {
+        throw new Error('Not a V1 key store');
+    }
+    if (keyStoreInput.type !== 'aelf') {
+        throw new Error('Not a aelf key store');
+    }
     var iv = keyStoreInput.crypto.cipherparams.iv.toString(encHex);
     var salt = keyStoreInput.crypto.kdfparams.salt;
     var N = keyStoreInput.crypto.kdfparams.N;
@@ -5877,14 +5883,18 @@ function unlockKeyStoreFromV1(keyStoreInput, password) {
         var privateKey = AES.decrypt(privateKeyEncrypted, decryptionKey.toString('hex'), {iv: iv});
         var end = new Date();
         var time = end - begin;
-        console.log('执行时间 =' + time + 'ms');
+        console.log('unlock key store run time = ' + time + 'ms');
         return {
-            address: keyStoreInput.address,
+            nickName: keyStoreInput.nickName || '',
+            address: keyStoreInput.address || '',
             mnemonic: mnemonic.toString(encUtf8),
             privateKey: privateKey.toString(encUtf8)
         };
     }
-    return false;
+    return {
+        error: 20001,
+        errorMessage: 'Password error'
+    };
 }
 
 module.exports = {
