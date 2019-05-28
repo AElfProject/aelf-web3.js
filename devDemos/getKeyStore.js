@@ -9,12 +9,14 @@ const password = 'ASD.123.asd.123';
 const wallet = {
     mnemonic: 'laundry enact stable taste broccoli enemy local daring fancy already sibling man',
     privateKey: 'bb175b7113c18e947f1e9a840167999009dfcb36df2dccf70aef0371de957727',
-    address: '8K4PHZp4xGerftQRN5ufDWnMJMCM4ZzgW4vXoehVkyNknwPGz'
+    address: '8K4PHZp4xGerftQRN5ufDWnMJMCM4ZzgW4vXoehVkyNknwPGz',
+    nickName: 'Wallet'
 };
 
 const keystore = {
     type: 'aelf',
     address: '8K4PHZp4xGerftQRN5ufDWnMJMCM4ZzgW4vXoehVkyNknwPGz',
+    nickName: 'Wallet',
     crypto:
     {
         version: 1,
