@@ -113,7 +113,7 @@ kdfparams的参数已经预设好。但是需要注意初始向量与盐值是�
 
 ![](./Assets/keyStore7.jpg)
 
-可以看出账户密码是你唯一输入，账户信息是唯一输出，所需的其他信息都会在创建AElf Keystore时生成到Keystore内，更改Keystore内任意参数都有可能大致Keystore无法使用。
+可以看出账户密码是你唯一输入，账户信息是唯一输出，所需的其他信息都会在创建AElf Keystore时生成到Keystore内，更改Keystore内任意参数都有可能导致Keystore无法使用。
 
 同时因为账户密码是唯一输入值，所以需要账户密码足够复杂才能保证安全性，AElf Keystore 规定密码需要大于等于12位，并且包含大写字母、小写字母、数字、特殊符号。 才能保证在攻击者得到你的AELf Keystore后也无法轻易的得到你的私钥与助记词信息。 
 
