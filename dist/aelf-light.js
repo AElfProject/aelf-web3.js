@@ -5878,10 +5878,9 @@ function unlockKeyStoreFromV1(keyStoreInput, password) {
             privateKey: privateKey.toString(encUtf8)
         };
     }
-    return {
-        error: 20001,
-        errorMessage: 'Password error'
-    };
+    else {
+        throw new Error('Password error');
+    }
 }
 
 /**

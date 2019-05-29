@@ -5,7 +5,7 @@
 
 const keyStore = require('../lib/utils/keyStore');
 
-const password = 'ASD.123.asd.123';
+const password = 'ASD.123.asd.12344';
 const wallet = {
     mnemonic: 'laundry enact stable taste broccoli enemy local daring fancy already sibling man',
     privateKey: 'bb175b7113c18e947f1e9a840167999009dfcb36df2dccf70aef0371de957727',
