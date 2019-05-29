@@ -5686,8 +5686,7 @@ module.exports = {
     getWalletByPrivateKey: getWalletByPrivateKey,
     AESEncrypto: AESEncrypto,
     AESDecrypto: AESDecrypto,
-    getKeyStoreFromV1: keyStore.getKeyStoreFromV1,
-    unlockKeyStoreFromV1: keyStore.unlockKeyStoreFromV1
+    keyStore: keyStore
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer)
