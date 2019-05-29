@@ -5884,6 +5884,16 @@ function unlockKeyStoreFromV1(keyStoreInput, password) {
     };
 }
 
+/**
+ * checkPassword
+ *
+ * @method checkPassword
+ * @param {Object} walletInfoInput  walletInfo
+ * @param {string} password password
+ * @return {Boolean} true or false
+ *
+ */
+
 function checkPassword(walletInfoInput, password) {
     var mac = walletInfoInput.crypto.mac;
     var mnemonicEncrypted = walletInfoInput.crypto.mnemonicEncrypted;
