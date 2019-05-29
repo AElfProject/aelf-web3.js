@@ -5805,8 +5805,8 @@ var encHex = require('crypto-js/enc-hex');
  */
 
 function getKeyStoreFromV1(walletInfoInput, password) {
-    var iv = libWordArray.random(128 / 8);
-    var salt = libWordArray.random(128 / 8);
+    var iv = libWordArray.random(16);
+    var salt = libWordArray.random(32);
     var N = 262144;
     var r = 1;
     var p = 8;
@@ -5854,7 +5854,6 @@ function getKeyStoreFromV1(walletInfoInput, password) {
  */
 
 function unlockKeyStoreFromV1(keyStoreInput, password) {
-    var begin = new Date();
     if (keyStoreInput.crypto.version !== 1) {
         throw new Error('Not a V1 key store');
     }
@@ -5862,24 +5861,17 @@ function unlockKeyStoreFromV1(keyStoreInput, password) {
         throw new Error('Not a aelf key store');
     }
     var iv = keyStoreInput.crypto.cipherparams.iv.toString(encHex);
-    var salt = keyStoreInput.crypto.kdfparams.salt;
-    var N = keyStoreInput.crypto.kdfparams.N;
-    var p = keyStoreInput.crypto.kdfparams.p;
-    var r = keyStoreInput.crypto.kdfparams.r;
-    var dkLen = keyStoreInput.crypto.kdfparams.dkLen;
+    var kdfparams = keyStoreInput.crypto.kdfparams;
     var mac = keyStoreInput.crypto.mac;
     var mnemonicEncrypted = keyStoreInput.crypto.mnemonicEncrypted;
     var privateKeyEncrypted = keyStoreInput.crypto.privateKeyEncrypted;
     var passphrase = Buffer.from(password);
-    var saltBuffer = Buffer.from(salt.toString());
-    var decryptionKey = scrypt(passphrase, saltBuffer, N, p, r, dkLen);
-    var checkMac = SHA3(decryptionKey.slice(16, 32) + mnemonicEncrypted + privateKeyEncrypted, {outputLength: 256});
-    if (checkMac.toString(encHex) === mac) {
+    var saltBuffer = Buffer.from(kdfparams.salt.toString());
+    var decryptionKey = scrypt(passphrase, saltBuffer, kdfparams.N, kdfparams.p, kdfparams.r, kdfparams.dkLen);
+    var currentMac = SHA3(decryptionKey.slice(16, 32) + mnemonicEncrypted + privateKeyEncrypted, {outputLength: 256});
+    if (currentMac.toString(encHex) === mac) {
         var mnemonic = AES.decrypt(mnemonicEncrypted, decryptionKey.toString('hex'), {iv: iv});
         var privateKey = AES.decrypt(privateKeyEncrypted, decryptionKey.toString('hex'), {iv: iv});
-        var end = new Date();
-        var time = end - begin;
-        console.log('unlock key store run time = ' + time + 'ms');
         return {
             nickName: keyStoreInput.nickName || '',
             address: keyStoreInput.address || '',
@@ -5893,9 +5885,26 @@ function unlockKeyStoreFromV1(keyStoreInput, password) {
     };
 }
 
+function checkPassword(walletInfoInput, password) {
+    var mac = walletInfoInput.crypto.mac;
+    var mnemonicEncrypted = walletInfoInput.crypto.mnemonicEncrypted;
+    var privateKeyEncrypted = walletInfoInput.crypto.privateKeyEncrypted;
+    var kdfparams = walletInfoInput.crypto.kdfparams;
+    var passphrase = Buffer.from(password);
+    var saltBuffer = Buffer.from(kdfparams.salt.toString());
+    var decryptionKey = scrypt(passphrase, saltBuffer, kdfparams.N, kdfparams.p, kdfparams.r, kdfparams.dkLen);
+    var currentMac = SHA3(decryptionKey.slice(16, 32) + mnemonicEncrypted + privateKeyEncrypted, {outputLength: 256});
+    if (currentMac.toString(encHex) === mac) {
+        return true;
+    }
+    return false;
+}
+
+
 module.exports = {
     getKeyStoreFromV1: getKeyStoreFromV1,
-    unlockKeyStoreFromV1: unlockKeyStoreFromV1
+    unlockKeyStoreFromV1: unlockKeyStoreFromV1,
+    checkPassword: checkPassword
 };
 
 }).call(this,require("buffer").Buffer)

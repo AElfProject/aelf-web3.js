@@ -5,7 +5,7 @@
 
 const keyStore = require('../lib/utils/keyStore');
 
-const password = 'ASD.123.asd.123';
+const password = 'ASD.123.asd.1234';
 const wallet = {
     mnemonic: 'laundry enact stable taste broccoli enemy local daring fancy already sibling man',
     privateKey: 'bb175b7113c18e947f1e9a840167999009dfcb36df2dccf70aef0371de957727',
@@ -35,17 +35,16 @@ const keystore = {
             dkLen: 64,
             salt: 'c3c4669a5a3978a75a0201a6516ccba8'
         },
-        mac:
-            '084f2882107d46aafd5deaa5860187e1b1aaf4f7b6796c72afbc0ea811af1b70'
+        mac: '084f2882107d46aafd5deaa5860187e1b1aaf4f7b6796c72afbc0ea811af1b70'
     }
 };
 
 
-// scryptsy 耗时 3900ms  scrypt.js  758 ms
-const keystoreJson = keyStore.getKeyStoreFromV1(wallet, password);
 
-// scryptsy 耗时 3900ms  scrypt.js  691 ms
+const keystoreJson = keyStore.getKeyStoreFromV1(wallet, password);
 const walletInfo = keyStore.unlockKeyStoreFromV1(keystore, password);
+const isPass = keyStore.checkPassword(keystore, password);
 
 console.log(keystoreJson);
 console.log(walletInfo);
+console.log(isPass);
