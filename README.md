@@ -15,7 +15,7 @@ Please read the ./docs for more.
 
 Get the demos in ./demos
 
-## Installaction
+## Installation
 
 ### Node
 
@@ -48,7 +48,7 @@ const aelf = new Aelf(
         host, // https://127.0.0.1:8000/chain
         timeout, // 300
         user, // username
-        password, // passowrd
+        password, // password
         // header
         [{
             name: 'x-csrf-token',
@@ -66,7 +66,7 @@ const aelf = new Aelf(
         host, // https://127.0.0.1:8000/chain
         timeout, // 300
         user, // username
-        password, // passowrd
+        password, // password
         // header
         [{
             name: 'Accept',
@@ -101,7 +101,7 @@ aelf.chain.contractAtAsync(contractAddress, wallet, (err, result) => {
 });
 ```
 
-Additionally you can set a provider using aelf.setProvider()
+Additionally, you can set a provider using aelf.setProvider()
 
 ```js
 import Aelf from 'aelf-sdk';
@@ -190,7 +190,7 @@ Aelf.version // eg. 2.1.10
 ![browsers](https://img.shields.io/badge/browsers-latest%202%20versions-brightgreen.svg)
 ![node](https://img.shields.io/badge/node->=6-green.svg)
 
-## Somthing more
+## Something more
 
 ### pbjs
 
