@@ -41,10 +41,13 @@ const keystore = {
 
 
 
-const keystoreJson = keyStore.getKeystore(wallet, password);
-// const walletInfo = keyStore.unlockKeyStoreFromV1(keystore, password);
-// const isPass = keyStore.checkPassword(keystore, password);
+// The default value of version parameter is 1 if it is not filled in.
+const keystoreJson = keyStore.getKeystore(wallet, password, 1);
+
+// The default value of version parameter is 1 if it is not filled in.
+const walletInfo = keyStore.unlockKeystore(keystore, password, 1);
+const isPass = keyStore.checkPassword(keystore, password);
 
 console.log(keystoreJson);
-// console.log(walletInfo);
-// console.log(isPass);
+console.log(walletInfo);
+console.log(isPass);
