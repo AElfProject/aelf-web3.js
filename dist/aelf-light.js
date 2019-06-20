@@ -1073,14 +1073,29 @@ Chain.prototype.contractAt = function (address, wallet) {
 
 // TODO: 2019.03.24前替换了所有合约之后，都使用getFileDescriptorSet
 Chain.prototype.contractAtAsync = function (address, wallet, callback) {
-    this.getContractFileDescriptorSet(address, (err, result) => {
-        if (result && result.file && result.file.length > 0) {
-            const factory = new Contract1(this, result, wallet);
-            callback(err, factory.at(address));
-            return;
-        }
-        callback(err, 'getFileDescriptorSet failed');
-    });
+    if (callback) {
+        this.getContractFileDescriptorSet(address, (err, result) => {
+            if (result && result.file && result.file.length > 0) {
+                const factory = new Contract1(this, result, wallet);
+                callback(err, factory.at(address));
+                return;
+            }
+            callback(err, 'getFileDescriptorSet failed');
+        });
+    }
+    else {
+        return new Promise((resolve, reject) => {
+            this.getContractFileDescriptorSet(address, (err, result) => {
+                if (result && result.file && result.file.length > 0) {
+                    const factory = new Contract1(this, result, wallet);
+                    resolve([err, factory.at(address)]);
+                }
+                else {
+                    reject([err, 'getFileDescriptorSet failed']);
+                }
+            });
+        });
+    }
 };
 
 Chain.prototype.getMerklePath = function(txid, height){
@@ -4464,6 +4479,8 @@ ContractMethod.prototype.sendTransaction = function () {
 
 /**
  * Should be used to callReadOnly to solidity function
+ * TODO: If the developers want to use the  sync way.
+ * They need add a ugly tag like {sync: true}
  *
  * @method sendTransaction
  */
@@ -5657,7 +5674,8 @@ var signTransaction = function (rawTxn, keyPair) {
 };
 
 /**
- * just sign
+ * Encryption Using Elliptic Curve Algorithms（Use ECDSA)
+ * Please see https://www.npmjs.com/package/elliptic#incentive
  *
  * @alias module:AElf/wallet
  * @param {string} hexTxn hex string
@@ -5709,7 +5727,7 @@ module.exports.encode = (data, encoding = 'hex') => {
   var hash = data;
   hash = Buffer.from(sha256(hash), 'hex');
   hash = Buffer.from(sha256(hash), 'hex');
-  hash = Buffer.from(data.toString('hex')+hash.slice(0, 4).toString('hex'), 'hex');
+  hash = Buffer.from(data.toString('hex') + hash.slice(0, 4).toString('hex'), 'hex');
   return base58.encode(hash)
 }
 
@@ -5793,8 +5811,59 @@ var libWordArray = require('crypto-js/lib-typedarrays');
 var encUtf8 = require('crypto-js/enc-utf8');
 var encHex = require('crypto-js/enc-hex');
 
+
 /**
- * get AElf key store
+ * getKeystore
+ *
+ * @method getKeystore
+ * @param {Object} walletInfoInput  walletInfo
+ * @param {string} password password
+ * @param {number} version version
+ * @return {Object} keyStore
+ *
+ */
+
+function getKeystore(walletInfoInput, password, version) {
+    var keystore = null;
+    var versions = version || 1;
+    switch (versions) {
+        case 1 :
+            keystore = getKeyStoreFromV1(walletInfoInput, password);
+            break;
+        default:
+            throw new Error('The version is incorrect');
+    }
+    return keystore;
+}
+
+
+/**
+ * unlockKeystore
+ *
+ * @method unlockKeystore
+ * @param {Object} keyStoreInput  walletInfo
+ * @param {string} password password
+ * @param {number} version version
+ * @return {Object} walletInfo
+ *
+ */
+
+function unlockKeystore(keyStoreInput, password, version) {
+    var walletInfo = null;
+    var versions = version || 1;
+    switch (versions) {
+        case 1 :
+            walletInfo = unlockKeyStoreFromV1(keyStoreInput, password);
+            break;
+        default:
+            throw new Error('The version is incorrect');
+    }
+    return walletInfo;
+}
+
+
+/**
+ * getKeyStoreFromV1
  *
  * @method getKeyStoreFromV1
  * @param {Object} walletInfoInput  walletInfo
@@ -5802,6 +5871,7 @@ var encHex = require('crypto-js/enc-hex');
  * @return {Object} keyStore
  *
  */
+
 
 function getKeyStoreFromV1(walletInfoInput, password) {
     var iv = libWordArray.random(16);
@@ -5913,8 +5983,8 @@ function checkPassword(keyStoreInput, password) {
 
 
 module.exports = {
-    getKeyStoreFromV1: getKeyStoreFromV1,
-    unlockKeyStoreFromV1: unlockKeyStoreFromV1,
+    getKeystore: getKeystore,
+    unlockKeystore: unlockKeystore,
     checkPassword: checkPassword
 };
 
@@ -6628,70 +6698,78 @@ module.exports = {
 const objectToUrlParams = require('../utils/objectToUrlParams').objectToUrlParams;
 module.exports.getWebApiInfo = (host, method, params) => {
     const chainMap = {
-        'chainStatus': {
+        chainStatus: {
             name: 'chainStatus',
             method: 'GET'
         },
-        'blockState': {
+        blockState: {
             name: 'blockState',
             method: 'GET'
         },
-        'Call': {
-            name: 'call',
+        Call: {
+            name: 'executeTransaction',
             method: 'POST'
         },
-        'GetFileDescriptorSet': {
+        GetFileDescriptorSet: {
             name: 'contractFileDescriptorSet',
             method: 'GET'
         },
-        'BroadcastTransaction': {
-            name: 'broadcastTransaction',
+        BroadcastTransaction: {
+            name: 'sendTransaction',
             method: 'POST'
         },
-        'BroadcastTransactions': {
-            name: 'broadcastTransactions',
+        BroadcastTransactions: {
+            name: 'sendTransactions',
             method: 'POST'
         },
-        'GetTransactionResult': {
+        // 'sendTransaction: {
+        //     name: 'sendTransaction',
+        //     method: 'POST'
+        // },
+        // 'sendTransactions: {
+        //     name: 'sendTransactions',
+        //     method: 'POST'
+        // },
+        GetTransactionResult: {
             name: 'transactionResult',
             method: 'GET'
         },
-        'GetTransactionsResult': {
+        GetTransactionsResult: {
             name: 'transactionResults',
             method: 'GET'
         },
-        'getTransactionPoolStatus': {
+        getTransactionPoolStatus: {
             name: 'transactionPoolStatus',
             method: 'GET'
         },
-        'GetBlockHeight': {
+        GetBlockHeight: {
             name: 'blockHeight',
             method: 'GET'
         },
-        'getBlockByHeight': {
+        getBlockByHeight: {
             name: 'blockByHeight',
             method: 'GET'
         },
-        'GetBlockInfo': {
+        GetBlockInfo: {
             name: 'blockByHeight',
             method: 'GET'
         },
-        'getBlock': {
+        getBlock: {
             name: 'block',
             method: 'GET'
         }
     };
 
     const netMap = {
-        'GetPeers': {
+        GetPeers: {
             name: 'peers',
             method: 'GET'
         },
-        'AddPeer': {
+        AddPeer: {
             name: 'peer',
             method: 'POST'
         },
-        'RemovePeer': {
+        RemovePeer: {
             name: 'peer',
             method: 'DELETE'
         }
@@ -55620,7 +55698,7 @@ module.exports={
   "_args": [
     [
       "elliptic@6.4.1",
-      "/Users/zhouminghui/zmh3788/aelf-sdk/aelf-sdk.js"
+      "/Users/huangzongzhe/workspace/hoopox/test/aelf-sdk-demo/aelf-sdk.js"
     ]
   ],
   "_from": "elliptic@6.4.1",
@@ -55647,7 +55725,7 @@ module.exports={
   ],
   "_resolved": "https://registry.npmjs.org/elliptic/-/elliptic-6.4.1.tgz",
   "_spec": "6.4.1",
-  "_where": "/Users/zhouminghui/zmh3788/aelf-sdk/aelf-sdk.js",
+  "_where": "/Users/huangzongzhe/workspace/hoopox/test/aelf-sdk-demo/aelf-sdk.js",
   "author": {
     "name": "Fedor Indutny",
     "email": "fedor@indutny.com"
@@ -67883,7 +67961,7 @@ function extend() {
 },{}],296:[function(require,module,exports){
 module.exports={
   "name": "aelf-sdk",
-  "version": "3.0.5",
+  "version": "3.0.6",
   "description": "aelf-sdk js library",
   "main": "./lib/aelf.js",
   "directories": {
