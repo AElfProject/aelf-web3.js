@@ -164,7 +164,8 @@ const signWallet = aelf.wallet.signTransaction(rawTxn, wallet.keyPair);
 <a name="exp_module_AElf/wallet--sign"></a>
 
 ### sign(hexTxn, keyPair) ⇒ <code>Buffer</code> ⏏
-just sign
+Encryption Using Elliptic Curve Algorithms（Use ECDSA)
+Please see https://www.npmjs.com/package/elliptic#incentive
 
 **Kind**: Exported function  
 **Returns**: <code>Buffer</code> - Buffer.from(hex, 'hex')  

@@ -1,6 +1,5 @@
 # AELf Key store
 
-
 ## 1. 什么是 AElf Keystore
 
 AElf Keystore 是集成了你的私钥、助记词。并且为你所独有的加密文件。如果你丢失了助记词，私钥。只要你还记得你的账户密码，那么通过 AElf Keystore 你依然可以得到你的助记词或者私钥。同样如果你丢失了AElf Keystore 、私钥、助记词、密码，这也就意味着你的资金被永久的锁定在了你的账户里。
@@ -90,10 +89,7 @@ AElf Keystore(之后会直接称之为 Keystore) 包含了用户的一些重要�
 
 在生成Keystore信息的同时，我们也会基于用户密码生成相对应的mac值，mac值会在导入时判断用户密码是否正确，但是mac值内并不会包含用户真正的密码。mac值通过用户密码经过KDF得到 decryptionKey 生成。出于安全考虑，decryptionKey 并非是完整的。我们截取了第16位至32位进行拼接，防止攻击者得到完整的 decryptionKey。
 
-
 ![](./Assets/keyStore5.jpg)
-
-
 
 ## 3. 加密与解密
 
@@ -107,8 +103,6 @@ decryptionKey 还被用来加密私钥与助记词，密钥或助记词通过 �
 
 kdfparams的参数已经预设好。但是需要注意初始向量与盐值是随机生成的。
 
-
-
 ### 解密过程
 
 ![](./Assets/keyStore7.jpg)
@@ -117,32 +111,31 @@ kdfparams的参数已经预设好。但是需要注意初始向量与盐值是�
 
 同时因为账户密码是唯一输入值，所以需要账户密码足够复杂才能保证安全性，AElf Keystore 规定密码需要大于等于12位，并且包含大写字母、小写字母、数字、特殊符号。 才能保证在攻击者得到你的AELf Keystore后也无法轻易的得到你的私钥与助记词信息。 
 
-# 为什么使用 Scrypt
+## 为什么使用 Scrypt
 
 首先我们先了解一下不同的加密方式。
 
 使用单向哈希存储，MD5、SHA1等，由于彩虹表这种攻击方式的存在，MD5与SHA1的安全性是比较差的。
 
-## PBKDF2
+### PBKDF2
 
 PBKDF2 通过 iterations 参数进行 N 次 HMAC运算， HW数据库密码存储的最低安全要求是 1000次 HMAC-SHA256计算，推荐是一万次。
 
-## Bcrypt
+### Bcrypt
 
 BCrypt 相比较PBKDF2 增加了内存IO运算秘籍。但是FPGA已经继承了很大的RAM，解决了内存密集IO的问题。
 
-## Scrypt
+### Scrypt
 
 Scrypt 弥补了Bcrypt的不足，将CPU计算与内存使用开销提升了一个层级，不仅CPU运算需要指数时间开销，还需要指数内存IO开销。
 
-## 不同加密方式的解密成本（粗略估计）
+### 不同加密方式的解密成本（粗略估计）
 
 ![原有加密方式](./Assets/keyStore8.png)
 
 可以看出，通过scrypt加密的破解成本相比较其他加密方式要高很多。
 
-
-## 使用 Scrypt 加密方式
+### 使用 Scrypt 加密方式
 
 Scrypt 相比较 PBKDF2 可以使用更多位数的 salt 与更高的迭代计数、成本因子。 可以使大规模的暴力破解付出更昂贵的成本与更多的时间。
 
@@ -150,12 +143,21 @@ Scrypt 相比较 PBKDF2 可以使用更多位数的 salt 与更高的迭代计�
 
 用户密码不再直接用于AES256加密内容，而是通过 scrypt KDF 生成派生密钥哈希值, 然后通过派生密钥对账户信息进行AES256加密, 最终得到密文。
 
+## 私钥、公钥与地址
 
+### 私钥
 
+通过BIP39或者BIP44获取到私钥。
 
+### 公钥
 
+有了私钥，我们就可以基于椭圆曲线密码学（Elliptic curve cryptography，缩写为ECC）产生一个公钥。
 
-# Resources
+### 地址
+
+有了公钥后，我们就可以对公钥进行两次哈希并编码后生成地址。
+
+## Resources
 
 - [分组密码工作模式](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation)
 
