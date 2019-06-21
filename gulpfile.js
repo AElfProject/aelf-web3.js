@@ -85,7 +85,6 @@ gulp.task('standalone', gulp.series(['clean'], function (done) {
         .require('./' + src + '.js', {expose: 'aelf'})
         //.require('bignumber.js') // expose it to dapp users
         .add('./' + src + '.js')
-        .ignore('crypto')
         .bundle()
         .pipe(exorcist(path.join( DEST, dst + '.js.map')))
         .pipe(source(dst + '.js'))
