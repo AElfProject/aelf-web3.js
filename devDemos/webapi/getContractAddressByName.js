@@ -39,13 +39,110 @@ const aelf = new AElf(new AElf.providers.HttpProvider(
 // For Test
 const tokenC = aelf.chain.contractAt('WnV9Gv3gioSh3Vgaw8SSB96nV8fWUNxuVozCf6Y14e7RXyGaM', wallet);
 
+// ////////////////////////////////////////////
+// sendTransaction 的三种调用方式 start
+// ////////////////////////////////////////////
+// Default return promise
+tokenC.Transfer({
+    symbol: 'BTC',
+    to: 'rkws1GibTwWQnLyLvpRtnDQiZYf51tEqQDwpGaou5s4ZQvi1v',
+    amount: 100,
+    memo: 'yeah'
+});
+
+// ugly sync
+tokenC.Transfer({
+    symbol: 'BTC',
+    to: 'rkws1GibTwWQnLyLvpRtnDQiZYf51tEqQDwpGaou5s4ZQvi1v',
+    amount: 100,
+    memo: 'yeah'
+}, {
+    sync: true
+});
+
+// ugly callback
+tokenC.Transfer({
+    symbol: 'BTC',
+    to: 'rkws1GibTwWQnLyLvpRtnDQiZYf51tEqQDwpGaou5s4ZQvi1v',
+    amount: 100,
+    memo: 'yeah'
+}, (error, result) => {
+    console.log(error, result);
+});
+
+// promise case
+tokenC.Transfer({
+    symbol: 'BTC',
+    to: 'rkws1GibTwWQnLyLvpRtnDQiZYf51tEqQDwpGaou5s4ZQvi1v',
+    amount: 100,
+    memo: 'yeah'
+}).then(result => {
+    console.log('then: ', result);
+}).catch(error => {
+    console.log('error', error);
+});
+
+async function testPromise() {
+    const tokenInfo = await tokenC.Transfer({
+        symbol: 'BTC',
+        to: 'rkws1GibTwWQnLyLvpRtnDQiZYf51tEqQDwpGaou5s4ZQvi1v',
+        amount: 100,
+        memo: 'yeah'
+    });
+    console.log('tokenInfo: ', tokenInfo);
+}
+testPromise();
+
+
+// ////////////////////////////////////////////
+// sendTransaction 的三种调用方式 end
+// ////////////////////////////////////////////
+
+// ////////////////////////////////////////////
+// call 的三种调用方式 start
+// ////////////////////////////////////////////
+// 没有设置，默认返回promise
 tokenC.GetTokenInfo.call({
     symbol: 'ELF'
 });
 
+// ugly，使用同步请求
+tokenC.GetTokenInfo.call({
+    symbol: 'ELF'
+}, {
+    sync: true
+});
+
+// callback模式
+tokenC.GetTokenInfo.call({
+    symbol: 'ELF'
+}, (error, result) => {
+    console.log('callback: ', error ,result);
+});
+
+tokenC.GetTokenInfo.call({
+    symbol: 'ELF'
+}).then(result => {
+    console.log('then: ', result);
+}).catch(error => {
+    console.log('error', error);
+});
+
+async function testPromise() {
+    const tokenInfo = await tokenC.GetTokenInfo.call({
+        symbol: 'ELF'
+    });
+    console.log('tokenInfo: ', tokenInfo);
+}
+testPromise();
+// ////////////////////////////////////////////
+// call 的三种调用方式 end
+// ////////////////////////////////////////////
+
 tokenC.GetBalance.call({
     symbol: 'BTC',
-    owner: '2hxkDg6Pd2d4yU1A16PTZVMMrEDYEPR8oQojMDwWdax5LsBaxX'
+    owner: 'rkws1GibTwWQnLyLvpRtnDQiZYf51tEqQDwpGaou5s4ZQvi1v'
+    // owner: '2hxkDg6Pd2d4yU1A16PTZVMMrEDYEPR8oQojMDwWdax5LsBaxX'
 });
 
 tokenC.Transfer({
@@ -55,18 +152,20 @@ tokenC.Transfer({
     memo: 'yeah'
 });
 
-// const {
-//     GenesisContractAddress
-// } = aelf.chain.getChainStatus();
+return;
 
-// const zeroC = aelf.chain.contractAt(GenesisContractAddress, wallet);
-// // aelf.chain.contractAtAsync(GenesisContractAddress, wallet, (err, result) => {
-// //     let test = 1;
-// //     console.log(err, result, test);
-// // });
+const {
+    GenesisContractAddress
+} = aelf.chain.getChainStatus();
+
+const zeroC = aelf.chain.contractAt(GenesisContractAddress, wallet);
+// aelf.chain.contractAtAsync(GenesisContractAddress, wallet, (err, result) => {
+//     let test = 1;
+//     console.log(err, result, test);
+// });
 
 // // zeroC.GetContractAddressByName('AElf.ContractNames.Consensus'); // HelloWorldContract
-// const tokenContractAddress = zeroC.GetContractAddressByName.call(sha256('AElf.ContractNames.Token')); // HelloWorldContract
+const tokenContractAddress = zeroC.GetContractAddressByName.call(sha256('AElf.ContractNames.Token')); // HelloWorldContract
 // // zeroC.GetContractAddressByName.call(sha256('AElf.ContractNames.Token')); // HelloWorldContract
 // // const tokenContractAddress = zeroC.GetContractAddressByName.call(sha256('AElf.ContractNames.TokenConverter')); // HelloWorldContract
 // // const tokenContractAddress = zeroC.GetContractAddressByName.call(sha256('TokenConverterContract')); // HelloWorldContract
