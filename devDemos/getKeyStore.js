@@ -42,12 +42,20 @@ const keystore = {
 
 
 // The default value of version parameter is 1 if it is not filled in.
-const keystoreJson = keyStore.getKeystore(wallet, password, 1);
+// const keystoreJson = keyStore.getKeystore(wallet, password, 1);
 
-// The default value of version parameter is 1 if it is not filled in.
-const walletInfo = keyStore.unlockKeystore(keystore, password, 1);
-const isPass = keyStore.checkPassword(keystore, password);
+keyStore.getKeystore(wallet, password).then(result => {
+    console.log(result);
+    keyStore.unlockKeystore(result, password).then(walletInfo => {
+        console.log(walletInfo);
+    }).catch(error => {
+        console.log(error);
+    });
+});
 
-console.log(keystoreJson);
-console.log(walletInfo);
-console.log(isPass);
+
+keyStore.checkPassword(keystore, password).then(result => {
+    console.log(result);
+}).catch(error => {
+    console.log(error);
+});
