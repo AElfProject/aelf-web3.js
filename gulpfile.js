@@ -69,6 +69,7 @@ gulp.task('light', gulp.series(['clean'], function (done) {
         //.ignore('bignumber.js')
         //.require('./lib/utils/browser-bn.js', {expose: 'bignumber.js'}) // fake bignumber.js
         .add('./' + src + '.js')
+        .transform("babelify", {presets: ["@babel/preset-env"]})
         .bundle()
         .pipe(exorcist(path.join( DEST, lightDst + '.js.map')))
         .pipe(source(lightDst + '.js'))
@@ -85,6 +86,7 @@ gulp.task('standalone', gulp.series(['clean'], function (done) {
         .require('./' + src + '.js', {expose: 'aelf'})
         //.require('bignumber.js') // expose it to dapp users
         .add('./' + src + '.js')
+        .transform("babelify", {presets: ["@babel/preset-env"]})
         .bundle()
         .pipe(exorcist(path.join( DEST, dst + '.js.map')))
         .pipe(source(dst + '.js'))
