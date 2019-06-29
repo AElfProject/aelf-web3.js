@@ -1,4 +1,6 @@
 require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
+"use strict";
+
 /*!
  * web3.js - Ethereum JavaScript API
  *
@@ -31,17 +33,23 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
  *   Gav Wood <g@ethdev.com>
  * @date 2014
  */
-
 var RequestManager = require('./aelf/requestmanager');
-var Chain = require('./aelf/methods/chain');
-var Settings = require('./aelf/settings');
-var version = require('../package.json');
-var HttpProvider = require('./aelf/httpprovider');
-var wallet = require('./aelf/wallet');
-var protobuf = require('@aelfqueen/protobufjs');
-var pbUtils = require('./aelf/proto');
-var utils = require('./utils/utils');
 
+var Chain = require('./aelf/methods/chain');
+
+var Settings = require('./aelf/settings');
+
+var version = require('../package.json');
+
+var HttpProvider = require('./aelf/httpprovider');
+
+var wallet = require('./aelf/wallet');
+
+var protobuf = require('@aelfqueen/protobufjs');
+
+var pbUtils = require('./aelf/proto');
+
+var utils = require('./utils/utils');
 /**
  * AElf
  *
@@ -53,24 +61,25 @@ var utils = require('./utils/utils');
  * const aelf = new AElf(new AElf.providers.HttpProvider('https://127.0.0.1:8000/chain'))
  *
  */
+
+
 function AElf(provider) {
-    this._requestManager = new RequestManager(provider);
-    this.currentProvider = provider;
-    this.chain = new Chain(this);
-    this.settings = new Settings();
-    this.version = {
-        api: version.version
-    };
-    this.providers = {
-        HttpProvider: HttpProvider
-    };
-}
-
-// expose providers on the class
-AElf.providers = {
+  this._requestManager = new RequestManager(provider);
+  this.currentProvider = provider;
+  this.chain = new Chain(this);
+  this.settings = new Settings();
+  this.version = {
+    api: version.version
+  };
+  this.providers = {
     HttpProvider: HttpProvider
-};
+  };
+} // expose providers on the class
 
+
+AElf.providers = {
+  HttpProvider: HttpProvider
+};
 /**
  * change the provider of the instance of AElf
  *
@@ -81,11 +90,12 @@ AElf.providers = {
  * aelf.setProvider(new AElf.providers.HttpProvider('https://127.0.0.1:8010/chain'))
  *
  */
-AElf.prototype.setProvider = function (provider) {
-    this._requestManager.setProvider(provider);
-    this.currentProvider = provider;
-};
 
+AElf.prototype.setProvider = function (provider) {
+  this._requestManager.setProvider(provider);
+
+  this.currentProvider = provider;
+};
 /**
  * reset
  *
@@ -97,11 +107,12 @@ AElf.prototype.setProvider = function (provider) {
  *
  */
 
-AElf.prototype.reset = function (keepIsSyncing) {
-    this._requestManager.reset(keepIsSyncing);
-    this.settings = new Settings();
-};
 
+AElf.prototype.reset = function (keepIsSyncing) {
+  this._requestManager.reset(keepIsSyncing);
+
+  this.settings = new Settings();
+};
 /**
  * check the rpc node is work or not
  *
@@ -112,44 +123,48 @@ AElf.prototype.reset = function (keepIsSyncing) {
  * // return true / false
  *
  */
+
+
 AElf.prototype.isConnected = function () {
-    return (this.currentProvider && this.currentProvider.isConnected());
+  return this.currentProvider && this.currentProvider.isConnected();
 };
 
 AElf.prototype.wallet = wallet;
-
 /**
  * wallet tool
  */
-AElf.wallet = wallet;
 
+AElf.wallet = wallet;
 /**
  * protobufjs
  */
-AElf.pbjs = protobuf;
 
+AElf.pbjs = protobuf;
 /**
  * some method about protobufjs of AElf
  */
-AElf.pbUtils = pbUtils;
 
+AElf.pbUtils = pbUtils;
 /**
  * some utils for AElf
  */
-AElf.utils = utils;
 
+AElf.utils = utils;
 /**
  * get the verion of the SDK
  */
+
 AElf.version = version.version;
 
 if (typeof window !== 'undefined' && !window.AElf) {
-    window.AElf = AElf;
+  window.AElf = AElf;
 }
 
 module.exports = AElf;
 
 },{"../package.json":308,"./aelf/httpprovider":4,"./aelf/methods/chain":6,"./aelf/proto":7,"./aelf/requestmanager":11,"./aelf/settings":12,"./aelf/wallet":32,"./utils/utils":38,"@aelfqueen/protobufjs":41}],2:[function(require,module,exports){
+"use strict";
+
 /*
     This file is part of web3.js.
 
@@ -166,30 +181,31 @@ module.exports = AElf;
     You should have received a copy of the GNU Lesser General Public License
     along with web3.js.  If not, see <http://www.gnu.org/licenses/>.
 */
+
 /** 
  * @file errors.js
  * @author Marek Kotewicz <marek@ethdev.com>
  * @date 2015
  */
-
 module.exports = {
-    InvalidNumberOfRPCParams: function () {
-        return new Error('Invalid number of input parameters to RPC method');
-    },
-    InvalidConnection: function (host){
-        return new Error('CONNECTION ERROR: Couldn\'t connect to node '+ host +'.');
-    },
-    InvalidProvider: function () {
-        return new Error('Provider not set or invalid');
-    },
-    InvalidResponse: function (result){
-        var message = !!result && !!result.error && !!result.error.message ? result.error.message : 'Invalid JSON RPC response: ' + JSON.stringify(result);
-        return new Error(message);
-    },
-    ConnectionTimeout: function (ms){
-        return new Error('CONNECTION TIMEOUT: timeout of ' + ms + ' ms achived');
-    }
+  InvalidNumberOfRPCParams: function InvalidNumberOfRPCParams() {
+    return new Error('Invalid number of input parameters to RPC method');
+  },
+  InvalidConnection: function InvalidConnection(host) {
+    return new Error('CONNECTION ERROR: Couldn\'t connect to node ' + host + '.');
+  },
+  InvalidProvider: function InvalidProvider() {
+    return new Error('Provider not set or invalid');
+  },
+  InvalidResponse: function InvalidResponse(result) {
+    var message = !!result && !!result.error && !!result.error.message ? result.error.message : 'Invalid JSON RPC response: ' + JSON.stringify(result);
+    return new Error(message);
+  },
+  ConnectionTimeout: function ConnectionTimeout(ms) {
+    return new Error('CONNECTION TIMEOUT: timeout of ' + ms + ' ms achived');
+  }
 };
+
 },{}],3:[function(require,module,exports){
 (function (Buffer){
 /*
@@ -208,136 +224,154 @@ module.exports = {
     You should have received a copy of the GNU Lesser General Public License
     along with web3.js.  If not, see <http://www.gnu.org/licenses/>.
 */
+
 /**
  * @file formatters.js
  * @author Marek Kotewicz <marek@ethdev.com>
  * @author Fabian Vogelsteller <fabian@ethdev.com>
  * @date 2015
  */
-
 'use strict';
+
 var descriptor = require("@aelfqueen/protobufjs/ext/descriptor");
 
-var inputAddressFormatter = function (address) {
-    // if (address.startsWith('ELF_')) {
-    //     var parts = address.split('_');
-    //     var b58rep = parts[parts.length - 1];
-    //     return base58check.decode(b58rep, 'hex');
-    // }
-    // throw new Error('invalid address');
-    return address;
+var inputAddressFormatter = function inputAddressFormatter(address) {
+  // if (address.startsWith('ELF_')) {
+  //     var parts = address.split('_');
+  //     var b58rep = parts[parts.length - 1];
+  //     return base58check.decode(b58rep, 'hex');
+  // }
+  // throw new Error('invalid address');
+  return address;
 };
-
 /**
  * @param {String} result base64 representation of serialized FileDescriptorSet
  * @returns {FileDescriptorSet} decoded FileDescriptorSet message
  */
-var outputFileDescriptorSetFormatter = function (result) {
-    var buffer = Buffer.from(result, 'base64');
-    var decoded = descriptor.FileDescriptorSet.decode(buffer);
-    return decoded;
+
+
+var outputFileDescriptorSetFormatter = function outputFileDescriptorSetFormatter(result) {
+  var buffer = Buffer.from(result, 'base64');
+  var decoded = descriptor.FileDescriptorSet.decode(buffer);
+  return decoded;
 };
 
 module.exports = {
-    inputAddressFormatter: inputAddressFormatter,
-    outputFileDescriptorSetFormatter: outputFileDescriptorSetFormatter
+  inputAddressFormatter: inputAddressFormatter,
+  outputFileDescriptorSetFormatter: outputFileDescriptorSetFormatter
 };
-
 
 }).call(this,require("buffer").Buffer)
 
 },{"@aelfqueen/protobufjs/ext/descriptor":39,"buffer":135}],4:[function(require,module,exports){
+"use strict";
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
 /**
  * @file httpprovider.js
  * @author huangzongzhe, gl
  * Thanks web3.js
  */
+var errors = require('./errors');
 
-const errors = require('./errors');
+var XMLHttpRequest; // browser
 
-let XMLHttpRequest;
-// browser
 if (typeof window !== 'undefined' && window.XMLHttpRequest) {
-    XMLHttpRequest = window.XMLHttpRequest; // jshint ignore: line
-    // node
-}
-else {
-    XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest; // jshint ignore: line
+  XMLHttpRequest = window.XMLHttpRequest; // jshint ignore: line
+  // node
+} else {
+  XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest; // jshint ignore: line
 }
 
-const XHR2 = require('xhr2-cookies').XMLHttpRequest; // jshint ignore: line
+var XHR2 = require('xhr2-cookies').XMLHttpRequest; // jshint ignore: line
 
-const formatWebAPIResult = input => {
-    let result;
-    let resultTemp;
-    try {
-        resultTemp = JSON.parse(input);
-    }
-    catch (e) {
-        resultTemp = input;
-    }
-    if (resultTemp.Error) {
-        result = resultTemp;
-    }
-    else {
-        result = {
-            // jsonrpc: '2.0',
-            // id: 1,
-            result: resultTemp
-        };
-    }
-    return result;
+
+var formatWebAPIResult = function formatWebAPIResult(input) {
+  var result;
+  var resultTemp;
+
+  try {
+    resultTemp = JSON.parse(input);
+  } catch (e) {
+    resultTemp = input;
+  }
+
+  if (resultTemp.Error) {
+    result = resultTemp;
+  } else {
+    result = {
+      // jsonrpc: '2.0',
+      // id: 1,
+      result: resultTemp
+    };
+  }
+
+  return result;
 };
-
 /**
  * HttpProvider should be used to send rpc calls over http
  */
-class HttpProvider {
-    constructor(host, timeout, user, password, headers) {
-        this.host = host || 'http://localhost:8545';
-        this.timeout = timeout || 0;
-        this.user = user;
-        this.password = password;
-        this.headers = headers || [{
-            name: 'Accept',
-            value: 'text/plain;v=1.0'
-        }];
 
-        this.isWebApi = true;
-        this.method;
+
+var HttpProvider =
+/*#__PURE__*/
+function () {
+  function HttpProvider(host, timeout, user, password, headers) {
+    _classCallCheck(this, HttpProvider);
+
+    this.host = host || 'http://localhost:8545';
+    this.timeout = timeout || 0;
+    this.user = user;
+    this.password = password;
+    this.headers = headers || [{
+      name: 'Accept',
+      value: 'text/plain;v=1.0'
+    }];
+    this.isWebApi = true;
+    this.method;
+  }
+
+  _createClass(HttpProvider, [{
+    key: "prepareRequestWebAPI",
+    value: function prepareRequestWebAPI(async, payload) {
+      var request;
+
+      var webApiInfo = _objectSpread({}, payload);
+
+      webApiInfo.url = this.host + '/api/' + webApiInfo.url;
+
+      if (async) {
+        request = new XHR2();
+        request.timeout = this.timeout;
+      } else {
+        request = new XMLHttpRequest();
+      }
+
+      request.withCredentials = false;
+      request.open(webApiInfo.method, webApiInfo.url, async);
+      this.method = webApiInfo.method;
+
+      if (this.method === 'POST') {
+        request.setRequestHeader('Content-Type', 'application/json');
+      }
+
+      if (this.headers) {
+        this.headers.forEach(function (header) {
+          request.setRequestHeader(header.name, header.value);
+        });
+      }
+
+      return request;
     }
-
-    prepareRequestWebAPI(async, payload) {
-        let request;
-
-        const webApiInfo = {
-            ...payload
-        };
-        webApiInfo.url = this.host + '/api/' + webApiInfo.url;
-
-        if (async) {
-            request = new XHR2();
-            request.timeout = this.timeout;
-        }
-        else {
-            request = new XMLHttpRequest();
-        }
-        request.withCredentials = false;
-
-        request.open(webApiInfo.method, webApiInfo.url, async);
-        this.method = webApiInfo.method;
-
-        if (this.method === 'POST') {
-            request.setRequestHeader('Content-Type', 'application/json');
-        }
-        if (this.headers) {
-            this.headers.forEach(function (header) {
-                request.setRequestHeader(header.name, header.value);
-            });
-        }
-        return request;
-    }
-
     /**
      * Should be called to make sync request
      *
@@ -345,33 +379,32 @@ class HttpProvider {
      * @param {Object} payload params
      * @return {Object} result
      */
-    send(payload) {
-        const request = this.prepareRequestWebAPI(false, payload);
 
-        try {
-            if (this.method === 'GET') {
-                request.send(null);
-            }
-            else {
-                request.send(JSON.stringify(payload.params));
-            }
-        }
-        catch (error) {
-            throw errors.InvalidConnection(this.host);
-        }
+  }, {
+    key: "send",
+    value: function send(payload) {
+      var request = this.prepareRequestWebAPI(false, payload);
 
-        let result = request.responseText;
-
-        try {
-            result = formatWebAPIResult(result);
+      try {
+        if (this.method === 'GET') {
+          request.send(null);
+        } else {
+          request.send(JSON.stringify(payload.params));
         }
-        catch (e) {
-            throw errors.InvalidResponse(request.responseText);
-        }
+      } catch (error) {
+        throw errors.InvalidConnection(this.host);
+      }
 
-        return result;
+      var result = request.responseText;
+
+      try {
+        result = formatWebAPIResult(result);
+      } catch (e) {
+        throw errors.InvalidResponse(request.responseText);
+      }
+
+      return result;
     }
-
     /**
      * Should be used to make async request
      *
@@ -379,65 +412,73 @@ class HttpProvider {
      * @param {Object} payload payload
      * @param {Function} callback triggered on end with (err, result)
      */
-    sendAsync(payload, callback) {
-        const request = this.prepareRequestWebAPI(true, payload);
 
-        request.onreadystatechange = () => {
-            if (request.readyState === 4 && request.timeout !== 1) {
-                let result = request.responseText;
-                let error = null;
+  }, {
+    key: "sendAsync",
+    value: function sendAsync(payload, callback) {
+      var _this = this;
 
-                try {
-                    result = formatWebAPIResult(result);
-                }
-                catch (e) {
-                    error = errors.InvalidResponse(request.responseText);
-                }
+      var request = this.prepareRequestWebAPI(true, payload);
 
-                callback(error, result);
-            }
-        };
+      request.onreadystatechange = function () {
+        if (request.readyState === 4 && request.timeout !== 1) {
+          var result = request.responseText;
+          var error = null;
 
-        request.ontimeout = () => {
-            callback(errors.ConnectionTimeout(this.timeout));
-        };
+          try {
+            result = formatWebAPIResult(result);
+          } catch (e) {
+            error = errors.InvalidResponse(request.responseText);
+          }
 
-        try {
-            if (this.method === 'GET') {
-                request.send(null);
-            }
-            else {
-                request.send(JSON.stringify(payload.params));
-            }
+          callback(error, result);
         }
-        catch (error) {
-            callback(errors.InvalidConnection(this.host));
+      };
+
+      request.ontimeout = function () {
+        callback(errors.ConnectionTimeout(_this.timeout));
+      };
+
+      try {
+        if (this.method === 'GET') {
+          request.send(null);
+        } else {
+          request.send(JSON.stringify(payload.params));
         }
+      } catch (error) {
+        callback(errors.InvalidConnection(this.host));
+      }
     }
-
     /**
      * Synchronously tries to make Http request
      *
      * @method isConnected
      * @return {boolean} returns true if request haven't failed. Otherwise false
      */
-    isConnected() {
-        try {
-            this.send({
-                method: 'GET',
-                url: 'blockChain/chainStatus'
-            });
-            return true;
-        }
-        catch (e) {
-            return false;
-        }
+
+  }, {
+    key: "isConnected",
+    value: function isConnected() {
+      try {
+        this.send({
+          method: 'GET',
+          url: 'blockChain/chainStatus'
+        });
+        return true;
+      } catch (e) {
+        return false;
+      }
     }
-}
+  }]);
+
+  return HttpProvider;
+}();
 
 module.exports = HttpProvider;
 
 },{"./errors":2,"xhr2-cookies":301,"xmlhttprequest":306}],5:[function(require,module,exports){
+"use strict";
+
 /*
     This file is part of web3.js.
 
@@ -454,29 +495,29 @@ module.exports = HttpProvider;
     You should have received a copy of the GNU Lesser General Public License
     along with web3.js.  If not, see <http://www.gnu.org/licenses/>.
 */
+
 /**
  * @file method.js
  * @author Marek Kotewicz <marek@ethdev.com>
  * @date 2015
  */
-
 var utils = require('../utils/utils');
+
 var errors = require('./errors');
 
-var Method = function (options) {
-    this.name = options.name;
-    this.call = options.call;
-    this.requestMethod = options.requestMethod;
-    this.params = options.params || [];
-    this.inputFormatter = options.inputFormatter;
-    this.outputFormatter = options.outputFormatter;
-    this.requestManager = null;
+var Method = function Method(options) {
+  this.name = options.name;
+  this.call = options.call;
+  this.requestMethod = options.requestMethod;
+  this.params = options.params || [];
+  this.inputFormatter = options.inputFormatter;
+  this.outputFormatter = options.outputFormatter;
+  this.requestManager = null;
 };
 
 Method.prototype.setRequestManager = function (rm) {
-    this.requestManager = rm;
+  this.requestManager = rm;
 };
-
 /**
  * Should be used to determine name of the jsonrpc method based on arguments
  *
@@ -484,10 +525,11 @@ Method.prototype.setRequestManager = function (rm) {
  * @param {Array} arguments
  * @return {String} name of jsonrpc method
  */
-Method.prototype.getCall = function (args) {
-    return utils.isFunction(this.call) ? this.call(args) : this.call;
-};
 
+
+Method.prototype.getCall = function (args) {
+  return utils.isFunction(this.call) ? this.call(args) : this.call;
+};
 /**
  * Should be used to extract callback from array of arguments. Modifies input param
  *
@@ -495,12 +537,22 @@ Method.prototype.getCall = function (args) {
  * @param {Array} arguments
  * @return {Function|Null} callback, if exists
  */
-Method.prototype.extractCallback = function (args) {
-    if (utils.isFunction(args[args.length - 1])) {
-        return args.pop(); // modify the args array!
-    }
-};
 
+
+Method.prototype.extractCallback = function (args) {
+  if (utils.isFunction(args[args.length - 1])) {
+    return args.pop(); // modify the args array!
+  }
+}; // please use promise async await way
+
+
+Method.prototype.uglySync = function (args) {
+  var lastArg = args[args.length - 1];
+
+  if (lastArg && lastArg.sync === true) {
+    return args.pop(); // modify the args array!
+  }
+};
 /**
  * Should be used to extract data format function from array of arguments. Modifies input param
  *
@@ -508,12 +560,13 @@ Method.prototype.extractCallback = function (args) {
  * @param {Array} arguments
  * @return {Function|Null} callback, if exists
  */
-Method.prototype.unpackOutput = function (args) {
-    if (utils.isFunction(args[args.length - 1])) {
-        return args.pop(); // modify the args array!
-    }
-};
 
+
+Method.prototype.unpackOutput = function (args) {
+  if (utils.isFunction(args[args.length - 1])) {
+    return args.pop(); // modify the args array!
+  }
+};
 /**
  * Should be called to check if the number of arguments is correct
  * 
@@ -521,12 +574,13 @@ Method.prototype.unpackOutput = function (args) {
  * @param {Array} arguments
  * @throws {Error} if it is not
  */
-Method.prototype.validateArgs = function (args) {
-    if (args.length !== this.params.length) {
-        throw errors.InvalidNumberOfRPCParams();
-    }
-};
 
+
+Method.prototype.validateArgs = function (args) {
+  if (args.length !== this.params.length) {
+    throw errors.InvalidNumberOfRPCParams();
+  }
+};
 /**
  * Should be called to format input args of method
  * 
@@ -534,16 +588,17 @@ Method.prototype.validateArgs = function (args) {
  * @param {Array}
  * @return {Array}
  */
+
+
 Method.prototype.formatInput = function (args) {
-    if (!this.inputFormatter) {
-        return args;
-    }
+  if (!this.inputFormatter) {
+    return args;
+  }
 
-    return this.inputFormatter.map(function (formatter, index) {
-        return formatter ? formatter(args[index]) : args[index];
-    });
+  return this.inputFormatter.map(function (formatter, index) {
+    return formatter ? formatter(args[index]) : args[index];
+  });
 };
-
 /**
  * Should be called to format output(result) of method
  *
@@ -551,10 +606,11 @@ Method.prototype.formatInput = function (args) {
  * @param {Object}
  * @return {Object}
  */
-Method.prototype.formatOutput = function (result) {
-    return this.outputFormatter && result ? this.outputFormatter(result) : result;
-};
 
+
+Method.prototype.formatOutput = function (result) {
+  return this.outputFormatter && result ? this.outputFormatter(result) : result;
+};
 /**
  * Should create payload from given input args
  *
@@ -562,58 +618,88 @@ Method.prototype.formatOutput = function (result) {
  * @param {Array} args
  * @return {Object}
  */
-Method.prototype.toPayload = function (args) {
-    const call = this.getCall(args);
-    const requestMethod = this.requestMethod || 'GET';
-    const callback = this.extractCallback(args);
-    const unpackOutput = this.unpackOutput(args);
-    const params = this.formatInput(args);
-    this.validateArgs(params);
 
-    const objparams = {};
-    for (let i = 0; i < params.length; i++) {
-        objparams[this.params[i]] = params[i];
-    }
-    return {
-        method: call,
-        requestMethod,
-        params: objparams,
-        callback: callback,
-        unpackOutput: unpackOutput
-    };
+
+Method.prototype.toPayload = function (args) {
+  var call = this.getCall(args);
+  var requestMethod = this.requestMethod || 'GET';
+  var isSync = this.uglySync(args);
+  var callback = this.extractCallback(args);
+  var unpackOutput = this.unpackOutput(args);
+  var params = this.formatInput(args);
+  this.validateArgs(params);
+  var objparams = {};
+
+  for (var i = 0; i < params.length; i++) {
+    objparams[this.params[i]] = params[i];
+  }
+
+  return {
+    method: call,
+    requestMethod: requestMethod,
+    params: objparams,
+    callback: callback,
+    unpackOutput: unpackOutput,
+    isSync: isSync
+  };
 };
 
 Method.prototype.attachToObject = function (obj) {
-    var func = this.buildCall();
-    func.call = this.call; // TODO!!! that's ugly. filter.js uses it
-    var name = this.name.split('.');
-    if (name.length > 1) {
-        obj[name[0]] = obj[name[0]] || {};
-        obj[name[0]][name[1]] = func;
-    } else {
-        obj[name[0]] = func; 
-    }
+  var func = this.buildCall();
+  func.call = this.call; // TODO!!! that's ugly. filter.js uses it
+
+  var name = this.name.split('.');
+
+  if (name.length > 1) {
+    obj[name[0]] = obj[name[0]] || {};
+    obj[name[0]][name[1]] = func;
+  } else {
+    obj[name[0]] = func;
+  }
 };
 
-Method.prototype.buildCall = function() {
-    const method = this;
-    const send = function () {
-        let payload = method.toPayload(Array.prototype.slice.call(arguments));
-        if (payload.callback) {
-            return method.requestManager.sendAsync(payload, function (err, result) {
-                let output = method.formatOutput(result);
-                if (payload.unpackOutput) {
-                    output = payload.unpackOutput(output);
-                }
-                payload.callback(err, output);
-            });
+Method.prototype.buildCall = function () {
+  var method = this;
+
+  var send = function send() {
+    var payload = method.toPayload(Array.prototype.slice.call(arguments));
+
+    if (payload.callback) {
+      return method.requestManager.sendAsync(payload, function (err, result) {
+        var output = method.formatOutput(result);
+
+        if (payload.unpackOutput) {
+          output = payload.unpackOutput(output);
         }
-        return method.formatOutput(method.requestManager.send(payload));
-    };
-    send.request = this.request.bind(this);
-    return send;
-};
 
+        payload.callback(err, output);
+      });
+    }
+
+    if (payload.isSync) {
+      return method.formatOutput(method.requestManager.send(payload));
+    }
+
+    return new Promise(function (resolve, reject) {
+      method.requestManager.sendAsync(payload, function (err, result) {
+        var output = method.formatOutput(result);
+
+        if (payload.unpackOutput) {
+          output = payload.unpackOutput(output);
+        }
+
+        if (err) {
+          reject('sendTransaction:no return value');
+        } else {
+          resolve(output);
+        }
+      });
+    });
+  };
+
+  send.request = this.request.bind(this);
+  return send;
+};
 /**
  * Should be called to create pure JSONRPC request which can be used in batch request
  *
@@ -621,10 +707,12 @@ Method.prototype.buildCall = function() {
  * @param {...} params
  * @return {Object} jsonrpc request
  */
+
+
 Method.prototype.request = function () {
-    var payload = this.toPayload(Array.prototype.slice.call(arguments));
-    payload.format = this.formatOutput.bind(this);
-    return payload;
+  var payload = this.toPayload(Array.prototype.slice.call(arguments));
+  payload.format = this.formatOutput.bind(this);
+  return payload;
 };
 
 module.exports = Method;
@@ -647,159 +735,135 @@ module.exports = Method;
     You should have received a copy of the GNU Lesser General Public License
     along with web3.js.  If not, see <http://www.gnu.org/licenses/>.
 */
+
 /**
  * @file eth.js
  * @author Marek Kotewicz <marek@ethdev.com>
  * @author Fabian Vogelsteller <fabian@ethdev.com>
  * @date 2015
  */
-
 'use strict';
 
-const formatters = require('../formatters');
-const Contract1 = require('../shims/contract1.js');
-const Method = require('../method');
-const merkletree = require('../../utils/merkletree');
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-const methods = function () {
-    // call 是match rpc的接口... rpc可能会没有这个接口。
-    // 如果是调用webapi， 会在map文件中找到对应的path。
-    const getChainStatus = new Method({
-        name: 'getChainStatus',
-        call: 'blockChain/chainStatus',
-        requestMethod: 'GET',
-        params: []
-    });
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
-    const getChainState = new Method({
-        name: 'getChainState',
-        call: 'blockChain/blockState',
-        requestMethod: 'GET',
-        params: ['blockHash']
-    });
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-    const getContractFileDescriptorSet = new Method({
-        name: 'getContractFileDescriptorSet',
-        call: 'blockChain/contractFileDescriptorSet',
-        requestMethod: 'GET',
-        params: ['address'],
-        inputFormatter: [formatters.inputAddressFormatter],
-        outputFormatter: formatters.outputFileDescriptorSetFormatter
-    });
+var formatters = require('../formatters');
 
-    const getBlockHeight = new Method({
-        name: 'getBlockHeight',
-        call: 'blockChain/blockHeight',
-        requestMethod: 'GET',
-        params: [],
-        inputFormatter: []
-    });
+var Contract1 = require('../shims/contract1.js');
 
-    const getBlock = new Method({
-        name: 'getBlock',
-        call: 'blockChain/block',
-        requestMethod: 'GET',
-        params: ['blockHash', 'includeTransactions']
-    });
+var Method = require('../method');
 
-    const getBlockByHeight = new Method({
-        name: 'getBlockByHeight',
-        call: 'blockChain/blockByHeight',
-        requestMethod: 'GET',
-        params: ['blockHeight', 'includeTransactions']
-    });
+var merkletree = require('../../utils/merkletree');
 
-    const getTxResult = new Method({
-        name: 'getTxResult',
-        call: 'blockChain/transactionResult',
-        requestMethod: 'GET',
-        params: ['transactionId'],
-        inputFormatter: [null]
-    });
+var methods = function methods() {
+  // call 是match rpc的接口... rpc可能会没有这个接口。
+  // 如果是调用webapi， 会在map文件中找到对应的path。
+  var getChainStatus = new Method({
+    name: 'getChainStatus',
+    call: 'blockChain/chainStatus',
+    requestMethod: 'GET',
+    params: []
+  });
+  var getChainState = new Method({
+    name: 'getChainState',
+    call: 'blockChain/blockState',
+    requestMethod: 'GET',
+    params: ['blockHash']
+  });
+  var getContractFileDescriptorSet = new Method({
+    name: 'getContractFileDescriptorSet',
+    call: 'blockChain/contractFileDescriptorSet',
+    requestMethod: 'GET',
+    params: ['address'],
+    inputFormatter: [formatters.inputAddressFormatter],
+    outputFormatter: formatters.outputFileDescriptorSetFormatter
+  });
+  var getBlockHeight = new Method({
+    name: 'getBlockHeight',
+    call: 'blockChain/blockHeight',
+    requestMethod: 'GET',
+    params: [],
+    inputFormatter: []
+  });
+  var getBlock = new Method({
+    name: 'getBlock',
+    call: 'blockChain/block',
+    requestMethod: 'GET',
+    params: ['blockHash', 'includeTransactions']
+  });
+  var getBlockByHeight = new Method({
+    name: 'getBlockByHeight',
+    call: 'blockChain/blockByHeight',
+    requestMethod: 'GET',
+    params: ['blockHeight', 'includeTransactions']
+  });
+  var getTxResult = new Method({
+    name: 'getTxResult',
+    call: 'blockChain/transactionResult',
+    requestMethod: 'GET',
+    params: ['transactionId'],
+    inputFormatter: [null]
+  });
+  var getTxResults = new Method({
+    name: 'getTxResults',
+    call: 'blockChain/transactionResults',
+    requestMethod: 'GET',
+    params: ['blockHash', 'offset', 'num']
+  }); // getTransactionPoolStatus
 
-    const getTxResults = new Method({
-        name: 'getTxResults',
-        call: 'blockChain/transactionResults',
-        requestMethod: 'GET',
-        params: ['blockHash', 'offset', 'num']
-    });
+  var getTransactionPoolStatus = new Method({
+    name: 'getTransactionPoolStatus',
+    call: 'blockChain/transactionPoolStatus',
+    requestMethod: 'GET',
+    params: []
+  });
+  var sendTransaction = new Method({
+    name: 'sendTransaction',
+    call: 'blockChain/sendTransaction',
+    requestMethod: 'POST',
+    params: ['rawTransaction'],
+    inputFormatter: [null]
+  });
+  var sendTransactions = new Method({
+    name: 'sendTransactions',
+    call: 'blockChain/sendTransactions',
+    requestMethod: 'GET',
+    params: ['rawTransaction'],
+    inputFormatter: [null]
+  });
+  var callReadOnly = new Method({
+    name: 'callReadOnly',
+    call: 'blockChain/executeTransaction',
+    requestMethod: 'POST',
+    params: ['rawTransaction'],
+    inputFormatter: [null]
+  });
+  var getPeers = new Method({
+    name: 'getPeers',
+    call: 'net/peers',
+    requestMethod: 'GET',
+    params: []
+  });
+  var addPeer = new Method({
+    name: 'addPeer',
+    call: 'net/peers',
+    requestMethod: 'POST',
+    params: ['address'],
+    inputFormatter: [null]
+  });
+  var removePeer = new Method({
+    name: 'removePeer',
+    call: 'net/peers',
+    requestMethod: 'DELETE',
+    params: ['address'],
+    inputFormatter: [null]
+  }); // getDposStatus, getNodeStatus, getPeers, addPeer, removePeer not support yet
 
-    // getTransactionPoolStatus
-    const getTransactionPoolStatus = new Method({
-        name: 'getTransactionPoolStatus',
-        call: 'blockChain/transactionPoolStatus',
-        requestMethod: 'GET',
-        params: []
-    });
-
-    const sendTransaction = new Method({
-        name: 'sendTransaction',
-        call: 'blockChain/sendTransaction',
-        requestMethod: 'POST',
-        params: ['rawTransaction'],
-        inputFormatter: [null]
-    });
-
-    const sendTransactions = new Method({
-        name: 'sendTransactions',
-        call: 'blockChain/sendTransactions',
-        requestMethod: 'GET',
-        params: ['rawTransaction'],
-        inputFormatter: [null]
-    });
-
-    const callReadOnly = new Method({
-        name: 'callReadOnly',
-        call: 'blockChain/executeTransaction',
-        requestMethod: 'POST',
-        params: ['rawTransaction'],
-        inputFormatter: [null]
-    });
-
-    const getPeers = new Method({
-        name: 'getPeers',
-        call: 'net/peers',
-        requestMethod: 'GET',
-        params: []
-    });
-
-    const addPeer = new Method({
-        name: 'addPeer',
-        call: 'net/peers',
-        requestMethod: 'POST',
-        params: ['address'],
-        inputFormatter: [null]
-    });
-
-    const removePeer = new Method({
-        name: 'removePeer',
-        call: 'net/peers',
-        requestMethod: 'DELETE',
-        params: ['address'],
-        inputFormatter: [null]
-    });
-
-    // getDposStatus, getNodeStatus, getPeers, addPeer, removePeer not support yet
-    return [
-        getChainStatus,
-        getChainState,
-        getContractFileDescriptorSet,
-        getBlockHeight,
-        getBlock,
-        getBlockByHeight,
-        sendTransaction,
-        sendTransactions,
-        callReadOnly,
-        getTxResult,
-        getTxResults,
-        getTransactionPoolStatus,
-        getPeers,
-        addPeer,
-        removePeer
-    ];
-};
-
-// const properties = function () {
+  return [getChainStatus, getChainState, getContractFileDescriptorSet, getBlockHeight, getBlock, getBlockByHeight, sendTransaction, sendTransactions, callReadOnly, getTxResult, getTxResults, getTransactionPoolStatus, getPeers, addPeer, removePeer];
+}; // const properties = function () {
 //     // TODO: implement
 //     return [
 //         // new Property({
@@ -809,75 +873,92 @@ const methods = function () {
 //     ];
 // };
 
-class Chain {
-    constructor(aelf) {
-        this._requestManager = aelf._requestManager;
-        this._initialized = false;
 
-        methods().forEach(method => {
-            method.attachToObject(this);
-            method.setRequestManager(this._requestManager);
+var Chain =
+/*#__PURE__*/
+function () {
+  function Chain(aelf) {
+    var _this = this;
+
+    _classCallCheck(this, Chain);
+
+    this._requestManager = aelf._requestManager;
+    this._initialized = false;
+    methods().forEach(function (method) {
+      method.attachToObject(_this);
+      method.setRequestManager(_this._requestManager);
+    }); // properties().forEach(p => {
+    //     p.attachToObject(this);
+    //     p.setRequestManager(this._requestManager);
+    // });
+  }
+
+  _createClass(Chain, [{
+    key: "contractAt",
+    value: function contractAt(address, wallet) {
+      var fds = this.getContractFileDescriptorSet(address);
+
+      if (fds && fds.file && fds.file.length > 0) {
+        var factory = new Contract1(this, fds, wallet);
+        return factory.at(address);
+      }
+
+      return fds;
+    }
+  }, {
+    key: "contractAtAsync",
+    value: function contractAtAsync(address, wallet, callback) {
+      var _this2 = this;
+
+      if (callback) {
+        this.getContractFileDescriptorSet(address, function (err, result) {
+          if (result && result.file && result.file.length > 0) {
+            var factory = new Contract1(_this2, result, wallet);
+            callback(err, factory.at(address));
+            return;
+          }
+
+          callback(err, 'getFileDescriptorSet failed');
         });
-        // properties().forEach(p => {
-        //     p.attachToObject(this);
-        //     p.setRequestManager(this._requestManager);
-        // });
-    }
-
-    contractAt(address, wallet) {
-        const fds = this.getContractFileDescriptorSet(address);
-        if (fds && fds.file && fds.file.length > 0) {
-            const factory = new Contract1(this, fds, wallet);
-            return factory.at(address);
-        }
-
-        return fds;
-    }
-
-    contractAtAsync(address, wallet, callback) {
-        if (callback) {
-            this.getContractFileDescriptorSet(address, (err, result) => {
-                if (result && result.file && result.file.length > 0) {
-                    const factory = new Contract1(this, result, wallet);
-                    callback(err, factory.at(address));
-                    return;
-                }
-                callback(err, 'getFileDescriptorSet failed');
-            });
-        }
-        else {
-            return new Promise((resolve, reject) => {
-                this.getContractFileDescriptorSet(address, (err, result) => {
-                    if (result && result.file && result.file.length > 0) {
-                        const factory = new Contract1(this, result, wallet);
-                        resolve([err, factory.at(address)]);
-                    } else {
-                        reject([err, 'getFileDescriptorSet failed']);
-                    }
-                });
-            });
-        }
-    }
-
-    getMerklePath(txid, height) {
-        const block = this.getBlockByHeight(height, true);
-        const txids = block.Body.Transactions;
-        const index = txids.findIndex(function (id) {
-            return id === txid;
+      } else {
+        return new Promise(function (resolve, reject) {
+          _this2.getContractFileDescriptorSet(address, function (err, result) {
+            if (result && result.file && result.file.length > 0) {
+              var factory = new Contract1(_this2, result, wallet);
+              resolve([err, factory.at(address)]);
+            } else {
+              reject([err, 'getFileDescriptorSet failed']);
+            }
+          });
         });
-        const nodes = [];
-        const chain = this;
-        const func = function (id) {
-            const txResult = chain.getTxResult(id);
-            const status = txResult.Status;
-            const buffer = Buffer.concat([Buffer.from(id.replace('0x', ''), 'hex'), Buffer.from(status, 'utf8')]);
-            const node = merkletree.node(buffer);
-            nodes.push(node);
-        };
-        txids.forEach(func);
-        return merkletree.getMerklePath(index, nodes);
+      }
     }
-}
+  }, {
+    key: "getMerklePath",
+    value: function getMerklePath(txid, height) {
+      var block = this.getBlockByHeight(height, true);
+      var txids = block.Body.Transactions;
+      var index = txids.findIndex(function (id) {
+        return id === txid;
+      });
+      var nodes = [];
+      var chain = this;
+
+      var func = function func(id) {
+        var txResult = chain.getTxResult(id);
+        var status = txResult.Status;
+        var buffer = Buffer.concat([Buffer.from(id.replace('0x', ''), 'hex'), Buffer.from(status, 'utf8')]);
+        var node = merkletree.node(buffer);
+        nodes.push(node);
+      };
+
+      txids.forEach(func);
+      return merkletree.getMerklePath(index, nodes);
+    }
+  }]);
+
+  return Chain;
+}();
 
 module.exports = Chain;
 
@@ -897,16 +978,20 @@ module.exports = Chain;
 'use strict';
 
 var utils = require('../utils/utils');
+
 var protobuf = require('@aelfqueen/protobufjs');
+
 var kernelDescriptor = require('./proto/kernel.proto.json');
+
 var kernelRoot = protobuf.Root.fromJSON(kernelDescriptor);
 
 var authDescriptor = require('./proto/auth.proto.json');
+
 var auth = protobuf.Root.fromJSON(authDescriptor);
 
 var crossChainDescriptor = require('./proto/crosschain.proto.json');
-var crosschain = protobuf.Root.fromJSON(crossChainDescriptor);
 
+var crosschain = protobuf.Root.fromJSON(crossChainDescriptor);
 /**
  * arrayBuffer To Hex
  *
@@ -914,13 +999,12 @@ var crosschain = protobuf.Root.fromJSON(crossChainDescriptor);
  * @param {Buffer} arrayBuffer arrayBuffer
  * @return {string} hex string
  */
-var arrayBufferToHex = function (arrayBuffer) {
-    return Array.prototype.map.call(
-        new Uint8Array(arrayBuffer),
-        n => ("0" + n.toString(16)).slice(-2)
-    ).join("");
-};
 
+var arrayBufferToHex = function arrayBufferToHex(arrayBuffer) {
+  return Array.prototype.map.call(new Uint8Array(arrayBuffer), function (n) {
+    return ("0" + n.toString(16)).slice(-2);
+  }).join("");
+};
 /**
  * get hex rep From Address
  *
@@ -928,20 +1012,21 @@ var arrayBufferToHex = function (arrayBuffer) {
  * @param {protobuf} address kernel.Address
  * @return {string} hex rep of address
  */
-var getRepForAddress = function (address) {
-    var message = kernelRoot.Address.fromObject(address);
-    var hex = '';
-    if (message.Value instanceof Buffer) {
-        hex = message.Value.toString('hex');
-    }
-    else {
-        // Uint8Array
-        hex = arrayBufferToHex(message.Value);
-    }
 
-    return utils.encodeAddressRep(hex);
+
+var getRepForAddress = function getRepForAddress(address) {
+  var message = kernelRoot.Address.fromObject(address);
+  var hex = '';
+
+  if (message.Value instanceof Buffer) {
+    hex = message.Value.toString('hex');
+  } else {
+    // Uint8Array
+    hex = arrayBufferToHex(message.Value);
+  }
+
+  return utils.encodeAddressRep(hex);
 };
-
 /**
  * get address From hex rep
  *
@@ -949,11 +1034,14 @@ var getRepForAddress = function (address) {
  * @param {string} rep address
  * @return {protobuf} address kernel.Address
  */
-var getAddressFromRep = function (rep) {
-    var hex = utils.decodeAddressRep(rep);
-    return kernelRoot.Address.create({'Value': Buffer.from(hex.replace('0x', ''), 'hex')});
-};
 
+
+var getAddressFromRep = function getAddressFromRep(rep) {
+  var hex = utils.decodeAddressRep(rep);
+  return kernelRoot.Address.create({
+    'Value': Buffer.from(hex.replace('0x', ''), 'hex')
+  });
+};
 /**
  * get address From hex rep
  *
@@ -961,11 +1049,12 @@ var getAddressFromRep = function (rep) {
  * @param {string} rep address
  * @return {protobuf} address kernel.Address
  */
-var getAddressObjectFromRep = function (rep) {
-    var output = kernelRoot.Address.toObject(getAddressFromRep(rep));
-    return output;
-};
 
+
+var getAddressObjectFromRep = function getAddressObjectFromRep(rep) {
+  var output = kernelRoot.Address.toObject(getAddressFromRep(rep));
+  return output;
+};
 /**
  * get hex rep From hash
  *
@@ -973,20 +1062,21 @@ var getAddressObjectFromRep = function (rep) {
  * @param {protobuf} hash kernel.Hash
  * @return {string} hex rep
  */
-var getRepForHash = function (hash) {
-    var message = kernelRoot.Address.fromObject(hash);
-    var hex = '';
-    if (message.Value instanceof Buffer) {
-        hex = message.Value.toString('hex');
-    }
-    else {
-        // Uint8Array
-        hex = arrayBufferToHex(message.Value);
-    }
 
-    return hex;
+
+var getRepForHash = function getRepForHash(hash) {
+  var message = kernelRoot.Address.fromObject(hash);
+  var hex = '';
+
+  if (message.Value instanceof Buffer) {
+    hex = message.Value.toString('hex');
+  } else {
+    // Uint8Array
+    hex = arrayBufferToHex(message.Value);
+  }
+
+  return hex;
 };
-
 /**
  * get Hash From Hex
  *
@@ -994,10 +1084,13 @@ var getRepForHash = function (hash) {
  * @param {string} hex string
  * @return {protobuf} kernel.Hash
  */
-var getHashFromHex = function (hex) {
-    return kernelRoot.Hash.create({'Value': Buffer.from(hex.replace('0x', ''), 'hex')});
-};
 
+
+var getHashFromHex = function getHashFromHex(hex) {
+  return kernelRoot.Hash.create({
+    'Value': Buffer.from(hex.replace('0x', ''), 'hex')
+  });
+};
 /**
  * get Hash Object From Hex
  *
@@ -1005,10 +1098,11 @@ var getHashFromHex = function (hex) {
  * @param {string} hex string
  * @return {Object} kernel.Hash Hash ot Object
  */
-var getHashObjectFromHex = function (hex) {
-    return kernelRoot.Hash.toObject(getHashFromHex(hex));
-};
 
+
+var getHashObjectFromHex = function getHashObjectFromHex(hex) {
+  return kernelRoot.Hash.toObject(getHashFromHex(hex));
+};
 /**
  * encode Transaction to protobuf type
  *
@@ -1016,10 +1110,11 @@ var getHashObjectFromHex = function (hex) {
  * @param {Object} tx object
  * @return {protobuf} kernel.Transaction
  */
-var encodeTransaction = function (tx) {
-    return kernelRoot.Transaction.encode(tx).finish();
-};
 
+
+var encodeTransaction = function encodeTransaction(tx) {
+  return kernelRoot.Transaction.encode(tx).finish();
+};
 /**
  * get Transaction
  *
@@ -1030,16 +1125,17 @@ var encodeTransaction = function (tx) {
  * @param {string} params
  * @return {protobuf} kernel.Transaction
  */
-var getTransaction = function (from, to, methodName, params) {
-    var txn = {
-        "From": getAddressFromRep(from),
-        "To": getAddressFromRep(to),
-        "MethodName": methodName,
-        "Params": params
-    };
-    return kernelRoot.Transaction.create(txn);
-};
 
+
+var getTransaction = function getTransaction(from, to, methodName, params) {
+  var txn = {
+    "From": getAddressFromRep(from),
+    "To": getAddressFromRep(to),
+    "MethodName": methodName,
+    "Params": params
+  };
+  return kernelRoot.Transaction.create(txn);
+};
 /**
  * get MultiSign Transaction
  *
@@ -1050,17 +1146,18 @@ var getTransaction = function (from, to, methodName, params) {
  * @param {string} params
  * @return {protobuf} kernel.Transaction
  */
-var getMsigTransaction = function (from, to, methodName, params) {
-    var txn = {
-        "From": getAddressFromRep(from),
-        "To": getAddressFromRep(to),
-        "MethodName": methodName,
-        "Params": params,
-        "Type" : kernelRoot.TransactionType.MsigTransaction
-    };
-    return kernelRoot.Transaction.create(txn);
-};
 
+
+var getMsigTransaction = function getMsigTransaction(from, to, methodName, params) {
+  var txn = {
+    "From": getAddressFromRep(from),
+    "To": getAddressFromRep(to),
+    "MethodName": methodName,
+    "Params": params,
+    "Type": kernelRoot.TransactionType.MsigTransaction
+  };
+  return kernelRoot.Transaction.create(txn);
+};
 /**
  * get Reviewer
  *
@@ -1071,14 +1168,15 @@ var getMsigTransaction = function (from, to, methodName, params) {
  * @param {string} params
  * @return {protobuf} auth.Reviewer
  */
-var getReviewer = function (reviewer) {
-    var value = {
-        'PubKey': Buffer.from(reviewer.PubKey.replace('0x', ''), 'hex'),
-        'Weight': reviewer.Weight
-    };
-    return auth.Reviewer.create(value);
-};
 
+
+var getReviewer = function getReviewer(reviewer) {
+  var value = {
+    'PubKey': Buffer.from(reviewer.PubKey.replace('0x', ''), 'hex'),
+    'Weight': reviewer.Weight
+  };
+  return auth.Reviewer.create(value);
+};
 /**
  * get Authorization
  *
@@ -1088,15 +1186,16 @@ var getReviewer = function (reviewer) {
  * @param {string} reviewers
  * @return {protobuf} auth.Authorization
  */
-var getAuthorization = function (decided_threshold, proposer_threshold, reviewers) {
-    var authorization = {
-        "ExecutionThreshold" : decided_threshold,
-        "ProposerThreshold" : proposer_threshold,
-        "Reviewers" : reviewers
-    };
-    return auth.Authorization.create(authorization);
-};
 
+
+var getAuthorization = function getAuthorization(decided_threshold, proposer_threshold, reviewers) {
+  var authorization = {
+    "ExecutionThreshold": decided_threshold,
+    "ProposerThreshold": proposer_threshold,
+    "Reviewers": reviewers
+  };
+  return auth.Authorization.create(authorization);
+};
 /**
  * get Proposal
  *
@@ -1108,19 +1207,20 @@ var getAuthorization = function (decided_threshold, proposer_threshold, reviewer
  * @param {protobuf} proposer kernel.Address
  * @return {protobuf} auth.Proposal
  */
-var getProposal = function (multisig_account, proposal_name, raw_txn, expired_time, proposer) {
-    var txn_data = encodeTransaction(raw_txn);
-    var proposal = {
-        "MultiSigAccount" : getAddressFromRep(multisig_account),
-        "Name" : proposal_name,
-        "TxnData" : txn_data,
-        "ExpiredTime" : (new Date(expired_time).getTime())/ 1000,
-        "Status" : auth.ProposalStatus.ToBeDecided,
-        "Proposer" : getAddressFromRep(proposer)
-    };
-    return auth.Proposal.create(proposal);
-};
 
+
+var getProposal = function getProposal(multisig_account, proposal_name, raw_txn, expired_time, proposer) {
+  var txn_data = encodeTransaction(raw_txn);
+  var proposal = {
+    "MultiSigAccount": getAddressFromRep(multisig_account),
+    "Name": proposal_name,
+    "TxnData": txn_data,
+    "ExpiredTime": new Date(expired_time).getTime() / 1000,
+    "Status": auth.ProposalStatus.ToBeDecided,
+    "Proposer": getAddressFromRep(proposer)
+  };
+  return auth.Proposal.create(proposal);
+};
 /**
  * get Approval
  *
@@ -1129,15 +1229,15 @@ var getProposal = function (multisig_account, proposal_name, raw_txn, expired_ti
  * @param {string} signature
  * @return {protobuf} auth.Approval
  */
-var getApproval = function (proposalHash, signature) {
-    var approval = {
-        'ProposalHash' : getHashFromHex(proposalHash),
-        'Signature' : signature
-    };
 
-    return auth.Approval.create(approval);
+
+var getApproval = function getApproval(proposalHash, signature) {
+  var approval = {
+    'ProposalHash': getHashFromHex(proposalHash),
+    'Signature': signature
+  };
+  return auth.Approval.create(approval);
 };
-
 /**
  * get Side Chain Info
  *
@@ -1149,18 +1249,19 @@ var getApproval = function (proposalHash, signature) {
  * @param {string} proposer hex string
  * @return {protobuf} crosschain.SideChainInfo
  */
-var getSideChainInfo = function (locked_token_amount, indexing_price, pairs, code, proposer) {
-    var sideChainInfo ={
-        'IndexingPrice': indexing_price,
-        'LockedTokenAmount': locked_token_amount,
-        'ResourceBalances': pairs,
-        'ContractCode': code,
-        'Proposer': getAddressFromRep(proposer),
-        'SideChainStatus': crosschain.SideChainStatus.Apply
-    };
-    return crosschain.SideChainInfo.create(sideChainInfo);
-};
 
+
+var getSideChainInfo = function getSideChainInfo(locked_token_amount, indexing_price, pairs, code, proposer) {
+  var sideChainInfo = {
+    'IndexingPrice': indexing_price,
+    'LockedTokenAmount': locked_token_amount,
+    'ResourceBalances': pairs,
+    'ContractCode': code,
+    'Proposer': getAddressFromRep(proposer),
+    'SideChainStatus': crosschain.SideChainStatus.Apply
+  };
+  return crosschain.SideChainInfo.create(sideChainInfo);
+};
 /**
  * get balance
  *
@@ -1168,14 +1269,15 @@ var getSideChainInfo = function (locked_token_amount, indexing_price, pairs, cod
  * @param {object} resource_balance
  * @return {protobuf} crosschain.ResourceTypeBalancePair
  */
-var getBalance = function (resource_balance) {
-    var pair = {
-        'Type' : resource_balance.Type,
-        'Amount' : resource_balance.Amount
-    };
-    return crosschain.ResourceTypeBalancePair.create(pair);
-};
 
+
+var getBalance = function getBalance(resource_balance) {
+  var pair = {
+    'Type': resource_balance.Type,
+    'Amount': resource_balance.Amount
+  };
+  return crosschain.ResourceTypeBalancePair.create(pair);
+};
 /**
  * encode Proposal
  *
@@ -1184,16 +1286,17 @@ var getBalance = function (resource_balance) {
  * @param {number} fieldNumber
  * @return {Buffer} buffer
  */
-var encodeProposal = function (proposal, fieldNumber) {
-    var value = auth.Proposal.encode(proposal).finish();
-    var w = new protobuf.BufferWriter();
-    // Tag
-    w.uint32(fieldNumber << 3 | 2);
-    // Data
-    w.bytes(value);
-    return w.finish();
-};
 
+
+var encodeProposal = function encodeProposal(proposal, fieldNumber) {
+  var value = auth.Proposal.encode(proposal).finish();
+  var w = new protobuf.BufferWriter(); // Tag
+
+  w.uint32(fieldNumber << 3 | 2); // Data
+
+  w.bytes(value);
+  return w.finish();
+};
 /**
  * encode Side Chain Info
  *
@@ -1202,16 +1305,17 @@ var encodeProposal = function (proposal, fieldNumber) {
  * @param {number} fieldNumber
  * @return {Buffer} buffer
  */
-var encodeSideChainInfo = function (sideChainInfo, fieldNumber) {
-    var value = crosschain.SideChainInfo.encode(sideChainInfo).finish();
-    var w = new protobuf.BufferWriter();
-    // Tag
-    w.uint32(fieldNumber << 3 | 2);
-    // Data
-    w.bytes(value);
-    return w.finish();
-};
 
+
+var encodeSideChainInfo = function encodeSideChainInfo(sideChainInfo, fieldNumber) {
+  var value = crosschain.SideChainInfo.encode(sideChainInfo).finish();
+  var w = new protobuf.BufferWriter(); // Tag
+
+  w.uint32(fieldNumber << 3 | 2); // Data
+
+  w.bytes(value);
+  return w.finish();
+};
 /**
  * encode Approval
  *
@@ -1220,44 +1324,46 @@ var encodeSideChainInfo = function (sideChainInfo, fieldNumber) {
  * @param {number} fieldNumber
  * @return {Buffer} buffer
  */
-var encodeApproval = function (approval, fieldNumber) {
-    var value = auth.Approval.encode(approval).finish();
-    var w = new protobuf.BufferWriter();
-    // Tag
-    w.uint32(fieldNumber << 3 | 2);
-    // Data
-    w.bytes(value);
-    return w.finish();
+
+
+var encodeApproval = function encodeApproval(approval, fieldNumber) {
+  var value = auth.Approval.encode(approval).finish();
+  var w = new protobuf.BufferWriter(); // Tag
+
+  w.uint32(fieldNumber << 3 | 2); // Data
+
+  w.bytes(value);
+  return w.finish();
 };
 
 module.exports = {
-    getRepForAddress: getRepForAddress,
-    getAddressFromRep: getAddressFromRep,
-    getAddressObjectFromRep: getAddressObjectFromRep,
-    getRepForHash: getRepForHash,
-    getHashFromHex: getHashFromHex,
-    getHashObjectFromHex: getHashObjectFromHex,
-    getTransaction: getTransaction,
-    getMsigTransaction: getMsigTransaction,
-    getAuthorization: getAuthorization,
-    getReviewer: getReviewer,
-    encodeTransaction: encodeTransaction,
-    getProposal: getProposal,
-    encodeProposal: encodeProposal,
-    getApproval: getApproval,
-    encodeApproval: encodeApproval,
-    getSideChainInfo: getSideChainInfo,
-    getBalance: getBalance,
-    encodeSideChainInfo: encodeSideChainInfo,
-    Transaction: kernelRoot.Transaction,
-    Hash: kernelRoot.Hash,
-    Address: kernelRoot.Address,
-    Authorization: auth.Authorization,
-    Proposal: auth.Proposal,
-    ProposalStatus: auth.ProposalStatus,
-    SideChainInfo: crosschain.SideChainInfo,
-    SideChainStatus: crosschain.SideChainStatus,
-    ResourceTypeBalancePair: crosschain.ResourceTypeBalancePair
+  getRepForAddress: getRepForAddress,
+  getAddressFromRep: getAddressFromRep,
+  getAddressObjectFromRep: getAddressObjectFromRep,
+  getRepForHash: getRepForHash,
+  getHashFromHex: getHashFromHex,
+  getHashObjectFromHex: getHashObjectFromHex,
+  getTransaction: getTransaction,
+  getMsigTransaction: getMsigTransaction,
+  getAuthorization: getAuthorization,
+  getReviewer: getReviewer,
+  encodeTransaction: encodeTransaction,
+  getProposal: getProposal,
+  encodeProposal: encodeProposal,
+  getApproval: getApproval,
+  encodeApproval: encodeApproval,
+  getSideChainInfo: getSideChainInfo,
+  getBalance: getBalance,
+  encodeSideChainInfo: encodeSideChainInfo,
+  Transaction: kernelRoot.Transaction,
+  Hash: kernelRoot.Hash,
+  Address: kernelRoot.Address,
+  Authorization: auth.Authorization,
+  Proposal: auth.Proposal,
+  ProposalStatus: auth.ProposalStatus,
+  SideChainInfo: crosschain.SideChainInfo,
+  SideChainStatus: crosschain.SideChainStatus,
+  ResourceTypeBalancePair: crosschain.ResourceTypeBalancePair
 };
 
 }).call(this,require("buffer").Buffer)
@@ -2960,6 +3066,14 @@ module.exports={
   }
 }
 },{}],11:[function(require,module,exports){
+"use strict";
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
 /*
     This file is part of web3.js.
 
@@ -2976,6 +3090,7 @@ module.exports={
     You should have received a copy of the GNU Lesser General Public License
     along with web3.js.  If not, see <http://www.gnu.org/licenses/>.
 */
+
 /**
  * @file requestmanager.js
  * @author hzz780
@@ -2986,68 +3101,75 @@ module.exports={
  * @author Gav Wood <g@ethdev.com>
  * @date 2014
  */
-
 // const Jsonrpc = require('./jsonrpc');
 // var c = require('../utils/config');
-const errors = require('./errors');
-const objectToUrlParams = require('../utils/objectToUrlParams').objectToUrlParams;
+var errors = require('./errors');
 
-const webApiToPayload = function (data) {
-    // const demo = {
-    //     "method": "blockChain/GetFileDescriptorSet",
-    //     "requestMethod": "GET",
-    //     "type": "net",
-    //     "params": {
-    //         "address": "WnV9Gv3gioSh3Vgaw8SSB96nV8fWUNxuVozCf6Y14e7RXyGaM"
-    //     }
-    // }
-    let output = {
-        method: data.requestMethod,
-        url: data.method,
-        params: data.params
-    };
-    if (output.method === 'GET') {
-        output.url += '?' + objectToUrlParams(data.params);
-    }
+var objectToUrlParams = require('../utils/objectToUrlParams').objectToUrlParams;
 
-    return output;
+var webApiToPayload = function webApiToPayload(data) {
+  // const demo = {
+  //     "method": "blockChain/GetFileDescriptorSet",
+  //     "requestMethod": "GET",
+  //     "type": "net",
+  //     "params": {
+  //         "address": "WnV9Gv3gioSh3Vgaw8SSB96nV8fWUNxuVozCf6Y14e7RXyGaM"
+  //     }
+  // }
+  var output = {
+    method: data.requestMethod,
+    url: data.method,
+    params: data.params
+  };
+
+  if (output.method === 'GET') {
+    output.url += '?' + objectToUrlParams(data.params);
+  }
+
+  return output;
 };
-
 /**
  * It's responsible for passing messages to providers
  * It's also responsible for polling the ethereum node for incoming messages
  * Default poll timeout is 1 second
  * Singleton
  */
-class RequestManager{
-    constructor(provider) {
-        this.provider = provider;
-        this.polls = {};
-        this.timeout = null;
+
+
+var RequestManager =
+/*#__PURE__*/
+function () {
+  function RequestManager(provider) {
+    _classCallCheck(this, RequestManager);
+
+    this.provider = provider;
+    this.polls = {};
+    this.timeout = null;
+  }
+  /**
+   * Should be used to synchronously send request
+   *
+   * @method send
+   * @param {Object} data data
+   * @return {Object}
+   */
+
+
+  _createClass(RequestManager, [{
+    key: "send",
+    value: function send(data) {
+      if (!this.provider) {
+        // console.error(errors.InvalidProvider());
+        return null;
+      }
+
+      var payload = webApiToPayload(data);
+      var result = this.provider.send(payload); // if (!Jsonrpc.isValidResponse(result)) {
+      //     throw errors.InvalidResponse(result);
+      // }
+
+      return result.result;
     }
-
-    /**
-     * Should be used to synchronously send request
-     *
-     * @method send
-     * @param {Object} data data
-     * @return {Object}
-     */
-    send(data) {
-        if (!this.provider) {
-            // console.error(errors.InvalidProvider());
-            return null;
-        }
-
-        let payload = webApiToPayload(data);
-        let result = this.provider.send(payload);
-        // if (!Jsonrpc.isValidResponse(result)) {
-        //     throw errors.InvalidResponse(result);
-        // }
-
-        return result.result;
-    }
-
     /**
      * Should be used to asynchronously send request
      *
@@ -3055,39 +3177,44 @@ class RequestManager{
      * @param {Object} data data
      * @param {Function} callback fn
      */
-    sendAsync(data, callback) {
-        if (!this.provider) {
-            return callback(errors.InvalidProvider());
-        }
 
-        let payload = webApiToPayload(data);
-        this.provider.sendAsync(payload, function (err, result) {
-            if (err) {
-                callback(err);
-            }
-            // else if (!Jsonrpc.isValidResponse(result)) {
-            //     return callback(errors.InvalidResponse(result));
-            // }
-            else {
-                callback(null, result.result);
-            }
-        });
+  }, {
+    key: "sendAsync",
+    value: function sendAsync(data, callback) {
+      if (!this.provider) {
+        return callback(errors.InvalidProvider());
+      }
+
+      var payload = webApiToPayload(data);
+      this.provider.sendAsync(payload, function (err, result) {
+        if (err) {
+          callback(err);
+        } // else if (!Jsonrpc.isValidResponse(result)) {
+        //     return callback(errors.InvalidResponse(result));
+        // }
+        else {
+            callback(null, result.result);
+          }
+      });
     }
-
     /**
      * Should be used to set provider of request manager
      *
      * @method setProvider
      * @param {Object} p provider
      */
-    setProvider(p) {
-        this.provider = p;
+
+  }, {
+    key: "setProvider",
+    value: function setProvider(p) {
+      this.provider = p;
     }
-}
+  }]);
 
-module.exports = RequestManager;
+  return RequestManager;
+}();
 
-// /**
+module.exports = RequestManager; // /**
 //  * Should be used to start polling
 //  *
 //  * @method startPolling
@@ -3100,14 +3227,11 @@ module.exports = RequestManager;
 //  */
 // RequestManager.prototype.startPolling = function (data, pollId, callback, uninstall) {
 //     this.polls[pollId] = {data: data, id: pollId, callback: callback, uninstall: uninstall};
-
-
 //     // start polling
 //     if (!this.timeout) {
 //         this.poll();
 //     }
 // };
-
 // /**
 //  * Should be used to stop polling for filter with given id
 //  *
@@ -3116,14 +3240,12 @@ module.exports = RequestManager;
 //  */
 // RequestManager.prototype.stopPolling = function (pollId) {
 //     delete this.polls[pollId];
-
 //     // stop polling
 //     if(Object.keys(this.polls).length === 0 && this.timeout) {
 //         clearTimeout(this.timeout);
 //         this.timeout = null;
 //     }
 // };
-
 // /**
 //  * Should be called to reset the polling mechanism of the request manager
 //  *
@@ -3131,7 +3253,6 @@ module.exports = RequestManager;
 //  */
 // RequestManager.prototype.reset = function (keepIsSyncing) {
 //     /*jshint maxcomplexity:5 */
-
 //     for (var key in this.polls) {
 //         // remove all polls, except sync polls,
 //         // they need to be removed manually by calling syncing.stopWatching()
@@ -3140,7 +3261,6 @@ module.exports = RequestManager;
 //             delete this.polls[key];
 //         }
 //     }
-
 //     // stop polling
 //     if(Object.keys(this.polls).length === 0 && this.timeout) {
 //         clearTimeout(this.timeout);
@@ -3149,16 +3269,17 @@ module.exports = RequestManager;
 // };
 
 },{"../utils/objectToUrlParams":37,"./errors":2}],12:[function(require,module,exports){
+"use strict";
 
-
-var Settings = function () {
-    this.defaultAccount = undefined;
+var Settings = function Settings() {
+  this.defaultAccount = undefined;
 };
 
 module.exports = Settings;
 
-
 },{}],13:[function(require,module,exports){
+"use strict";
+
 /*
     This file is part of web3.js.
 
@@ -3175,15 +3296,15 @@ module.exports = Settings;
     You should have received a copy of the GNU Lesser General Public License
     along with web3.js.  If not, see <http://www.gnu.org/licenses/>.
 */
+
 /**
  * @file contract.js
  * @author Marek Kotewicz <marek@ethdev.com>
  * @date 2014
  */
-
 var protobuf = require('@aelfqueen/protobufjs');
-var ContractMethod = require('./method1.js');
 
+var ContractMethod = require('./method1.js');
 /**
  * Gets the service contained in the buffer which is
  * serialized FileDescriptorSet.
@@ -3191,41 +3312,48 @@ var ContractMethod = require('./method1.js');
  * @method getService
  * @param {FileDescriptorSet} fileDescriptorSet
  */
-var getServices = function (fileDescriptorSet){
-    var fds = fileDescriptorSet;
-    var serviceNames = [];
-    for(var i = 0; i < fds.file.length; i++){
-        var f = fds.file[i];
-        if(f.service.length > 0){
-            var sn = f.service[0].name;
-            var fullName = f.package ? f.package + '.' + sn : sn;
-            serviceNames.push(fullName)
-        }
-    }
-    var root = protobuf.Root.fromDescriptor(fds);
-    var services = serviceNames.map(n => root.lookupService(n));
-    services.forEach(svc => {
-        svc.resolveAll();
-    });
-    return services;
-}
 
+
+var getServices = function getServices(fileDescriptorSet) {
+  var fds = fileDescriptorSet;
+  var serviceNames = [];
+
+  for (var i = 0; i < fds.file.length; i++) {
+    var f = fds.file[i];
+
+    if (f.service.length > 0) {
+      var sn = f.service[0].name;
+      var fullName = f["package"] ? f["package"] + '.' + sn : sn;
+      serviceNames.push(fullName);
+    }
+  }
+
+  var root = protobuf.Root.fromDescriptor(fds);
+  var services = serviceNames.map(function (n) {
+    return root.lookupService(n);
+  });
+  services.forEach(function (svc) {
+    svc.resolveAll();
+  });
+  return services;
+};
 /**
  * Adds functions to contract object
  * @method addMethodsToContract
  * @param {Contract} contract 
  * @param {KeyPair} wallet
  */
-var addMethodsToContract = function (contract, wallet) {
-    for (var i = 0; i < contract.services.length; i++) {
-        contract.services[i].methodsArray.map(function (method) {
-            return new ContractMethod(contract._chain, method, contract.address, wallet);
-        }).forEach(function (f) {
-            f.attachToContract(contract);
-        });
-    }
-};
 
+
+var addMethodsToContract = function addMethodsToContract(contract, wallet) {
+  for (var i = 0; i < contract.services.length; i++) {
+    contract.services[i].methodsArray.map(function (method) {
+      return new ContractMethod(contract._chain, method, contract.address, wallet);
+    }).forEach(function (f) {
+      f.attachToContract(contract);
+    });
+  }
+};
 /**
  * Creates new ContractFactory instance
  *
@@ -3234,13 +3362,14 @@ var addMethodsToContract = function (contract, wallet) {
  * @param {FileDescriptorSet} fileDescriptorSet
  * @param {KeyPair} wallet
  */
-var ContractFactory = function (chain, fileDescriptorSet, wallet) {
-    this.chain = chain;
-    this.services = getServices(fileDescriptorSet);
-    this.service = this.services[this.services.length - 1];
-    this.wallet = wallet;
-};
 
+
+var ContractFactory = function ContractFactory(chain, fileDescriptorSet, wallet) {
+  this.chain = chain;
+  this.services = getServices(fileDescriptorSet);
+  this.service = this.services[this.services.length - 1];
+  this.wallet = wallet;
+};
 /**
  * Should be called to get access to existing contract on a blockchain
  *
@@ -3250,18 +3379,20 @@ var ContractFactory = function (chain, fileDescriptorSet, wallet) {
  * @returns {Contract} returns contract if no callback was passed,
  * otherwise calls callback function (err, contract)
  */
+
+
 ContractFactory.prototype.at = function (address, callback) {
-    var contract = new Contract(this.chain, this.services, address);
-    // this functions are not part of prototype,
-    // because we dont want to spoil the interface
-    addMethodsToContract(contract, this.wallet);
+  var contract = new Contract(this.chain, this.services, address); // this functions are not part of prototype,
+  // because we dont want to spoil the interface
 
-    if (callback) {
-        callback(null, contract);
-    }
-    return contract;
+  addMethodsToContract(contract, this.wallet);
+
+  if (callback) {
+    callback(null, contract);
+  }
+
+  return contract;
 };
-
 /**
  * Should be called to create new contract instance
  *
@@ -3269,18 +3400,22 @@ ContractFactory.prototype.at = function (address, callback) {
  * @param {FileDescriptorSet} fileDescriptorSet
  * @param {Address} contract address
  */
-var Contract = function (chain, services, address) {
-    this._chain = chain;
-    this.transactionHash = null;
-    this.address = address;
-    this.services = services;
-    this.service = this.services[this.services.length - 1];
+
+
+var Contract = function Contract(chain, services, address) {
+  this._chain = chain;
+  this.transactionHash = null;
+  this.address = address;
+  this.services = services;
+  this.service = this.services[this.services.length - 1];
 };
 
 module.exports = ContractFactory;
 
 },{"./method1.js":14,"@aelfqueen/protobufjs":41}],14:[function(require,module,exports){
 (function (Buffer){
+"use strict";
+
 /*
     This file is part of web3.js.
 
@@ -3297,142 +3432,169 @@ module.exports = ContractFactory;
     You should have received a copy of the GNU Lesser General Public License
     along with web3.js.  If not, see <http://www.gnu.org/licenses/>.
 */
+
 /**
  * @file function.js
  * @author Marek Kotewicz <marek@ethdev.com>
  * @date 2015
  */
+
 /* eslint-disable fecs-camelcase */
-
 var coder = require('../types/coder');
-var utils = require('../../utils/utils');
-var config = require('../../utils/config');
-var errors = require('../errors');
-var proto = require('../proto.js');
-var wallet = require('../wallet.js');
 
+var utils = require('../../utils/utils');
+
+var config = require('../../utils/config');
+
+var errors = require('../errors');
+
+var proto = require('../proto.js');
+
+var wallet = require('../wallet.js');
 /**
  * Checks if a field is an Address/Hash type.
  * @param {Object} resolvedType 
  */
-var isWrappedBytes = function (resolvedType, name){
-    if(!resolvedType.name || resolvedType.name != name){
-        return false;
-    }
-    if(!resolvedType.fieldsArray || resolvedType.fieldsArray.length != 1){
-        return false;
-    }
-    return resolvedType.fieldsArray[0].type == 'bytes';
-}
 
-var getFieldPaths = function (checker, resolvedType, path){
-    if(!resolvedType){
-        return [];
-    }
-    if(checker(resolvedType)){
-        return [path];
-    }
-    var paths = [];
-    resolvedType.resolve();
-    if(!resolvedType.fieldsArray){
-        return paths;
-    }
-    for(var i = 0; i < resolvedType.fieldsArray.length; i++){
-        var fld = resolvedType.fieldsArray[i];
-        paths = paths.concat(getFieldPaths(checker, fld.resolve().resolvedType, path.concat([fld.name])));
-    }
+
+var isWrappedBytes = function isWrappedBytes(resolvedType, name) {
+  if (!resolvedType.name || resolvedType.name != name) {
+    return false;
+  }
+
+  if (!resolvedType.fieldsArray || resolvedType.fieldsArray.length != 1) {
+    return false;
+  }
+
+  return resolvedType.fieldsArray[0].type == 'bytes';
+};
+
+var getFieldPaths = function getFieldPaths(checker, resolvedType, path) {
+  if (!resolvedType) {
+    return [];
+  }
+
+  if (checker(resolvedType)) {
+    return [path];
+  }
+
+  var paths = [];
+  resolvedType.resolve();
+
+  if (!resolvedType.fieldsArray) {
     return paths;
-}
+  }
 
-// reformatter is executed when parents are not empty
-var reformat = function (obj, forSelf, paths, reformatter){
-    if (forSelf) {
-        return reformatter(obj);
-    }
-    if(!paths || paths.length == 0){
-        return obj;
-    }
-    for(var j = 0; j < paths.length; j++){
-        var path = paths[j];
-        var parent = obj;
-        for(var i = 0; i < path.length - 1; i++){
-            parent = parent[path[i]];
-            if(!parent) break;
-        }
-        if (!parent) {
-            continue;
-        }
-        var name = path[path.length - 1];
-        var target = parent[name];
-        if(!target){
-            continue;
-        }
+  for (var i = 0; i < resolvedType.fieldsArray.length; i++) {
+    var fld = resolvedType.fieldsArray[i];
+    paths = paths.concat(getFieldPaths(checker, fld.resolve().resolvedType, path.concat([fld.name])));
+  }
 
-        parent[name] = reformatter(target);
-    }
+  return paths;
+}; // reformatter is executed when parents are not empty
+
+
+var reformat = function reformat(obj, forSelf, paths, reformatter) {
+  if (forSelf) {
+    return reformatter(obj);
+  }
+
+  if (!paths || paths.length == 0) {
     return obj;
-}
+  }
 
-var isAddress = function (resolvedType){
-    return isWrappedBytes(resolvedType, "Address");
-}
+  for (var j = 0; j < paths.length; j++) {
+    var path = paths[j];
+    var parent = obj;
 
-var getAddressFieldPaths = function (resolvedType, path=[]){
-    return getFieldPaths(isAddress, resolvedType, path);
-}
+    for (var i = 0; i < path.length - 1; i++) {
+      parent = parent[path[i]];
+      if (!parent) break;
+    }
 
-var maybeUglifyAddress = function (obj, forSelf, paths){
-    return reformat(obj, forSelf, paths, (target) => {
-        if (typeof target === 'string') {
-            return proto.getAddressObjectFromRep(target);
-        }
-        return target;
-    });
-}
+    if (!parent) {
+      continue;
+    }
 
-var maybePrettifyAddress = function (obj, forSelf, paths){
-    return reformat(obj, forSelf, paths, (target) => {
-        if(typeof target !== 'string'){
-            return proto.getRepForAddress(target);
-        }
-        return target;
-    });
-}
+    var name = path[path.length - 1];
+    var target = parent[name];
 
-var isHash = function(resolvedType){
-    return isWrappedBytes(resolvedType, 'Hash');
-}
+    if (!target) {
+      continue;
+    }
 
-var getHashFieldPaths = function (resolvedType, path=[]){
-    return getFieldPaths(isHash, resolvedType, path);
-}
+    parent[name] = reformatter(target);
+  }
 
-var maybeUglifyHash = function (obj, forSelf, paths){
-    return reformat(obj, forSelf, paths, (target) => {
-        if (typeof target === 'string') {
-            return proto.getHashObjectFromHex(target);
-        }
-        if(Array.isArray(target)){
-            return target.map(function (h) {
-                return proto.getHashObjectFromHex(h);
-            });
-        }
-        return target;
-    });
-}
+  return obj;
+};
 
-var maybePrettifyHash = function (obj, forSelf, paths){
-    return reformat(obj, forSelf, paths, (target)=> {
-        if(typeof target !== 'string'){
-            return proto.getRepForHash(target);
-        }
-        return target;
-    });
-}
+var isAddress = function isAddress(resolvedType) {
+  return isWrappedBytes(resolvedType, "Address");
+};
 
-// /**
+var getAddressFieldPaths = function getAddressFieldPaths(resolvedType) {
+  var path = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
+  return getFieldPaths(isAddress, resolvedType, path);
+};
+
+var maybeUglifyAddress = function maybeUglifyAddress(obj, forSelf, paths) {
+  return reformat(obj, forSelf, paths, function (target) {
+    if (typeof target === 'string') {
+      return proto.getAddressObjectFromRep(target);
+    }
+
+    return target;
+  });
+};
+
+var maybePrettifyAddress = function maybePrettifyAddress(obj, forSelf, paths) {
+  return reformat(obj, forSelf, paths, function (target) {
+    if (typeof target !== 'string') {
+      return proto.getRepForAddress(target);
+    }
+
+    return target;
+  });
+};
+
+var isHash = function isHash(resolvedType) {
+  return isWrappedBytes(resolvedType, 'Hash');
+};
+
+var getHashFieldPaths = function getHashFieldPaths(resolvedType) {
+  var path = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
+  return getFieldPaths(isHash, resolvedType, path);
+};
+
+var maybeUglifyHash = function maybeUglifyHash(obj, forSelf, paths) {
+  return reformat(obj, forSelf, paths, function (target) {
+    if (typeof target === 'string') {
+      return proto.getHashObjectFromHex(target);
+    }
+
+    if (Array.isArray(target)) {
+      return target.map(function (h) {
+        return proto.getHashObjectFromHex(h);
+      });
+    }
+
+    return target;
+  });
+};
+
+var maybePrettifyHash = function maybePrettifyHash(obj, forSelf, paths) {
+  return reformat(obj, forSelf, paths, function (target) {
+    if (typeof target !== 'string') {
+      return proto.getRepForHash(target);
+    }
+
+    return target;
+  });
+}; // /**
 //  * This prototype should be used to call/sendTransaction to solidity functions
 //  */
+
 /**
  * 
  * @method ContractMethod
@@ -3441,44 +3603,42 @@ var maybePrettifyHash = function (obj, forSelf, paths){
  * @param {String} address 
  * @param {KeyPair} wallet 
  */
-var ContractMethod = function (chain, method, address, wallet) {
-    this._chain = chain;
-    this._method = method;
-    this._inputType = method.resolvedRequestType;
-    this._outputType = method.resolvedResponseType;
-    this._inputTypeAddressFieldPaths = getAddressFieldPaths(this._inputType);
-    this._outputTypeAddressFieldPaths = getAddressFieldPaths(this._outputType);
-    this._inputTypeHashFieldPaths = getHashFieldPaths(this._inputType);
-    this._outputTypeHashFieldPaths = getHashFieldPaths(this._outputType);
-    this._isInputTypeAddress = isAddress(this._inputType);
-    this._isInputTypeHash = isHash(this._inputType);
-    this._isOutputTypeAddress = isAddress(this._outputType);
-    this._isOutputTypeHash = isHash(this._outputType);
-    this._name = method.name;
 
-    // contract address
-    this._address = address;
 
-    // wallet = {address: [String], keyPair: [Object]}
-    this._wallet = wallet;
+var ContractMethod = function ContractMethod(chain, method, address, wallet) {
+  this._chain = chain;
+  this._method = method;
+  this._inputType = method.resolvedRequestType;
+  this._outputType = method.resolvedResponseType;
+  this._inputTypeAddressFieldPaths = getAddressFieldPaths(this._inputType);
+  this._outputTypeAddressFieldPaths = getAddressFieldPaths(this._outputType);
+  this._inputTypeHashFieldPaths = getHashFieldPaths(this._inputType);
+  this._outputTypeHashFieldPaths = getHashFieldPaths(this._outputType);
+  this._isInputTypeAddress = isAddress(this._inputType);
+  this._isInputTypeHash = isHash(this._inputType);
+  this._isOutputTypeAddress = isAddress(this._outputType);
+  this._isOutputTypeHash = isHash(this._outputType);
+  this._name = method.name; // contract address
+
+  this._address = address; // wallet = {address: [String], keyPair: [Object]}
+
+  this._wallet = wallet;
 };
 
 ContractMethod.prototype.extractCallback = function (args) {
-    if (utils.isFunction(args[args.length - 1])) {
-        return args.pop(); // modify the args array!
-    }
-};
+  if (utils.isFunction(args[args.length - 1])) {
+    return args.pop(); // modify the args array!
+  }
+}; // please use promise async await way
 
-// please use promise async await way
+
 ContractMethod.prototype.uglySync = function (args) {
-    const lastArg = args[args.length - 1];
-    if (lastArg && lastArg.sync === true) {
-        return args.pop(); // modify the args array!
-    }
+  var lastArg = args[args.length - 1];
+
+  if (lastArg && lastArg.sync === true) {
+    return args.pop(); // modify the args array!
+  }
 };
-
-
-
 /**
  * Should be called to check if the number of arguments is correct
  *
@@ -3486,12 +3646,13 @@ ContractMethod.prototype.uglySync = function (args) {
  * @param {Array} arguments
  * @throws {Error} if it is not
  */
-ContractMethod.prototype.validateArgs = function (args) {
-    var error = this._inputType.verify(args);
-    if(error)
-        throw Error(err);
-};
 
+
+ContractMethod.prototype.validateArgs = function (args) {
+  var error = this._inputType.verify(args);
+
+  if (error) throw Error(err);
+};
 /**
  * Should be used to create payload from arguments
  *
@@ -3499,36 +3660,37 @@ ContractMethod.prototype.validateArgs = function (args) {
  * @param {Array} solidity function params
  * @param {Object} optional payload options
  */
+
+
 ContractMethod.prototype.toPayload = function (args) {
-    let encoded = this.packInput(args[0]);
-    let rawtx = proto.getTransaction(this._wallet.address, this._address, this._name, encoded);
+  var encoded = this.packInput(args[0]);
+  var rawtx = proto.getTransaction(this._wallet.address, this._address, this._name, encoded); // TODO: Move this chunk into utils
 
-    // TODO: Move this chunk into utils
-    let block_height = JSON.parse(this._chain.getBlockHeight(), 10);
-    let block_info = this._chain.getBlockByHeight(block_height, false);
+  var block_height = JSON.parse(this._chain.getBlockHeight(), 10);
 
-    rawtx.RefBlockNumber = block_height;
-    let blockhash = block_info.BlockHash;
-    blockhash = blockhash.match(/^0x/) ? blockhash.substring(2) : blockhash;
+  var block_info = this._chain.getBlockByHeight(block_height, false);
 
-    rawtx.RefBlockPrefix = (new Buffer(blockhash, 'hex')).slice(0, 4);
-    // do not need set the value of TransactionType
-    // var incr = this._isView ? 0 : this._chain.getIncrement(this._wallet.address).result.increment;
-    // rawtx.IncrementId = 0;
-    // var options = {};
-    // options.From = config.defaultAccount;
-    // options.To = this._address;
-    // options.MethodName = this._name;
-    // options.Params = coder.encodeParams(this._paramTypes, args);
-    let tx = wallet.signTransaction(rawtx, this._wallet.keyPair);
+  rawtx.RefBlockNumber = block_height;
+  var blockhash = block_info.BlockHash;
+  blockhash = blockhash.match(/^0x/) ? blockhash.substring(2) : blockhash;
+  rawtx.RefBlockPrefix = new Buffer(blockhash, 'hex').slice(0, 4); // do not need set the value of TransactionType
+  // var incr = this._isView ? 0 : this._chain.getIncrement(this._wallet.address).result.increment;
+  // rawtx.IncrementId = 0;
+  // var options = {};
+  // options.From = config.defaultAccount;
+  // options.To = this._address;
+  // options.MethodName = this._name;
+  // options.Params = coder.encodeParams(this._paramTypes, args);
 
-    tx = proto.Transaction.encode(tx).finish();
-    if (tx.__proto__.constructor === Buffer) {
-        return tx.toString('hex');
-    }
-    return utils.uint8ArrayToHex(tx);
+  var tx = wallet.signTransaction(rawtx, this._wallet.keyPair);
+  tx = proto.Transaction.encode(tx).finish();
+
+  if (tx.__proto__.constructor === Buffer) {
+    return tx.toString('hex');
+  }
+
+  return utils.uint8ArrayToHex(tx);
 };
-
 /**
  * Should be used to create payload from arguments
  *
@@ -3536,109 +3698,124 @@ ContractMethod.prototype.toPayload = function (args) {
  * @param {Array} solidity function params
  * @param {Object} optional payload options
  */
+
+
 ContractMethod.prototype.toPayloadAsync = function (args) {
-    var rawtx = proto.getTransaction(
-        this._wallet.address,
-        this._address,
-        this._name,
-        this.packInput(args[0])
-    );
-    return new Promise((resolve, reject) => {
-        this._chain.getBlockHeight((error, item) => {
-            let blockHeight = parseInt(item, 10);
-            this._chain.getBlockByHeight(blockHeight, false, (error, item) => {
-                let blockInfo = item;
+  var _this = this;
 
-                rawtx.RefBlockNumber = blockHeight;
-                let blockhash = blockInfo.BlockHash || blockInfo.blockHash;
-                blockhash = blockhash.match(/^0x/) ? blockhash.substring(2) : blockhash;
+  var rawtx = proto.getTransaction(this._wallet.address, this._address, this._name, this.packInput(args[0]));
+  return new Promise(function (resolve, reject) {
+    _this._chain.getBlockHeight(function (error, item) {
+      var blockHeight = parseInt(item, 10);
 
-                rawtx.RefBlockPrefix = (new Buffer(blockhash, 'hex')).slice(0, 4);
-                let tx = wallet.signTransaction(rawtx, this._wallet.keyPair);
-                tx = proto.Transaction.encode(tx).finish();
-                if (tx.__proto__.constructor === Buffer) {
-                    resolve(tx.toString('hex'));
-                }
-                else {
-                    resolve(utils.uint8ArrayToHex(tx));
-                }
-            });
-        });
+      _this._chain.getBlockByHeight(blockHeight, false, function (error, item) {
+        var blockInfo = item;
+        rawtx.RefBlockNumber = blockHeight;
+        var blockhash = blockInfo.BlockHash || blockInfo.blockHash;
+        blockhash = blockhash.match(/^0x/) ? blockhash.substring(2) : blockhash;
+        rawtx.RefBlockPrefix = new Buffer(blockhash, 'hex').slice(0, 4);
+        var tx = wallet.signTransaction(rawtx, _this._wallet.keyPair);
+        tx = proto.Transaction.encode(tx).finish();
+
+        if (tx.__proto__.constructor === Buffer) {
+          resolve(tx.toString('hex'));
+        } else {
+          resolve(utils.uint8ArrayToHex(tx));
+        }
+      });
     });
+  });
 };
 
 ContractMethod.prototype.packInput = function (input) {
-    if (!input) {
-        return;
-    }
+  if (!input) {
+    return;
+  }
 
-    input = maybeUglifyAddress(input, this._isInputTypeAddress, this._inputTypeAddressFieldPaths);
-    input = maybeUglifyHash(input, this._isInputTypeHash, this._inputTypeHashFieldPaths);
-    let message = this._inputType.fromObject(input);
-    let bytes = this._inputType.encode(message).finish();
-    return bytes;
+  input = maybeUglifyAddress(input, this._isInputTypeAddress, this._inputTypeAddressFieldPaths);
+  input = maybeUglifyHash(input, this._isInputTypeHash, this._inputTypeHashFieldPaths);
+
+  var message = this._inputType.fromObject(input);
+
+  var bytes = this._inputType.encode(message).finish();
+
+  return bytes;
 };
 
 ContractMethod.prototype.unpackOutput = function (output) {
-    if (!output) {
-        return;
-    }
+  if (!output) {
+    return;
+  } // TODO: Check why this is encoded in "hex"
 
-    // TODO: Check why this is encoded in "hex"
-    var buffer = Buffer.from(output, 'hex');
-    var decoded = this._outputType.decode(buffer);
-    var result = this._outputType.toObject(decoded, {
-        enums: String,  // enums as string names
-        longs: String,  // longs as strings (requires long.js)
-        bytes: String,  // bytes as base64 encoded strings
-        defaults: true, // includes default values
-        arrays: true,   // populates empty arrays (repeated fields) even if defaults=false
-        objects: true,  // populates empty objects (map fields) even if defaults=false
-        oneofs: true    // includes virtual oneof fields set to the present field's name
-      });
-    result = maybePrettifyAddress(result, this._isOutputTypeAddress, this._outputTypeAddressFieldPaths);
-    result = maybePrettifyHash(result, this._isOutputTypeHash, this._outputTypeHashFieldPaths);
-    return result;
+
+  var buffer = Buffer.from(output, 'hex');
+
+  var decoded = this._outputType.decode(buffer);
+
+  var result = this._outputType.toObject(decoded, {
+    enums: String,
+    // enums as string names
+    longs: String,
+    // longs as strings (requires long.js)
+    bytes: String,
+    // bytes as base64 encoded strings
+    defaults: true,
+    // includes default values
+    arrays: true,
+    // populates empty arrays (repeated fields) even if defaults=false
+    objects: true,
+    // populates empty objects (map fields) even if defaults=false
+    oneofs: true // includes virtual oneof fields set to the present field's name
+
+  });
+
+  result = maybePrettifyAddress(result, this._isOutputTypeAddress, this._outputTypeAddressFieldPaths);
+  result = maybePrettifyHash(result, this._isOutputTypeHash, this._outputTypeHashFieldPaths);
+  return result;
 };
-
 /**
  * Should be used to sendTransaction to solidity function
  *
  * @method sendTransaction
  */
+
+
 ContractMethod.prototype.sendTransaction = function () {
-    let args = Array.prototype.slice.call(arguments).filter(function (a) {
-        return a !== undefined;
+  var _this2 = this;
+
+  var args = Array.prototype.slice.call(arguments).filter(function (a) {
+    return a !== undefined;
+  });
+  var isSync = this.uglySync(args);
+
+  if (isSync) {
+    var payload = this.toPayload(args); // TODO: 是否在发送完之后，在返回结果带上payload.
+    // console.log('transaction payload', payload);
+
+    return this._chain.sendTransaction(payload);
+  }
+
+  var callback = this.extractCallback(args);
+
+  if (callback) {
+    this.toPayloadAsync(args).then(function (payload) {
+      _this2._chain.sendTransaction(payload, callback);
     });
+    return;
+  }
 
-    let isSync = this.uglySync(args);
-    if (isSync) {
-        let payload = this.toPayload(args);
-        // TODO: 是否在发送完之后，在返回结果带上payload.
-        // console.log('transaction payload', payload);
-        return this._chain.sendTransaction(payload);
+  return new Promise(function (resolve, reject) {
+    var payload = _this2.toPayload(args);
+
+    var returnValue = _this2._chain.sendTransaction(payload);
+
+    if (returnValue) {
+      resolve(returnValue);
+    } else {
+      reject('sendTransaction:no return value');
     }
-
-    let callback = this.extractCallback(args);
-    if (callback) {
-        this.toPayloadAsync(args).then(payload => {
-            this._chain.sendTransaction(payload, callback);
-        });
-        return;
-    }
-
-    return new Promise((resolve, reject) => {
-        let payload = this.toPayload(args);
-        const returnValue = this._chain.sendTransaction(payload);
-        if (returnValue) {
-            resolve(returnValue);
-        }
-        else {
-            reject('sendTransaction:no return value');
-        }
-    });
+  });
 };
-
 /**
  * Should be used to callReadOnly to solidity function
  * TODO: If the developers want to use the  sync way.
@@ -3646,108 +3823,119 @@ ContractMethod.prototype.sendTransaction = function () {
  *
  * @method sendTransaction
  */
+
+
 ContractMethod.prototype.callReadOnly = function () {
-    let args = Array.prototype.slice.call(arguments).filter(function (a) {
-        return a !== undefined;
+  var _this3 = this;
+
+  var args = Array.prototype.slice.call(arguments).filter(function (a) {
+    return a !== undefined;
+  });
+  var isSync = this.uglySync(args);
+
+  if (isSync) {
+    var payload = this.toPayload(args);
+
+    var returnBytes = this._chain.callReadOnly(payload);
+
+    return this.unpackOutput(returnBytes);
+  }
+
+  var callback = this.extractCallback(args);
+
+  if (callback) {
+    this.toPayloadAsync(args).then(function (payload) {
+      _this3._chain.callReadOnly(payload, _this3.unpackOutput.bind(_this3), callback);
     });
+    return;
+  }
 
-    let isSync = this.uglySync(args);
-    if (isSync) {
-        let payload = this.toPayload(args);
-        let returnBytes = this._chain.callReadOnly(payload);
-        return this.unpackOutput(returnBytes);
+  return new Promise(function (resolve, reject) {
+    var payload = _this3.toPayload(args);
+
+    var returnBytes = _this3._chain.callReadOnly(payload);
+
+    var returnValue = _this3.unpackOutput(returnBytes);
+
+    if (returnValue) {
+      resolve(returnValue);
+    } else {
+      reject('callReadOnly:no return value');
     }
-
-    let callback = this.extractCallback(args);
-    if (callback) {
-        this.toPayloadAsync(args).then(payload => {
-            this._chain.callReadOnly(payload, this.unpackOutput.bind(this), callback);
-        });
-        return;
-    }
-
-    return new Promise((resolve, reject) => {
-        const payload = this.toPayload(args);
-        const returnBytes = this._chain.callReadOnly(payload);
-        const returnValue = this.unpackOutput(returnBytes);
-        if (returnValue) {
-            resolve(returnValue);
-        }
-        else {
-            reject('callReadOnly:no return value');
-        }
-    });
+  });
 };
-
 /**
  * Return the encoded data of the call
  *
  * @method getData
  * @return {String} the encoded data
  */
+
+
 ContractMethod.prototype.getData = function () {
-    var args = Array.prototype.slice.call(arguments);
-    var payload = this.toPayload(args);
-
-    return payload.Params;
+  var args = Array.prototype.slice.call(arguments);
+  var payload = this.toPayload(args);
+  return payload.Params;
 };
-
 /**
  * Should be used to get function display name
  *
  * @method displayName
  * @return {String} display name of the function
  */
-ContractMethod.prototype.displayName = function () {
-    return this._name;
-};
 
+
+ContractMethod.prototype.displayName = function () {
+  return this._name;
+};
 /**
  * Should be called to get rpc requests from solidity function
  *
  * @method request
  * @returns {Object}
  */
+
+
 ContractMethod.prototype.request = function () {
-    var args = Array.prototype.slice.call(arguments);
-    var callback = this.extractCallback(args);
-    var payload = this.toPayload(args);
-    var format = this.unpackOutput.bind(this);
-
-    return {
-        method: 'broadcast_tx',
-        callback: callback,
-        params: payload,
-        format: format
-    };
+  var args = Array.prototype.slice.call(arguments);
+  var callback = this.extractCallback(args);
+  var payload = this.toPayload(args);
+  var format = this.unpackOutput.bind(this);
+  return {
+    method: 'broadcast_tx',
+    callback: callback,
+    params: payload,
+    format: format
+  };
 };
-
 /**
  * Should be called to execute function
  *
  * @method execute
  */
-ContractMethod.prototype.execute = function () {
-    return this.sendTransaction.apply(this, Array.prototype.slice.call(arguments));
-};
 
+
+ContractMethod.prototype.execute = function () {
+  return this.sendTransaction.apply(this, Array.prototype.slice.call(arguments));
+};
 /**
  * Should be called to attach function to contract
  *
  * @method attachToContract
  * @param {Contract}
  */
+
+
 ContractMethod.prototype.attachToContract = function (contract) {
-    var execute = this.execute.bind(this);
-    execute.request = this.request.bind(this);
-    execute.call = this.callReadOnly.bind(this);
-    execute.inputTypeInfo = this._inputType.toJSON();
-    execute.outputTypeInfo = this._outputType.toJSON();
-    execute.sendTransaction = this.sendTransaction.bind(this);
-    execute.getData = this.getData.bind(this);
-    var displayName = this.displayName();
-    contract[displayName] = execute;
-    // contract[displayName][this.typeName()] = execute; // circular!!!!
+  var execute = this.execute.bind(this);
+  execute.request = this.request.bind(this);
+  execute.call = this.callReadOnly.bind(this);
+  execute.inputTypeInfo = this._inputType.toJSON();
+  execute.outputTypeInfo = this._outputType.toJSON();
+  execute.sendTransaction = this.sendTransaction.bind(this);
+  execute.getData = this.getData.bind(this);
+  var displayName = this.displayName();
+  contract[displayName] = execute; // contract[displayName][this.typeName()] = execute; // circular!!!!
 };
 
 module.exports = ContractMethod;
@@ -3755,65 +3943,81 @@ module.exports = ContractMethod;
 }).call(this,require("buffer").Buffer)
 
 },{"../../utils/config":34,"../../utils/utils":38,"../errors":2,"../proto.js":7,"../types/coder":21,"../wallet.js":32,"buffer":135}],15:[function(require,module,exports){
+"use strict";
+
 var f = require('./formatters.js');
+
 var BaseType = require('./base');
 
-var TypeAddress = function () {
-    this._inputFormatter = f.formatInputAddress;
-    this._outputFormatter = f.formatOutputAddress;
+var TypeAddress = function TypeAddress() {
+  this._inputFormatter = f.formatInputAddress;
+  this._outputFormatter = f.formatOutputAddress;
 };
 
 TypeAddress.prototype = new BaseType({});
 TypeAddress.prototype.constructor = TypeAddress;
 
 TypeAddress.prototype.isType = function (name) {
-    return !!name.match(/^AElf\.Common\.Address$/);
+  return !!name.match(/^AElf\.Common\.Address$/);
 };
 
 module.exports = TypeAddress;
 
 },{"./base":18,"./formatters.js":22}],16:[function(require,module,exports){
+"use strict";
+
 var f = require('./formatters.js');
+
 var BaseType = require('./base');
 
-var TypeApproval = function () {
-    this._inputFormatter = f.formatInputApproval;
-    this._outputFormatter = f.formatOutputApproval;
+var TypeApproval = function TypeApproval() {
+  this._inputFormatter = f.formatInputApproval;
+  this._outputFormatter = f.formatOutputApproval;
 };
 
 TypeApproval.prototype = new BaseType({});
 TypeApproval.prototype.constructor = TypeApproval;
+
 TypeApproval.prototype.isType = function (name) {
-    return !!name.match(/^AElf\.Kernel\.Approval$/);
+  return !!name.match(/^AElf\.Kernel\.Approval$/);
 };
+
 module.exports = TypeApproval;
+
 },{"./base":18,"./formatters.js":22}],17:[function(require,module,exports){
+"use strict";
+
 var f = require('./formatters.js');
+
 var BaseType = require('./base');
 
-var TypeAuthorization = function () {
-    this._inputFormatter = f.formatInputAuthorization;
-    this._outputFormatter = f.formatOutputAuthorization;
+var TypeAuthorization = function TypeAuthorization() {
+  this._inputFormatter = f.formatInputAuthorization;
+  this._outputFormatter = f.formatOutputAuthorization;
 };
 
 TypeAuthorization.prototype = new BaseType({});
 TypeAuthorization.prototype.constructor = TypeAuthorization;
+
 TypeAuthorization.prototype.isType = function (name) {
-    return !!name.match(/^AElf\.Kernel\.Authorization$/);
+  return !!name.match(/^AElf\.Kernel\.Authorization$/);
 };
+
 module.exports = TypeAuthorization;
 
 },{"./base":18,"./formatters.js":22}],18:[function(require,module,exports){
-var f = require('./formatters');
+"use strict";
 
+var f = require('./formatters');
 /**
  * SolidityType prototype is used to encode/decode solidity params of certain type
  */
-var BaseType = function (config) {
-    this._inputFormatter = config.inputFormatter;
-    this._outputFormatter = config.outputFormatter;
-};
 
+
+var BaseType = function BaseType(config) {
+  this._inputFormatter = config.inputFormatter;
+  this._outputFormatter = config.outputFormatter;
+};
 /**
  * Should be used to determine if this SolidityType do match given name
  *
@@ -3821,10 +4025,11 @@ var BaseType = function (config) {
  * @param {String} name
  * @return {Bool} true if type match this SolidityType, otherwise false
  */
-BaseType.prototype.isType = function (name) {
-    throw "this method should be overrwritten for type " + name;
-};
 
+
+BaseType.prototype.isType = function (name) {
+  throw "this method should be overrwritten for type " + name;
+};
 /**
  * Should be used to encode the value
  *
@@ -3833,10 +4038,11 @@ BaseType.prototype.isType = function (name) {
  * @param {String} name
  * @return {String} encoded value
  */
-BaseType.prototype.encode = function (value, fieldNumber) {
-    return this._inputFormatter(value, fieldNumber);
-};
 
+
+BaseType.prototype.encode = function (value, fieldNumber) {
+  return this._inputFormatter(value, fieldNumber);
+};
 /**
  * Should be used to decode value from bytes
  *
@@ -3846,50 +4052,60 @@ BaseType.prototype.encode = function (value, fieldNumber) {
  * @param {String} name type name
  * @returns {Object} decoded value
  */
+
+
 BaseType.prototype.decode = function (bytes, name) {
-    return this._outputFormatter(bytes, name);
+  return this._outputFormatter(bytes, name);
 };
 
 module.exports = BaseType;
 
 },{"./formatters":22}],19:[function(require,module,exports){
+"use strict";
+
 var f = require('./formatters.js');
+
 var BaseType = require('./base');
 
-var TypeBool = function () {
-    this._inputFormatter = f.formatInputBool;
-    this._outputFormatter = f.formatOutputBool;
+var TypeBool = function TypeBool() {
+  this._inputFormatter = f.formatInputBool;
+  this._outputFormatter = f.formatOutputBool;
 };
 
 TypeBool.prototype = new BaseType({});
 TypeBool.prototype.constructor = TypeBool;
 
 TypeBool.prototype.isType = function (name) {
-    return !!name.match(/^bool$/);
+  return !!name.match(/^bool$/);
 };
 
 module.exports = TypeBool;
 
 },{"./base":18,"./formatters.js":22}],20:[function(require,module,exports){
+"use strict";
+
 var f = require('./formatters.js');
+
 var BaseType = require('./base');
 
-var TypeBytes = function () {
-    this._inputFormatter = f.formatInputBytes;
-    this._outputFormatter = f.formatOutputBytes;
+var TypeBytes = function TypeBytes() {
+  this._inputFormatter = f.formatInputBytes;
+  this._outputFormatter = f.formatOutputBytes;
 };
 
 TypeBytes.prototype = new BaseType({});
 TypeBytes.prototype.constructor = TypeBytes;
 
 TypeBytes.prototype.isType = function (name) {
-    return !!name.match(/^byte\[\]$/);
+  return !!name.match(/^byte\[\]$/);
 };
 
 module.exports = TypeBytes;
 
 },{"./base":18,"./formatters.js":22}],21:[function(require,module,exports){
 (function (Buffer){
+"use strict";
+
 /*
     This file is part of web3.js.
 
@@ -3906,36 +4122,49 @@ module.exports = TypeBytes;
     You should have received a copy of the GNU Lesser General Public License
     along with web3.js.  If not, see <http://www.gnu.org/licenses/>.
 */
+
 /**
  * @file coder.js
  * @author Marek Kotewicz <marek@ethdev.com>
  * @date 2015
  */
-
 var f = require('./formatters');
 
 var TypeBool = require('./bool.js');
-var TypeInt = require('./int.js');
-var TypeUInt = require('./uint.js');
-var TypeLong = require('./long.js');
-var TypeULong = require('./ulong.js');
-var TypeBytes = require('./bytes.js');
-var TypeString = require('./string.js');
-var TypeAddress = require('./address.js');
-var TypeHash = require('./hash.js');
-var TypeAuthorization = require('./authorization.js');
-var TypeProposal = require('./proposal');
-var TypeApproval = require('./approval');
-var TypeSideChainInfo = require('./sidechaininfo');
-var TypeMerklePath = require('./merklepath');
 
+var TypeInt = require('./int.js');
+
+var TypeUInt = require('./uint.js');
+
+var TypeLong = require('./long.js');
+
+var TypeULong = require('./ulong.js');
+
+var TypeBytes = require('./bytes.js');
+
+var TypeString = require('./string.js');
+
+var TypeAddress = require('./address.js');
+
+var TypeHash = require('./hash.js');
+
+var TypeAuthorization = require('./authorization.js');
+
+var TypeProposal = require('./proposal');
+
+var TypeApproval = require('./approval');
+
+var TypeSideChainInfo = require('./sidechaininfo');
+
+var TypeMerklePath = require('./merklepath');
 /**
  * SolidityCoder prototype should be used to encode/decode solidity params of any type
  */
-var Coder = function (types) {
-    this._types = types;
-};
 
+
+var Coder = function Coder(types) {
+  this._types = types;
+};
 /**
  * This method should be used to transform type to SolidityType
  *
@@ -3944,18 +4173,19 @@ var Coder = function (types) {
  * @returns {SolidityType}
  * @throws {Error} throws if no matching type is found
  */
+
+
 Coder.prototype._requireType = function (type) {
-    var fieldType = this._types.filter(function (t) {
-        return t.isType(type);
-    })[0];
+  var fieldType = this._types.filter(function (t) {
+    return t.isType(type);
+  })[0];
 
-    if (!fieldType) {
-        throw Error('invalid solidity type!: ' + type);
-    }
+  if (!fieldType) {
+    throw Error('invalid solidity type!: ' + type);
+  }
 
-    return fieldType;
+  return fieldType;
 };
-
 /**
  * Should be used to encode plain param
  *
@@ -3964,10 +4194,11 @@ Coder.prototype._requireType = function (type) {
  * @param {Object} plain param
  * @return {String} encoded plain param
  */
-Coder.prototype.encodeParam = function (type, param) {
-    return this.encodeParams([type], [param]);
-};
 
+
+Coder.prototype.encodeParam = function (type, param) {
+  return this.encodeParams([type], [param]);
+};
 /**
  * Should be used to encode list of params
  *
@@ -3976,16 +4207,15 @@ Coder.prototype.encodeParam = function (type, param) {
  * @param {Array} params
  * @return {String} encoded list of params
  */
+
+
 Coder.prototype.encodeParams = function (types, params) {
-    var fieldTypes = this.getFieldTypes(types);
-
-    var encodeds = fieldTypes.map(function (fieldType, index) {
-        return fieldType.encode(params[index], index + 1);
-    });
-
-    return Buffer.concat(encodeds);
+  var fieldTypes = this.getFieldTypes(types);
+  var encodeds = fieldTypes.map(function (fieldType, index) {
+    return fieldType.encode(params[index], index + 1);
+  });
+  return Buffer.concat(encodeds);
 };
-
 /**
  * Should be used to decode bytes to plain param
  *
@@ -3994,41 +4224,29 @@ Coder.prototype.encodeParams = function (types, params) {
  * @param {String} bytes
  * @return {Object} plain param
  */
+
+
 Coder.prototype.decodeParam = function (type, bytes) {
-    var fieldType = this.getFieldTypes([type])[0];
-    return fieldType.decode(bytes, type);
+  var fieldType = this.getFieldTypes([type])[0];
+  return fieldType.decode(bytes, type);
 };
 
 Coder.prototype.getFieldTypes = function (types) {
-    var self = this;
-    return types.map(function (type) {
-        return self._requireType(type);
-    });
+  var self = this;
+  return types.map(function (type) {
+    return self._requireType(type);
+  });
 };
 
-var coder = new Coder([
-    new TypeBool(),
-    new TypeInt(),
-    new TypeUInt(),
-    new TypeLong(),
-    new TypeULong(),
-    new TypeBytes(),
-    new TypeString(),
-    new TypeAddress(),
-    new TypeHash(),
-    new TypeAuthorization(),
-    new TypeProposal(),
-    new TypeApproval(),
-    new TypeSideChainInfo(),
-    new TypeMerklePath()
-]);
-
+var coder = new Coder([new TypeBool(), new TypeInt(), new TypeUInt(), new TypeLong(), new TypeULong(), new TypeBytes(), new TypeString(), new TypeAddress(), new TypeHash(), new TypeAuthorization(), new TypeProposal(), new TypeApproval(), new TypeSideChainInfo(), new TypeMerklePath()]);
 module.exports = coder;
 
 }).call(this,require("buffer").Buffer)
 
 },{"./address.js":15,"./approval":16,"./authorization.js":17,"./bool.js":19,"./bytes.js":20,"./formatters":22,"./hash.js":23,"./int.js":24,"./long.js":25,"./merklepath":26,"./proposal":27,"./sidechaininfo":28,"./string.js":29,"./uint.js":30,"./ulong.js":31,"buffer":135}],22:[function(require,module,exports){
 (function (Buffer){
+"use strict";
+
 /*
     This file is part of web3.js.
 
@@ -4045,15 +4263,15 @@ module.exports = coder;
     You should have received a copy of the GNU Lesser General Public License
     along with web3.js.  If not, see <http://www.gnu.org/licenses/>.
 */
+
 /**
  * @file formatters.js
  * @author Marek Kotewicz <marek@ethdev.com>
  * @date 2015
  */
-
 var protobuf = require('@aelfqueen/protobufjs');
-var proto = require('../proto.js');
 
+var proto = require('../proto.js');
 /**
  * Formats input bool to bytes
  *
@@ -4061,15 +4279,16 @@ var proto = require('../proto.js');
  * @param {Boolean}
  * @returns {Buffer}
  */
-var formatInputBool = function (value, fieldNumber) {
-    var w = new protobuf.BufferWriter();
-    // Tag
-    w.uint32(fieldNumber << 3);
-    // Data
-    w.bool(value);
-    return w.finish();
-};
 
+
+var formatInputBool = function formatInputBool(value, fieldNumber) {
+  var w = new protobuf.BufferWriter(); // Tag
+
+  w.uint32(fieldNumber << 3); // Data
+
+  w.bool(value);
+  return w.finish();
+};
 /**
  * Formats input int to bytes
  *
@@ -4077,15 +4296,16 @@ var formatInputBool = function (value, fieldNumber) {
  * @param {number} value that needs to be formatted
  * @returns {Buffer}
  */
-var formatInputInt = function (value, fieldNumber) {
-    var w = new protobuf.BufferWriter();
-    // Tag
-    w.uint32(fieldNumber << 3);
-    // Data
-    w.sint32(value);
-    return w.finish();
-};
 
+
+var formatInputInt = function formatInputInt(value, fieldNumber) {
+  var w = new protobuf.BufferWriter(); // Tag
+
+  w.uint32(fieldNumber << 3); // Data
+
+  w.sint32(value);
+  return w.finish();
+};
 /**
  * Formats input uint32 to bytes
  *
@@ -4093,15 +4313,16 @@ var formatInputInt = function (value, fieldNumber) {
  * @param {number}
  * @returns {BigNumeber}
  */
-var formatInputUInt = function (value, fieldNumber) {
-    var w = new protobuf.BufferWriter();
-    // Tag
-    w.uint32(fieldNumber << 3);
-    // Data
-    w.uint32(value);
-    return w.finish();
-};
 
+
+var formatInputUInt = function formatInputUInt(value, fieldNumber) {
+  var w = new protobuf.BufferWriter(); // Tag
+
+  w.uint32(fieldNumber << 3); // Data
+
+  w.uint32(value);
+  return w.finish();
+};
 /**
  * Formats input int64 to bytes
  *
@@ -4109,15 +4330,16 @@ var formatInputUInt = function (value, fieldNumber) {
  * @param {Long|number} value
  * @returns {Buffer}
  */
-var formatInputLong = function (value, fieldNumber) {
-    var w = new protobuf.BufferWriter();
-    // Tag
-    w.uint32(fieldNumber << 3);
-    // Data
-    w.int64(value);
-    return w.finish();
-};
 
+
+var formatInputLong = function formatInputLong(value, fieldNumber) {
+  var w = new protobuf.BufferWriter(); // Tag
+
+  w.uint32(fieldNumber << 3); // Data
+
+  w.int64(value);
+  return w.finish();
+};
 /**
  * Formats input uint64 to bytes
  *
@@ -4125,15 +4347,16 @@ var formatInputLong = function (value, fieldNumber) {
  * @param {Long|number} value
  * @returns {Buffer}
  */
-var formatInputULong = function (value, fieldNumber) {
-    var w = new protobuf.BufferWriter();
-    // Tag
-    w.uint32(fieldNumber << 3);
-    // Data
-    w.uint64(value);
-    return w.finish();
-};
 
+
+var formatInputULong = function formatInputULong(value, fieldNumber) {
+  var w = new protobuf.BufferWriter(); // Tag
+
+  w.uint32(fieldNumber << 3); // Data
+
+  w.uint64(value);
+  return w.finish();
+};
 /**
  * Formats input value to byte representation of string
  *
@@ -4141,16 +4364,17 @@ var formatInputULong = function (value, fieldNumber) {
  * @param {String}
  * @returns {Buffer}
  */
-var formatInputString = function (value, fieldNumber) {
-    var bytes = Buffer.from(value, "utf8")
-    var w = new protobuf.BufferWriter();
-    // Tag
-    w.uint32(fieldNumber << 3 | 2);
-    // Data
-    w.bytes(bytes);
-    return w.finish();
-};
 
+
+var formatInputString = function formatInputString(value, fieldNumber) {
+  var bytes = Buffer.from(value, "utf8");
+  var w = new protobuf.BufferWriter(); // Tag
+
+  w.uint32(fieldNumber << 3 | 2); // Data
+
+  w.bytes(bytes);
+  return w.finish();
+};
 /**
  * Formats input bytes to bytes
  *
@@ -4158,16 +4382,17 @@ var formatInputString = function (value, fieldNumber) {
  * @param {String} hex
  * @returns {Buffer}
  */
-var formatInputBytes = function (hex, fieldNumber) {
-    var bytes = Buffer.from(hex, "hex");
-    var w = new protobuf.BufferWriter();
-    // Tag
-    w.uint32(fieldNumber << 3 | 2);
-    // Data
-    w.bytes(bytes);
-    return w.finish();
-};
 
+
+var formatInputBytes = function formatInputBytes(hex, fieldNumber) {
+  var bytes = Buffer.from(hex, "hex");
+  var w = new protobuf.BufferWriter(); // Tag
+
+  w.uint32(fieldNumber << 3 | 2); // Data
+
+  w.bytes(bytes);
+  return w.finish();
+};
 /**
  * Formats input hash to bytes
  *
@@ -4175,86 +4400,90 @@ var formatInputBytes = function (hex, fieldNumber) {
  * @param {String} hex
  * @returns {Buffer}
  */
-var formatInputHash = function (hex, fieldNumber) {
-    var hash = proto.getHashFromHex(hex);
-    var value = proto.Hash.encode(hash).finish();
-    var w = new protobuf.BufferWriter();
-    // Tag
-    w.uint32(fieldNumber << 3 | 2);
-    // Data
-    w.bytes(value);
-    return w.finish();
+
+
+var formatInputHash = function formatInputHash(hex, fieldNumber) {
+  var hash = proto.getHashFromHex(hex);
+  var value = proto.Hash.encode(hash).finish();
+  var w = new protobuf.BufferWriter(); // Tag
+
+  w.uint32(fieldNumber << 3 | 2); // Data
+
+  w.bytes(value);
+  return w.finish();
 };
-
-
 /**
  * Formats input authorization info to bytes
  * @param auth
  * @param fieldNumber
  * @returns {Buffer}
  */
-var formatInputAuthorization =function (auth, fieldNumber) {
 
-    var reviewers = new Array(auth.Reviewers.length);
-    for(var i = 0; i < auth.Reviewers.length; i++)
-    {
-        reviewers[i] = proto.getReviewer(auth.Reviewers[i]);
-    }
-    var a = proto.getAuthorization(auth.ExecutionThreshold, auth.ProposerThreshold, reviewers);
-    var value = proto.Authorization.encode(a).finish();
-    var w = new protobuf.BufferWriter();
-    // Tag
-    w.uint32(fieldNumber << 3 | 2);
-    // Data
-    w.bytes(value);
-    return w.finish();
+
+var formatInputAuthorization = function formatInputAuthorization(auth, fieldNumber) {
+  var reviewers = new Array(auth.Reviewers.length);
+
+  for (var i = 0; i < auth.Reviewers.length; i++) {
+    reviewers[i] = proto.getReviewer(auth.Reviewers[i]);
+  }
+
+  var a = proto.getAuthorization(auth.ExecutionThreshold, auth.ProposerThreshold, reviewers);
+  var value = proto.Authorization.encode(a).finish();
+  var w = new protobuf.BufferWriter(); // Tag
+
+  w.uint32(fieldNumber << 3 | 2); // Data
+
+  w.bytes(value);
+  return w.finish();
 };
-
-
 /**
  * Formats input proposal info to bytes
  * @param proposal
  * @param fieldNumber
  * @returns {Buffer}
  */
-var formatInputProposal = function (proposal, fieldNumber) {
-    var types = proposal.TxnData.MethodAbi.Params.map(function (i) {
-        return i.Type;
-    });
-    var coder = require('./coder');
-    var args = Array.prototype.slice.call(proposal.TxnData.Params).filter(function (a) {return a !== undefined; });
-    var raw_txn = proto.getMsigTransaction(proposal.TxnData.From, proposal.TxnData.To, proposal.TxnData.MethodName, coder.encodeParams(types, args));
-    var p = proto.getProposal(proposal.MultiSigAccount, proposal.Name, raw_txn, proposal.ExpiredTime, proposal.Proposer);
-    return proto.encodeProposal(p, fieldNumber);
+
+
+var formatInputProposal = function formatInputProposal(proposal, fieldNumber) {
+  var types = proposal.TxnData.MethodAbi.Params.map(function (i) {
+    return i.Type;
+  });
+
+  var coder = require('./coder');
+
+  var args = Array.prototype.slice.call(proposal.TxnData.Params).filter(function (a) {
+    return a !== undefined;
+  });
+  var raw_txn = proto.getMsigTransaction(proposal.TxnData.From, proposal.TxnData.To, proposal.TxnData.MethodName, coder.encodeParams(types, args));
+  var p = proto.getProposal(proposal.MultiSigAccount, proposal.Name, raw_txn, proposal.ExpiredTime, proposal.Proposer);
+  return proto.encodeProposal(p, fieldNumber);
 };
 
-var formatInputApproval = function(approval, fieldNumber){
-    var raw_approval = proto.getApproval(approval.ProposalHash, approval.Signature);
-    return proto.encodeApproval(raw_approval, fieldNumber);
+var formatInputApproval = function formatInputApproval(approval, fieldNumber) {
+  var raw_approval = proto.getApproval(approval.ProposalHash, approval.Signature);
+  return proto.encodeApproval(raw_approval, fieldNumber);
 };
 
+var formatInputSideChainInfo = function formatInputSideChainInfo(sideChainInfo, fieldNumber) {
+  var pairs = new Array(sideChainInfo.ResourceBalances.length);
 
-var formatInputSideChainInfo = function (sideChainInfo, fieldNumber) {
-    var pairs = new Array(sideChainInfo.ResourceBalances.length);
-    for(var i = 0; i < sideChainInfo.ResourceBalances.length; i++)
-    {
-        pairs[i] = proto.getBalance(sideChainInfo.ResourceBalances[i]);
-    }
-    var code = Buffer.from(sideChainInfo.ContractCode.replace('0x', ''), 'hex');
-    var raw_sideChainInfo = proto.getSideChainInfo(sideChainInfo.LockedTokenAmount, sideChainInfo.IndexingPrice, pairs, code, sideChainInfo.Proposer);
-    return proto.encodeSideChainInfo(raw_sideChainInfo, fieldNumber);
+  for (var i = 0; i < sideChainInfo.ResourceBalances.length; i++) {
+    pairs[i] = proto.getBalance(sideChainInfo.ResourceBalances[i]);
+  }
+
+  var code = Buffer.from(sideChainInfo.ContractCode.replace('0x', ''), 'hex');
+  var raw_sideChainInfo = proto.getSideChainInfo(sideChainInfo.LockedTokenAmount, sideChainInfo.IndexingPrice, pairs, code, sideChainInfo.Proposer);
+  return proto.encodeSideChainInfo(raw_sideChainInfo, fieldNumber);
 };
 
-var formatInputMerklePath = function (merklepath, fieldNumber){
-    var w = new protobuf.BufferWriter();
-    // Tag
-    w.uint32(fieldNumber << 3 | 2);
-    // Data
-    w.bytes(Buffer.from(merklepath.replace('0x', ''), 'hex'));
-    return w.finish();
+var formatInputMerklePath = function formatInputMerklePath(merklepath, fieldNumber) {
+  var w = new protobuf.BufferWriter(); // Tag
+
+  w.uint32(fieldNumber << 3 | 2); // Data
+
+  w.bytes(Buffer.from(merklepath.replace('0x', ''), 'hex'));
+  return w.finish();
 };
-
-
 /**
  * Formats input Address to bytes
  *
@@ -4262,17 +4491,18 @@ var formatInputMerklePath = function (merklepath, fieldNumber){
  * @param {String} rep
  * @returns {Buffer}
  */
-var formatInputAddress = function (rep, fieldNumber) {
-    var address = proto.getAddressFromRep(rep);
-    var value = proto.Address.encode(address).finish();
-    var w = new protobuf.BufferWriter();
-    // Tag
-    w.uint32(fieldNumber << 3 | 2);
-    // Data
-    w.bytes(value);
-    return w.finish();
-};
 
+
+var formatInputAddress = function formatInputAddress(rep, fieldNumber) {
+  var address = proto.getAddressFromRep(rep);
+  var value = proto.Address.encode(address).finish();
+  var w = new protobuf.BufferWriter(); // Tag
+
+  w.uint32(fieldNumber << 3 | 2); // Data
+
+  w.bytes(value);
+  return w.finish();
+};
 /**
  * Formats output bytes to bool
  *
@@ -4280,13 +4510,14 @@ var formatInputAddress = function (rep, fieldNumber) {
  * @param {Buffer} bytes
  * @returns {Boolean}
  */
-var formatOutputBool = function (bytes) {
-    var r = new protobuf.BufferReader(bytes);
-    // Tag
-    r.uint32();
-    return r.bool();
-};
 
+
+var formatOutputBool = function formatOutputBool(bytes) {
+  var r = new protobuf.BufferReader(bytes); // Tag
+
+  r.uint32();
+  return r.bool();
+};
 /**
  * Formats output bytes to int
  *
@@ -4294,13 +4525,14 @@ var formatOutputBool = function (bytes) {
  * @param {Buffer} bytes
  * @returns {number}
  */
-var formatOutputInt = function (bytes) {
-    var r = new protobuf.BufferReader(bytes);
-    // Tag
-    r.uint32();
-    return r.sint32();
-};
 
+
+var formatOutputInt = function formatOutputInt(bytes) {
+  var r = new protobuf.BufferReader(bytes); // Tag
+
+  r.uint32();
+  return r.sint32();
+};
 /**
  * Formats output bytes to uint
  *
@@ -4308,13 +4540,14 @@ var formatOutputInt = function (bytes) {
  * @param {Buffer} bytes
  * @returns {number}
  */
-var formatOutputUInt = function (bytes) {
-    var r = new protobuf.BufferReader(bytes);
-    // Tag
-    r.uint32();
-    return r.uint32();
-};
 
+
+var formatOutputUInt = function formatOutputUInt(bytes) {
+  var r = new protobuf.BufferReader(bytes); // Tag
+
+  r.uint32();
+  return r.uint32();
+};
 /**
  * Formats output bytes to int64
  *
@@ -4322,13 +4555,14 @@ var formatOutputUInt = function (bytes) {
  * @param {Buffer} bytes
  * @returns {Long}
  */
-var formatOutputLong = function (bytes) {
-    var r = new protobuf.BufferReader(bytes);
-    // Tag
-    r.uint32();
-    return r.sint64();
-};
 
+
+var formatOutputLong = function formatOutputLong(bytes) {
+  var r = new protobuf.BufferReader(bytes); // Tag
+
+  r.uint32();
+  return r.sint64();
+};
 /**
  * Formats output bytes to uint64
  *
@@ -4336,15 +4570,14 @@ var formatOutputLong = function (bytes) {
  * @param {Buffer} bytes
  * @returns {Long}
  */
-var formatOutputULong = function (bytes) {
-    var r = new protobuf.BufferReader(bytes);
-    // Tag
-    r.uint32();
-    return r.uint64();
+
+
+var formatOutputULong = function formatOutputULong(bytes) {
+  var r = new protobuf.BufferReader(bytes); // Tag
+
+  r.uint32();
+  return r.uint64();
 };
-
-
-
 /**
  * Formats output bytes to bytes
  *
@@ -4352,13 +4585,14 @@ var formatOutputULong = function (bytes) {
  * @param {Buffer} bytes
  * @returns {Buffer}
  */
-var formatOutputBytes = function (bytes) {
-    var r = new protobuf.BufferReader(bytes);
-    // Tag
-    r.uint32();
-    return r.bytes();
-};
 
+
+var formatOutputBytes = function formatOutputBytes(bytes) {
+  var r = new protobuf.BufferReader(bytes); // Tag
+
+  r.uint32();
+  return r.bytes();
+};
 /**
  * Formats output Address to bytes
  *
@@ -4366,13 +4600,14 @@ var formatOutputBytes = function (bytes) {
  * @param {Buffer} bytes
  * @returns {Address}
  */
-var formatOutputAddress = function (bytes) {
-    var r = new protobuf.BufferReader(bytes);
-    // Tag
-    r.uint32();
-    return proto.Address.decode(r.bytes());
-};
 
+
+var formatOutputAddress = function formatOutputAddress(bytes) {
+  var r = new protobuf.BufferReader(bytes); // Tag
+
+  r.uint32();
+  return proto.Address.decode(r.bytes());
+};
 /**
  * Formats output Hash to bytes
  *
@@ -4380,37 +4615,38 @@ var formatOutputAddress = function (bytes) {
  * @param {Buffer} bytes
  * @returns {Hash}
  */
-var formatOutputHash = function (bytes) {
-    var r = new protobuf.BufferReader(bytes);
-    // Tag
-    r.uint32();
-    return proto.Hash.decode(r.bytes());
+
+
+var formatOutputHash = function formatOutputHash(bytes) {
+  var r = new protobuf.BufferReader(bytes); // Tag
+
+  r.uint32();
+  return proto.Hash.decode(r.bytes());
 };
-
-
 /**
  * Formats output bytes to authorization
  * @param bytes
  */
-var formatOutputAuthorization = function (bytes) {
-    var r = new protobuf.BufferReader(bytes);
-    // Tag
-    r.uint32();
-    return proto.Authorization.decode(r.bytes());
-};
 
+
+var formatOutputAuthorization = function formatOutputAuthorization(bytes) {
+  var r = new protobuf.BufferReader(bytes); // Tag
+
+  r.uint32();
+  return proto.Authorization.decode(r.bytes());
+};
 /**
  * Formats output bytes to authorization
  * @param bytes
  */
-var formatOutputProposal = function (bytes) {
-    var r = new protobuf.BufferReader(bytes);
-    // Tag
-    r.uint32();
-    return proto.Proposal.decode(r.bytes());
+
+
+var formatOutputProposal = function formatOutputProposal(bytes) {
+  var r = new protobuf.BufferReader(bytes); // Tag
+
+  r.uint32();
+  return proto.Proposal.decode(r.bytes());
 };
-
-
 /**
  * Formats output bytes to string
  *
@@ -4418,219 +4654,266 @@ var formatOutputProposal = function (bytes) {
  * @param {Buffer} bytes
  * @returns {String}
  */
-var formatOutputString = function (bytes) {
-    var r = new protobuf.BufferReader(bytes);
-    // Tag
-    r.uint32();
-    return r.string();
+
+
+var formatOutputString = function formatOutputString(bytes) {
+  var r = new protobuf.BufferReader(bytes); // Tag
+
+  r.uint32();
+  return r.string();
 };
 
 module.exports = {
-    formatInputBool: formatInputBool,
-    formatInputInt: formatInputInt,
-    formatInputUInt: formatInputUInt,
-    formatInputLong: formatInputLong,
-    formatInputULong: formatInputULong,
-    formatInputBytes: formatInputBytes,
-    formatInputString: formatInputString,
-    formatInputAddress: formatInputAddress,
-    formatInputHash: formatInputHash,
-    formatOutputBool: formatOutputBool,
-    formatOutputInt: formatOutputInt,
-    formatOutputUInt: formatOutputUInt,
-    formatOutputLong: formatOutputLong,
-    formatOutputULong: formatOutputULong,
-    formatOutputBytes: formatOutputBytes,
-    formatOutputString: formatOutputString,
-    formatOutputAddress: formatOutputAddress,
-    formatOutputHash: formatOutputHash,
-    formatInputAuthorization: formatInputAuthorization,
-    formatOutputAuthorization: formatOutputAuthorization,
-    formatInputProposal: formatInputProposal,
-    formatOutputProposal: formatOutputProposal,
-    formatInputApproval: formatInputApproval,
-    formatInputSideChainInfo: formatInputSideChainInfo,
-    formatInputMerklePath : formatInputMerklePath
+  formatInputBool: formatInputBool,
+  formatInputInt: formatInputInt,
+  formatInputUInt: formatInputUInt,
+  formatInputLong: formatInputLong,
+  formatInputULong: formatInputULong,
+  formatInputBytes: formatInputBytes,
+  formatInputString: formatInputString,
+  formatInputAddress: formatInputAddress,
+  formatInputHash: formatInputHash,
+  formatOutputBool: formatOutputBool,
+  formatOutputInt: formatOutputInt,
+  formatOutputUInt: formatOutputUInt,
+  formatOutputLong: formatOutputLong,
+  formatOutputULong: formatOutputULong,
+  formatOutputBytes: formatOutputBytes,
+  formatOutputString: formatOutputString,
+  formatOutputAddress: formatOutputAddress,
+  formatOutputHash: formatOutputHash,
+  formatInputAuthorization: formatInputAuthorization,
+  formatOutputAuthorization: formatOutputAuthorization,
+  formatInputProposal: formatInputProposal,
+  formatOutputProposal: formatOutputProposal,
+  formatInputApproval: formatInputApproval,
+  formatInputSideChainInfo: formatInputSideChainInfo,
+  formatInputMerklePath: formatInputMerklePath
 };
 
 }).call(this,require("buffer").Buffer)
 
 },{"../proto.js":7,"./coder":21,"@aelfqueen/protobufjs":41,"buffer":135}],23:[function(require,module,exports){
+"use strict";
+
 var f = require('./formatters.js');
+
 var BaseType = require('./base');
 
-var TypeHash = function () {
-    this._inputFormatter = f.formatInputHash;
-    this._outputFormatter = f.formatOutputHash;
+var TypeHash = function TypeHash() {
+  this._inputFormatter = f.formatInputHash;
+  this._outputFormatter = f.formatOutputHash;
 };
 
 TypeHash.prototype = new BaseType({});
 TypeHash.prototype.constructor = TypeHash;
 
 TypeHash.prototype.isType = function (name) {
-    return !!name.match(/^AElf\.Common\.Hash$/);
+  return !!name.match(/^AElf\.Common\.Hash$/);
 };
 
 module.exports = TypeHash;
 
 },{"./base":18,"./formatters.js":22}],24:[function(require,module,exports){
+"use strict";
+
 var f = require('./formatters.js');
+
 var BaseType = require('./base');
 
-var TypeInt = function () {
-    this._inputFormatter = f.formatInputInt;
-    this._outputFormatter = f.formatOutputInt;
+var TypeInt = function TypeInt() {
+  this._inputFormatter = f.formatInputInt;
+  this._outputFormatter = f.formatOutputInt;
 };
 
 TypeInt.prototype = new BaseType({});
 TypeInt.prototype.constructor = TypeInt;
 
 TypeInt.prototype.isType = function (name) {
-    return !!name.match(/^int$/);
+  return !!name.match(/^int$/);
 };
 
 module.exports = TypeInt;
 
 },{"./base":18,"./formatters.js":22}],25:[function(require,module,exports){
+"use strict";
+
 var f = require('./formatters.js');
+
 var BaseType = require('./base');
 
-var TypeLong = function () {
-    this._inputFormatter = f.formatInputLong;
-    this._outputFormatter = f.formatOutputLong;
+var TypeLong = function TypeLong() {
+  this._inputFormatter = f.formatInputLong;
+  this._outputFormatter = f.formatOutputLong;
 };
 
 TypeLong.prototype = new BaseType({});
 TypeLong.prototype.constructor = TypeLong;
 
 TypeLong.prototype.isType = function (name) {
-    return !!name.match(/^long$/);
+  return !!name.match(/^long$/);
 };
 
 module.exports = TypeLong;
 
 },{"./base":18,"./formatters.js":22}],26:[function(require,module,exports){
+"use strict";
+
 var f = require('./formatters.js');
+
 var BaseType = require('./base');
 
-var TypeMerklePath = function () {
-    this._inputFormatter = f.formatInputMerklePath;
+var TypeMerklePath = function TypeMerklePath() {
+  this._inputFormatter = f.formatInputMerklePath;
 };
 
 TypeMerklePath.prototype = new BaseType({});
 TypeMerklePath.prototype.constructor = TypeMerklePath;
+
 TypeMerklePath.prototype.isType = function (name) {
-    return !!name.match(/^AElf\.Kernel\.MerklePath$/);
+  return !!name.match(/^AElf\.Kernel\.MerklePath$/);
 };
+
 module.exports = TypeMerklePath;
+
 },{"./base":18,"./formatters.js":22}],27:[function(require,module,exports){
+"use strict";
+
 var f = require('./formatters.js');
+
 var BaseType = require('./base');
 
-var TypeProposal = function () {
-    this._inputFormatter = f.formatInputProposal;
-    this._outputFormatter = f.formatOutputProposal;
+var TypeProposal = function TypeProposal() {
+  this._inputFormatter = f.formatInputProposal;
+  this._outputFormatter = f.formatOutputProposal;
 };
 
 TypeProposal.prototype = new BaseType({});
 TypeProposal.prototype.constructor = TypeProposal;
+
 TypeProposal.prototype.isType = function (name) {
-    return !!name.match(/^AElf\.Kernel\.Proposal$/);
+  return !!name.match(/^AElf\.Kernel\.Proposal$/);
 };
+
 module.exports = TypeProposal;
+
 },{"./base":18,"./formatters.js":22}],28:[function(require,module,exports){
+"use strict";
+
 var f = require('./formatters.js');
+
 var BaseType = require('./base');
 
-var TypeSideChainInfo = function () {
-    this._inputFormatter = f.formatInputSideChainInfo;
-    this._outputFormatter = f.formatOutputSideChainInfo;
+var TypeSideChainInfo = function TypeSideChainInfo() {
+  this._inputFormatter = f.formatInputSideChainInfo;
+  this._outputFormatter = f.formatOutputSideChainInfo;
 };
 
 TypeSideChainInfo.prototype = new BaseType({});
 TypeSideChainInfo.prototype.constructor = TypeSideChainInfo;
+
 TypeSideChainInfo.prototype.isType = function (name) {
-    return !!name.match(/^AElf\.Kernel\.SideChainInfo$/);
+  return !!name.match(/^AElf\.Kernel\.SideChainInfo$/);
 };
+
 module.exports = TypeSideChainInfo;
+
 },{"./base":18,"./formatters.js":22}],29:[function(require,module,exports){
+"use strict";
+
 var f = require('./formatters.js');
+
 var BaseType = require('./base');
 
-var TypeString = function () {
-    this._inputFormatter = f.formatInputString;
-    this._outputFormatter = f.formatOutputString;
+var TypeString = function TypeString() {
+  this._inputFormatter = f.formatInputString;
+  this._outputFormatter = f.formatOutputString;
 };
 
 TypeString.prototype = new BaseType({});
 TypeString.prototype.constructor = TypeString;
 
 TypeString.prototype.isType = function (name) {
-    return !!name.match(/^string$/);
+  return !!name.match(/^string$/);
 };
 
 module.exports = TypeString;
 
 },{"./base":18,"./formatters.js":22}],30:[function(require,module,exports){
+"use strict";
+
 var f = require('./formatters.js');
+
 var BaseType = require('./base');
 
-var TypeUInt = function () {
-    this._inputFormatter = f.formatInputUInt;
-    this._outputFormatter = f.formatOutputUInt;
+var TypeUInt = function TypeUInt() {
+  this._inputFormatter = f.formatInputUInt;
+  this._outputFormatter = f.formatOutputUInt;
 };
 
 TypeUInt.prototype = new BaseType({});
 TypeUInt.prototype.constructor = TypeUInt;
 
 TypeUInt.prototype.isType = function (name) {
-    return !!name.match(/^uint$/);
+  return !!name.match(/^uint$/);
 };
 
 module.exports = TypeUInt;
 
 },{"./base":18,"./formatters.js":22}],31:[function(require,module,exports){
+"use strict";
+
 var f = require('./formatters.js');
+
 var BaseType = require('./base');
 
-var TypeULong = function () {
-    this._inputFormatter = f.formatInputULong;
-    this._outputFormatter = f.formatOutputULong;
+var TypeULong = function TypeULong() {
+  this._inputFormatter = f.formatInputULong;
+  this._outputFormatter = f.formatOutputULong;
 };
 
 TypeULong.prototype = new BaseType({});
 TypeULong.prototype.constructor = TypeULong;
 
 TypeULong.prototype.isType = function (name) {
-    return !!name.match(/^ulong$/);
+  return !!name.match(/^ulong$/);
 };
 
 module.exports = TypeULong;
 
 },{"./base":18,"./formatters.js":22}],32:[function(require,module,exports){
 (function (Buffer){
+"use strict";
+
 /**
  * @file aelf.js - AELF JavaScript API
  * @author gl,hzz780
  *
 */
+
 /**
  * wallet module.
  * @module AElf/wallet
  */
-const sha256 = require('js-sha256').sha256;
-const elliptic = require('elliptic');
-const ec = new elliptic.ec('secp256k1');
-const proto = require('./proto.js');
-const utils = require('../utils/utils');
-const keyStore = require('../utils/keyStore');
+var sha256 = require('js-sha256').sha256;
 
-const bip39 = require('bip39');
-const hdkey = require('hdkey');
+var elliptic = require('elliptic');
 
-const AES = require('crypto-js/aes');
-const encUtf8 = require('crypto-js/enc-utf8');
+var ec = new elliptic.ec('secp256k1');
 
+var proto = require('./proto.js');
+
+var utils = require('../utils/utils');
+
+var keyStore = require('../utils/keyStore');
+
+var bip39 = require('bip39');
+
+var hdkey = require('hdkey');
+
+var AES = require('crypto-js/aes');
+
+var encUtf8 = require('crypto-js/enc-utf8');
 /**
  * Advanced Encryption Standard need crypto-js
  *
@@ -4646,12 +4929,13 @@ const encUtf8 = require('crypto-js/enc-utf8');
  * // AESEncryptMnemonic = U2FsdGVkX19gCjHzYmoY5FGZA1ArXG+eGZIR77dK2GE=
  *
  */
-const AESEncrypt = function (input, password) {
-    const ciphertext = AES.encrypt(input, password);
-    // no encUtf8 here.
-    return ciphertext.toString();
-};
 
+
+var AESEncrypt = function AESEncrypt(input, password) {
+  var ciphertext = AES.encrypt(input, password); // no encUtf8 here.
+
+  return ciphertext.toString();
+};
 /**
  * Decrypt any encrypted information you want to decrypt
  *
@@ -4666,11 +4950,12 @@ const AESEncrypt = function (input, password) {
  * const AESDecryptMnemonic = aelf.wallet.AESDecrypt('U2FsdGVkX19gCjHzYmoY5FGZA1ArXG+eGZIR77dK2GE=', '123');
  * // AESDecryptMnemonic = "hello world"
  */
-const AESDecrypt = function (input, password) {
-    const bytes  = AES.decrypt(input, password);
-    return bytes.toString(encUtf8);
-};
 
+
+var AESDecrypt = function AESDecrypt(input, password) {
+  var bytes = AES.decrypt(input, password);
+  return bytes.toString(encUtf8);
+};
 /**
  * the same as in C#
  *
@@ -4682,75 +4967,76 @@ const AESDecrypt = function (input, password) {
  * const pubKey = wallet.keyPair.getPublic();
  * const address = aelf.wallet.getAddressFromPubKey(pubKey);
  */
-const getAddressFromPubKey = function (pubKey) {
-    const pubKeyEncoded = pubKey.encode();
-    const hash = sha256(Buffer.from(sha256(pubKeyEncoded), 'hex')).slice(0, 64);
-    return utils.encodeAddressRep(hash);
+
+
+var getAddressFromPubKey = function getAddressFromPubKey(pubKey) {
+  var pubKeyEncoded = pubKey.encode();
+  var hash = sha256(Buffer.from(sha256(pubKeyEncoded), 'hex')).slice(0, 64);
+  return utils.encodeAddressRep(hash);
 };
 
-function _getWallet(type, value, BIP44Path = null) {
-    // m/purpose'/coin_type'/account'/change/address_index
-    // "m/44'/1616'/0'/0/0"
-    BIP44Path = BIP44Path || 'm/44\'/1616\'/0\'/0/0';
+function _getWallet(type, value) {
+  var BIP44Path = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+  // m/purpose'/coin_type'/account'/change/address_index
+  // "m/44'/1616'/0'/0/0"
+  BIP44Path = BIP44Path || 'm/44\'/1616\'/0\'/0/0';
+  var mnemonic = '';
+  var rootSeed = '';
+  var childWallet = '';
+  var keyPair = '';
+  var hdWallet;
 
-    let mnemonic = '';
-    let rootSeed = '';
-    let childWallet = '';
-    let keyPair = '';
-    let hdWallet;
-    switch (type) {
-        case 'createNewWallet':
-            mnemonic = bip39.generateMnemonic();
-            rootSeed = bip39.mnemonicToSeedHex(mnemonic);
-            hdWallet = hdkey.fromMasterSeed(rootSeed);
-            childWallet = hdWallet.derive(BIP44Path);
-            keyPair = ec.keyFromPrivate(childWallet.privateKey);
-            break;
-        case 'getWalletByMnemonic':
-            mnemonic = value;
-            rootSeed = bip39.mnemonicToSeedHex(mnemonic);
-            hdWallet = hdkey.fromMasterSeed(rootSeed);
-            childWallet = hdWallet.derive(BIP44Path);
-            keyPair = ec.keyFromPrivate(childWallet.privateKey);
-            break;
-        case 'getWalletByPrivateKey':
-            keyPair = ec.keyFromPrivate(value);
-            break;
-    }
-    // let mnemonic = bip39.generateMnemonic();
-    // let rootSeed = bip39.mnemonicToSeedHex(mnemonic);
-    // let hdWallet = hdkey.fromMasterSeed(rootSeed);
-    // let keyPair = ec.keyFromPrivate(xPrivateKey);
-    // TODO 1.将私钥加密保存,用密码解密才能使用。
-    // TODO 2.将助记词机密保存,用密码解密才能获取。
-    const privateKey = keyPair.getPrivate('hex');
-    const publicKey = keyPair.getPublic();
-    const address = getAddressFromPubKey(publicKey);
-    return {
-        mnemonic,
-        BIP44Path,
-        childWallet,
-        keyPair,
-        privateKey,
-        address
-    };
+  switch (type) {
+    case 'createNewWallet':
+      mnemonic = bip39.generateMnemonic();
+      rootSeed = bip39.mnemonicToSeedHex(mnemonic);
+      hdWallet = hdkey.fromMasterSeed(rootSeed);
+      childWallet = hdWallet.derive(BIP44Path);
+      keyPair = ec.keyFromPrivate(childWallet.privateKey);
+      break;
+
+    case 'getWalletByMnemonic':
+      mnemonic = value;
+      rootSeed = bip39.mnemonicToSeedHex(mnemonic);
+      hdWallet = hdkey.fromMasterSeed(rootSeed);
+      childWallet = hdWallet.derive(BIP44Path);
+      keyPair = ec.keyFromPrivate(childWallet.privateKey);
+      break;
+
+    case 'getWalletByPrivateKey':
+      keyPair = ec.keyFromPrivate(value);
+      break;
+  } // let mnemonic = bip39.generateMnemonic();
+  // let rootSeed = bip39.mnemonicToSeedHex(mnemonic);
+  // let hdWallet = hdkey.fromMasterSeed(rootSeed);
+  // let keyPair = ec.keyFromPrivate(xPrivateKey);
+  // TODO 1.将私钥加密保存,用密码解密才能使用。
+  // TODO 2.将助记词机密保存,用密码解密才能获取。
+
+
+  var privateKey = keyPair.getPrivate('hex');
+  var publicKey = keyPair.getPublic();
+  var address = getAddressFromPubKey(publicKey);
+  return {
+    mnemonic: mnemonic,
+    BIP44Path: BIP44Path,
+    childWallet: childWallet,
+    keyPair: keyPair,
+    privateKey: privateKey,
+    address: address
+  };
 }
 
 function getSignature(bytesToBeSign, keyPair) {
-    const privKey = keyPair.getPrivate('hex');
-    const msgHash = sha256(bytesToBeSign);
-    const sigObj = ec.sign(Buffer.from(msgHash, 'hex'), privKey, 'hex', {
-        canonical: true
-    });
-    const hex = [
-        sigObj.r.toString('hex', 32),
-        sigObj.s.toString('hex', 32),
-        '0' + sigObj.recoveryParam.toString()
-    ].join('');
-    const signature = Buffer.from(hex, 'hex');
-    return signature;
+  var privKey = keyPair.getPrivate('hex');
+  var msgHash = sha256(bytesToBeSign);
+  var sigObj = ec.sign(Buffer.from(msgHash, 'hex'), privKey, 'hex', {
+    canonical: true
+  });
+  var hex = [sigObj.r.toString('hex', 32), sigObj.s.toString('hex', 32), '0' + sigObj.recoveryParam.toString()].join('');
+  var signature = Buffer.from(hex, 'hex');
+  return signature;
 }
-
 /**
  * create a wallet
  *
@@ -4769,10 +5055,11 @@ function getSignature(bytesToBeSign, keyPair) {
  * //     address: "5uhk3434242424"
  * // }
  */
-const createNewWallet = function (BIP44Path) {
-    return _getWallet('createNewWallet', '', BIP44Path);
-};
 
+
+var createNewWallet = function createNewWallet(BIP44Path) {
+  return _getWallet('createNewWallet', '', BIP44Path);
+};
 /**
  * create a wallet by mnemonic
  *
@@ -4784,13 +5071,15 @@ const createNewWallet = function (BIP44Path) {
  *
  * const mnemonicWallet = aelf.wallet.getWalletByMnemonic('hello world');
  */
-const getWalletByMnemonic = function (mnemonic, BIP44Path) {
-    if (bip39.validateMnemonic(mnemonic)) {
-        return _getWallet('getWalletByMnemonic', mnemonic, BIP44Path);
-    }
-    return false;
-};
 
+
+var getWalletByMnemonic = function getWalletByMnemonic(mnemonic, BIP44Path) {
+  if (bip39.validateMnemonic(mnemonic)) {
+    return _getWallet('getWalletByMnemonic', mnemonic, BIP44Path);
+  }
+
+  return false;
+};
 /**
  * create a wallet by private key
  *
@@ -4802,13 +5091,15 @@ const getWalletByMnemonic = function (mnemonic, BIP44Path) {
  * const privateKeyWallet = aelf.wallet.getWalletByPrivateKey('123');
  *
  */
-const getWalletByPrivateKey = function (privateKey) {
-    if (privateKey.length === 64) {
-        return _getWallet('getWalletByPrivateKey', privateKey);
-    }
-    return false;
-};
 
+
+var getWalletByPrivateKey = function getWalletByPrivateKey(privateKey) {
+  if (privateKey.length === 64) {
+    return _getWallet('getWalletByPrivateKey', privateKey);
+  }
+
+  return false;
+};
 /**
  * sign a transaction
  *
@@ -4837,20 +5128,22 @@ const getWalletByPrivateKey = function (privateKey) {
  * //     }
  * //  }
  */
-const signTransaction = function (rawTxn, keyPair) {
-    if (rawTxn.Params.length === 0) {
-        rawTxn.Params = null;
-    }
-    // proto in proto.Transaction use proto2, but C# use proto3
-    // proto3 will remove the default value key.
-    // The differences between proto2 and proto3:
-    // https://blog.csdn.net/huanggang982/article/details/77944174
-    const ser = proto.Transaction.encode(rawTxn).finish();
-    const sig = getSignature(ser, keyPair);
-    rawTxn.Signature = sig;
-    return rawTxn;
-};
 
+
+var signTransaction = function signTransaction(rawTxn, keyPair) {
+  if (rawTxn.Params.length === 0) {
+    rawTxn.Params = null;
+  } // proto in proto.Transaction use proto2, but C# use proto3
+  // proto3 will remove the default value key.
+  // The differences between proto2 and proto3:
+  // https://blog.csdn.net/huanggang982/article/details/77944174
+
+
+  var ser = proto.Transaction.encode(rawTxn).finish();
+  var sig = getSignature(ser, keyPair);
+  rawTxn.Signature = sig;
+  return rawTxn;
+};
 /**
  * Encryption Using Elliptic Curve Algorithms（Use ECDSA)
  * Please see https://www.npmjs.com/package/elliptic#incentive
@@ -4864,68 +5157,83 @@ const signTransaction = function (rawTxn, keyPair) {
  * const buffer = aelf.wallet.sign('68656c6c6f20776f726c64', wallet.keyPair);
  * // buffer = [65, 246, 49, 108, 122, 252, 66, 187, 240, 7, 14, 48, 89, 38, 103, 42, 58, 0, 46, 182, 180, 194, 200, 208, 141, 15, 95, 67, 234, 248, 31, 199, 73, 151, 2, 133, 233, 84, 180, 216, 116, 9, 153, 208, 254, 175, 96, 123, 76, 184, 224, 87, 69, 220, 172, 170, 239, 232, 188, 123, 168, 163, 244, 151, 1]
  */
-const sign = function (hexString, keyPair) {
-    const bytesToBeSign = Buffer.from(hexString.replace('0x', ''), 'hex');
-    const signature = getSignature(bytesToBeSign, keyPair);
-    return signature;
+
+
+var sign = function sign(hexString, keyPair) {
+  var bytesToBeSign = Buffer.from(hexString.replace('0x', ''), 'hex');
+  var signature = getSignature(bytesToBeSign, keyPair);
+  return signature;
 };
 
 module.exports = {
-    bip39,
-    hdkey,
-    signTransaction,
-    sign,
-    createNewWallet,
-    getWalletByMnemonic,
-    getWalletByPrivateKey,
-    AESEncrypt,
-    AESDecrypt,
-    keyStore
+  bip39: bip39,
+  hdkey: hdkey,
+  signTransaction: signTransaction,
+  sign: sign,
+  createNewWallet: createNewWallet,
+  getWalletByMnemonic: getWalletByMnemonic,
+  getWalletByPrivateKey: getWalletByPrivateKey,
+  AESEncrypt: AESEncrypt,
+  AESDecrypt: AESDecrypt,
+  keyStore: keyStore
 };
 
 }).call(this,require("buffer").Buffer)
 
 },{"../utils/keyStore":35,"../utils/utils":38,"./proto.js":7,"bip39":92,"buffer":135,"crypto-js/aes":148,"crypto-js/enc-utf8":153,"elliptic":171,"hdkey":202,"js-sha256":209}],33:[function(require,module,exports){
 (function (Buffer){
-'use strict'
+/**
+ * @author gl
+ * @file base58check.js
+ */
+'use strict';
+
 var sha256 = require('js-sha256').sha256;
-// var crypto = require('crypto');
+
 var base58 = require('bs58');
 
+module.exports.encode = function (data) {
+  var encoding = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'hex';
 
-module.exports.encode = (data, encoding = 'hex') => {
   if (typeof data === 'string') {
-    data = new Buffer(data, encoding)
+    data = new Buffer(data, encoding);
   }
+
   if (!(data instanceof Buffer)) {
-    throw new TypeError('"data" argument must be an Array of Buffers')
+    throw new TypeError('"data" argument must be an Array of Buffers');
   }
+
   var hash = data;
   hash = Buffer.from(sha256(hash), 'hex');
   hash = Buffer.from(sha256(hash), 'hex');
   hash = Buffer.from(data.toString('hex') + hash.slice(0, 4).toString('hex'), 'hex');
-  return base58.encode(hash)
-}
+  return base58.encode(hash);
+};
 
-module.exports.decode = (string, encoding) => {
+module.exports.decode = function (string, encoding) {
   var buffer = new Buffer(base58.decode(string));
   var data = buffer.slice(0, -4);
   var hash = data;
   hash = Buffer.from(sha256(hash), 'hex');
   hash = Buffer.from(sha256(hash), 'hex');
-  buffer.slice(-4).forEach((check, index) => {
+  buffer.slice(-4).forEach(function (check, index) {
     if (check !== hash[index]) {
       throw new Error('Invalid checksum');
     }
   });
+
   if (encoding) {
     data = data.toString(encoding);
   }
+
   return data;
-}
+};
+
 }).call(this,require("buffer").Buffer)
 
 },{"bs58":133,"buffer":135,"js-sha256":209}],34:[function(require,module,exports){
+"use strict";
+
 /*
     This file is part of web3.js.
 
@@ -4942,6 +5250,7 @@ module.exports.decode = (string, encoding) => {
     You should have received a copy of the GNU Lesser General Public License
     along with web3.js.  If not, see <http://www.gnu.org/licenses/>.
 */
+
 /** @file config.js
  * @authors:
  *   Marek Kotewicz <marek@ethdev.com>
@@ -4960,34 +5269,36 @@ module.exports.decode = (string, encoding) => {
  * @class [utils] config
  * @constructor
  */
-
 module.exports = {
-    AELF_POLLING_TIMEOUT: 1000/2,
-    chainId: 'AELF',
-    contractZeroAddress: 'AELF',
-    contractZeroAbi: 'AELF',
-    contractZero: 'AELF',
-    // defaultAccount: undefined,
-    defaultAccount: '0x04bb9c6c297ea90b1bc3e6af2c87d416583e',
+  AELF_POLLING_TIMEOUT: 1000 / 2,
+  chainId: 'AELF',
+  contractZeroAddress: 'AELF',
+  contractZeroAbi: 'AELF',
+  contractZero: 'AELF',
+  // defaultAccount: undefined,
+  defaultAccount: '0x04bb9c6c297ea90b1bc3e6af2c87d416583e'
 };
-
 
 },{}],35:[function(require,module,exports){
 (function (Buffer){
+"use strict";
+
 /**
  * @file keyStore
  * @author zmh3788
  * @description get AElf key store and unlock AElf key store
 */
-
 var scrypt = require('scrypt.js');
+
 var AES = require('crypto-js/aes');
+
 var SHA3 = require('crypto-js/sha3');
+
 var libWordArray = require('crypto-js/lib-typedarrays');
+
 var encUtf8 = require('crypto-js/enc-utf8');
+
 var encHex = require('crypto-js/enc-hex');
-
-
 /**
  * getKeystore
  *
@@ -4999,37 +5310,36 @@ var encHex = require('crypto-js/enc-hex');
  *
  */
 
+
 function getKeystore(walletInfoInput, password, version, callback) {
-    var keystore = null;
-    var versions = version || 1;
-    var error = null;
-    switch (versions) {
-        case 1 :
-            keystore = getKeyStoreFromV1(walletInfoInput, password);
-            break;
-        default:
-            error = {
-                error: 200004,
-                errorMessage: 'The version is incorrect'
-            };
-    }
+  var keystore = null;
+  var versions = version || 1;
+  var error = null;
 
-    if (callback) {
-        callback(error || keystore.error, keystore.result);
-    }
-    else {
-        return new Promise((resolve, reject) => {
-            if (error || keystore.error) {
-                reject(error || keystore.error);
-            }
-            else {
-                resolve(keystore.result);
-            }
-        });
-    }
+  switch (versions) {
+    case 1:
+      keystore = getKeyStoreFromV1(walletInfoInput, password);
+      break;
+
+    default:
+      error = {
+        error: 200004,
+        errorMessage: 'The version is incorrect'
+      };
+  }
+
+  if (callback) {
+    callback(error || keystore.error, keystore.result);
+  } else {
+    return new Promise(function (resolve, reject) {
+      if (error || keystore.error) {
+        reject(error || keystore.error);
+      } else {
+        resolve(keystore.result);
+      }
+    });
+  }
 }
-
-
 /**
  * unlockKeystore
  *
@@ -5041,37 +5351,36 @@ function getKeystore(walletInfoInput, password, version, callback) {
  *
  */
 
+
 function unlockKeystore(keyStoreInput, password, version, callback) {
-    var walletInfo = null;
-    var versions = version || 1;
-    var error = null;
-    switch (versions) {
-        case 1 :
-            walletInfo = unlockKeyStoreFromV1(keyStoreInput, password);
-            break;
-        default:
-            error = {
-                error: 200004,
-                errorMessage: 'The version is incorrect'
-            };
-    }
+  var walletInfo = null;
+  var versions = version || 1;
+  var error = null;
 
-    if (callback) {
-        callback(error || walletInfo.error, walletInfo.result);
-    }
-    else {
-        return new Promise((resolve, reject) => {
-            if (error || walletInfo.error) {
-                reject(error || walletInfo.error);
-            }
-            else {
-                resolve(walletInfo.result);
-            }
-        });
-    }   
+  switch (versions) {
+    case 1:
+      walletInfo = unlockKeyStoreFromV1(keyStoreInput, password);
+      break;
+
+    default:
+      error = {
+        error: 200004,
+        errorMessage: 'The version is incorrect'
+      };
+  }
+
+  if (callback) {
+    callback(error || walletInfo.error, walletInfo.result);
+  } else {
+    return new Promise(function (resolve, reject) {
+      if (error || walletInfo.error) {
+        reject(error || walletInfo.error);
+      } else {
+        resolve(walletInfo.result);
+      }
+    });
+  }
 }
-
-
 /**
  * getKeyStoreFromV1
  *
@@ -5084,51 +5393,54 @@ function unlockKeystore(keyStoreInput, password, version, callback) {
 
 
 function getKeyStoreFromV1(walletInfoInput, password) {
-    var result = null;
-    var error = null;
-    var iv = libWordArray.random(16);
-    var salt = libWordArray.random(32);
-    var N = 262144;
-    var r = 1;
-    var p = 8;
-    var dkLen = 64;
-    var passphrase = Buffer.from(password);
-    var saltBuffer = Buffer.from(salt.toString());
-    var decryptionKey = scrypt(passphrase, saltBuffer, N, p, r, dkLen);
-    var mnemonicEncrypted = AES.encrypt(walletInfoInput.mnemonic, decryptionKey.toString('hex'), {iv: iv});
-    var privateKeyEncrypted = AES.encrypt(walletInfoInput.privateKey, decryptionKey.toString('hex'), {iv: iv});
-    var mac = SHA3(decryptionKey.slice(16, 32) + mnemonicEncrypted + privateKeyEncrypted, {outputLength: 256});
-    result = {
-        type: 'aelf',
-        nickName: walletInfoInput.nickName || '',
-        address: walletInfoInput.address || '',
-        crypto: {
-            version: 1,
-            cipher: 'AES256',
-            cipherparams: {
-                iv: iv.toString()
-            },
-            mnemonicEncrypted: mnemonicEncrypted.toString(),
-            privateKeyEncrypted: privateKeyEncrypted.toString(),
-            kdf: 'scrypt',
-            kdfparams: {
-                r: r,
-                N: N,
-                p: p,
-                dkLen: dkLen,
-                salt: salt.toString()
-            },
-            mac: mac.toString()
-        }
-    };
-
-    return {
-        error,
-        result
-    };
+  var result = null;
+  var error = null;
+  var iv = libWordArray.random(16);
+  var salt = libWordArray.random(32);
+  var N = 262144;
+  var r = 1;
+  var p = 8;
+  var dkLen = 64;
+  var passphrase = Buffer.from(password);
+  var saltBuffer = Buffer.from(salt.toString());
+  var decryptionKey = scrypt(passphrase, saltBuffer, N, p, r, dkLen);
+  var mnemonicEncrypted = AES.encrypt(walletInfoInput.mnemonic, decryptionKey.toString('hex'), {
+    iv: iv
+  });
+  var privateKeyEncrypted = AES.encrypt(walletInfoInput.privateKey, decryptionKey.toString('hex'), {
+    iv: iv
+  });
+  var mac = SHA3(decryptionKey.slice(16, 32) + mnemonicEncrypted + privateKeyEncrypted, {
+    outputLength: 256
+  });
+  result = {
+    type: 'aelf',
+    nickName: walletInfoInput.nickName || '',
+    address: walletInfoInput.address || '',
+    crypto: {
+      version: 1,
+      cipher: 'AES256',
+      cipherparams: {
+        iv: iv.toString()
+      },
+      mnemonicEncrypted: mnemonicEncrypted.toString(),
+      privateKeyEncrypted: privateKeyEncrypted.toString(),
+      kdf: 'scrypt',
+      kdfparams: {
+        r: r,
+        N: N,
+        p: p,
+        dkLen: dkLen,
+        salt: salt.toString()
+      },
+      mac: mac.toString()
+    }
+  };
+  return {
+    error: error,
+    result: result
+  };
 }
-
-
 /**
  * unlock AElf key store
  *
@@ -5139,53 +5451,62 @@ function getKeyStoreFromV1(walletInfoInput, password) {
  *
  */
 
+
 function unlockKeyStoreFromV1(keyStoreInput, password) {
-    var error = null;
-    var result = null;
-    if (keyStoreInput.crypto.version !== 1) {
-        error = {
-            error: 200005,
-            errorMessage: 'Not a V1 key store'
-        };
-    }
-    if (keyStoreInput.type !== 'aelf') {
-        error = {
-            error: 200002,
-            errorMessage: 'Not a aelf key store'
-        };
-    }
-    var iv = keyStoreInput.crypto.cipherparams.iv.toString(encHex);
-    var kdfparams = keyStoreInput.crypto.kdfparams;
-    var mac = keyStoreInput.crypto.mac;
-    var mnemonicEncrypted = keyStoreInput.crypto.mnemonicEncrypted;
-    var privateKeyEncrypted = keyStoreInput.crypto.privateKeyEncrypted;
-    var passphrase = Buffer.from(password);
-    var saltBuffer = Buffer.from(kdfparams.salt.toString());
-    var decryptionKey = scrypt(passphrase, saltBuffer, kdfparams.N, kdfparams.p, kdfparams.r, kdfparams.dkLen);
-    var currentMac = SHA3(decryptionKey.slice(16, 32) + mnemonicEncrypted + privateKeyEncrypted, {outputLength: 256});
-    if (currentMac.toString(encHex) === mac) {
-        var mnemonic = AES.decrypt(mnemonicEncrypted, decryptionKey.toString('hex'), {iv: iv});
-        var privateKey = AES.decrypt(privateKeyEncrypted, decryptionKey.toString('hex'), {iv: iv});
-        result = {
-            nickName: keyStoreInput.nickName || '',
-            address: keyStoreInput.address || '',
-            mnemonic: mnemonic.toString(encUtf8),
-            privateKey: privateKey.toString(encUtf8)
-        };
-    }
-    else {
-        error = {
-            error: 200001,
-            errorMessage: 'Password Error'
-        };
-    }
+  var error = null;
+  var result = null;
 
-    return {
-        error,
-        result
+  if (keyStoreInput.crypto.version !== 1) {
+    error = {
+      error: 200005,
+      errorMessage: 'Not a V1 key store'
     };
-}
+  }
 
+  if (keyStoreInput.type !== 'aelf') {
+    error = {
+      error: 200002,
+      errorMessage: 'Not a aelf key store'
+    };
+  }
+
+  var iv = keyStoreInput.crypto.cipherparams.iv.toString(encHex);
+  var kdfparams = keyStoreInput.crypto.kdfparams;
+  var mac = keyStoreInput.crypto.mac;
+  var mnemonicEncrypted = keyStoreInput.crypto.mnemonicEncrypted;
+  var privateKeyEncrypted = keyStoreInput.crypto.privateKeyEncrypted;
+  var passphrase = Buffer.from(password);
+  var saltBuffer = Buffer.from(kdfparams.salt.toString());
+  var decryptionKey = scrypt(passphrase, saltBuffer, kdfparams.N, kdfparams.p, kdfparams.r, kdfparams.dkLen);
+  var currentMac = SHA3(decryptionKey.slice(16, 32) + mnemonicEncrypted + privateKeyEncrypted, {
+    outputLength: 256
+  });
+
+  if (currentMac.toString(encHex) === mac) {
+    var mnemonic = AES.decrypt(mnemonicEncrypted, decryptionKey.toString('hex'), {
+      iv: iv
+    });
+    var privateKey = AES.decrypt(privateKeyEncrypted, decryptionKey.toString('hex'), {
+      iv: iv
+    });
+    result = {
+      nickName: keyStoreInput.nickName || '',
+      address: keyStoreInput.address || '',
+      mnemonic: mnemonic.toString(encUtf8),
+      privateKey: privateKey.toString(encUtf8)
+    };
+  } else {
+    error = {
+      error: 200001,
+      errorMessage: 'Password Error'
+    };
+  }
+
+  return {
+    error: error,
+    result: result
+  };
+}
 /**
  * checkPassword
  *
@@ -5196,158 +5517,164 @@ function unlockKeyStoreFromV1(keyStoreInput, password) {
  *
  */
 
+
 function checkPassword(keyStoreInput, password, callback) {
-    var error = null;
-    var result = null;
-    if (keyStoreInput.type !== 'aelf') {
-        error = {
-            error: 200002,
-            errorMessage: 'Not a aelf key store'
-        };
-    }
-    var mac = keyStoreInput.crypto.mac;
-    var mnemonicEncrypted = keyStoreInput.crypto.mnemonicEncrypted;
-    var privateKeyEncrypted = keyStoreInput.crypto.privateKeyEncrypted;
-    var kdfparams = keyStoreInput.crypto.kdfparams;
-    var passphrase = Buffer.from(password);
-    var saltBuffer = Buffer.from(kdfparams.salt.toString());
-    var decryptionKey = scrypt(passphrase, saltBuffer, kdfparams.N, kdfparams.p, kdfparams.r, kdfparams.dkLen);
-    var currentMac = SHA3(decryptionKey.slice(16, 32) + mnemonicEncrypted + privateKeyEncrypted, {outputLength: 256});
-    if (currentMac.toString(encHex) !== mac) {
-        error = {
-            error: 200001,
-            errorMessage: 'Password Error'
-        };
-    }
-    if (callback) {
-        callback(error, result);
-    }
-    else {
-        return new Promise((resolve, reject) => {
-            if (error) {
-                reject(error);
-            }
-            else {
-                resolve(true);
-            }
-        });
-    }
+  var error = null;
+  var result = null;
+
+  if (keyStoreInput.type !== 'aelf') {
+    error = {
+      error: 200002,
+      errorMessage: 'Not a aelf key store'
+    };
+  }
+
+  var mac = keyStoreInput.crypto.mac;
+  var mnemonicEncrypted = keyStoreInput.crypto.mnemonicEncrypted;
+  var privateKeyEncrypted = keyStoreInput.crypto.privateKeyEncrypted;
+  var kdfparams = keyStoreInput.crypto.kdfparams;
+  var passphrase = Buffer.from(password);
+  var saltBuffer = Buffer.from(kdfparams.salt.toString());
+  var decryptionKey = scrypt(passphrase, saltBuffer, kdfparams.N, kdfparams.p, kdfparams.r, kdfparams.dkLen);
+  var currentMac = SHA3(decryptionKey.slice(16, 32) + mnemonicEncrypted + privateKeyEncrypted, {
+    outputLength: 256
+  });
+
+  if (currentMac.toString(encHex) !== mac) {
+    error = {
+      error: 200001,
+      errorMessage: 'Password Error'
+    };
+  }
+
+  if (callback) {
+    callback(error, result);
+  } else {
+    return new Promise(function (resolve, reject) {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(true);
+      }
+    });
+  }
 }
 
-
 module.exports = {
-    getKeystore: getKeystore,
-    unlockKeystore: unlockKeystore,
-    checkPassword: checkPassword
+  getKeystore: getKeystore,
+  unlockKeystore: unlockKeystore,
+  checkPassword: checkPassword
 };
 
 }).call(this,require("buffer").Buffer)
 
 },{"buffer":135,"crypto-js/aes":148,"crypto-js/enc-hex":152,"crypto-js/enc-utf8":153,"crypto-js/lib-typedarrays":156,"crypto-js/sha3":159,"scrypt.js":270}],36:[function(require,module,exports){
 (function (Buffer){
-var sha256 = require('js-sha256').sha256;
+"use strict";
 
+var sha256 = require('js-sha256').sha256;
 /**
  * @return {null}
  */
 
+
 module.exports.computeRoot = function (data) {
-    var merkleTree = generateMerkleTree(data);
-    return merkleTree[merkleTree.length -1];
+  var merkleTree = generateMerkleTree(data);
+  return merkleTree[merkleTree.length - 1];
 };
 
-module.exports.getMerklePath = function(index, data){
-    var leafCount = data.length;
-    var merkleTree = generateMerkleTree(data);
-    return generateMerklePath(index, leafCount, merkleTree);
+module.exports.getMerklePath = function (index, data) {
+  var leafCount = data.length;
+  var merkleTree = generateMerkleTree(data);
+  return generateMerklePath(index, leafCount, merkleTree);
 };
 
-module.exports.node = function(buffer){
-    return Buffer.from(sha256(buffer), 'hex')
+module.exports.node = function (buffer) {
+  return Buffer.from(sha256(buffer), 'hex');
 };
 
-var generateMerkleTree = function (data) {
-    if (data.length === 0)
-    {
-        return null;
-    }
+var generateMerkleTree = function generateMerkleTree(data) {
+  if (data.length === 0) {
+    return null;
+  }
 
-    if(data.length % 2 === 1)
-        data.push(data[data.length - 1]);
-    var nodeToAdd = data.length / 2;
-    var newAdded = 0;
-    var i = 0;
-    while (i < data.length - 1)
-    {
-        var left = data[i++];
-        var right = data[i++];
-        data.push(fromTwoBuffers([left, right]));
-        if (++newAdded !== nodeToAdd)
-            continue;
+  if (data.length % 2 === 1) data.push(data[data.length - 1]);
+  var nodeToAdd = data.length / 2;
+  var newAdded = 0;
+  var i = 0;
 
-        // complete this row
-        if (nodeToAdd % 2 === 1 && nodeToAdd !== 1)
-        {
-            nodeToAdd++;
-            data.push(data[data.length - 1]);
-        }
-        // start a new row
-        nodeToAdd /= 2;
-        newAdded = 0;
-    }
-    return data;
+  while (i < data.length - 1) {
+    var left = data[i++];
+    var right = data[i++];
+    data.push(fromTwoBuffers([left, right]));
+    if (++newAdded !== nodeToAdd) continue; // complete this row
+
+    if (nodeToAdd % 2 === 1 && nodeToAdd !== 1) {
+      nodeToAdd++;
+      data.push(data[data.length - 1]);
+    } // start a new row
+
+
+    nodeToAdd /= 2;
+    newAdded = 0;
+  }
+
+  return data;
 };
 
-var generateMerklePath = function(index, leafCount, tree){
-    if (tree.length === 0 || index >= leafCount)
-        return null;
+var generateMerklePath = function generateMerklePath(index, leafCount, tree) {
+  if (tree.length === 0 || index >= leafCount) return null;
+  var firstInRow = 0;
+  var rowcount = leafCount;
+  var path = [];
 
-    var firstInRow = 0;
-    var rowcount = leafCount;
-    var path=[];
-    while (index < tree.length - 1)
-    {
-        var neighbor = index % 2 === 0 ? index + 1 : index - 1;
-        path.push(tree[neighbor]);
-        rowcount = rowcount % 2 === 0 ? rowcount : rowcount + 1;
-        var shift = Math.floor((index - firstInRow) / 2);
-        firstInRow += rowcount;
-        index = firstInRow + shift;
-        rowcount /= 2;
-    }
-    return path;
+  while (index < tree.length - 1) {
+    var neighbor = index % 2 === 0 ? index + 1 : index - 1;
+    path.push(tree[neighbor]);
+    rowcount = rowcount % 2 === 0 ? rowcount : rowcount + 1;
+    var shift = Math.floor((index - firstInRow) / 2);
+    firstInRow += rowcount;
+    index = firstInRow + shift;
+    rowcount /= 2;
+  }
+
+  return path;
 };
 
-var fromTwoBuffers = function(data){
-    if(data.length !== 2)
-        throw new TypeError('Wrong data size.');
+var fromTwoBuffers = function fromTwoBuffers(data) {
+  if (data.length !== 2) throw new TypeError('Wrong data size.');
+  var compared = Buffer.compare(data[0], data[1]);
 
-    var compared = Buffer.compare(data[0], data[1]);
-    if(compared > 0)
-    {
-        data.reverse();
-    }
+  if (compared > 0) {
+    data.reverse();
+  }
 
-    var buffer = Buffer.concat(data);
-    buffer = Buffer.from(sha256(buffer), 'hex');
-    return buffer;
+  var buffer = Buffer.concat(data);
+  buffer = Buffer.from(sha256(buffer), 'hex');
+  return buffer;
 };
+
 }).call(this,require("buffer").Buffer)
 
 },{"buffer":135,"js-sha256":209}],37:[function(require,module,exports){
+"use strict";
+
 /**
  * @file objectToUrlParams.js
  * @author huangzongzhe
  */
-
-module.exports.objectToUrlParams = object => {
-    return Object.keys(object).map(function (key) {
-        return key + '=' + object[key];
-    }).join('&');
+module.exports.objectToUrlParams = function (object) {
+  return Object.keys(object).map(function (key) {
+    return key + '=' + object[key];
+  }).join('&');
 };
 
 },{}],38:[function(require,module,exports){
 (function (Buffer){
+"use strict";
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
 /*
     This file is part of web3.js.
 
@@ -5364,6 +5691,7 @@ module.exports.objectToUrlParams = object => {
     You should have received a copy of the GNU Lesser General Public License
     along with web3.js.  If not, see <http://www.gnu.org/licenses/>.
 */
+
 /**
  * @file utils.js
  * @author Marek Kotewicz <marek@ethdev.com>
@@ -5382,42 +5710,43 @@ module.exports.objectToUrlParams = object => {
  * @class [utils] utils
  * @constructor
  */
-
 var BigNumber = require('bignumber.js');
+
 var utf8 = require('utf8');
+
 var base58check = require('./base58check');
+
 var sha256 = require('js-sha256').sha256;
 
 var unitMap = {
-    'noether':      '0',
-    'wei':          '1',
-    'kwei':         '1000',
-    'Kwei':         '1000',
-    'babbage':      '1000',
-    'femtoether':   '1000',
-    'mwei':         '1000000',
-    'Mwei':         '1000000',
-    'lovelace':     '1000000',
-    'picoether':    '1000000',
-    'gwei':         '1000000000',
-    'Gwei':         '1000000000',
-    'shannon':      '1000000000',
-    'nanoether':    '1000000000',
-    'nano':         '1000000000',
-    'szabo':        '1000000000000',
-    'microether':   '1000000000000',
-    'micro':        '1000000000000',
-    'finney':       '1000000000000000',
-    'milliether':   '1000000000000000',
-    'milli':        '1000000000000000',
-    'ether':        '1000000000000000000',
-    'kether':       '1000000000000000000000',
-    'grand':        '1000000000000000000000',
-    'mether':       '1000000000000000000000000',
-    'gether':       '1000000000000000000000000000',
-    'tether':       '1000000000000000000000000000000'
+  'noether': '0',
+  'wei': '1',
+  'kwei': '1000',
+  'Kwei': '1000',
+  'babbage': '1000',
+  'femtoether': '1000',
+  'mwei': '1000000',
+  'Mwei': '1000000',
+  'lovelace': '1000000',
+  'picoether': '1000000',
+  'gwei': '1000000000',
+  'Gwei': '1000000000',
+  'shannon': '1000000000',
+  'nanoether': '1000000000',
+  'nano': '1000000000',
+  'szabo': '1000000000000',
+  'microether': '1000000000000',
+  'micro': '1000000000000',
+  'finney': '1000000000000000',
+  'milliether': '1000000000000000',
+  'milli': '1000000000000000',
+  'ether': '1000000000000000000',
+  'kether': '1000000000000000000000',
+  'grand': '1000000000000000000000',
+  'mether': '1000000000000000000000000',
+  'gether': '1000000000000000000000000000',
+  'tether': '1000000000000000000000000000000'
 };
-
 /**
  * Should be called to pad string to expected length
  *
@@ -5427,10 +5756,10 @@ var unitMap = {
  * @param {String} sign, by default 0
  * @returns {String} right aligned string
  */
-var padLeft = function (string, chars, sign) {
-    return new Array(chars - string.length + 1).join(sign ? sign : "0") + string;
-};
 
+var padLeft = function padLeft(string, chars, sign) {
+  return new Array(chars - string.length + 1).join(sign ? sign : "0") + string;
+};
 /**
  * Should be called to pad string to expected length
  *
@@ -5440,10 +5769,11 @@ var padLeft = function (string, chars, sign) {
  * @param {String} sign, by default 0
  * @returns {String} right aligned string
  */
-var padRight = function (string, chars, sign) {
-    return string + (new Array(chars - string.length + 1).join(sign ? sign : "0"));
-};
 
+
+var padRight = function padRight(string, chars, sign) {
+  return string + new Array(chars - string.length + 1).join(sign ? sign : "0");
+};
 /**
  * Should be called to get utf8 from it's hex representation
  *
@@ -5451,23 +5781,26 @@ var padRight = function (string, chars, sign) {
  * @param {String} string in hex
  * @returns {String} ascii string representation of hex value
  */
-var toUtf8 = function(hex) {
-// Find termination
-    var str = "";
-    var i = 0, l = hex.length;
-    if (hex.substring(0, 2) === '0x') {
-        i = 2;
-    }
-    for (; i < l; i+=2) {
-        var code = parseInt(hex.substr(i, 2), 16);
-        if (code === 0)
-            break;
-        str += String.fromCharCode(code);
-    }
 
-    return utf8.decode(str);
+
+var toUtf8 = function toUtf8(hex) {
+  // Find termination
+  var str = "";
+  var i = 0,
+      l = hex.length;
+
+  if (hex.substring(0, 2) === '0x') {
+    i = 2;
+  }
+
+  for (; i < l; i += 2) {
+    var code = parseInt(hex.substr(i, 2), 16);
+    if (code === 0) break;
+    str += String.fromCharCode(code);
+  }
+
+  return utf8.decode(str);
 };
-
 /**
  * Should be called to get ascii from it's hex representation
  *
@@ -5475,21 +5808,25 @@ var toUtf8 = function(hex) {
  * @param {String} string in hex
  * @returns {String} ascii string representation of hex value
  */
-var toAscii = function(hex) {
-// Find termination
-    var str = "";
-    var i = 0, l = hex.length;
-    if (hex.substring(0, 2) === '0x') {
-        i = 2;
-    }
-    for (; i < l; i+=2) {
-        var code = parseInt(hex.substr(i, 2), 16);
-        str += String.fromCharCode(code);
-    }
 
-    return str;
+
+var toAscii = function toAscii(hex) {
+  // Find termination
+  var str = "";
+  var i = 0,
+      l = hex.length;
+
+  if (hex.substring(0, 2) === '0x') {
+    i = 2;
+  }
+
+  for (; i < l; i += 2) {
+    var code = parseInt(hex.substr(i, 2), 16);
+    str += String.fromCharCode(code);
+  }
+
+  return str;
 };
-
 /**
  * Should be called to get hex representation (prefixed by 0x) of utf8 string
  *
@@ -5498,26 +5835,29 @@ var toAscii = function(hex) {
  * @param {Boolean} allowZero to convert code point zero to 00 instead of end of string
  * @returns {String} hex representation of input string
  */
-var fromUtf8 = function(str, allowZero) {
-    str = utf8.encode(str);
-    var hex = "";
-    for(var i = 0; i < str.length; i++) {
-        var code = str.charCodeAt(i);
-        if (code === 0) {
-            if (allowZero) {
-                hex += '00';
-            } else {
-                break;
-            }
-        } else {
-            var n = code.toString(16);
-            hex += n.length < 2 ? '0' + n : n;
-        }
+
+
+var fromUtf8 = function fromUtf8(str, allowZero) {
+  str = utf8.encode(str);
+  var hex = "";
+
+  for (var i = 0; i < str.length; i++) {
+    var code = str.charCodeAt(i);
+
+    if (code === 0) {
+      if (allowZero) {
+        hex += '00';
+      } else {
+        break;
+      }
+    } else {
+      var n = code.toString(16);
+      hex += n.length < 2 ? '0' + n : n;
     }
+  }
 
-    return "0x" + hex;
+  return "0x" + hex;
 };
-
 /**
  * Should be called to get hex representation (prefixed by 0x) of ascii string
  *
@@ -5526,17 +5866,19 @@ var fromUtf8 = function(str, allowZero) {
  * @param {Number} optional padding
  * @returns {String} hex representation of input string
  */
-var fromAscii = function(str, num) {
-    var hex = "";
-    for(var i = 0; i < str.length; i++) {
-        var code = str.charCodeAt(i);
-        var n = code.toString(16);
-        hex += n.length < 2 ? '0' + n : n;
-    }
 
-    return "0x" + hex.padEnd(num,'0');
+
+var fromAscii = function fromAscii(str, num) {
+  var hex = "";
+
+  for (var i = 0; i < str.length; i++) {
+    var code = str.charCodeAt(i);
+    var n = code.toString(16);
+    hex += n.length < 2 ? '0' + n : n;
+  }
+
+  return "0x" + hex.padEnd(num, '0');
 };
-
 /**
  * Should be used to create full function/event name from json abi
  *
@@ -5544,15 +5886,18 @@ var fromAscii = function(str, num) {
  * @param {Object} json-abi
  * @return {String} full fnction/event name
  */
-var transformToFullName = function (json) {
-    if (json.name.indexOf('(') !== -1) {
-        return json.name;
-    }
 
-    var typeName = json.inputs.map(function(i){return i.type; }).join();
-    return json.name + '(' + typeName + ')';
+
+var transformToFullName = function transformToFullName(json) {
+  if (json.name.indexOf('(') !== -1) {
+    return json.name;
+  }
+
+  var typeName = json.inputs.map(function (i) {
+    return i.type;
+  }).join();
+  return json.name + '(' + typeName + ')';
 };
-
 /**
  * Should be called to get display name of contract function
  *
@@ -5560,12 +5905,13 @@ var transformToFullName = function (json) {
  * @param {String} name of function/event
  * @returns {String} display name for function/event eg. multiply(uint256) -> multiply
  */
-var extractDisplayName = function (name) {
-    var stBracket = name.indexOf('(');
-    var endBracket = name.indexOf(')');
-    return (stBracket !== -1 && endBracket !== -1) ? name.substr(0, stBracket) : name;
-};
 
+
+var extractDisplayName = function extractDisplayName(name) {
+  var stBracket = name.indexOf('(');
+  var endBracket = name.indexOf(')');
+  return stBracket !== -1 && endBracket !== -1 ? name.substr(0, stBracket) : name;
+};
 /**
  * Should be called to get type name of contract function
  *
@@ -5573,12 +5919,13 @@ var extractDisplayName = function (name) {
  * @param {String} name of function/event
  * @returns {String} type name for function/event eg. multiply(uint256) -> uint256
  */
-var extractTypeName = function (name) {
-    var stBracket = name.indexOf('(');
-    var endBracket = name.indexOf(')');
-    return (stBracket !== -1 && endBracket !== -1) ? name.substr(stBracket + 1, endBracket - stBracket - 1).replace(' ', '') : "";
-};
 
+
+var extractTypeName = function extractTypeName(name) {
+  var stBracket = name.indexOf('(');
+  var endBracket = name.indexOf(')');
+  return stBracket !== -1 && endBracket !== -1 ? name.substr(stBracket + 1, endBracket - stBracket - 1).replace(' ', '') : "";
+};
 /**
  * Converts value to it's decimal representation in string
  *
@@ -5586,10 +5933,11 @@ var extractTypeName = function (name) {
  * @param {String|Number|BigNumber}
  * @return {String}
  */
-var toDecimal = function (value) {
-    return toBigNumber(value).toNumber();
-};
 
+
+var toDecimal = function toDecimal(value) {
+  return toBigNumber(value).toNumber();
+};
 /**
  * Converts value to it's hex representation
  *
@@ -5597,13 +5945,13 @@ var toDecimal = function (value) {
  * @param {String|Number|BigNumber}
  * @return {String}
  */
-var fromDecimal = function (value) {
-    var number = toBigNumber(value);
-    var result = number.toString(16);
 
-    return number.lessThan(0) ? '-0x' + result.substr(1) : '0x' + result;
+
+var fromDecimal = function fromDecimal(value) {
+  var number = toBigNumber(value);
+  var result = number.toString(16);
+  return number.lessThan(0) ? '-0x' + result.substr(1) : '0x' + result;
 };
-
 /**
  * Auto converts any given value into it's hex representation.
  *
@@ -5613,32 +5961,20 @@ var fromDecimal = function (value) {
  * @param {String|Number|BigNumber|Object}
  * @return {String}
  */
-var toHex = function (val) {
-    /*jshint maxcomplexity: 8 */
 
-    if (isBoolean(val))
-        return fromDecimal(+val);
 
-    if (isBigNumber(val))
-        return fromDecimal(val);
+var toHex = function toHex(val) {
+  /*jshint maxcomplexity: 8 */
+  if (isBoolean(val)) return fromDecimal(+val);
+  if (isBigNumber(val)) return fromDecimal(val);
+  if (_typeof(val) === 'object') return fromUtf8(JSON.stringify(val)); // if its a negative number, pass it through fromDecimal
 
-    if (typeof val === 'object')
-        return fromUtf8(JSON.stringify(val));
+  if (isString(val)) {
+    if (val.indexOf('-0x') === 0) return fromDecimal(val);else if (val.indexOf('0x') === 0) return val;else if (!isFinite(val)) return fromUtf8(val, 1);
+  }
 
-    // if its a negative number, pass it through fromDecimal
-    if (isString(val)) {
-        if (val.indexOf('-0x') === 0)
-            return fromDecimal(val);
-        else if(val.indexOf('0x') === 0)
-            return val;
-        else if (!isFinite(val))
-            return fromUtf8(val,1);
-    }
-
-    return fromDecimal(val);
+  return fromDecimal(val);
 };
-
-
 /**
  * Returns a hex rep from the encoded address
  *
@@ -5646,15 +5982,17 @@ var toHex = function (val) {
  * @param {String}
  * @return {String}
  */
-var decodeAddressRep = function (address) {
-    if (address.startsWith('ELF_')) {
-        var parts = address.split('_');
-        var b58rep = parts[parts.length - 1];
-        return base58check.decode(b58rep, 'hex');
-    }
-    return base58check.decode(address, 'hex');
-};
 
+
+var decodeAddressRep = function decodeAddressRep(address) {
+  if (address.startsWith('ELF_')) {
+    var parts = address.split('_');
+    var b58rep = parts[parts.length - 1];
+    return base58check.decode(b58rep, 'hex');
+  }
+
+  return base58check.decode(address, 'hex');
+};
 /**
  * Returns a encoded address from the hex rep
  *
@@ -5662,11 +6000,12 @@ var decodeAddressRep = function (address) {
  * @param {String}
  * @return {String}
  */
-var encodeAddressRep = function (hex) {
-    var buf = Buffer.from(hex.replace('0x', ''), 'hex')
-    return base58check.encode(buf, '');
-};
 
+
+var encodeAddressRep = function encodeAddressRep(hex) {
+  var buf = Buffer.from(hex.replace('0x', ''), 'hex');
+  return base58check.encode(buf, '');
+};
 /**
  * Returns value of unit in Wei
  *
@@ -5675,15 +6014,18 @@ var encodeAddressRep = function (hex) {
  * @returns {BigNumber} value of the unit (in Wei)
  * @throws error if the unit is not correct:w
  */
-var getValueOfUnit = function (unit) {
-    unit = unit ? unit.toLowerCase() : 'ether';
-    var unitValue = unitMap[unit];
-    if (unitValue === undefined) {
-        throw new Error('This unit doesn\'t exists, please use the one of the following units' + JSON.stringify(unitMap, null, 2));
-    }
-    return new BigNumber(unitValue, 10);
-};
 
+
+var getValueOfUnit = function getValueOfUnit(unit) {
+  unit = unit ? unit.toLowerCase() : 'ether';
+  var unitValue = unitMap[unit];
+
+  if (unitValue === undefined) {
+    throw new Error('This unit doesn\'t exists, please use the one of the following units' + JSON.stringify(unitMap, null, 2));
+  }
+
+  return new BigNumber(unitValue, 10);
+};
 /**
  * Takes a number of wei and converts it to any other ether unit.
  *
@@ -5705,12 +6047,12 @@ var getValueOfUnit = function (unit) {
  * @param {String} unit the unit to convert to, default ether
  * @return {String|Object} When given a BigNumber object it returns one as well, otherwise a number
 */
-var fromWei = function(number, unit) {
-    var returnValue = toBigNumber(number).dividedBy(getValueOfUnit(unit));
 
-    return isBigNumber(number) ? returnValue : returnValue.toString(10);
+
+var fromWei = function fromWei(number, unit) {
+  var returnValue = toBigNumber(number).dividedBy(getValueOfUnit(unit));
+  return isBigNumber(number) ? returnValue : returnValue.toString(10);
 };
-
 /**
  * Takes a number of a unit and converts it to wei.
  *
@@ -5732,12 +6074,12 @@ var fromWei = function(number, unit) {
  * @param {String} unit the unit to convert from, default ether
  * @return {String|Object} When given a BigNumber object it returns one as well, otherwise a number
 */
-var toWei = function(number, unit) {
-    var returnValue = toBigNumber(number).times(getValueOfUnit(unit));
 
-    return isBigNumber(number) ? returnValue : returnValue.toString(10);
+
+var toWei = function toWei(number, unit) {
+  var returnValue = toBigNumber(number).times(getValueOfUnit(unit));
+  return isBigNumber(number) ? returnValue : returnValue.toString(10);
 };
-
 /**
  * Takes an input and transforms it into an bignumber
  *
@@ -5745,19 +6087,19 @@ var toWei = function(number, unit) {
  * @param {Number|String|BigNumber} a number, string, HEX string or BigNumber
  * @return {BigNumber} BigNumber
 */
-var toBigNumber = function(number) {
-    /*jshint maxcomplexity:5 */
-    number = number || 0;
-    if (isBigNumber(number))
-        return number;
 
-    if (isString(number) && (number.indexOf('0x') === 0 || number.indexOf('-0x') === 0)) {
-        return new BigNumber(number.replace('0x',''), 16);
-    }
 
-    return new BigNumber(number.toString(10), 10);
+var toBigNumber = function toBigNumber(number) {
+  /*jshint maxcomplexity:5 */
+  number = number || 0;
+  if (isBigNumber(number)) return number;
+
+  if (isString(number) && (number.indexOf('0x') === 0 || number.indexOf('-0x') === 0)) {
+    return new BigNumber(number.replace('0x', ''), 16);
+  }
+
+  return new BigNumber(number.toString(10), 10);
 };
-
 /**
  * Takes and input transforms it into bignumber and if it is negative value, into two's complement
  *
@@ -5765,14 +6107,17 @@ var toBigNumber = function(number) {
  * @param {Number|String|BigNumber}
  * @return {BigNumber}
  */
-var toTwosComplement = function (number) {
-    var bigNumber = toBigNumber(number).round();
-    if (bigNumber.lessThan(0)) {
-        return new BigNumber("ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff", 16).plus(bigNumber).plus(1);
-    }
-    return bigNumber;
-};
 
+
+var toTwosComplement = function toTwosComplement(number) {
+  var bigNumber = toBigNumber(number).round();
+
+  if (bigNumber.lessThan(0)) {
+    return new BigNumber("ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff", 16).plus(bigNumber).plus(1);
+  }
+
+  return bigNumber;
+};
 /**
  * Returns true if object is BigNumber, otherwise false
  *
@@ -5780,11 +6125,11 @@ var toTwosComplement = function (number) {
  * @param {Object}
  * @return {Boolean}
  */
-var isBigNumber = function (object) {
-    return object instanceof BigNumber ||
-        (object && object.constructor && object.constructor.name === 'BigNumber');
-};
 
+
+var isBigNumber = function isBigNumber(object) {
+  return object instanceof BigNumber || object && object.constructor && object.constructor.name === 'BigNumber';
+};
 /**
  * Returns true if object is string, otherwise false
  *
@@ -5792,11 +6137,11 @@ var isBigNumber = function (object) {
  * @param {Object}
  * @return {Boolean}
  */
-var isString = function (object) {
-    return typeof object === 'string' ||
-        (object && object.constructor && object.constructor.name === 'String');
-};
 
+
+var isString = function isString(object) {
+  return typeof object === 'string' || object && object.constructor && object.constructor.name === 'String';
+};
 /**
  * Returns true if object is function, otherwise false
  *
@@ -5804,10 +6149,11 @@ var isString = function (object) {
  * @param {Object}
  * @return {Boolean}
  */
-var isFunction = function (object) {
-    return typeof object === 'function';
-};
 
+
+var isFunction = function isFunction(object) {
+  return typeof object === 'function';
+};
 /**
  * Returns true if object is Objet, otherwise false
  *
@@ -5815,10 +6161,11 @@ var isFunction = function (object) {
  * @param {Object}
  * @return {Boolean}
  */
-var isObject = function (object) {
-    return object !== null && !(Array.isArray(object)) && typeof object === 'object';
-};
 
+
+var isObject = function isObject(object) {
+  return object !== null && !Array.isArray(object) && _typeof(object) === 'object';
+};
 /**
  * Returns true if object is boolean, otherwise false
  *
@@ -5826,10 +6173,11 @@ var isObject = function (object) {
  * @param {Object}
  * @return {Boolean}
  */
-var isBoolean = function (object) {
-    return typeof object === 'boolean';
-};
 
+
+var isBoolean = function isBoolean(object) {
+  return typeof object === 'boolean';
+};
 /**
  * Returns true if object is array, otherwise false
  *
@@ -5837,10 +6185,11 @@ var isBoolean = function (object) {
  * @param {Object}
  * @return {Boolean}
  */
-var isArray = function (object) {
-    return Array.isArray(object);
-};
 
+
+var isArray = function isArray(object) {
+  return Array.isArray(object);
+};
 /**
  * Returns true if given string is valid json object
  *
@@ -5848,14 +6197,15 @@ var isArray = function (object) {
  * @param {String}
  * @return {Boolean}
  */
-var isJson = function (str) {
-    try {
-        return !!JSON.parse(str);
-    } catch (e) {
-        return false;
-    }
-};
 
+
+var isJson = function isJson(str) {
+  try {
+    return !!JSON.parse(str);
+  } catch (e) {
+    return false;
+  }
+};
 /**
  * Returns true if given string is a valid Ethereum block header bloom.
  *
@@ -5863,15 +6213,17 @@ var isJson = function (str) {
  * @param {String} hex encoded bloom filter
  * @return {Boolean}
  */
-var isBloom = function (bloom) {
-    if (!/^(0x)?[0-9a-f]{512}$/i.test(bloom)) {
-        return false;
-    } else if (/^(0x)?[0-9a-f]{512}$/.test(bloom) || /^(0x)?[0-9A-F]{512}$/.test(bloom)) {
-        return true;
-    }
-    return false;
-};
 
+
+var isBloom = function isBloom(bloom) {
+  if (!/^(0x)?[0-9a-f]{512}$/i.test(bloom)) {
+    return false;
+  } else if (/^(0x)?[0-9a-f]{512}$/.test(bloom) || /^(0x)?[0-9A-F]{512}$/.test(bloom)) {
+    return true;
+  }
+
+  return false;
+};
 /**
  * Returns true if given string is a valid log topic.
  *
@@ -5879,15 +6231,17 @@ var isBloom = function (bloom) {
  * @param {String} hex encoded topic
  * @return {Boolean}
  */
-var isTopic = function (topic) {
-    if (!/^(0x)?[0-9a-f]{64}$/i.test(topic)) {
-        return false;
-    } else if (/^(0x)?[0-9a-f]{64}$/.test(topic) || /^(0x)?[0-9A-F]{64}$/.test(topic)) {
-        return true;
-    }
-    return false;
-};
 
+
+var isTopic = function isTopic(topic) {
+  if (!/^(0x)?[0-9a-f]{64}$/i.test(topic)) {
+    return false;
+  } else if (/^(0x)?[0-9a-f]{64}$/.test(topic) || /^(0x)?[0-9A-F]{64}$/.test(topic)) {
+    return true;
+  }
+
+  return false;
+};
 /**
  * Returns hex
  *
@@ -5895,48 +6249,52 @@ var isTopic = function (topic) {
  * @param {Array} uint8Array
  * @return {String}
  */
-var uint8ArrayToHex = function (uint8Array) {
-    var string = '';
-    uint8Array.map(function(item) {
-        var hex = item.toString(16);
-        if (hex.length <= 1) {
-            hex = '0' + hex;
-        }
-        string+= hex;
-    });
-    return string;
+
+
+var uint8ArrayToHex = function uint8ArrayToHex(uint8Array) {
+  var string = '';
+  uint8Array.map(function (item) {
+    var hex = item.toString(16);
+
+    if (hex.length <= 1) {
+      hex = '0' + hex;
+    }
+
+    string += hex;
+  });
+  return string;
 };
 
 module.exports = {
-    padLeft: padLeft,
-    padRight: padRight,
-    toHex: toHex,
-    toDecimal: toDecimal,
-    fromDecimal: fromDecimal,
-    toUtf8: toUtf8,
-    toAscii: toAscii,
-    fromUtf8: fromUtf8,
-    fromAscii: fromAscii,
-    transformToFullName: transformToFullName,
-    extractDisplayName: extractDisplayName,
-    extractTypeName: extractTypeName,
-    toWei: toWei,
-    fromWei: fromWei,
-    toBigNumber: toBigNumber,
-    decodeAddressRep: decodeAddressRep,
-    encodeAddressRep: encodeAddressRep,
-    toTwosComplement: toTwosComplement,
-    isBigNumber: isBigNumber,
-    isFunction: isFunction,
-    isString: isString,
-    isObject: isObject,
-    isBoolean: isBoolean,
-    isArray: isArray,
-    isJson: isJson,
-    isBloom: isBloom,
-    isTopic: isTopic,
-    uint8ArrayToHex: uint8ArrayToHex,
-    sha256: sha256
+  padLeft: padLeft,
+  padRight: padRight,
+  toHex: toHex,
+  toDecimal: toDecimal,
+  fromDecimal: fromDecimal,
+  toUtf8: toUtf8,
+  toAscii: toAscii,
+  fromUtf8: fromUtf8,
+  fromAscii: fromAscii,
+  transformToFullName: transformToFullName,
+  extractDisplayName: extractDisplayName,
+  extractTypeName: extractTypeName,
+  toWei: toWei,
+  fromWei: fromWei,
+  toBigNumber: toBigNumber,
+  decodeAddressRep: decodeAddressRep,
+  encodeAddressRep: encodeAddressRep,
+  toTwosComplement: toTwosComplement,
+  isBigNumber: isBigNumber,
+  isFunction: isFunction,
+  isString: isString,
+  isObject: isObject,
+  isBoolean: isBoolean,
+  isArray: isArray,
+  isJson: isJson,
+  isBloom: isBloom,
+  isTopic: isTopic,
+  uint8ArrayToHex: uint8ArrayToHex,
+  sha256: sha256
 };
 
 }).call(this,require("buffer").Buffer)
@@ -53927,21 +54285,27 @@ utils.intFromLE = intFromLE;
 
 },{"bn.js":102,"minimalistic-assert":212,"minimalistic-crypto-utils":213}],186:[function(require,module,exports){
 module.exports={
-  "_from": "elliptic@^6.4.0",
+  "_args": [
+    [
+      "elliptic@6.4.1",
+      "/Users/huangzongzhe/workspace/hoopox/test/aelf-sdk-demo/aelf-sdk.js"
+    ]
+  ],
+  "_from": "elliptic@6.4.1",
   "_id": "elliptic@6.4.1",
   "_inBundle": false,
   "_integrity": "sha512-BsXLz5sqX8OHcsh7CqBMztyXARmGQ3LWPtGjJi6DiJHq5C/qvi9P3OqgswKSDftbu8+IoI/QDTAm2fFnQ9SZSQ==",
   "_location": "/elliptic",
   "_phantomChildren": {},
   "_requested": {
-    "type": "range",
+    "type": "version",
     "registry": true,
-    "raw": "elliptic@^6.4.0",
+    "raw": "elliptic@6.4.1",
     "name": "elliptic",
     "escapedName": "elliptic",
-    "rawSpec": "^6.4.0",
+    "rawSpec": "6.4.1",
     "saveSpec": null,
-    "fetchSpec": "^6.4.0"
+    "fetchSpec": "6.4.1"
   },
   "_requiredBy": [
     "/",
@@ -53951,8 +54315,7 @@ module.exports={
     "/secp256k1"
   ],
   "_resolved": "https://registry.npmjs.org/elliptic/-/elliptic-6.4.1.tgz",
-  "_shasum": "c2d0b7776911b86722c632c3c06c60f2f819939a",
-  "_spec": "elliptic@^6.4.0",
+  "_spec": "6.4.1",
   "_where": "/Users/huangzongzhe/workspace/hoopox/test/aelf-sdk-demo/aelf-sdk.js",
   "author": {
     "name": "Fedor Indutny",
@@ -53961,7 +54324,6 @@ module.exports={
   "bugs": {
     "url": "https://github.com/indutny/elliptic/issues"
   },
-  "bundleDependencies": false,
   "dependencies": {
     "bn.js": "^4.4.0",
     "brorand": "^1.0.1",
@@ -53971,7 +54333,6 @@ module.exports={
     "minimalistic-assert": "^1.0.0",
     "minimalistic-crypto-utils": "^1.0.0"
   },
-  "deprecated": false,
   "description": "EC cryptography",
   "devDependencies": {
     "brfs": "^1.4.3",
@@ -69727,6 +70088,9 @@ module.exports={
     "xhr2-cookies": "^1.1.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.4.5",
+    "@babel/preset-env": "^7.4.5",
+    "babelify": "^10.0.0",
     "browserify": "^16.2.3",
     "del": "^3.0.0",
     "exorcist": "^1.0.1",
@@ -69753,11 +70117,13 @@ module.exports={
 }
 
 },{}],"aelf":[function(require,module,exports){
-var Aelf = require('./lib/aelf');
+"use strict";
 
-// dont override global variable
+var Aelf = require('./lib/aelf'); // dont override global variable
+
+
 if (typeof window !== 'undefined' && typeof window.Aelf === 'undefined') {
-    window.Aelf = Aelf;
+  window.Aelf = Aelf;
 }
 
 module.exports = Aelf;
