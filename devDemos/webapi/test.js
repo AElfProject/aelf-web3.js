@@ -1,6 +1,8 @@
 /**
  * @file test.js
  * @author huangzongzhe
+ * @description
+ * Test the sdk.
  */
 
 /* eslint-disable fecs-camelcase */
