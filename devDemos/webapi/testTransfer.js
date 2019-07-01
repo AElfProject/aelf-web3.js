@@ -21,52 +21,54 @@ const aelf = new AElf(new AElf.providers.HttpProvider(
     'http://34.213.112.35:8000'
 ));
 
-let {
-    GenesisContractAddress
-} = aelf.chain.getChainStatus();
+aelf.chain.getBlockHeight();
 
-aelf.chain.getChainStatus({
-    sync: true
-});
+// let {
+//     GenesisContractAddress
+// } = aelf.chain.getChainStatus();
 
-aelf.chain.getChainStatus((error, result) => {
-    console.log(error, result);
-});
-
-aelf.chain.getChainStatus().then(result => {
-    console.log('then1: ', result);
-}).catch(error => {
-    console.log('catch1: ', error);
-});
-
-let zeroC = aelf.chain.contractAt(GenesisContractAddress, wallet);
-
-let tokenContractAddress = zeroC.GetContractAddressByName.call(sha256('AElf.ContractNames.Token'), {
-    sync: true
-}); // HelloWorldContract
-
-let tokenC = aelf.chain.contractAt(tokenContractAddress, wallet);
-tokenC.GetBalance.call({
-    symbol: 'ELF',
-    owner: '28Y8JA1i2cN6oHvdv7EraXJr9a1gY6D1PpJXw9QtRMRwKcBQMK'
-    // owner: '28Y8JA1i2cN6oHvdv7EraXJr9a1gY6D1PpJXw9QtRMRwKcBQM'
-}).then(result => {
-    console.log('then111: ', result);
-}).catch(error => {
-    console.log('catch111: ', error);
-});
-
-// tokenC.GetBalance.call({
-//     symbol: 'ELF',
-//     // owner: '2hxkDg6Pd2d4yU1A16PTZVMMrEDYEPR8oQojMDwWdax5LsBaxX'
-//     owner: '28Y8JA1i2cN6oHvdv7EraXJr9a1gY6D1PpJXw9QtRMRwKcBQMK'
-//     // owner: '2gaQh4uxg6tzyH1ADLoDxvHA14FMpzEiMqsQ6sDG5iHT8cmjp8'
+// aelf.chain.getChainStatus({
+//     sync: true
 // });
 
-tokenC.Tranfer({
-    symbol: 'ELF',
-    amount: 1,
-    // owner: '2hxkDg6Pd2d4yU1A16PTZVMMrEDYEPR8oQojMDwWdax5LsBaxX'
-    to: '28Y8JA1i2cN6oHvdv7EraXJr9a1gY6D1PpJXw9QtRMRwKcBQMK'
-    // owner: '2gaQh4uxg6tzyH1ADLoDxvHA14FMpzEiMqsQ6sDG5iHT8cmjp8'
-});
+// aelf.chain.getChainStatus((error, result) => {
+//     console.log(error, result);
+// });
+
+// aelf.chain.getChainStatus().then(result => {
+//     console.log('then1: ', result);
+// }).catch(error => {
+//     console.log('catch1: ', error);
+// });
+
+// let zeroC = aelf.chain.contractAt(GenesisContractAddress, wallet);
+
+// let tokenContractAddress = zeroC.GetContractAddressByName.call(sha256('AElf.ContractNames.Token'), {
+//     sync: true
+// }); // HelloWorldContract
+
+// let tokenC = aelf.chain.contractAt(tokenContractAddress, wallet);
+// tokenC.GetBalance.call({
+//     symbol: 'ELF',
+//     owner: '28Y8JA1i2cN6oHvdv7EraXJr9a1gY6D1PpJXw9QtRMRwKcBQMK'
+//     // owner: '28Y8JA1i2cN6oHvdv7EraXJr9a1gY6D1PpJXw9QtRMRwKcBQM'
+// }).then(result => {
+//     console.log('then111: ', result);
+// }).catch(error => {
+//     console.log('catch111: ', error);
+// });
+
+// // tokenC.GetBalance.call({
+// //     symbol: 'ELF',
+// //     // owner: '2hxkDg6Pd2d4yU1A16PTZVMMrEDYEPR8oQojMDwWdax5LsBaxX'
+// //     owner: '28Y8JA1i2cN6oHvdv7EraXJr9a1gY6D1PpJXw9QtRMRwKcBQMK'
+// //     // owner: '2gaQh4uxg6tzyH1ADLoDxvHA14FMpzEiMqsQ6sDG5iHT8cmjp8'
+// // });
+
+// tokenC.Tranfer({
+//     symbol: 'ELF',
+//     amount: 1,
+//     // owner: '2hxkDg6Pd2d4yU1A16PTZVMMrEDYEPR8oQojMDwWdax5LsBaxX'
+//     to: '28Y8JA1i2cN6oHvdv7EraXJr9a1gY6D1PpJXw9QtRMRwKcBQMK'
+//     // owner: '2gaQh4uxg6tzyH1ADLoDxvHA14FMpzEiMqsQ6sDG5iHT8cmjp8'
+// });

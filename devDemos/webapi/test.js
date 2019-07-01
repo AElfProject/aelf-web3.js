@@ -20,24 +20,17 @@ const privateKey = '097fc2e1eea2bfe258e7962c644f6d87ac58bfbd80301e10740baf52f451
 const wallet = Wallet.getWalletByPrivateKey(defaultPrivateKey);
 
 const aelf = new AElf(new AElf.providers.HttpProvider(
-    // 'http://192.168.197.56:8101/chain',
-    // 'http://34.212.171.27:8000/chain',
-    // 'http://54.149.84.199:8000/chain',
-    // 'http://103.61.37.19:8000/chain',
-    // 'http://34.213.112.35:8000/chain',
-    'http://127.0.0.1:8000'
-    // http://47.74.219.55:1728
-    // 'http://47.74.219.55:1728/chain',
-    // 'http://192.168.197.56:8101/chain',
+    // 'http://127.0.0.1:8000'
+    'http://103.61.37.19:8000'
 ));
 
 console.log('isConnected: ', aelf.isConnected());
 console.log('----------------------------');
 
 // For Test
-const tokenC = aelf.chain.contractAt('WnV9Gv3gioSh3Vgaw8SSB96nV8fWUNxuVozCf6Y14e7RXyGaM', wallet);
+let tokenC = aelf.chain.contractAt('WnV9Gv3gioSh3Vgaw8SSB96nV8fWUNxuVozCf6Y14e7RXyGaM', wallet);
 
-const txId = tokenC.Transfer({
+let txId = tokenC.Transfer({
     symbol: 'BTC',
     to: 'rkws1GibTwWQnLyLvpRtnDQiZYf51tEqQDwpGaou5s4ZQvi1v',
     amount: 1,
