@@ -16,7 +16,8 @@ const wallet = Wallet.getWalletByPrivateKey(defaultPrivateKey);
 const aelf = new AElf(new AElf.providers.HttpProvider(
     // 'http://192.168.197.56:8101/chain',
     // 'http://34.212.171.27:8000/chain',
-    'http://192.168.197.56:8101/chain',
+    // 'http://192.168.197.56:8101/chain',
+    'http://103.61.37.19:8000/chain',
     null,
     null,
     null,
