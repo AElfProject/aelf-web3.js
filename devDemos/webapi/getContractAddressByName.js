@@ -21,19 +21,21 @@ const aelf = new AElf(new AElf.providers.HttpProvider(
     // 'http://192.168.197.56:8101/chain',
     // 'http://34.212.171.27:8000/chain',
     // 'http://54.149.84.199:8000/chain',
-    // 'http://103.61.37.19:8000/chain',
+    // 'http://103.61.37.19:8000/chain'//,
+    'http://103.61.37.19:8000'
     // 'http://34.213.112.35:8000/chain',
-    'http://127.0.0.1:8000/chain',
+    // 'http://127.0.0.1:8000/chain',
+    // 'http://127.0.0.1:8000/chain',
     // http://47.74.219.55:1728
     // 'http://47.74.219.55:1728/chain',
     // 'http://192.168.197.56:8101/chain',
-    null,
-    null,
-    null,
-    [{
-        name: 'Accept',
-        value: 'text/plain;v=1.0'
-    }]
+    // null,
+    // null,
+    // null,
+    // [{
+    //     name: 'Accept',
+    //     value: 'text/plain;v=1.0'
+    // }]
 ));
 
 // For Test
@@ -154,18 +156,18 @@ tokenC.Transfer({
 
 return;
 
-const {
+let {
     GenesisContractAddress
-} = aelf.chain.getChainStatus();
+} = aelf.chain.getChainStatus({sync: true});
 
-const zeroC = aelf.chain.contractAt(GenesisContractAddress, wallet);
+let zeroC = aelf.chain.contractAt(GenesisContractAddress, wallet);
 // aelf.chain.contractAtAsync(GenesisContractAddress, wallet, (err, result) => {
 //     let test = 1;
 //     console.log(err, result, test);
 // });
 
 // // zeroC.GetContractAddressByName('AElf.ContractNames.Consensus'); // HelloWorldContract
-const tokenContractAddress = zeroC.GetContractAddressByName.call(sha256('AElf.ContractNames.Token')); // HelloWorldContract
+let tokenContractAddress = zeroC.GetContractAddressByName.call(sha256('AElf.ContractNames.Token'), {sync: true}); // HelloWorldContract
 // // zeroC.GetContractAddressByName.call(sha256('AElf.ContractNames.Token')); // HelloWorldContract
 // // const tokenContractAddress = zeroC.GetContractAddressByName.call(sha256('AElf.ContractNames.TokenConverter')); // HelloWorldContract
 // // const tokenContractAddress = zeroC.GetContractAddressByName.call(sha256('TokenConverterContract')); // HelloWorldContract

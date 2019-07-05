@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Hello AElf</title>
+</head>
+<body>
+	<p>Hello AElf.</p>
+
+	<script type="text/javascript" src="../../../dist/aelf.js"></script>
+	<script type="text/javascript">
+		AElf = window.AElf;
+        const Wallet = AElf.wallet;
+        const sha256 = AElf.utils.sha256;
+
+		// address: 65dDNxzcd35jESiidFXN5JV8Z7pCwaFnepuYQToNefSgqk9
+		const defaultPrivateKey = 'bdb3b39ef4cd18c2697a920eb6d9e8c3cf1a930570beb37d04fb52400092c42b';
+
+		const wallet = Wallet.getWalletByPrivateKey(defaultPrivateKey);
+        const aelf = new AElf(new AElf.providers.HttpProvider(
+            'http://103.61.37.19:8000'
+        ));
+
+        if(!aelf.isConnected()) {
+            alert('Blockchain Node is not running.');
+        }
+
+	</script>
+</body>
+</html>

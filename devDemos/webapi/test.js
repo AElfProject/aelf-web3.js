@@ -27,8 +27,25 @@ const aelf = new AElf(new AElf.providers.HttpProvider(
 console.log('isConnected: ', aelf.isConnected());
 console.log('----------------------------');
 
+let {
+    GenesisContractAddress
+} = aelf.chain.getChainStatus({
+    sync: true
+});
+
+let zeroC = aelf.chain.contractAt(GenesisContractAddress, wallet);
+// aelf.chain.contractAtAsync(GenesisContractAddress, wallet, (err, result) => {
+//     let test = 1;
+//     console.log(err, result, test);
+// });
+
+// zeroC.GetContractAddressByName.call(sha256('AElf.ContractNames.Consensus'), {sync: true}); // HelloWorldContract
+let tokenContractAddress = zeroC.GetContractAddressByName.call(sha256('AElf.ContractNames.Token'), {
+    sync: true
+});
 // For Test
-let tokenC = aelf.chain.contractAt('WnV9Gv3gioSh3Vgaw8SSB96nV8fWUNxuVozCf6Y14e7RXyGaM', wallet);
+// let tokenC = aelf.chain.contractAt('WnV9Gv3gioSh3Vgaw8SSB96nV8fWUNxuVozCf6Y14e7RXyGaM', wallet);
+let tokenC = aelf.chain.contractAt(tokenContractAddress, wallet);
 
 let txId = tokenC.Transfer({
     symbol: 'BTC',
@@ -41,8 +58,8 @@ let txId = tokenC.Transfer({
 
 console.log('txid: ', txId);
 console.log('----------------------------');
-
-console.log('txid: result', aelf.chain.getTxResult(txId.TransactionId));
+// aelf.chain.getTxResult(txId.TransactionId, {sync: true});
+console.log('txid: result', aelf.chain.getTxResult(txId.TransactionId, {sync: true}));
 console.log('----------------------------');
 
 tokenC.GetTokenInfo.call({
@@ -52,12 +69,16 @@ tokenC.GetTokenInfo.call({
     console.log('----------------------------');
 });
 
-tokenC.GetBalance.call({
-    symbol: 'BTC',
-    owner: 'rkws1GibTwWQnLyLvpRtnDQiZYf51tEqQDwpGaou5s4ZQvi1v'
-    // owner: '2hxkDg6Pd2d4yU1A16PTZVMMrEDYEPR8oQojMDwWdax5LsBaxX'
-}).then(result => {
-    console.log('GetBalance:', result);
-    console.log('----------------------------');
-});
+tokenC.GetTokenInfo.call({
+    symbol: 'ELF'
+}, {sync: true});
+
+// tokenC.GetBalance.call({
+//     symbol: 'BTC',
+//     owner: 'rkws1GibTwWQnLyLvpRtnDQiZYf51tEqQDwpGaou5s4ZQvi1v'
+//     // owner: '2hxkDg6Pd2d4yU1A16PTZVMMrEDYEPR8oQojMDwWdax5LsBaxX'
+// }).then(result => {
+//     console.log('GetBalance:', result);
+//     console.log('----------------------------');
+// });
 
