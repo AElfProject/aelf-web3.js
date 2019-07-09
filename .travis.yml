@@ -1,17 +1,7 @@
-language: csharp
-sudo: required
-mono: none
-dotnet: 2.1.400
-dist: trusty
-before_script:
-  - chmod a+x ./build.sh
-  - chmod a+x ./.npm/deploy.sh
+sudo: false
+language: node_js
+node_js:
+  - "12"
 script:
-  - ./build.sh
-deploy:
-  - provider: script
-    script: 
-      - ./.npm/deploy.sh $NPM_USER $NPM_PASSWD $NPM_EMAIL
-    skip_cleanup: true
-    on:
-      tags: true
+  - npm run test
+  - npm run build

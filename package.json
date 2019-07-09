@@ -1,53 +1,106 @@
 {
   "name": "aelf-sdk",
-  "version": "3.1.1",
+  "version": "3.2.0",
   "description": "aelf-sdk js library",
-  "main": "./lib/aelf.js",
-  "directories": {
-    "lib": "lib"
-  },
-  "dependencies": {
-    "@aelfqueen/protobufjs": "^6.8.9",
-    "xmlhttprequest": "^1.8.0",
-    "bignumber": "^1.1.0",
-    "bignumber.js": "^2.0.7",
-    "bip39": "^2.5.0",
-    "bs58": "^4.0.1",
-    "buffer": "^5.1.0",
-    "crypto-js": "^3.1.9-1",
-    "elliptic": "^6.4.0",
-    "hdkey": "^1.1.1",
-    "js-sha256": "^0.9.0",
-    "key-encoder": "^1.1.7",
-    "scrypt.js": "^0.3.0",
-    "utf8": "^3.0.0",
-    "xhr2-cookies": "^1.1.0"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.4.5",
-    "@babel/preset-env": "^7.4.5",
-    "babelify": "^10.0.0",
-    "browserify": "^16.2.3",
-    "del": "^3.0.0",
-    "exorcist": "^1.0.1",
-    "gulp": "^4.0.2",
-    "gulp-jshint": "^2.1.0",
-    "gulp-rename": "^1.4.0",
-    "gulp-replace": "^1.0.0",
-    "gulp-streamify": "^1.0.2",
-    "gulp-uglify": "^3.0.2",
-    "gulp-uglify-es": "^1.0.4",
-    "gutil": "^1.6.4",
-    "jsdoc-to-markdown": "^4.0.1",
-    "jshint": "^2.10.2",
-    "vinyl-source-stream": "^2.0.0"
-  },
+  "main": "dist/aelf.cjs.js",
+  "browser": "dist/aelf.umd.js",
+  "unpkg": "dist/aelf.umd.js",
+  "jsdelivr": "dist/aelf.umd.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "npm run clean && npm run build:browser && npm run build:node",
+    "build:browser": "cross-env RUNTIME_ENV=browser webpack --progress --colors --display-chunks --config ./build/webpack.browser.js",
+    "build:node": "cross-env RUNTIME_ENV=node webpack --progress --colors --display-chunks --config ./build/webpack.node.js",
+    "analyze:node": "npm run clean && cross-env RUNTIME_ENV=node webpack --config ./build/webpack.analyze.js",
+    "analyze:browser": "npm run clean && cross-env RUNTIME_ENV=browser webpack --config ./build/webpack.analyze.js",
+    "clean": "rimraf dist/*",
+    "commit": "git-cz",
+    "lint": "eslint src",
+    "proto": "node scripts/compile-proto.js",
+    "prerelease": "standard-version --prerelease",
+    "release": "standard-version",
+    "test": "npm run test:browser && npm run test:node",
+    "test:browser": "jest --config=jest.browser.config.js",
+    "test:browser:watch": "jest --config=jest.node.config.js --watch",
+    "test:node": "jest --config=jest.browser.config.js",
+    "test:node:watch": "jest --config=jest.node.config.js --watch"
   },
   "keywords": [
     "aelf-sdk"
   ],
-  "author": "huangzongzhe,hzz780",
-  "license": "MIT"
+  "files": [
+    "src",
+    "dist",
+    "proto",
+    "README.md",
+    "yarn.lock"
+  ],
+  "author": "hzz780",
+  "license": "MIT",
+  "devEngines": {
+    "node": "8.x || 9.x || 10.x || 11.x || 12.x"
+  },
+  "dependencies": {
+    "@aelfqueen/protobufjs": "^6.8.9",
+    "@babel/runtime": "^7.4.5",
+    "assert": "^2.0.0",
+    "bignumber.js": "^9.0.0",
+    "bip39": "^3.0.2",
+    "bs58": "^4.0.1",
+    "buffer": "^5.2.1",
+    "crypto-js": "^3.1.9-1",
+    "elliptic": "^6.4.1",
+    "hdkey": "^1.1.1",
+    "js-sha256": "^0.9.0",
+    "query-string": "5.1.1",
+    "scrypt.js": "^0.3.0",
+    "xmlhttprequest": "^1.8.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.4.5",
+    "@babel/plugin-proposal-class-properties": "^7.4.4",
+    "@babel/plugin-transform-runtime": "^7.4.4",
+    "@babel/preset-env": "^7.4.5",
+    "babel-eslint": "^10.0.2",
+    "babel-loader": "^8.0.6",
+    "bundle-analyzer": "^0.0.6",
+    "chalk": "^2.4.2",
+    "commitizen": "^3.1.1",
+    "cross-env": "^5.2.0",
+    "cz-conventional-changelog": "^2.1.0",
+    "eslint": "^6.0.1",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-babel": "^5.3.0",
+    "eslint-plugin-import": "^2.18.0",
+    "file-loader": "^4.0.0",
+    "git-cz": "^3.0.1",
+    "glob": "^7.1.4",
+    "husky": "^3.0.0",
+    "jest": "^24.8.0",
+    "lint-staged": "^9.0.2",
+    "rimraf": "^2.6.3",
+    "standard-version": "^6.0.1",
+    "unused-files-webpack-plugin": "^3.4.0",
+    "webpack": "^4.35.2",
+    "webpack-bundle-analyzer": "^3.3.2",
+    "webpack-cli": "^3.3.5",
+    "webpack-merge": "^4.2.1"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "commit-msg": "node scripts/verify-commit-msg.js"
+    }
+  },
+  "lint-staged": {
+    "*.js": "eslint"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AElfProject/aelf-sdk.js.git"
+  }
 }
