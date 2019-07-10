@@ -32472,7 +32472,7 @@ function () {
 /* eslint-enable */
 
 
-defineProperty_default()(src_AElf, "version", process.env.SDK_VERSION);
+defineProperty_default()(src_AElf, "version", "3.2.0");
 
 defineProperty_default()(src_AElf, "providers", {
   HttpProvider: httpProvider_HttpProvider

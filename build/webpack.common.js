@@ -37,7 +37,7 @@ const baseConfig = {
     }),
     new webpack.DefinePlugin({
       'process.env.RUNTIME_ENV': JSON.stringify(process.env.RUNTIME_ENV || 'browser'),
-      'provess.env.SDK_VERSION': JSON.stringify(version)
+      'process.env.SDK_VERSION': JSON.stringify(version)
     }),
     new webpack.BannerPlugin(banner)
   ]
