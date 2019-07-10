@@ -32433,7 +32433,7 @@ function () {
     defineProperty_default()(this, "settings", new settings_Settings());
 
     defineProperty_default()(this, "version", {
-      api: 'VERSION'
+      api: "3.2.0"
     });
 
     this._requestManager = new requestManage_RequestManager(provider);

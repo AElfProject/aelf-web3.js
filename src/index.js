@@ -52,7 +52,7 @@ export default class AElf {
    * @type {{api: string}}
    */
   version = {
-    api: 'VERSION'
+    api: process.env.SDK_VERSION
   };
 
   /**
