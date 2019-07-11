@@ -56,12 +56,6 @@ export default class HttpProvider {
     } catch (e) {
       result = response;
     }
-    // when response with Error field
-    if (!result.Error) {
-      result = {
-        result
-      };
-    }
     return result;
   }
 
@@ -101,7 +95,7 @@ export default class HttpProvider {
 
     result = HttpProvider.formatResponse(result);
     if (result.Error) {
-      throw result.Error;
+      throw result;
     }
     return result;
   }
@@ -115,7 +109,7 @@ export default class HttpProvider {
           try {
             result = HttpProvider.formatResponse(result);
             if (result.Error) {
-              reject(result.Error);
+              reject(result);
             } else {
               resolve(result);
             }

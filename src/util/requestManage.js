@@ -26,9 +26,7 @@ export default class RequestManager {
     }
 
     const payload = RequestManager.prepareRequest(requestBody);
-    const result = this.provider.send(payload);
-
-    return result.result;
+    return this.provider.send(payload);
   }
 
   sendAsync(requestBody) {
@@ -37,6 +35,6 @@ export default class RequestManager {
     }
 
     const payload = RequestManager.prepareRequest(requestBody);
-    return this.provider.sendAsync(payload).then(result => result.result);
+    return this.provider.sendAsync(payload);
   }
 }
