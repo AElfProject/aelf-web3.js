@@ -1,5 +1,5 @@
 /*!
- * aelf-sdk.js v3.2.0 
+ * aelf-sdk.js v3.2.1 
  * (c) 2019-2019 AElf 
  * Released under MIT License
  */
@@ -32161,8 +32161,7 @@ function () {
       }
 
       var payload = RequestManager.prepareRequest(requestBody);
-      var result = this.provider.send(payload);
-      return result.result;
+      return this.provider.send(payload);
     }
   }, {
     key: "sendAsync",
@@ -32172,9 +32171,7 @@ function () {
       }
 
       var payload = RequestManager.prepareRequest(requestBody);
-      return this.provider.sendAsync(payload).then(function (result) {
-        return result.result;
-      });
+      return this.provider.sendAsync(payload);
     }
   }], [{
     key: "prepareRequest",
@@ -32303,7 +32300,7 @@ function () {
       result = HttpProvider.formatResponse(result);
 
       if (result.Error) {
-        throw result.Error;
+        throw result;
       }
 
       return result;
@@ -32323,7 +32320,7 @@ function () {
               result = HttpProvider.formatResponse(result);
 
               if (result.Error) {
-                reject(result.Error);
+                reject(result);
               } else {
                 resolve(result);
               }
@@ -32366,13 +32363,6 @@ function () {
         result = JSON.parse(response);
       } catch (e) {
         result = response;
-      } // when response with Error field
-
-
-      if (!result.Error) {
-        result = {
-          result: result
-        };
       }
 
       return result;
@@ -32433,7 +32423,7 @@ function () {
     defineProperty_default()(this, "settings", new settings_Settings());
 
     defineProperty_default()(this, "version", {
-      api: "3.2.0"
+      api: "3.2.1"
     });
 
     this._requestManager = new requestManage_RequestManager(provider);
@@ -32472,7 +32462,7 @@ function () {
 /* eslint-enable */
 
 
-defineProperty_default()(src_AElf, "version", "3.2.0");
+defineProperty_default()(src_AElf, "version", "3.2.1");
 
 defineProperty_default()(src_AElf, "providers", {
   HttpProvider: httpProvider_HttpProvider
