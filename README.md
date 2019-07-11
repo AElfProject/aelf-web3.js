@@ -65,7 +65,7 @@ module.exports = {
   // ...
   resolve: {
     alias: {
-      'aelf-sdk': 'aelf/dist/aelf.umd.js'
+      'aelf-sdk': 'aelf-sdk/dist/aelf.umd.js'
     }
   }
 }
@@ -80,7 +80,7 @@ rollup({
   // ...
   plugins: [
     alias({
-      'aelf-sdk': require.resolve('aelf/dist/aelf.umd.js')
+      'aelf-sdk': require.resolve('aelf-sdk/dist/aelf.umd.js')
     })
   ]
 })
@@ -96,7 +96,7 @@ module.exports = {
   // ...
   resolve: {
     alias: {
-      'aelf-sdk': 'aelf/dist/aelf.cjs.js'
+      'aelf-sdk': 'aelf-sdk/dist/aelf.cjs.js'
     }
   }
 }
@@ -111,7 +111,7 @@ rollup({
   // ...
   plugins: [
     alias({
-      'aelf-sdk': require.resolve('aelf/dist/aelf.cjs.js')
+      'aelf-sdk': require.resolve('aelf-sdk/dist/aelf.cjs.js')
     })
   ]
 })
