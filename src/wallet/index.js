@@ -81,14 +81,14 @@ const _getWallet = (type, value, BIP44Path = 'm/44\'/1616\'/0\'/0/0') => {
   switch (type) {
     case 'createNewWallet':
       mnemonic = bip39.generateMnemonic();
-      rootSeed = bip39.mnemonicToSeedSync(mnemonic);
+      rootSeed = bip39.mnemonicToSeedSync(mnemonic).toString('hex');
       hdWallet = hdkey.fromMasterSeed(rootSeed);
       childWallet = hdWallet.derive(BIP44Path);
       keyPair = ellipticEc.keyFromPrivate(childWallet.privateKey);
       break;
     case 'getWalletByMnemonic':
       mnemonic = value;
-      rootSeed = bip39.mnemonicToSeedSync(mnemonic);
+      rootSeed = bip39.mnemonicToSeedSync(mnemonic).toString('hex');
       hdWallet = hdkey.fromMasterSeed(rootSeed);
       childWallet = hdWallet.derive(BIP44Path);
       keyPair = ellipticEc.keyFromPrivate(childWallet.privateKey);
@@ -171,7 +171,7 @@ const createNewWallet = (BIP44Path = 'm/44\'/1616\'/0\'/0/0') => _getWallet('cre
  *
  * const mnemonicWallet = aelf.wallet.getWalletByMnemonic('hello world');
  */
-const getWalletByMnemonic = (mnemonic, BIP44Path) => {
+const getWalletByMnemonic = (mnemonic, BIP44Path = 'm/44\'/1616\'/0\'/0/0') => {
   if (bip39.validateMnemonic(mnemonic)) {
     return _getWallet('getWalletByMnemonic', mnemonic, BIP44Path);
   }

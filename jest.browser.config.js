@@ -1,6 +1,6 @@
 // For a detailed explanation regarding each configuration property, visit:
 // https://jestjs.io/docs/en/configuration.html
-
+const nodeCrypto = require('crypto');
 module.exports = {
   // All imported modules in your tests should be mocked automatically
   // automock: false,
@@ -68,7 +68,11 @@ module.exports = {
   // globalTeardown: null,
 
   // A set of global variables that need to be available in all test environments
-  // globals: {},
+  globals: {
+    crypto: {
+      getRandomValues: function(buffer) { return nodeCrypto.randomFillSync(buffer);}
+    }
+  },
 
   // An array of directory names to be searched recursively up from the requiring module's location
   moduleDirectories: [
@@ -139,7 +143,7 @@ module.exports = {
   // snapshotSerializers: [],
 
   // The test environment that will be used for testing
-  testEnvironment: 'jsdom',
+  testEnvironment: 'jest-environment-jsdom-fifteen',
 
   // Options that will be passed to the testEnvironment
   // testEnvironmentOptions: {},
