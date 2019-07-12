@@ -7,48 +7,128 @@
 
 ## Introduction
 
-This is the AELF JavaScript API which connects to the Generic JSON RPC spec.
+This is the AElf JavaScript API which connects to the Generic JSON RPC spec.
 
-You need to run a local or remote AELF node to use this library.
+You need to run a local or remote AElf node to use this library.
 
 Please read the ./docs for more.
 
-Get the demos in ./demos
+Get the examples in the `./examples` directory
 
 ## Installation
 
-### Node
+### Script
 
-```js
+```html
+<!-- minified version with UMD module -->
+<script src="https://unpkg.com/aelf-sdk@lastest/dist/aelf.umd.js"></script>
+```
+
+### Npm
+
+```bash
 npm install aelf-sdk
 ```
 
 ### Yarn
 
-```js
+```bash
 yarn add aelf-sdk
 ```
 
-## Usage
+## Library files
 
-Five modules.
+In our dist directory, we support different packages for different platforms, such as Node and Browser.
 
-```js
-Aelf, Aelf.wallet, Aelf.pbjs, Aelf.pbUtils, Aelf.version
+packages | usage
+---|---
+dist/aelf.cjs.js | built for node, remove node-built modules such as crypto.
+dist/aelf.umd.js | built for browser, add some node modules by webpack
+
+You can choose any packages based on what you need, for examples:
+
+if you are new to FrontEnd, you can use `AElf-sdk` by add a script tag in your html files.
+
+```html
+<!-- minified version with UMD module -->
+<script src="https://unpkg.com/aelf-sdk@lastest/dist/aelf.umd.js"></script>
 ```
 
-### basic
+if you want to use a bundle system such as webpack or rollup, and build your applications for Node.js and Browsers, just import the specified version of package files.
+
+### For browser usage and use UMD:
+
+Webpack:
 
 ```js
-import Aelf from 'aelf-sdk';
+module.exports = {
+  // ...
+  resolve: {
+    alias: {
+      'aelf-sdk': 'aelf-sdk/dist/aelf.umd.js'
+    }
+  }
+}
+```
+
+Rollup:
+
+```js
+const alias = require('rollup-plugin-alias');
+
+rollup({
+  // ...
+  plugins: [
+    alias({
+      'aelf-sdk': require.resolve('aelf-sdk/dist/aelf.umd.js')
+    })
+  ]
+})
+```
+
+
+### For Node.js usage and use commonjs module system
+
+Webpack:
+
+```js
+module.exports = {
+  // ...
+  resolve: {
+    alias: {
+      'aelf-sdk': 'aelf-sdk/dist/aelf.cjs.js'
+    }
+  }
+}
+```
+
+Rollup:
+
+```js
+const alias = require('rollup-plugin-alias');
+
+rollup({
+  // ...
+  plugins: [
+    alias({
+      'aelf-sdk': require.resolve('aelf-sdk/dist/aelf.cjs.js')
+    })
+  ]
+})
+```
+
+### Basic usage
+
+```js
+import AElf from 'aelf-sdk';
 
 // host, timeout, user, password, headers
-const aelf = new Aelf(
-    new Aelf.providers.HttpProvider(
+const aelf = new AElf(
+    new AElf.providers.HttpProvider(
         host, // https://127.0.0.1:8000/chain
         timeout, // 300
         user, // username
-        password, // password
+        password, // passowrd
         // header
         [{
             name: 'x-csrf-token',
@@ -61,12 +141,12 @@ const aelf = new Aelf(
 If you want to use the WebAPI of AElf.
 
 ```js
-const aelf = new Aelf(
-    new Aelf.providers.HttpProvider(
+const aelf = new AElf(
+    new AElf.providers.HttpProvider(
         host, // https://127.0.0.1:8000/chain
         timeout, // 300
         user, // username
-        password, // password
+        password, // passowrd
         // header
         [{
             name: 'Accept',
@@ -101,13 +181,13 @@ aelf.chain.contractAtAsync(contractAddress, wallet, (err, result) => {
 });
 ```
 
-Additionally, you can set a provider using aelf.setProvider()
+Additionally you can set a provider using aelf.setProvider()
 
 ```js
-import Aelf from 'aelf-sdk';
+import AElf from 'aelf-sdk';
 
-const aelf = new Aelf(new Aelf.providers.HttpProvider('https://127.0.0.1:8000/chain'));
-aelf.setProvider(new Aelf.providers.HttpProvider('https://127.0.0.1:8010/chain'));
+const aelf = new AElf(new AElf.providers.HttpProvider('https://127.0.0.1:8000/chain'));
+aelf.setProvider(new AElf.providers.HttpProvider('https://127.0.0.1:8010/chain'));
 ```
 
 ### wallet
@@ -169,8 +249,8 @@ For more information, please see the code in ./lib/aelf/proto.js. It is simple a
 ### version
 
 ```js
-import Aelf from 'aelf-sdk';
-Aelf.version // eg. 2.1.10
+import AElf from 'aelf-sdk';
+AElf.version // eg. 2.1.10
 ```
 
 ## Contributing
@@ -190,13 +270,9 @@ Aelf.version // eg. 2.1.10
 ![browsers](https://img.shields.io/badge/browsers-latest%202%20versions-brightgreen.svg)
 ![node](https://img.shields.io/badge/node->=6-green.svg)
 
-## Something more
+## About contributing
 
-### pbjs
-
-#### how to use pbjs convert proto to json
-
-node ./node_modules/protobufjs/bin/pbjs -t json ./lib/aelf/proto/abi.proto > ./lib/aelf/proto/abi.proto.json
+Read out [contributing guide](./.github/CONTRIBUTING.md)
 
 ## About Version
 
