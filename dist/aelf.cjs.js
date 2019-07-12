@@ -1,5 +1,5 @@
 /*!
- * aelf-sdk.js v3.2.1 
+ * aelf-sdk.js v3.2.2 
  * (c) 2019-2019 AElf 
  * Released under MIT License
  */
@@ -31313,7 +31313,7 @@ var wallet_getWallet = function _getWallet(type, value) {
   switch (type) {
     case 'createNewWallet':
       mnemonic = src["generateMnemonic"]();
-      rootSeed = src["mnemonicToSeedSync"](mnemonic);
+      rootSeed = src["mnemonicToSeedSync"](mnemonic).toString('hex');
       hdWallet = hdkey_default.a.fromMasterSeed(rootSeed);
       childWallet = hdWallet.derive(BIP44Path);
       keyPair = ellipticEc.keyFromPrivate(childWallet.privateKey);
@@ -31321,7 +31321,7 @@ var wallet_getWallet = function _getWallet(type, value) {
 
     case 'getWalletByMnemonic':
       mnemonic = value;
-      rootSeed = src["mnemonicToSeedSync"](mnemonic);
+      rootSeed = src["mnemonicToSeedSync"](mnemonic).toString('hex');
       hdWallet = hdkey_default.a.fromMasterSeed(rootSeed);
       childWallet = hdWallet.derive(BIP44Path);
       keyPair = ellipticEc.keyFromPrivate(childWallet.privateKey);
@@ -31409,7 +31409,9 @@ var createNewWallet = function createNewWallet() {
  */
 
 
-var wallet_getWalletByMnemonic = function getWalletByMnemonic(mnemonic, BIP44Path) {
+var wallet_getWalletByMnemonic = function getWalletByMnemonic(mnemonic) {
+  var BIP44Path = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'm/44\'/1616\'/0\'/0/0';
+
   if (src["validateMnemonic"](mnemonic)) {
     return wallet_getWallet('getWalletByMnemonic', mnemonic, BIP44Path);
   }
@@ -32423,7 +32425,7 @@ function () {
     defineProperty_default()(this, "settings", new settings_Settings());
 
     defineProperty_default()(this, "version", {
-      api: "3.2.1"
+      api: "3.2.2"
     });
 
     this._requestManager = new requestManage_RequestManager(provider);
@@ -32462,7 +32464,7 @@ function () {
 /* eslint-enable */
 
 
-defineProperty_default()(src_AElf, "version", "3.2.1");
+defineProperty_default()(src_AElf, "version", "3.2.2");
 
 defineProperty_default()(src_AElf, "providers", {
   HttpProvider: httpProvider_HttpProvider
