@@ -141,7 +141,7 @@ export default class ContractMethod {
 
   packInput(input) {
     if (!input) {
-      throw new Error('should provide an input');
+      return null;
     }
     let result = maybeUglifyAddress(input, this._isInputTypeAddress, this._inputTypeAddressFieldPaths);
     result = maybeUglifyHash(result, this._isInputTypeHash, this._inputTypeHashFieldPaths);
@@ -151,7 +151,7 @@ export default class ContractMethod {
 
   unpackOutput(output) {
     if (!output) {
-      throw new Error('there is no output');
+      return null;
     }
 
     const buffer = Buffer.from(output, 'hex');
