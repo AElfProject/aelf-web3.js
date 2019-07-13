@@ -57,12 +57,18 @@ export default class Chain {
       }
       throw new Error('no such contract');
     }
-    return this.getContractFileDescriptorSet(address, callback).then(fds => {
+    // eslint-disable-next-line consistent-return
+    return this.getContractFileDescriptorSet(address).then(fds => {
       if (fds && fds.file && fds.file.length > 0) {
         const factory = new ContractFactory(this, fds, wallet);
-        return factory.at(address);
+        const result = factory.at(address);
+        callback(null, result);
+        return result;
       }
-      throw new Error('no such contract');
+      callback(new Error('no such contract'));
+      if (callback.length > 0) {
+        throw new Error('no such contract');
+      }
     });
   }
 
