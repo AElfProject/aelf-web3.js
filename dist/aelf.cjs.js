@@ -1,5 +1,5 @@
 /*!
- * aelf-sdk.js v3.2.4 
+ * aelf-sdk.js v3.2.5 
  * (c) 2019-2019 AElf 
  * Released under MIT License
  */
@@ -31687,7 +31687,7 @@ function () {
     key: "packInput",
     value: function packInput(input) {
       if (!input) {
-        throw new Error('should provide an input');
+        return null;
       }
 
       var result = contractMethod_maybeUglifyAddress(input, this._isInputTypeAddress, this._inputTypeAddressFieldPaths);
@@ -31701,7 +31701,7 @@ function () {
     key: "unpackOutput",
     value: function unpackOutput(output) {
       if (!output) {
-        throw new Error('there is no output');
+        return null;
       }
 
       var buffer = Buffer.from(output, 'hex');
@@ -32422,7 +32422,7 @@ function () {
     defineProperty_default()(this, "settings", new settings_Settings());
 
     defineProperty_default()(this, "version", {
-      api: "3.2.4"
+      api: "3.2.5"
     });
 
     this._requestManager = new requestManage_RequestManager(provider);
@@ -32461,7 +32461,7 @@ function () {
 /* eslint-enable */
 
 
-defineProperty_default()(src_AElf, "version", "3.2.4");
+defineProperty_default()(src_AElf, "version", "3.2.5");
 
 defineProperty_default()(src_AElf, "providers", {
   HttpProvider: httpProvider_HttpProvider
