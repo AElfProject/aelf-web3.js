@@ -1,5 +1,5 @@
 /*!
- * aelf-sdk.js v3.2.2 
+ * aelf-sdk.js v3.2.3 
  * (c) 2019-2019 AElf 
  * Released under MIT License
  */
@@ -30064,9 +30064,9 @@ var padRight = function padRight(string, charLen, sign) {
  */
 
 var decodeAddressRep = function decodeAddressRep(address) {
-  if (address.startsWith('ELF_')) {
+  if (address.indexOf('_') > -1) {
     var parts = address.split('_');
-    var b58rep = parts[parts.length - 1];
+    var b58rep = parts[1];
     return base58.decode(b58rep, 'hex');
   }
 
@@ -31729,56 +31729,45 @@ function () {
       return contractMethod_maybePrettifyHash(result, this._isOutputTypeHash, this._outputTypeHashFieldPaths);
     }
   }, {
+    key: "handleTransaction",
+    value: function handleTransaction(height, hash, encoded) {
+      var rawTx = getTransaction(this._wallet.address, this._contractAddress, this._name, encoded);
+      rawTx.refBlockNumber = height;
+      var blockHash = hash.match(/^0x/) ? hash.substring(2) : hash;
+      rawTx.refBlockPrefix = Buffer.from(blockHash, 'hex').slice(0, 4);
+      var tx = src_wallet.signTransaction(rawTx, this._wallet.keyPair);
+      tx = Transaction.encode(tx).finish();
+
+      if (tx instanceof Buffer) {
+        return tx.toString('hex');
+      }
+
+      return uint8ArrayToHex(tx);
+    }
+  }, {
     key: "prepareParametersAsync",
     value: function prepareParametersAsync(args) {
       var _this = this;
 
       var encoded = this.packInput(args[0]);
-      var rawTx = getTransaction(this._wallet.address, this._contractAddress, this._name, encoded);
-      var blockHeight;
-      return this._chain.getBlockHeight().then(function (height) {
-        blockHeight = parseInt(height, 10);
-        return _this._chain.getBlockByHeight(blockHeight, false);
-      }).then(function (blockInfo) {
-        rawTx.refBlockNumber = blockHeight;
-        var blockHash = blockInfo.BlockHash;
-        blockHash = blockHash.match(/^0x/) ? blockHash.substring(2) : blockHash;
-        rawTx.refBlockPrefix = Buffer.from(blockHash, 'hex').slice(0, 4);
-        var tx = src_wallet.signTransaction(rawTx, _this._wallet.keyPair);
-        tx = Transaction.encode(tx).finish(); // eslint-disable-next-line no-proto
-
-        if (tx.__proto__.constructor === Buffer) {
-          return tx.toString('hex');
-        }
-
-        return uint8ArrayToHex(tx);
+      return this._chain.getChainStatus().then(function (status) {
+        var BestChainHeight = status.BestChainHeight,
+            BestChainHash = status.BestChainHash;
+        return _this.handleTransaction(BestChainHeight, BestChainHash, encoded);
       });
     }
   }, {
     key: "prepareParameters",
     value: function prepareParameters(args) {
       var encoded = this.packInput(args[0]);
-      var rawTx = getTransaction(this._wallet.address, this._contractAddress, this._name, encoded);
-      var blockHeight = parseInt(this._chain.getBlockHeight({
+
+      var _this$_chain$getChain = this._chain.getChainStatus({
         sync: true
-      }), 10);
+      }),
+          BestChainHeight = _this$_chain$getChain.BestChainHeight,
+          BestChainHash = _this$_chain$getChain.BestChainHash;
 
-      var blockInfo = this._chain.getBlockByHeight(blockHeight, false, {
-        sync: true
-      });
-
-      rawTx.refBlockNumber = blockHeight;
-      var blockHash = blockInfo.BlockHash;
-      blockHash = blockHash.match(/^0x/) ? blockHash.substring(2) : blockHash;
-      rawTx.refBlockPrefix = Buffer.from(blockHash, 'hex').slice(0, 4);
-      var tx = src_wallet.signTransaction(rawTx, this._wallet.keyPair);
-      tx = Transaction.encode(tx).finish(); // eslint-disable-next-line no-proto
-
-      if (tx.__proto__.constructor === Buffer) {
-        return tx.toString('hex');
-      }
-
-      return uint8ArrayToHex(tx);
+      return this.handleTransaction(BestChainHeight, BestChainHash, encoded);
     }
   }, {
     key: "sendTransaction",
@@ -32425,7 +32414,7 @@ function () {
     defineProperty_default()(this, "settings", new settings_Settings());
 
     defineProperty_default()(this, "version", {
-      api: "3.2.2"
+      api: "3.2.3"
     });
 
     this._requestManager = new requestManage_RequestManager(provider);
@@ -32464,7 +32453,7 @@ function () {
 /* eslint-enable */
 
 
-defineProperty_default()(src_AElf, "version", "3.2.2");
+defineProperty_default()(src_AElf, "version", "3.2.3");
 
 defineProperty_default()(src_AElf, "providers", {
   HttpProvider: httpProvider_HttpProvider
