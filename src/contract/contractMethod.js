@@ -185,7 +185,8 @@ export default class ContractMethod {
   }
 
   prepareParametersAsync(args) {
-    const encoded = this.packInput(args[0]);
+    const filterArgs = args.filter(arg => !isFunction(arg) && !isBoolean(arg.sync));
+    const encoded = this.packInput(filterArgs[0]);
 
     return this._chain.getChainStatus().then(status => {
       const { BestChainHeight, BestChainHash } = status;
