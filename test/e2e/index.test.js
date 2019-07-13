@@ -100,25 +100,24 @@ describe('test AElf-sdk', () => {
       Status: 'FAILED'
     });
 
-    // const balance = await tokenContract.GetBalance.call({
-    //   symbol: 'ATOM',
-    //   owner: wallet.address
-    // });
-    //
-    // const txId = await tokenContract.Transfer({
-    //   symbol: 'ATOM',
-    //   to: 'YxE2zSWev5AGuBNtStW5Mdw8HyVtcZ8X5vYmKAx9yZ7dPnRo5',
-    //   amount: 1,
-    //   memo: 'jest test'
-    // });
-    // expect(txId).toEqual(expect.objectContaining({
-    //   TransactionId: expect.any(String)
-    // }));
-    // await new Promise(resolve => {
-    //   setTimeout(resolve, 3000);
-    // });
-    //
-    // const txResult = await aelf.chain.getTxResult(txId.TransactionId);
+    const balance = await tokenContract.GetBalance.call({
+      symbol: 'ATOM',
+      owner: wallet.address
+    });
+    expect(balance).toMatchObject({
+      symbol: 'ATOM',
+      owner: wallet.address
+    });
+
+    const txId = await tokenContract.Transfer({
+      symbol: 'ATOM',
+      to: 'YxE2zSWev5AGuBNtStW5Mdw8HyVtcZ8X5vYmKAx9yZ7dPnRo5',
+      amount: 1,
+      memo: 'jest test'
+    });
+    expect(txId).toEqual(expect.objectContaining({
+      TransactionId: expect.any(String)
+    }));
   }, 60000);
 
   // this could take a long time to get all transactions

@@ -141,7 +141,7 @@ export default class ContractMethod {
 
   packInput(input) {
     if (!input) {
-      throw new Error('should provide an input');
+      return null;
     }
     let result = maybeUglifyAddress(input, this._isInputTypeAddress, this._inputTypeAddressFieldPaths);
     result = maybeUglifyHash(result, this._isInputTypeHash, this._inputTypeHashFieldPaths);
@@ -151,7 +151,7 @@ export default class ContractMethod {
 
   unpackOutput(output) {
     if (!output) {
-      throw new Error('there is no output');
+      return null;
     }
 
     const buffer = Buffer.from(output, 'hex');
@@ -185,7 +185,8 @@ export default class ContractMethod {
   }
 
   prepareParametersAsync(args) {
-    const encoded = this.packInput(args[0]);
+    const filterArgs = args.filter(arg => !isFunction(arg) && !isBoolean(arg.sync));
+    const encoded = this.packInput(filterArgs[0]);
 
     return this._chain.getChainStatus().then(status => {
       const { BestChainHeight, BestChainHash } = status;
@@ -194,7 +195,8 @@ export default class ContractMethod {
   }
 
   prepareParameters(args) {
-    const encoded = this.packInput(args[0]);
+    const filterArgs = args.filter(arg => !isFunction(arg) && !isBoolean(arg.sync));
+    const encoded = this.packInput(filterArgs[0]);
 
     const { BestChainHeight, BestChainHash } = this._chain.getChainStatus({
       sync: true
