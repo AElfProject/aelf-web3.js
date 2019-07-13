@@ -80,9 +80,9 @@ export const padRight = (string, charLen, sign) => {
  * @return {String}
  */
 export const decodeAddressRep = address => {
-  if (address.startsWith('ELF_')) {
+  if (address.indexOf('_') > -1) {
     const parts = address.split('_');
-    const b58rep = parts[parts.length - 1];
+    const b58rep = parts[1];
     return base58.decode(b58rep, 'hex');
   }
   return base58.decode(address, 'hex');
