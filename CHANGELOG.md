@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.2.4](https://github.com/AElfProject/aelf-sdk.js/compare/v3.2.3...v3.2.4) (2019-07-13)
+
+
+### Bug Fixes
+
+* 🐛 fix callback paramaters ([b8ee2ac](https://github.com/AElfProject/aelf-sdk.js/commit/b8ee2ac))
+
+
+
 ### [3.2.3](https://github.com/AElfProject/aelf-sdk.js/compare/v3.2.0...v3.2.3) (2019-07-13)
 
 

@@ -1,5 +1,5 @@
 /*!
- * aelf-sdk.js v3.2.3 
+ * aelf-sdk.js v3.2.4 
  * (c) 2019-2019 AElf 
  * Released under MIT License
  */
@@ -32044,16 +32044,24 @@ function () {
         }
 
         throw new Error('no such contract');
-      }
+      } // eslint-disable-next-line consistent-return
 
-      return this.getContractFileDescriptorSet(address, callback).then(function (fds) {
+
+      return this.getContractFileDescriptorSet(address).then(function (fds) {
         if (fds && fds.file && fds.file.length > 0) {
           var _factory = new contract_ContractFactory(_this2, fds, wallet);
 
-          return _factory.at(address);
+          var result = _factory.at(address);
+
+          callback(null, result);
+          return result;
         }
 
-        throw new Error('no such contract');
+        callback(new Error('no such contract'));
+
+        if (callback.length > 0) {
+          throw new Error('no such contract');
+        }
       });
     }
   }, {
@@ -32414,7 +32422,7 @@ function () {
     defineProperty_default()(this, "settings", new settings_Settings());
 
     defineProperty_default()(this, "version", {
-      api: "3.2.3"
+      api: "3.2.4"
     });
 
     this._requestManager = new requestManage_RequestManager(provider);
@@ -32453,7 +32461,7 @@ function () {
 /* eslint-enable */
 
 
-defineProperty_default()(src_AElf, "version", "3.2.3");
+defineProperty_default()(src_AElf, "version", "3.2.4");
 
 defineProperty_default()(src_AElf, "providers", {
   HttpProvider: httpProvider_HttpProvider
