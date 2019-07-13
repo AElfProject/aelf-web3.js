@@ -194,7 +194,8 @@ export default class ContractMethod {
   }
 
   prepareParameters(args) {
-    const encoded = this.packInput(args[0]);
+    const filterArgs = args.filter(arg => !isFunction(arg) && !isBoolean(arg.sync));
+    const encoded = this.packInput(filterArgs[0]);
 
     const { BestChainHeight, BestChainHash } = this._chain.getChainStatus({
       sync: true
