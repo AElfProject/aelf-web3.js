@@ -31749,7 +31749,10 @@ function () {
     value: function prepareParametersAsync(args) {
       var _this = this;
 
-      var encoded = this.packInput(args[0]);
+      var filterArgs = args.filter(function (arg) {
+        return !isFunction(arg) && !isBoolean(arg.sync);
+      });
+      var encoded = this.packInput(filterArgs[0]);
       return this._chain.getChainStatus().then(function (status) {
         var BestChainHeight = status.BestChainHeight,
             BestChainHash = status.BestChainHash;
