@@ -1,5 +1,5 @@
 /*!
- * aelf-sdk.js v3.2.5 
+ * aelf-sdk.js v3.2.6 
  * (c) 2019-2019 AElf 
  * Released under MIT License
  */
@@ -31759,7 +31759,10 @@ function () {
   }, {
     key: "prepareParameters",
     value: function prepareParameters(args) {
-      var encoded = this.packInput(args[0]);
+      var filterArgs = args.filter(function (arg) {
+        return !isFunction(arg) && !isBoolean(arg.sync);
+      });
+      var encoded = this.packInput(filterArgs[0]);
 
       var _this$_chain$getChain = this._chain.getChainStatus({
         sync: true
@@ -32422,7 +32425,7 @@ function () {
     defineProperty_default()(this, "settings", new settings_Settings());
 
     defineProperty_default()(this, "version", {
-      api: "3.2.5"
+      api: "3.2.6"
     });
 
     this._requestManager = new requestManage_RequestManager(provider);
@@ -32461,7 +32464,7 @@ function () {
 /* eslint-enable */
 
 
-defineProperty_default()(src_AElf, "version", "3.2.5");
+defineProperty_default()(src_AElf, "version", "3.2.6");
 
 defineProperty_default()(src_AElf, "providers", {
   HttpProvider: httpProvider_HttpProvider
