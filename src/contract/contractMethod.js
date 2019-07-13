@@ -169,55 +169,38 @@ export default class ContractMethod {
     return maybePrettifyHash(result, this._isOutputTypeHash, this._outputTypeHashFieldPaths);
   }
 
-  prepareParametersAsync(args) {
-    const encoded = this.packInput(args[0]);
+  handleTransaction(height, hash, encoded) {
     const rawTx = getTransaction(this._wallet.address, this._contractAddress, this._name, encoded);
-
-    let blockHeight;
-    return this._chain.getBlockHeight().then(height => {
-      blockHeight = parseInt(height, 10);
-      return this._chain.getBlockByHeight(blockHeight, false);
-    }).then(blockInfo => {
-      rawTx.refBlockNumber = blockHeight;
-      let blockHash = blockInfo.BlockHash;
-      blockHash = blockHash.match(/^0x/) ? blockHash.substring(2) : blockHash;
-
-      rawTx.refBlockPrefix = (Buffer.from(blockHash, 'hex')).slice(0, 4);
-      let tx = wallet.signTransaction(rawTx, this._wallet.keyPair);
-
-      tx = Transaction.encode(tx).finish();
-      // eslint-disable-next-line no-proto
-      if (tx.__proto__.constructor === Buffer) {
-        return tx.toString('hex');
-      }
-      return uint8ArrayToHex(tx);
-    });
-  }
-
-  prepareParameters(args) {
-    const encoded = this.packInput(args[0]);
-    const rawTx = getTransaction(this._wallet.address, this._contractAddress, this._name, encoded);
-
-    const blockHeight = parseInt(this._chain.getBlockHeight({
-      sync: true
-    }), 10);
-    const blockInfo = this._chain.getBlockByHeight(blockHeight, false, {
-      sync: true
-    });
-
-    rawTx.refBlockNumber = blockHeight;
-    let blockHash = blockInfo.BlockHash;
-    blockHash = blockHash.match(/^0x/) ? blockHash.substring(2) : blockHash;
+    rawTx.refBlockNumber = height;
+    const blockHash = hash.match(/^0x/) ? hash.substring(2) : hash;
 
     rawTx.refBlockPrefix = (Buffer.from(blockHash, 'hex')).slice(0, 4);
     let tx = wallet.signTransaction(rawTx, this._wallet.keyPair);
 
     tx = Transaction.encode(tx).finish();
-    // eslint-disable-next-line no-proto
-    if (tx.__proto__.constructor === Buffer) {
+    if (tx instanceof Buffer) {
       return tx.toString('hex');
     }
     return uint8ArrayToHex(tx);
+  }
+
+  prepareParametersAsync(args) {
+    const encoded = this.packInput(args[0]);
+
+    return this._chain.getChainStatus().then(status => {
+      const { BestChainHeight, BestChainHash } = status;
+      return this.handleTransaction(BestChainHeight, BestChainHash, encoded);
+    });
+  }
+
+  prepareParameters(args) {
+    const encoded = this.packInput(args[0]);
+
+    const { BestChainHeight, BestChainHash } = this._chain.getChainStatus({
+      sync: true
+    });
+
+    return this.handleTransaction(BestChainHeight, BestChainHash, encoded);
   }
 
   sendTransaction(...args) {
