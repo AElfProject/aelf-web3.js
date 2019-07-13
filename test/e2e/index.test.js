@@ -55,17 +55,6 @@ describe('test AElf-sdk', () => {
     expect(tokenContractAddress).toEqual('WnV9Gv3gioSh3Vgaw8SSB96nV8fWUNxuVozCf6Y14e7RXyGaM');
 
     const tokenContract = await aelf.chain.contractAt(tokenContractAddress, wallet);
-    // const txId = await tokenContract.Transfer({
-    //   symbol: 'BTC',
-    //   to: 'rkws1GibTwWQnLyLvpRtnDQiZYf51tEqQDwpGaou5s4ZQvi1v',
-    //   amount: 1,
-    //   memo: 'yeah'
-    // });
-    // expect(txId).toEqual(expect.objectContaining({
-    //   TransactionId: expect.any(String)
-    // }));
-    // const txResult = await aelf.chain.getTxResult(txId.TransactionId);
-    // expect(txResult).toStrictEqual(aelf.chain.getTxResult(txId.TransactionId, { sync: true }));
 
     const aelfToken = await tokenContract.GetTokenInfo.call({
       symbol: 'ELF'
@@ -80,6 +69,57 @@ describe('test AElf-sdk', () => {
       isBurnable: true
     });
   }, 30000);
+
+  test('create token and make transaction', async () => {
+    const {
+      GenesisContractAddress
+    } = await aelf.chain.getChainStatus();
+    const genesisContract = await aelf.chain.contractAt(GenesisContractAddress, wallet);
+    const tokenContractAddress = await genesisContract.GetContractAddressByName
+      .call(AElf.utils.sha256('AElf.ContractNames.Token'));
+
+    expect(tokenContractAddress).toEqual('WnV9Gv3gioSh3Vgaw8SSB96nV8fWUNxuVozCf6Y14e7RXyGaM');
+
+    const tokenContract = await aelf.chain.contractAt(tokenContractAddress, wallet);
+
+    const tokenCreateTxId = await tokenContract.Create({
+      symbol: 'ATOM',
+      tokenName: 'ATOM',
+      supply: 1000000,
+      totalSupply: 1000000,
+      decimals: 2,
+      issuer: wallet.address
+    });
+    expect(tokenCreateTxId).toEqual(expect.objectContaining({
+      TransactionId: expect.any(String)
+    }));
+    await new Promise(resolve => {
+      setTimeout(resolve, 3000);
+    });
+    await expect(aelf.chain.getTxResult(tokenCreateTxId.TransactionId)).rejects.toMatchObject({
+      Status: 'FAILED'
+    });
+
+    // const balance = await tokenContract.GetBalance.call({
+    //   symbol: 'ATOM',
+    //   owner: wallet.address
+    // });
+    //
+    // const txId = await tokenContract.Transfer({
+    //   symbol: 'ATOM',
+    //   to: 'YxE2zSWev5AGuBNtStW5Mdw8HyVtcZ8X5vYmKAx9yZ7dPnRo5',
+    //   amount: 1,
+    //   memo: 'jest test'
+    // });
+    // expect(txId).toEqual(expect.objectContaining({
+    //   TransactionId: expect.any(String)
+    // }));
+    // await new Promise(resolve => {
+    //   setTimeout(resolve, 3000);
+    // });
+    //
+    // const txResult = await aelf.chain.getTxResult(txId.TransactionId);
+  }, 60000);
 
   // this could take a long time to get all transactions
   test('test chain methods get merkle path', async () => {
