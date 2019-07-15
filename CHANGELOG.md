@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.2.8](https://github.com/AElfProject/aelf-sdk.js/compare/v3.2.7...v3.2.8) (2019-07-15)
+
+
+### Bug Fixes
+
+* 🐛 fix toString error ([8f0da78](https://github.com/AElfProject/aelf-sdk.js/commit/8f0da78))
+
+
+### Features
+
+* 🎸 add compile env variables for import correct xhr lib ([a767bd6](https://github.com/AElfProject/aelf-sdk.js/commit/a767bd6))
+
+
+
 ### [3.2.7](https://github.com/AElfProject/aelf-sdk.js/compare/v3.2.6...v3.2.7) (2019-07-13)
 
 
