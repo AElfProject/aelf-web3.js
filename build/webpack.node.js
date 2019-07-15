@@ -17,6 +17,19 @@ const  nodeConfig = {
     libraryTarget: 'commonjs2',
     libraryExport: 'default'
   },
+  resolve: {
+    alias: {
+      'scrypt.js$': 'scrypt.js/node.js',
+    }
+  },
+  externals: {
+    scrypt: {
+      commonjs2: 'scrypt',
+      commonjs: 'scrypt',
+      umd: 'scrypt',
+      root: 'scrypt'
+    },
+  },
   target: 'node',
   optimization: {
     removeEmptyChunks: true,

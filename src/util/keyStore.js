@@ -2,7 +2,7 @@
  * @file AElf keyStore tools
  * @author atom-yang
  */
-import scrypt from 'scrypt.js/js';
+import scrypt from 'scrypt.js';
 import AES from 'crypto-js/aes';
 import SHA3 from 'crypto-js/sha3';
 import libWordArray from 'crypto-js/lib-typedarrays';
@@ -65,7 +65,7 @@ function getKeyStoreFromV1(
         N: SAFE_ITERATION_COUNT,
         p: PARALLEL_FACTOR,
         dkLen,
-        salt
+        salt: salt.toString()
       },
       mac: mac.toString()
     }
