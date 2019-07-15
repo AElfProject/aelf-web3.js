@@ -2,8 +2,6 @@
  * @file rpc connection built with http
  * @author atom-yang
  */
-
-import * as xml from 'xmlhttprequest';
 import { stringify } from 'query-string';
 
 const defaultHeaders = {
@@ -12,12 +10,13 @@ const defaultHeaders = {
 };
 
 let RequestLibrary = {};
-if (typeof window !== 'undefined' && typeof window.XMLHttpRequest !== 'undefined') {
+if (process.env.RUNTIME_ENV === 'browser') {
   // For browsers use DOM Api XMLHttpRequest
   RequestLibrary = window.XMLHttpRequest;
-} else if (typeof process !== 'undefined' && Object.prototype.toString.call(process) === '[object process]') {
+} else {
   // For node use xmlhttprequest
-  RequestLibrary = xml.XMLHttpRequest;
+  // eslint-disable-next-line global-require
+  RequestLibrary = require('xmlhttprequest').XMLHttpRequest;
 }
 
 export default class HttpProvider {
