@@ -9,7 +9,7 @@ import libWordArray from 'crypto-js/lib-typedarrays';
 import encUtf8 from 'crypto-js/enc-utf8';
 import encHex from 'crypto-js/enc-hex';
 import { noop } from './utils';
-import { DEFAULT_TO_STRING_ENCODING, KEY_STORE_ERRORS } from '../common/constants';
+import { KEY_STORE_ERRORS } from '../common/constants';
 
 /**
  * getKeyStoreFromV1
@@ -29,13 +29,13 @@ function getKeyStoreFromV1(
   password
 ) {
   const iv = libWordArray.random(16);
-  const salt = libWordArray.random(32).toString(DEFAULT_TO_STRING_ENCODING);
+  const salt = libWordArray.random(32);
   const SAFE_ITERATION_COUNT = 262144;
   const BLOCK_SIZE = 1;
   const PARALLEL_FACTOR = 8;
   const dkLen = 64;
   const passphrase = Buffer.from(password);
-  const saltBuffer = Buffer.from(salt);
+  const saltBuffer = Buffer.from(salt.toString());
   const decryptionKey = scrypt(
     passphrase,
     saltBuffer,
@@ -55,10 +55,10 @@ function getKeyStoreFromV1(
       version: 1,
       cipher: 'AES256',
       cipherparams: {
-        iv: iv.toString(DEFAULT_TO_STRING_ENCODING)
+        iv: iv.toString()
       },
-      mnemonicEncrypted: mnemonicEncrypted.toString(DEFAULT_TO_STRING_ENCODING),
-      privateKeyEncrypted: privateKeyEncrypted.toString(DEFAULT_TO_STRING_ENCODING),
+      mnemonicEncrypted: mnemonicEncrypted.toString(),
+      privateKeyEncrypted: privateKeyEncrypted.toString(),
       kdf: 'scrypt',
       kdfparams: {
         r: BLOCK_SIZE,
@@ -67,7 +67,7 @@ function getKeyStoreFromV1(
         dkLen,
         salt
       },
-      mac: mac.toString(DEFAULT_TO_STRING_ENCODING)
+      mac: mac.toString()
     }
   };
 
@@ -220,7 +220,7 @@ export const checkPassword = (
       kdfparams
     } = crypto;
     const passphrase = Buffer.from(password);
-    const saltBuffer = Buffer.from(kdfparams.salt.toString(DEFAULT_TO_STRING_ENCODING));
+    const saltBuffer = Buffer.from(kdfparams.salt.toString());
     const decryptionKey = scrypt(passphrase, saltBuffer, kdfparams.N, kdfparams.p, kdfparams.r, kdfparams.dkLen);
     const currentMac = SHA3(
       `${decryptionKey.slice(16, 32)}${mnemonicEncrypted}${privateKeyEncrypted}`,
