@@ -31,14 +31,16 @@ function getKeyStoreFromV1(
   const iv = libWordArray.random(16);
   const salt = libWordArray.random(32);
   const SAFE_ITERATION_COUNT = 262144;
-  const BLOCK_SIZE = 1;
-  const PARALLEL_FACTOR = 8;
+  // const SAFE_ITERATION_COUNT = 8192; // 2048 4096 8192 16384
+  const BLOCK_SIZE = 8;
+  const PARALLEL_FACTOR = 1;
   const dkLen = 64;
+  // const dkLen = 32;
   const passphrase = Buffer.from(password);
-  const saltBuffer = Buffer.from(salt.toString());
+  // const saltBuffer = Buffer.from(salt.toString(), 'hex');
   const decryptionKey = scrypt(
     passphrase,
-    saltBuffer,
+    salt,
     SAFE_ITERATION_COUNT,
     BLOCK_SIZE,
     PARALLEL_FACTOR,
@@ -47,7 +49,7 @@ function getKeyStoreFromV1(
   const mnemonicEncrypted = AES.encrypt(mnemonic, decryptionKey.toString('hex'), { iv });
   const privateKeyEncrypted = AES.encrypt(privateKey, decryptionKey.toString('hex'), { iv });
   const mac = SHA3(decryptionKey.slice(16, 32) + mnemonicEncrypted + privateKeyEncrypted, { outputLength: 256 });
-  const result = {
+  return {
     type: 'aelf',
     nickName,
     address,
@@ -69,11 +71,6 @@ function getKeyStoreFromV1(
       },
       mac: mac.toString()
     }
-  };
-
-  return {
-    error: null,
-    result
   };
 }
 
@@ -107,16 +104,18 @@ function unlockKeyStoreFromV1(
   } = crypto;
   if (version !== 1) {
     error = { ...KEY_STORE_ERRORS.WRONG_KEY_STORE_VERSION };
+    throw error;
   }
   if (type !== 'aelf') {
     error = { ...KEY_STORE_ERRORS.NOT_AELF_KEY_STORE };
+    throw error;
   }
-  const iv = cipherparams.iv.toString(encHex);
+  const { iv } = cipherparams;
   const passphrase = Buffer.from(password);
-  const saltBuffer = Buffer.from(kdfparams.salt.toString());
+  const saltBuffer = Buffer.from(kdfparams.salt, 'hex');
   const decryptionKey = scrypt(passphrase, saltBuffer, kdfparams.N, kdfparams.p, kdfparams.r, kdfparams.dkLen);
   const currentMac = SHA3(decryptionKey.slice(16, 32) + mnemonicEncrypted + privateKeyEncrypted, { outputLength: 256 });
-  if (currentMac.toString(encHex) === mac) {
+  if (currentMac.toString() === mac) {
     const mnemonic = AES.decrypt(mnemonicEncrypted, decryptionKey.toString('hex'), { iv });
     const privateKey = AES.decrypt(privateKeyEncrypted, decryptionKey.toString('hex'), { iv });
     result = {
@@ -127,12 +126,10 @@ function unlockKeyStoreFromV1(
     };
   } else {
     error = { ...KEY_STORE_ERRORS.WRONG_VERSION };
+    throw error;
   }
 
-  return {
-    error,
-    result
-  };
+  return result;
 }
 
 /**
@@ -143,7 +140,7 @@ function unlockKeyStoreFromV1(
  * @param {string} password password
  * @param {number} version version
  * @param {Function} callback callback
- * @return {Promise}
+ * @return {Object}
  */
 export const getKeystore = (walletInfoInput, password, version, callback = noop) => {
   let keystore = null;
@@ -154,14 +151,11 @@ export const getKeystore = (walletInfoInput, password, version, callback = noop)
   } else {
     error = { ...KEY_STORE_ERRORS.WRONG_VERSION };
   }
-  return new Promise((resolve, reject) => {
-    callback(error || keystore.error, keystore.result);
-    if (error || keystore.error) {
-      reject(error || keystore.error);
-    } else {
-      resolve(keystore.result);
-    }
-  });
+  callback(error, keystore);
+  if (callback.length === 0 && error) {
+    throw error;
+  }
+  return keystore;
 };
 
 
@@ -172,26 +166,22 @@ export const getKeystore = (walletInfoInput, password, version, callback = noop)
  * @param {string} password password
  * @param {number} version version
  * @param {Function} callback
- * @returns {Promise}
+ * @returns {Object}
  */
-export const unlockKeystore = (keyStoreInput, password, version, callback = noop) => {
+export const unlockKeystore = (keyStoreInput, password, version = 1, callback = noop) => {
   let walletInfo = null;
-  const versions = version || 1;
   let error = null;
-  if (versions === 1) {
+  if (+version === 1) {
     walletInfo = unlockKeyStoreFromV1(keyStoreInput, password);
   } else {
     error = { ...KEY_STORE_ERRORS.WRONG_VERSION };
   }
 
-  return new Promise((resolve, reject) => {
-    callback(error || walletInfo.error, walletInfo.result);
-    if (error || walletInfo.error) {
-      reject(error || walletInfo.error);
-    } else {
-      resolve(walletInfo.result);
-    }
-  });
+  callback(error, walletInfo);
+  if (callback.length === 0 && error) {
+    throw error;
+  }
+  return walletInfo;
 };
 
 /**
@@ -201,7 +191,7 @@ export const unlockKeystore = (keyStoreInput, password, version, callback = noop
  * @param {Object} keyStoreInput  keyStoreInput
  * @param {string} password password
  * @param {Function} callback
- * @return {Promise} true or false
+ * @return {boolean} true or false
  */
 export const checkPassword = (
   { crypto, type },
@@ -234,12 +224,9 @@ export const checkPassword = (
       result = true;
     }
   }
-  return new Promise((resolve, reject) => {
-    callback(error, result);
-    if (error) {
-      reject(error);
-    } else {
-      resolve(true);
-    }
-  });
+  if (callback.length === 0 && error) {
+    throw error;
+  }
+  callback(error, result);
+  return result;
 };
