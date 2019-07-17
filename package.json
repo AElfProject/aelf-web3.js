@@ -44,6 +44,7 @@
     "assert": "^2.0.0",
     "bignumber.js": "^9.0.0",
     "bip39": "^3.0.2",
+    "browserify-cipher": "^1.0.1",
     "bs58": "^4.0.1",
     "buffer": "^5.2.1",
     "crypto-js": "^3.1.9-1",

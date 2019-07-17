@@ -3,13 +3,18 @@
  * @author atom-yang
  */
 import scrypt from 'scrypt.js';
-import AES from 'crypto-js/aes';
-import SHA3 from 'crypto-js/sha3';
-import libWordArray from 'crypto-js/lib-typedarrays';
-import encUtf8 from 'crypto-js/enc-utf8';
-import encHex from 'crypto-js/enc-hex';
-import { noop } from './utils';
+import { createCipheriv, createDecipheriv } from 'browserify-cipher';
+import randomBytes from 'randombytes';
+import { keccak256 } from './hash';
 import { KEY_STORE_ERRORS } from '../common/constants';
+
+const defaultOptions = {
+  dklen: 32,
+  n: 8192, // 2048 4096 8192 16384
+  r: 8,
+  p: 1,
+  cipher: 'aes-128-ctr'
+};
 
 /**
  * getKeyStoreFromV1
@@ -17,6 +22,7 @@ import { KEY_STORE_ERRORS } from '../common/constants';
  * @method getKeyStoreFromV1
  * @param {Object} walletInfoInput  walletInfo
  * @param {string} password password
+ * @param {Object} option option
  * @return {Object} keyStore
  */
 function getKeyStoreFromV1(
@@ -26,54 +32,64 @@ function getKeyStoreFromV1(
     nickName = '',
     address = ''
   },
-  password
+  password,
+  option = defaultOptions
 ) {
-  const iv = libWordArray.random(16);
-  const salt = libWordArray.random(32);
-  const SAFE_ITERATION_COUNT = 262144;
-  // const SAFE_ITERATION_COUNT = 8192; // 2048 4096 8192 16384
-  const BLOCK_SIZE = 8;
-  const PARALLEL_FACTOR = 1;
-  const dkLen = 64;
-  // const dkLen = 32;
-  const passphrase = Buffer.from(password);
-  // const saltBuffer = Buffer.from(salt.toString(), 'hex');
-  const decryptionKey = scrypt(
-    passphrase,
+  const opt = {
+    ...defaultOptions,
+    ...option
+  };
+  const { cipher = 'aes-128-ctr' } = opt;
+  const sliceLength = /128/.test(cipher) ? 16 : 32;
+  const salt = randomBytes(32); // instance of Buffer
+  const iv = randomBytes(16); // instance of Buffer
+  const derivedKey = scrypt(
+    Buffer.from(password, 'utf8'),
     salt,
-    SAFE_ITERATION_COUNT,
-    BLOCK_SIZE,
-    PARALLEL_FACTOR,
-    dkLen
-  );
-  const mnemonicEncrypted = AES.encrypt(mnemonic, decryptionKey.toString('hex'), { iv });
-  const privateKeyEncrypted = AES.encrypt(privateKey, decryptionKey.toString('hex'), { iv });
-  const mac = SHA3(decryptionKey.slice(16, 32) + mnemonicEncrypted + privateKeyEncrypted, { outputLength: 256 });
+    opt.n,
+    opt.r,
+    opt.p,
+    opt.dklen
+  ); // instance of Buffer
+  const privateKeyCipher = createCipheriv(cipher, derivedKey.slice(0, sliceLength), iv);
+  const privateKeyEncrypted = Buffer.concat([
+    privateKeyCipher.update(Buffer.from(privateKey, 'hex')),
+    privateKeyCipher.final()
+  ]);
+  const mnemonicCipher = createCipheriv(cipher, derivedKey.slice(0, sliceLength), iv);
+  const mnemonicEncrypted = Buffer.concat([
+    mnemonicCipher.update(Buffer.from(mnemonic, 'utf8')),
+    mnemonicCipher.final()
+  ]);
+  const rawMac = Buffer.concat([derivedKey.slice(16, 32), privateKeyEncrypted]);
+  const mac = keccak256(rawMac).replace('0x', '');
   return {
+    version: 1,
     type: 'aelf',
     nickName,
     address,
+    // todo: have to use uuid?
+    // id: uuid,
     crypto: {
-      version: 1,
-      cipher: 'AES256',
+      cipher,
+      ciphertext: privateKeyEncrypted.toString('hex'),
       cipherparams: {
-        iv: iv.toString()
+        iv: iv.toString('hex')
       },
-      mnemonicEncrypted: mnemonicEncrypted.toString(),
-      privateKeyEncrypted: privateKeyEncrypted.toString(),
+      mnemonicEncrypted: mnemonicEncrypted.toString('hex'),
+      privateKeyEncrypted: privateKeyEncrypted.toString('hex'),
       kdf: 'scrypt',
       kdfparams: {
-        r: BLOCK_SIZE,
-        N: SAFE_ITERATION_COUNT,
-        p: PARALLEL_FACTOR,
-        dkLen,
-        salt: salt.toString()
+        r: opt.r,
+        n: opt.n,
+        p: opt.p,
+        dkLen: option.dklen,
+        salt: salt.toString('hex')
       },
-      mac: mac.toString()
+      mac
     }
   };
 }
-
 
 /**
  * unlock AElf key store
@@ -88,7 +104,8 @@ function unlockKeyStoreFromV1(
     crypto,
     type,
     nickName = '',
-    address = ''
+    address = '',
+    version = 1
   },
   password
 ) {
@@ -98,11 +115,11 @@ function unlockKeyStoreFromV1(
     kdfparams,
     mac,
     cipherparams,
-    version,
     mnemonicEncrypted,
-    privateKeyEncrypted
+    privateKeyEncrypted,
+    cipher = 'aes-128-ctr'
   } = crypto;
-  if (version !== 1) {
+  if (+version !== 1) {
     error = { ...KEY_STORE_ERRORS.WRONG_KEY_STORE_VERSION };
     throw error;
   }
@@ -110,22 +127,38 @@ function unlockKeyStoreFromV1(
     error = { ...KEY_STORE_ERRORS.NOT_AELF_KEY_STORE };
     throw error;
   }
-  const { iv } = cipherparams;
-  const passphrase = Buffer.from(password);
-  const saltBuffer = Buffer.from(kdfparams.salt, 'hex');
-  const decryptionKey = scrypt(passphrase, saltBuffer, kdfparams.N, kdfparams.p, kdfparams.r, kdfparams.dkLen);
-  const currentMac = SHA3(decryptionKey.slice(16, 32) + mnemonicEncrypted + privateKeyEncrypted, { outputLength: 256 });
-  if (currentMac.toString() === mac) {
-    const mnemonic = AES.decrypt(mnemonicEncrypted, decryptionKey.toString('hex'), { iv });
-    const privateKey = AES.decrypt(privateKeyEncrypted, decryptionKey.toString('hex'), { iv });
+  const sliceLength = /128/.test(cipher) ? 16 : 32;
+  const iv = Buffer.from(cipherparams.iv, 'hex');
+  const derivedKey = scrypt(
+    Buffer.from(password),
+    Buffer.from(kdfparams.salt, 'hex'),
+    kdfparams.n,
+    kdfparams.r,
+    kdfparams.p,
+    kdfparams.dkLen
+  );
+  const rawMac = Buffer.concat([derivedKey.slice(16, 32), Buffer.from(privateKeyEncrypted, 'hex')]);
+  const currentMac = keccak256(rawMac).replace('0x', '');
+  if (currentMac === mac) {
+    const privateKeyDeCipher = createDecipheriv(cipher, derivedKey.slice(0, sliceLength), iv);
+    const privateKey = Buffer.concat([
+      privateKeyDeCipher.update(Buffer.from(privateKeyEncrypted, 'hex')),
+      privateKeyDeCipher.final()
+    ]).toString('hex');
+
+    const mnemonicDeCipher = createDecipheriv(cipher, derivedKey.slice(0, sliceLength), iv);
+    const mnemonic = Buffer.concat([
+      mnemonicDeCipher.update(Buffer.from(mnemonicEncrypted, 'hex')),
+      mnemonicDeCipher.final()
+    ]).toString('utf8');
     result = {
       nickName,
       address,
-      mnemonic: mnemonic.toString(encUtf8),
-      privateKey: privateKey.toString(encUtf8)
+      mnemonic,
+      privateKey
     };
   } else {
-    error = { ...KEY_STORE_ERRORS.WRONG_VERSION };
+    error = { ...KEY_STORE_ERRORS.INVALID_PASSWORD };
     throw error;
   }
 
@@ -139,23 +172,14 @@ function unlockKeyStoreFromV1(
  * @param {Object} walletInfoInput  walletInfo
  * @param {string} password password
  * @param {number} version version
- * @param {Function} callback callback
  * @return {Object}
  */
-export const getKeystore = (walletInfoInput, password, version, callback = noop) => {
-  let keystore = null;
-  const versions = version || 1;
-  let error = null;
-  if (+versions === 1) {
-    keystore = getKeyStoreFromV1(walletInfoInput, password);
-  } else {
-    error = { ...KEY_STORE_ERRORS.WRONG_VERSION };
+export const getKeystore = (walletInfoInput, password, version = 1) => {
+  if (+version === 1) {
+    return getKeyStoreFromV1(walletInfoInput, password);
   }
-  callback(error, keystore);
-  if (callback.length === 0 && error) {
-    throw error;
-  }
-  return keystore;
+  const error = { ...KEY_STORE_ERRORS.WRONG_VERSION };
+  throw error;
 };
 
 
@@ -164,24 +188,15 @@ export const getKeystore = (walletInfoInput, password, version, callback = noop)
  * @method unlockKeystore
  * @param {Object} keyStoreInput  walletInfo
  * @param {string} password password
- * @param {number} version version
- * @param {Function} callback
  * @returns {Object}
  */
-export const unlockKeystore = (keyStoreInput, password, version = 1, callback = noop) => {
-  let walletInfo = null;
-  let error = null;
+export const unlockKeystore = (keyStoreInput, password) => {
+  const { version } = keyStoreInput;
   if (+version === 1) {
-    walletInfo = unlockKeyStoreFromV1(keyStoreInput, password);
-  } else {
-    error = { ...KEY_STORE_ERRORS.WRONG_VERSION };
+    return unlockKeyStoreFromV1(keyStoreInput, password);
   }
-
-  callback(error, walletInfo);
-  if (callback.length === 0 && error) {
-    throw error;
-  }
-  return walletInfo;
+  const error = { ...KEY_STORE_ERRORS.WRONG_VERSION };
+  throw error;
 };
 
 /**
@@ -190,43 +205,16 @@ export const unlockKeystore = (keyStoreInput, password, version = 1, callback = 
  * @method checkPassword
  * @param {Object} keyStoreInput  keyStoreInput
  * @param {string} password password
- * @param {Function} callback
  * @return {boolean} true or false
  */
 export const checkPassword = (
-  { crypto, type },
-  password,
-  callback = noop
+  keyStoreInput,
+  password
 ) => {
-  let error = null;
-  let result = false;
-  if (type !== 'aelf') {
-    error = { ...KEY_STORE_ERRORS.NOT_AELF_KEY_STORE };
-  } else {
-    const {
-      mac,
-      mnemonicEncrypted,
-      privateKeyEncrypted,
-      kdfparams
-    } = crypto;
-    const passphrase = Buffer.from(password);
-    const saltBuffer = Buffer.from(kdfparams.salt.toString());
-    const decryptionKey = scrypt(passphrase, saltBuffer, kdfparams.N, kdfparams.p, kdfparams.r, kdfparams.dkLen);
-    const currentMac = SHA3(
-      `${decryptionKey.slice(16, 32)}${mnemonicEncrypted}${privateKeyEncrypted}`,
-      {
-        outputLength: 256
-      }
-    );
-    if (currentMac.toString(encHex) !== mac) {
-      error = { ...KEY_STORE_ERRORS.INVALID_PASSWORD };
-    } else {
-      result = true;
-    }
+  try {
+    const result = unlockKeyStoreFromV1(keyStoreInput, password);
+    return !!result.privateKey;
+  } catch (e) {
+    return false;
   }
-  if (callback.length === 0 && error) {
-    throw error;
-  }
-  callback(error, result);
-  return result;
 };
