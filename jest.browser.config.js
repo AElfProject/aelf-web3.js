@@ -1,6 +1,7 @@
 // For a detailed explanation regarding each configuration property, visit:
 // https://jestjs.io/docs/en/configuration.html
 const nodeCrypto = require('crypto');
+const browserCrypto = require('crypto-browserify');
 process.env.RUNTIME_ENV = 'browser';
 module.exports = {
   // All imported modules in your tests should be mocked automatically
@@ -71,7 +72,8 @@ module.exports = {
   // A set of global variables that need to be available in all test environments
   globals: {
     crypto: {
-      getRandomValues: function(buffer) { return nodeCrypto.randomFillSync(buffer);}
+      getRandomValues: function(buffer) { return nodeCrypto.randomFillSync(buffer);},
+      ...browserCrypto
     }
   },
 
