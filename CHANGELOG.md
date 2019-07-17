@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.2.10](https://github.com/AElfProject/aelf-sdk.js/compare/v3.2.9...v3.2.10) (2019-07-17)
+
+
+### Features
+
+* 🎸 rewrite keyStore generate and resolve ([6ed2b5d](https://github.com/AElfProject/aelf-sdk.js/commit/6ed2b5d))
+
+
+
 ### [3.2.9](https://github.com/AElfProject/aelf-sdk.js/compare/v3.2.8...v3.2.9) (2019-07-16)
 
 
