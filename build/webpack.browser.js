@@ -18,6 +18,11 @@ const browserConfig = {
     libraryExport: 'default',
     umdNamedDefine: true
   },
+  resolve: {
+    alias: {
+      'scrypt.js$': 'scrypt.js/js.js',
+    }
+  },
   node: {
     Buffer: true,
     crypto: true,

@@ -139,5 +139,5 @@ describe('test AElf-sdk', () => {
     expect(result.Error).toBeNull();
     expect(result.TransactionId).toBe('180ebc9863de31ef2eeb1eeaa4d782e2fef365a409bb68fc3e79365d0fa28d71');
     expect(result.Transaction).not.toBeNull();
-  });
+  }, 30000);
 });

@@ -2,8 +2,6 @@
  * @file rpc connection built with http
  * @author atom-yang
  */
-
-import * as xml from 'xmlhttprequest';
 import { stringify } from 'query-string';
 
 const defaultHeaders = {
@@ -12,12 +10,13 @@ const defaultHeaders = {
 };
 
 let RequestLibrary = {};
-if (typeof window !== 'undefined' && typeof window.XMLHttpRequest !== 'undefined') {
+if (process.env.RUNTIME_ENV === 'browser') {
   // For browsers use DOM Api XMLHttpRequest
   RequestLibrary = window.XMLHttpRequest;
-} else if (typeof process !== 'undefined' && Object.prototype.toString.call(process) === '[object process]') {
+} else {
   // For node use xmlhttprequest
-  RequestLibrary = xml.XMLHttpRequest;
+  // eslint-disable-next-line global-require
+  RequestLibrary = require('xmlhttprequest').XMLHttpRequest;
 }
 
 export default class HttpProvider {
@@ -59,10 +58,7 @@ export default class HttpProvider {
     return result;
   }
 
-  requestSend(requestConfig, isAsync = false) {
-    this.request = new RequestLibrary();
-    this.request.withCredentials = false;
-    this.request.timeout = this.timeout;
+  requestSend(requestConfig, request, isAsync = false) {
     const {
       url,
       method = 'POST',
@@ -73,15 +69,15 @@ export default class HttpProvider {
     if (method.toUpperCase() === 'GET') {
       uri = Object.keys(params).length > 0 ? `${uri}?${stringify(params)}` : uri;
     }
-    this.request.open(method.toUpperCase(), uri, isAsync);
+    request.open(method.toUpperCase(), uri, isAsync);
     Object.keys(this.headers).forEach(header => {
-      this.request.setRequestHeader(header, this.headers[header]);
+      request.setRequestHeader(header, this.headers[header]);
     });
     try {
       if (method.toUpperCase() === 'GET') {
-        this.request.send();
+        request.send();
       } else {
-        this.request.send(JSON.stringify(params));
+        request.send(JSON.stringify(params));
       }
     } catch (error) {
       // todo: error handle
@@ -90,8 +86,11 @@ export default class HttpProvider {
   }
 
   send(requestConfig) {
-    this.requestSend(requestConfig);
-    let result = this.request.responseText;
+    const request = new RequestLibrary();
+    request.withCredentials = false;
+    request.timeout = this.timeout;
+    this.requestSend(requestConfig, request);
+    let result = request.responseText;
 
     result = HttpProvider.formatResponse(result);
     if (result.Error) {
@@ -101,11 +100,14 @@ export default class HttpProvider {
   }
 
   sendAsync(requestConfig) {
-    this.requestSend(requestConfig, true);
+    const request = new RequestLibrary();
+    request.withCredentials = false;
+    request.timeout = this.timeout;
+    this.requestSend(requestConfig, request, true);
     return new Promise((resolve, reject) => {
-      this.request.onreadystatechange = () => {
-        if (this.request.readyState === 4 && this.request.timeout !== 1) {
-          let result = this.request.responseText;
+      request.onreadystatechange = () => {
+        if (request.readyState === 4 && request.timeout !== 1) {
+          let result = request.responseText;
           try {
             result = HttpProvider.formatResponse(result);
             if (result.Error) {
@@ -120,10 +122,10 @@ export default class HttpProvider {
         }
       };
 
-      this.request.onerror = err => {
+      request.onerror = err => {
         reject(err);
       };
-      this.request.ontimeout = err => {
+      request.ontimeout = err => {
         // todo: timeout error
         reject(err);
       };
