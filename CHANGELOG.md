@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.2.11](https://github.com/AElfProject/aelf-sdk.js/compare/v3.2.10...v3.2.11) (2019-07-25)
+
+
+### Bug Fixes
+
+* 🐛 fix install scrypt error in Node v12 ([effaea1](https://github.com/AElfProject/aelf-sdk.js/commit/effaea1)), closes [#51](https://github.com/AElfProject/aelf-sdk.js/issues/51)
+
+
+
 ### [3.2.10](https://github.com/AElfProject/aelf-sdk.js/compare/v3.2.9...v3.2.10) (2019-07-17)
 
 
