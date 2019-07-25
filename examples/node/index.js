@@ -8,7 +8,7 @@ const defaultPrivateKey = 'bdb3b39ef4cd18c2697a920eb6d9e8c3cf1a930570beb37d04fb5
 
 // const walletCreatedByMethod = Wallet.createNewWallet();
 const wallet = Wallet.getWalletByPrivateKey(defaultPrivateKey);
-const aelf = new AElf(new AElf.providers.HttpProvider('http://34.213.112.35:8000'));
+const aelf = new AElf(new AElf.providers.HttpProvider('http://18.162.41.20:8000'));
 
 if (!aelf.isConnected()) {
   console.log('Blockchain Node is not running.');
@@ -31,3 +31,9 @@ aelf.chain.contractAt(GenesisContractAddress, wallet)
   .then(res => {
     console.log(res);
   });
+
+const defaultPassword = '123123';
+keyStore = AElf.wallet.keyStore.getKeystore(wallet, defaultPassword);
+const { mnemonic: ksMn, privateKey } = AElf.wallet.keyStore.unlockKeystore(keyStore, defaultPassword);
+
+console.log(keyStore, privateKey);
