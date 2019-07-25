@@ -1,6 +1,6 @@
 // For a detailed explanation regarding each configuration property, visit:
 // https://jestjs.io/docs/en/configuration.html
-
+const path = require('path');
 process.env.RUNTIME_ENV = 'node';
 
 module.exports = {
@@ -80,7 +80,7 @@ module.exports = {
 
   // A map from regular expressions to module names that allow to stub out resources with a single module
   moduleNameMapper: {
-    '^scrypt.js$': 'scrypt.js/node.js'
+    '^scrypt.js$': path.resolve('src/scrypt-polyfill.js')
   },
 
   // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader

@@ -2,7 +2,7 @@ import AElf from '../../src/index';
 let aelf = null;
 describe('test wallet', () => {
   test('create instance', () => {
-    aelf = new AElf(new AElf.providers.HttpProvider('http://34.213.112.35:8000'));
+    aelf = new AElf(new AElf.providers.HttpProvider('http://18.162.41.20:8000'));
     expect(aelf).toBeDefined();
     expect(aelf.isConnected()).toBeTruthy();
     expect(aelf.chain).toBeTruthy();

@@ -19,16 +19,8 @@ const  nodeConfig = {
   },
   resolve: {
     alias: {
-      'scrypt.js$': 'scrypt.js/node.js',
+      'scrypt.js$': '../scrypt-polyfill.js',
     }
-  },
-  externals: {
-    scrypt: {
-      commonjs2: 'scrypt',
-      commonjs: 'scrypt',
-      umd: 'scrypt',
-      root: 'scrypt'
-    },
   },
   target: 'node',
   optimization: {

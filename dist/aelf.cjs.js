@@ -1,5 +1,5 @@
 /*!
- * aelf-sdk.js v3.2.10 
+ * aelf-sdk.js v3.2.11 
  * (c) 2019-2019 AElf 
  * Released under MIT License
  */
@@ -87,7 +87,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 147);
+/******/ 	return __webpack_require__(__webpack_require__.s = 146);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -4016,7 +4016,7 @@ Enum.prototype.isReservedName = function isReservedName(name) {
 "use strict";
 
 
-var assert = __webpack_require__(15);
+var assert = __webpack_require__(16);
 var inherits = __webpack_require__(25);
 
 exports.inherits = inherits;
@@ -4722,6 +4722,12 @@ util._configure = function() {
 
 /***/ }),
 /* 11 */
+/***/ (function(module, exports) {
+
+module.exports = require("crypto");
+
+/***/ }),
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory) {
@@ -5479,7 +5485,7 @@ util._configure = function() {
 }));
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -6004,7 +6010,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/**
 
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6382,7 +6388,7 @@ Field._configure = function configure(Type_) {
 
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* eslint-disable node/no-deprecated-api */
@@ -6450,7 +6456,7 @@ SafeBuffer.allocUnsafeSlow = function (size) {
 
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports) {
 
 module.exports = assert;
@@ -6465,12 +6471,6 @@ assert.equal = function assertEqual(l, r, msg) {
     throw new Error(msg || ('Assertion failed: ' + l + ' != ' + r));
 };
 
-
-/***/ }),
-/* 16 */
-/***/ (function(module, exports) {
-
-module.exports = require("crypto");
 
 /***/ }),
 /* 17 */
@@ -7060,7 +7060,7 @@ module.exports = Namespace;
 var ReflectionObject = __webpack_require__(17);
 ((Namespace.prototype = Object.create(ReflectionObject.prototype)).constructor = Namespace).className = "Namespace";
 
-var Field    = __webpack_require__(13),
+var Field    = __webpack_require__(14),
     util     = __webpack_require__(0);
 
 var Type,    // cyclic
@@ -7496,7 +7496,7 @@ Namespace._configure = function(Type_, Service_, Enum_) {
 
 
 var utils = __webpack_require__(9);
-var assert = __webpack_require__(15);
+var assert = __webpack_require__(16);
 
 function BlockHash() {
   this.pending = null;
@@ -7591,7 +7591,7 @@ BlockHash.prototype._pad = function pad() {
 /* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var crypto = __webpack_require__(16)
+var crypto = __webpack_require__(11)
 
 exports.createCipher = exports.Cipher = crypto.createCipher
 exports.createCipheriv = exports.Cipheriv = crypto.createCipheriv
@@ -7612,7 +7612,7 @@ module.exports = OneOf;
 var ReflectionObject = __webpack_require__(17);
 ((OneOf.prototype = Object.create(ReflectionObject.prototype)).constructor = OneOf).className = "OneOf";
 
-var Field = __webpack_require__(13),
+var Field = __webpack_require__(14),
     util  = __webpack_require__(0);
 
 /**
@@ -7854,7 +7854,7 @@ module.exports = basex(ALPHABET)
 /* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(16).randomBytes
+module.exports = __webpack_require__(11).randomBytes
 
 
 /***/ }),
@@ -7862,8 +7862,8 @@ module.exports = __webpack_require__(16).randomBytes
 /***/ (function(module, exports, __webpack_require__) {
 
 var assert = __webpack_require__(121)
-var Buffer = __webpack_require__(14).Buffer
-var crypto = __webpack_require__(16)
+var Buffer = __webpack_require__(15).Buffer
+var crypto = __webpack_require__(11)
 var cs = __webpack_require__(122)
 var secp256k1 = __webpack_require__(123)
 
@@ -9003,7 +9003,7 @@ var Namespace = __webpack_require__(20);
 
 var Enum      = __webpack_require__(7),
     OneOf     = __webpack_require__(23),
-    Field     = __webpack_require__(13),
+    Field     = __webpack_require__(14),
     MapField  = __webpack_require__(33),
     Service   = __webpack_require__(34),
     Message   = __webpack_require__(36),
@@ -9594,7 +9594,7 @@ Type.d = function decorateType(typeName) {
 module.exports = MapField;
 
 // extends Field
-var Field = __webpack_require__(13);
+var Field = __webpack_require__(14);
 ((MapField.prototype = Object.create(Field.prototype)).constructor = MapField).className = "MapField";
 
 var types   = __webpack_require__(18),
@@ -10207,7 +10207,7 @@ module.exports = Root;
 var Namespace = __webpack_require__(20);
 ((Root.prototype = Object.create(Namespace.prototype)).constructor = Root).className = "Root";
 
-var Field   = __webpack_require__(13),
+var Field   = __webpack_require__(14),
     Enum    = __webpack_require__(7),
     OneOf   = __webpack_require__(23),
     util    = __webpack_require__(0);
@@ -10578,7 +10578,7 @@ hash.ripemd160 = hash.ripemd.ripemd160;
 /* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(16).createHash
+module.exports = __webpack_require__(11).createHash
 
 
 /***/ }),
@@ -10622,7 +10622,7 @@ module.exports = function (password, salt, iterations, keylen) {
 ;(function (root, factory, undef) {
 	if (true) {
 		// CommonJS
-		module.exports = exports = factory(__webpack_require__(11), __webpack_require__(133), __webpack_require__(134), __webpack_require__(64), __webpack_require__(137));
+		module.exports = exports = factory(__webpack_require__(12), __webpack_require__(133), __webpack_require__(134), __webpack_require__(64), __webpack_require__(137));
 	}
 	else {}
 }(this, function (CryptoJS) {
@@ -10849,14 +10849,22 @@ module.exports = function (password, salt, iterations, keylen) {
 /* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var scrypt = __webpack_require__(138)
+/**
+ * @file scrypt.js for scrypt polyfill
+ * @author atom-yang
+ * @date 2019-07-25
+ */
+var crypto = __webpack_require__(11);
 
-function hash (key, salt, n, r, p, dklen, progressCb) {
-  return scrypt.hashSync(key, { N: n, r: r, p: p }, dklen, salt)
+function scrypt(password, salt, N, r, p, dklen) {
+  return crypto.scryptSync(password, salt, dklen, {
+    N: N,
+    r: r,
+    p: p
+  });
 }
 
-module.exports = hash
-
+module.exports = scrypt;
 
 /***/ }),
 /* 43 */
@@ -10948,7 +10956,7 @@ protobuf.Namespace        = __webpack_require__(20);
 protobuf.Root             = __webpack_require__(37);
 protobuf.Enum             = __webpack_require__(7);
 protobuf.Type             = __webpack_require__(32);
-protobuf.Field            = __webpack_require__(13);
+protobuf.Field            = __webpack_require__(14);
 protobuf.OneOf            = __webpack_require__(23);
 protobuf.MapField         = __webpack_require__(33);
 protobuf.Service          = __webpack_require__(34);
@@ -12447,7 +12455,7 @@ exports.g1_256 = g1_256;
 var utils = __webpack_require__(9);
 var common = __webpack_require__(21);
 var shaCommon = __webpack_require__(55);
-var assert = __webpack_require__(15);
+var assert = __webpack_require__(16);
 
 var sum32 = utils.sum32;
 var sum32_4 = utils.sum32_4;
@@ -12558,7 +12566,7 @@ SHA256.prototype._digest = function digest(enc) {
 
 var utils = __webpack_require__(9);
 var common = __webpack_require__(21);
-var assert = __webpack_require__(15);
+var assert = __webpack_require__(16);
 
 var rotr64_hi = utils.rotr64_hi;
 var rotr64_lo = utils.rotr64_lo;
@@ -12904,7 +12912,7 @@ var sizes = {
 var createHmac = __webpack_require__(118)
 var checkParameters = __webpack_require__(40)
 var defaultEncoding = __webpack_require__(59)
-var Buffer = __webpack_require__(14).Buffer
+var Buffer = __webpack_require__(15).Buffer
 
 function pbkdf2 (password, salt, iterations, keylen, digest) {
   checkParameters(password, salt, iterations, keylen)
@@ -13042,7 +13050,7 @@ module.exports = {"COMPRESSED_TYPE_INVALID":"compressed should be a boolean","EC
 ;(function (root, factory, undef) {
 	if (true) {
 		// CommonJS
-		module.exports = exports = factory(__webpack_require__(11), __webpack_require__(135), __webpack_require__(136));
+		module.exports = exports = factory(__webpack_require__(12), __webpack_require__(135), __webpack_require__(136));
 	}
 	else {}
 }(this, function (CryptoJS) {
@@ -14271,7 +14279,7 @@ module.exports = {"options":{"csharp_namespace":"AElf"},"nested":{"SideChainBloc
 ;(function (root, factory) {
 	if (true) {
 		// CommonJS
-		module.exports = exports = factory(__webpack_require__(11));
+		module.exports = exports = factory(__webpack_require__(12));
 	}
 	else {}
 }(this, function (CryptoJS) {
@@ -14286,9 +14294,9 @@ module.exports = {"options":{"csharp_namespace":"AElf"},"nested":{"SideChainBloc
 
 "use strict";
 
-var strictUriEncode = __webpack_require__(139);
-var objectAssign = __webpack_require__(140);
-var decodeComponent = __webpack_require__(141);
+var strictUriEncode = __webpack_require__(138);
+var objectAssign = __webpack_require__(139);
+var decodeComponent = __webpack_require__(140);
 
 function encoderForArrayFormat(opts) {
 	switch (opts.arrayFormat) {
@@ -16106,7 +16114,7 @@ module.exports = __webpack_amd_options__;
 // Distributed under the MIT software license, see the accompanying
 // file LICENSE or http://www.opensource.org/licenses/mit-license.php.
 
-const Buffer = __webpack_require__(14).Buffer
+const Buffer = __webpack_require__(15).Buffer
 
 module.exports = function base (ALPHABET) {
   if (ALPHABET.length >= 255) throw new TypeError('Alphabet too long')
@@ -16296,7 +16304,7 @@ parse.defaults = { keepCase: false };
 var tokenize  = __webpack_require__(53),
     Root      = __webpack_require__(37),
     Type      = __webpack_require__(32),
-    Field     = __webpack_require__(13),
+    Field     = __webpack_require__(14),
     MapField  = __webpack_require__(33),
     OneOf     = __webpack_require__(23),
     Enum      = __webpack_require__(7),
@@ -17474,7 +17482,7 @@ module.exports = {"name":"elliptic","version":"6.4.1","description":"EC cryptogr
 
 var utils = exports;
 var BN = __webpack_require__(8);
-var minAssert = __webpack_require__(15);
+var minAssert = __webpack_require__(16);
 var minUtils = __webpack_require__(54);
 
 utils.assert = minAssert;
@@ -17679,7 +17687,7 @@ if (typeof self === 'object') {
 } else {
   // Node.js or Web worker with no crypto support
   try {
-    var crypto = __webpack_require__(16);
+    var crypto = __webpack_require__(11);
     if (typeof crypto.randomBytes !== 'function')
       throw new Error('Not supported');
 
@@ -20230,7 +20238,7 @@ var sh = [
 
 
 var utils = __webpack_require__(9);
-var assert = __webpack_require__(15);
+var assert = __webpack_require__(16);
 
 function Hmac(hash, key, enc) {
   if (!(this instanceof Hmac))
@@ -21318,7 +21326,7 @@ EC.prototype.getKeyRecoveryParam = function(e, signature, Q, enc) {
 
 var hash = __webpack_require__(38);
 var utils = __webpack_require__(54);
-var assert = __webpack_require__(15);
+var assert = __webpack_require__(16);
 
 function HmacDRBG(options) {
   if (!(this instanceof HmacDRBG))
@@ -22003,7 +22011,7 @@ module.exports = Signature;
 /***/ (function(module, exports, __webpack_require__) {
 
 var checkParameters = __webpack_require__(40)
-var native = __webpack_require__(16)
+var native = __webpack_require__(11)
 
 function nativePBKDF2 (password, salt, iterations, keylen, digest, callback) {
   checkParameters(password, salt, iterations, keylen)
@@ -22039,7 +22047,7 @@ if (!native.pbkdf2Sync || native.pbkdf2Sync.toString().indexOf('keylen, digest')
 /* 118 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(16).createHmac
+module.exports = __webpack_require__(11).createHmac
 
 
 /***/ }),
@@ -22049,7 +22057,7 @@ module.exports = __webpack_require__(16).createHmac
 var checkParameters = __webpack_require__(40)
 var defaultEncoding = __webpack_require__(59)
 var sync = __webpack_require__(58)
-var Buffer = __webpack_require__(14).Buffer
+var Buffer = __webpack_require__(15).Buffer
 
 var ZERO_BUF
 var subtle = global.crypto && global.crypto.subtle
@@ -22903,7 +22911,7 @@ exports.isNumberInInterval = function (number, x, y, message) {
 
 "use strict";
 
-var Buffer = __webpack_require__(14).Buffer
+var Buffer = __webpack_require__(15).Buffer
 var bip66 = __webpack_require__(131)
 
 var EC_PRIVKEY_EXPORT_DER_COMPRESSED = Buffer.from([
@@ -23105,7 +23113,7 @@ exports.signatureImportLax = function (sig) {
 // Format: 0x30 [total-length] 0x02 [R-length] [R] 0x02 [S-length] [S]
 // NOTE: SIGHASH byte ignored AND restricted, truncate before use
 
-var Buffer = __webpack_require__(14).Buffer
+var Buffer = __webpack_require__(15).Buffer
 
 function check (buffer) {
   if (buffer.length < 8) return false
@@ -23222,7 +23230,7 @@ module.exports = {
 
 "use strict";
 
-var Buffer = __webpack_require__(14).Buffer
+var Buffer = __webpack_require__(15).Buffer
 var createHash = __webpack_require__(39)
 var BN = __webpack_require__(8)
 var EC = __webpack_require__(2).ec
@@ -23493,7 +23501,7 @@ exports.ecdhUnsafe = function (publicKey, privateKey, compressed) {
 ;(function (root, factory) {
 	if (true) {
 		// CommonJS
-		module.exports = exports = factory(__webpack_require__(11));
+		module.exports = exports = factory(__webpack_require__(12));
 	}
 	else {}
 }(this, function (CryptoJS) {
@@ -23626,7 +23634,7 @@ exports.ecdhUnsafe = function (publicKey, privateKey, compressed) {
 ;(function (root, factory) {
 	if (true) {
 		// CommonJS
-		module.exports = exports = factory(__webpack_require__(11));
+		module.exports = exports = factory(__webpack_require__(12));
 	}
 	else {}
 }(this, function (CryptoJS) {
@@ -23892,7 +23900,7 @@ exports.ecdhUnsafe = function (publicKey, privateKey, compressed) {
 ;(function (root, factory) {
 	if (true) {
 		// CommonJS
-		module.exports = exports = factory(__webpack_require__(11));
+		module.exports = exports = factory(__webpack_require__(12));
 	}
 	else {}
 }(this, function (CryptoJS) {
@@ -24040,7 +24048,7 @@ exports.ecdhUnsafe = function (publicKey, privateKey, compressed) {
 ;(function (root, factory) {
 	if (true) {
 		// CommonJS
-		module.exports = exports = factory(__webpack_require__(11));
+		module.exports = exports = factory(__webpack_require__(12));
 	}
 	else {}
 }(this, function (CryptoJS) {
@@ -24181,7 +24189,7 @@ exports.ecdhUnsafe = function (publicKey, privateKey, compressed) {
 ;(function (root, factory, undef) {
 	if (true) {
 		// CommonJS
-		module.exports = exports = factory(__webpack_require__(11), __webpack_require__(64));
+		module.exports = exports = factory(__webpack_require__(12), __webpack_require__(64));
 	}
 	else {}
 }(this, function (CryptoJS) {
@@ -25054,12 +25062,6 @@ exports.ecdhUnsafe = function (publicKey, privateKey, compressed) {
 
 /***/ }),
 /* 138 */
-/***/ (function(module, exports) {
-
-module.exports = require("scrypt");
-
-/***/ }),
-/* 139 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25072,7 +25074,7 @@ module.exports = function (str) {
 
 
 /***/ }),
-/* 140 */
+/* 139 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25169,7 +25171,7 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 
 
 /***/ }),
-/* 141 */
+/* 140 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25270,7 +25272,7 @@ module.exports = function (encodedURI) {
 
 
 /***/ }),
-/* 142 */
+/* 141 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -25286,8 +25288,8 @@ module.exports = function (encodedURI) {
  * @license MIT
  */
 
-var Url = __webpack_require__(143);
-var spawn = __webpack_require__(144).spawn;
+var Url = __webpack_require__(142);
+var spawn = __webpack_require__(143).spawn;
 var fs = __webpack_require__(61);
 
 exports.XMLHttpRequest = function() {
@@ -25297,8 +25299,8 @@ exports.XMLHttpRequest = function() {
    * Private variables
    */
   var self = this;
-  var http = __webpack_require__(145);
-  var https = __webpack_require__(146);
+  var http = __webpack_require__(144);
+  var https = __webpack_require__(145);
 
   // Holds http.js objects
   var request;
@@ -25896,31 +25898,31 @@ exports.XMLHttpRequest = function() {
 
 
 /***/ }),
-/* 143 */
+/* 142 */
 /***/ (function(module, exports) {
 
 module.exports = require("url");
 
 /***/ }),
-/* 144 */
+/* 143 */
 /***/ (function(module, exports) {
 
 module.exports = require("child_process");
 
 /***/ }),
-/* 145 */
+/* 144 */
 /***/ (function(module, exports) {
 
 module.exports = require("http");
 
 /***/ }),
-/* 146 */
+/* 145 */
 /***/ (function(module, exports) {
 
 module.exports = require("https");
 
 /***/ }),
-/* 147 */
+/* 146 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -25997,7 +25999,7 @@ var defineProperty_default = /*#__PURE__*/__webpack_require__.n(defineProperty);
 var light = __webpack_require__(5);
 
 // EXTERNAL MODULE: ./node_modules/js-sha256/src/sha256.js
-var sha256 = __webpack_require__(12);
+var sha256 = __webpack_require__(13);
 var sha256_default = /*#__PURE__*/__webpack_require__.n(sha256);
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/typeof.js
@@ -30079,9 +30081,9 @@ var aes_default = /*#__PURE__*/__webpack_require__.n(aes);
 var enc_utf8 = __webpack_require__(70);
 var enc_utf8_default = /*#__PURE__*/__webpack_require__.n(enc_utf8);
 
-// EXTERNAL MODULE: ./node_modules/scrypt.js/node.js
-var scrypt_js_node = __webpack_require__(42);
-var node_default = /*#__PURE__*/__webpack_require__.n(scrypt_js_node);
+// EXTERNAL MODULE: ./src/scrypt-polyfill.js
+var scrypt_polyfill = __webpack_require__(42);
+var scrypt_polyfill_default = /*#__PURE__*/__webpack_require__.n(scrypt_polyfill);
 
 // EXTERNAL MODULE: ./node_modules/browserify-cipher/index.js
 var browserify_cipher = __webpack_require__(22);
@@ -30490,7 +30492,7 @@ function getKeyStoreFromV1(_ref, password) {
 
   var iv = randombytes_default()(16); // instance of Buffer
 
-  var derivedKey = node_default()(Buffer.from(password, 'utf8'), salt, opt.n, opt.r, opt.p, opt.dklen); // instance of Buffer
+  var derivedKey = scrypt_polyfill_default()(Buffer.from(password, 'utf8'), salt, opt.n, opt.r, opt.p, opt.dklen); // instance of Buffer
 
   var privateKeyCipher = Object(browserify_cipher["createCipheriv"])(cipher, derivedKey.slice(0, sliceLength), iv);
   var privateKeyEncrypted = Buffer.concat([privateKeyCipher.update(Buffer.from(privateKey, 'hex')), privateKeyCipher.final()]);
@@ -30566,7 +30568,7 @@ function unlockKeyStoreFromV1(_ref2, password) {
 
   var sliceLength = /128/.test(cipher) ? 16 : 32;
   var iv = Buffer.from(cipherparams.iv, 'hex');
-  var derivedKey = node_default()(Buffer.from(password), Buffer.from(kdfparams.salt, 'hex'), kdfparams.n, kdfparams.r, kdfparams.p, kdfparams.dkLen);
+  var derivedKey = scrypt_polyfill_default()(Buffer.from(password), Buffer.from(kdfparams.salt, 'hex'), kdfparams.n, kdfparams.r, kdfparams.p, kdfparams.dkLen);
   var rawMac = Buffer.concat([derivedKey.slice(16, 32), Buffer.from(privateKeyEncrypted, 'hex')]);
   var currentMac = keccak256(rawMac).replace('0x', '');
 
@@ -31642,7 +31644,7 @@ var RequestLibrary = {};
 if (false) {} else {
   // For node use xmlhttprequest
   // eslint-disable-next-line global-require
-  RequestLibrary = __webpack_require__(142).XMLHttpRequest;
+  RequestLibrary = __webpack_require__(141).XMLHttpRequest;
 }
 
 var httpProvider_HttpProvider =
@@ -31846,7 +31848,7 @@ function () {
     defineProperty_default()(this, "settings", new settings_Settings());
 
     defineProperty_default()(this, "version", {
-      api: "3.2.10"
+      api: "3.2.11"
     });
 
     this._requestManager = new requestManage_RequestManager(provider);
@@ -31885,7 +31887,7 @@ function () {
 /* eslint-enable */
 
 
-defineProperty_default()(src_AElf, "version", "3.2.10");
+defineProperty_default()(src_AElf, "version", "3.2.11");
 
 defineProperty_default()(src_AElf, "providers", {
   HttpProvider: httpProvider_HttpProvider

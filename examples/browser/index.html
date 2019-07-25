@@ -24,14 +24,7 @@
   const walletCreatedByMethod = Wallet.createNewWallet();
   const wallet = Wallet.getWalletByPrivateKey(defaultPrivateKey);
   const aelf = new AElf(new AElf.providers.HttpProvider(
-    'http://34.213.112.35:8000',
-    null,
-    null,
-    null,
-    [{
-      name: 'Accept',
-      value: 'text/plain;v=1.0'
-    }]
+    'http://18.162.41.20:8000'
   ));
 
   if(!aelf.isConnected()) {

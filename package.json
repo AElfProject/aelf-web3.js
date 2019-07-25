@@ -1,6 +1,6 @@
 {
   "name": "aelf-sdk",
-  "version": "3.2.10",
+  "version": "3.2.11",
   "description": "aelf-sdk js library",
   "main": "dist/aelf.cjs.js",
   "browser": "dist/aelf.umd.js",
@@ -36,8 +36,12 @@
   "author": "hzz780",
   "license": "MIT",
   "devEngines": {
-    "node": "8.x || 9.x || 10.x || 11.x || 12.x"
+    "node": "10.x || 11.x || 12.x"
   },
+  "engines": {
+    "node": ">=10.5.0"
+  },
+  "engineStrict": true,
   "dependencies": {
     "@aelfqueen/protobufjs": "^6.8.9",
     "@babel/runtime": "^7.4.5",
