@@ -8,7 +8,7 @@ const defaultPrivateKey = 'bdb3b39ef4cd18c2697a920eb6d9e8c3cf1a930570beb37d04fb5
 
 // const walletCreatedByMethod = Wallet.createNewWallet();
 const wallet = Wallet.getWalletByPrivateKey(defaultPrivateKey);
-const aelf = new AElf(new AElf.providers.HttpProvider('http://18.162.41.20:8000'));
+const aelf = new AElf(new AElf.providers.HttpProvider('http://18.162.41.20:8000')); //set up link with Blockchain
 
 if (!aelf.isConnected()) {
   console.log('Blockchain Node is not running.');
@@ -31,6 +31,13 @@ aelf.chain.contractAt(GenesisContractAddress, wallet)
   .then(res => {
     console.log(res);
   });
+
+  /* explain for above code block
+    1. we can get genesisContract's address and the contract's name which we want to know.
+    2. transmit address and wallet to function contractAt, we can get an living example about the address
+    3. first get exmaple by genesisiContractAddress,so we can get contract's address by contract's name.
+        then according contract's address get contract's information.
+  */
 
 const defaultPassword = '123123';
 keyStore = AElf.wallet.keyStore.getKeystore(wallet, defaultPassword);
