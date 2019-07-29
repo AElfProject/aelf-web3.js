@@ -8,22 +8,30 @@ const defaultPrivateKey = 'bdb3b39ef4cd18c2697a920eb6d9e8c3cf1a930570beb37d04fb5
 
 // const walletCreatedByMethod = Wallet.createNewWallet();
 const wallet = Wallet.getWalletByPrivateKey(defaultPrivateKey);
+// link to Blockchain
 const aelf = new AElf(new AElf.providers.HttpProvider('http://18.162.41.20:8000'));
 
 if (!aelf.isConnected()) {
   console.log('Blockchain Node is not running.');
 }
 
+// the contract you want to query
 const tokenContractName = 'AElf.ContractNames.Token';
 const {
+  // directly accessible information
   GenesisContractAddress
 } = aelf.chain.getChainStatus({sync: true});
 aelf.chain.contractAt(GenesisContractAddress, wallet)
   .then(zeroC => {
+    // return contract's address which you query by contract's name
     return zeroC.GetContractAddressByName.call(sha256(tokenContractName));
-  }).then(tokenContractAddress => {
+  })
+  .then(tokenContractAddress => {
+    // return contract's instance and you can call the methods on this instance
     return aelf.chain.contractAt(tokenContractAddress, wallet);
-  }).then(tokenContract => {
+  })
+  .then(tokenContract => {
+    // return token's info
     return tokenContract.GetTokenInfo.call({
       symbol: 'ELF'
     });
