@@ -1,5 +1,5 @@
 /*!
- * aelf-sdk.js v3.2.11 
+ * aelf-sdk.js v3.2.12 
  * (c) 2019-2019 AElf 
  * Released under MIT License
  */
@@ -30520,7 +30520,7 @@ function getKeyStoreFromV1(_ref, password) {
         r: opt.r,
         n: opt.n,
         p: opt.p,
-        dkLen: option.dklen,
+        dkLen: opt.dklen,
         salt: salt.toString('hex')
       },
       mac: mac
@@ -30596,16 +30596,18 @@ function unlockKeyStoreFromV1(_ref2, password) {
  * @method getKeystore
  * @param {Object} walletInfoInput  walletInfo
  * @param {string} password password
+ * @params {Object} options custom options
  * @param {number} version version
  * @return {Object}
  */
 
 
 var keyStore_getKeystore = function getKeystore(walletInfoInput, password) {
-  var version = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 1;
+  var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+  var version = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 1;
 
   if (+version === 1) {
-    return getKeyStoreFromV1(walletInfoInput, password);
+    return getKeyStoreFromV1(walletInfoInput, password, options);
   }
 
   var error = objectSpread_default()({}, KEY_STORE_ERRORS.WRONG_VERSION);
@@ -31848,7 +31850,7 @@ function () {
     defineProperty_default()(this, "settings", new settings_Settings());
 
     defineProperty_default()(this, "version", {
-      api: "3.2.11"
+      api: "3.2.12"
     });
 
     this._requestManager = new requestManage_RequestManager(provider);
@@ -31887,7 +31889,7 @@ function () {
 /* eslint-enable */
 
 
-defineProperty_default()(src_AElf, "version", "3.2.11");
+defineProperty_default()(src_AElf, "version", "3.2.12");
 
 defineProperty_default()(src_AElf, "providers", {
   HttpProvider: httpProvider_HttpProvider
