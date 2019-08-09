@@ -83,7 +83,7 @@ function getKeyStoreFromV1(
         r: opt.r,
         n: opt.n,
         p: opt.p,
-        dkLen: option.dklen,
+        dkLen: opt.dklen,
         salt: salt.toString('hex')
       },
       mac
@@ -171,12 +171,13 @@ function unlockKeyStoreFromV1(
  * @method getKeystore
  * @param {Object} walletInfoInput  walletInfo
  * @param {string} password password
+ * @params {Object} options custom options
  * @param {number} version version
  * @return {Object}
  */
-export const getKeystore = (walletInfoInput, password, version = 1) => {
+export const getKeystore = (walletInfoInput, password, options = {}, version = 1) => {
   if (+version === 1) {
-    return getKeyStoreFromV1(walletInfoInput, password);
+    return getKeyStoreFromV1(walletInfoInput, password, options);
   }
   const error = { ...KEY_STORE_ERRORS.WRONG_VERSION };
   throw error;
