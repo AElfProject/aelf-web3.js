@@ -136,7 +136,7 @@ export default class ContractMethod {
     this.run = this.run.bind(this);
     this.request = this.request.bind(this);
     this.callReadOnly = this.callReadOnly.bind(this);
-    this.getData = this.getData.bind(this);
+    this.getSignedTx = this.getSignedTx.bind(this);
   }
 
   packInput(input) {
@@ -171,10 +171,11 @@ export default class ContractMethod {
 
   handleTransaction(height, hash, encoded) {
     const rawTx = getTransaction(this._wallet.address, this._contractAddress, this._name, encoded);
+
     rawTx.refBlockNumber = height;
     const blockHash = hash.match(/^0x/) ? hash.substring(2) : hash;
-
     rawTx.refBlockPrefix = (Buffer.from(blockHash, 'hex')).slice(0, 4);
+
     let tx = wallet.signTransaction(rawTx, this._wallet.keyPair);
 
     tx = Transaction.encode(tx).finish();
@@ -203,6 +204,15 @@ export default class ContractMethod {
     });
 
     return this.handleTransaction(BestChainHeight, BestChainHash, encoded);
+  }
+
+  prepareParametersWithBlockInfo(args) {
+    const filterArgs = args.filter(arg => !isFunction(arg) && !isBoolean(arg.sync));
+    const encoded = this.packInput(filterArgs[0]);
+
+    const { height, hash } = filterArgs[1]; // blockInfo
+
+    return this.handleTransaction(height, hash, encoded);
   }
 
   sendTransaction(...args) {
@@ -255,10 +265,19 @@ export default class ContractMethod {
     return result;
   }
 
-  getData(...args) {
-    const { Params } = this.prepareParameters(args);
+  // getData(...args) {
+  getSignedTx(...args) {
+    const filterArgs = args.filter(arg => !isFunction(arg) && !isBoolean(arg.sync));
 
-    return Params;
+    if (filterArgs[1]) {
+      const { height, hash } = filterArgs[1]; // blockInfo
+      if (hash && height) {
+        return this.prepareParametersWithBlockInfo(args);
+      }
+      throw Error('The second param is the height & hash of a block');
+    }
+
+    return this.prepareParameters(args);
   }
 
   request(...args) {
@@ -283,7 +302,7 @@ export default class ContractMethod {
     run.inputTypeInfo = this._inputType.toJSON();
     run.outputTypeInfo = this._outputType.toJSON();
     run.sendTransaction = this.sendTransaction;
-    run.getData = this.getData;
+    run.getSignedTx = this.getSignedTx;
     // eslint-disable-next-line no-param-reassign
     contract[this._name] = run;
   }
