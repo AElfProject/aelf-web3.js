@@ -56,7 +56,7 @@ if you are new to FrontEnd, you can use `AElf-sdk` by add a script tag in your h
 
 if you want to use a bundle system such as webpack or rollup, and build your applications for Node.js and Browsers, just import the specified version of package files.
 
-### For browser usage and use UMD:
+### For browser usage and use UMD
 
 Webpack:
 
@@ -85,7 +85,6 @@ rollup({
   ]
 })
 ```
-
 
 ### For Node.js usage and use commonjs module system
 
@@ -122,63 +121,25 @@ rollup({
 ```js
 import AElf from 'aelf-sdk';
 
-// host, timeout, user, password, headers
-const aelf = new AElf(
-    new AElf.providers.HttpProvider(
-        host, // https://127.0.0.1:8000/chain
-        timeout, // 300
-        user, // username
-        password, // passowrd
-        // header
-        [{
-            name: 'x-csrf-token',
-            value: document.cookie.match(/csrfToken=[^;]*/)[0].replace('csrfToken=', '')
-        }]
-    )
-);
+// simple
+const aelf = new AElf(new AElf.providers.HttpProvider('https://127.0.0.1:8000'));
 ```
 
-If you want to use the WebAPI of AElf.
+init contract and call methods. You can get more demos in ./examples.
 
 ```js
-const aelf = new AElf(
-    new AElf.providers.HttpProvider(
-        host, // https://127.0.0.1:8000/chain
-        timeout, // 300
-        user, // username
-        password, // passowrd
-        // header
-        [{
-            name: 'Accept',
-            value: 'text/plain;v=1.0'
-        }]
-    )
-);
-```
-
-init contract and call methods
-
-```js
-// contractAddress = xxx; wallet = xxx;
+// tokenContractAddress = xxx; wallet = xxx;
 // We use token contract for example.
-aelf.chain.contractAtAsync(contractAddress, wallet, (err, result) => {
-    const contractoktMethods = result;
-    // contractMethods.methodName(param01, ..., paramN, callback);
-    // contractMethods.methodName.call(param01, ..., paramN, callback);
-    contractoktMethods.Transfer({
-        symbol: 'ELF',
-        to: '58h3RwTfaE8RDpRNMAMiMv8jUjanCeYHBzKuQfHbrfSFTCn',
-        amount: '1000'
-    }, (err, result) => {
-    });
+// in async function
+await aelf.chain.contractAt(tokenContractAddress, wallet);
 
-    // will not send transaction when use .call
-    contractMethods.GetBalance.call({
-        symbol: 'ELF',
-        owner: '58h3RwTfaE8RDpRNMAMiMv8jUjanCeYHBzKuQfHbrfSFTCn'
-    }, (err, result) => {
-    });
-});
+// promise way
+aelf.chain.contractAt(tokenContractAddress, wallet)
+  .then(result => {});
+
+// callback way
+aelf.chain.contractAt(tokenContractAddress, wallet, (error, result) => {});
+  
 ```
 
 Additionally you can set a provider using aelf.setProvider()
@@ -186,8 +147,8 @@ Additionally you can set a provider using aelf.setProvider()
 ```js
 import AElf from 'aelf-sdk';
 
-const aelf = new AElf(new AElf.providers.HttpProvider('https://127.0.0.1:8000/chain'));
-aelf.setProvider(new AElf.providers.HttpProvider('https://127.0.0.1:8010/chain'));
+const aelf = new AElf(new AElf.providers.HttpProvider('https://127.0.0.1:8000'));
+aelf.setProvider(new AElf.providers.HttpProvider('https://127.0.0.1:8010'));
 ```
 
 ### wallet
@@ -195,9 +156,9 @@ aelf.setProvider(new AElf.providers.HttpProvider('https://127.0.0.1:8010/chain')
 base on bip39.
 
 ```js
-import Aelf from 'aelf-sdk';
+import AElf from 'aelf-sdk';
 
-Aelf.wallet.createNewWallet();
+AElf.wallet.createNewWallet();
 // wallet.AESDecrypto            wallet.AESEncrypto            wallet.bip39
 // wallet.createNewWallet        wallet.getWalletByMnemonic    wallet.getWalletByPrivateKey
 // wallet.sign                   wallet.signTransaction

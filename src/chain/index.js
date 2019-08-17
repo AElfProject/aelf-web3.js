@@ -84,7 +84,7 @@ export default class Chain {
       if (txIndex === -1) {
         throw new Error(`txId ${txId} has no correspond transaction in the block with height ${height}`);
       }
-      const txResults = this.getTxResult(BlockHash, 0, txIds.length);
+      const txResults = this.getTxResults(BlockHash, 0, txIds.length, { sync: true });
       const nodes = txResults.map((result, index) => {
         const id = txIds[index];
         const status = result.Status;

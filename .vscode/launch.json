@@ -5,6 +5,14 @@
     "version": "0.2.0",
     "configurations": [
         {
+          // Using webstorm to debugger maybe better than using vscode.
+          "type": "node",
+          "name": "example node",
+          "request": "launch",
+          "program": "${workspaceFolder}/examples/node/crossChain.js",
+          "outFiles": ["${workspaceFolder}/dist/*.js"]
+        },
+        {
             "type": "node",
             "name": "jest browser",
             "request": "launch",
@@ -25,7 +33,7 @@
             "request": "launch",
             "args": [
                 "--runInBand",
-                "-c", "${workspaceFolder}/jest.node.config.js", 
+                "-c", "${workspaceFolder}/jest.node.config.js",
                 "--watchAll"
             ],
             "cwd": "${workspaceFolder}",
