@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.2.13](https://github.com/AElfProject/aelf-sdk.js/compare/v3.2.12...v3.2.13) (2019-08-19)
+
+
+### Features
+
+* 🎸 remove c++ version scrypt ([1d84266](https://github.com/AElfProject/aelf-sdk.js/commit/1d84266))
+
+
+
 ### [3.2.12](https://github.com/AElfProject/aelf-sdk.js/compare/v3.2.10...v3.2.12) (2019-08-09)
 
 
