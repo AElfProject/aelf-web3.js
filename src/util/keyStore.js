@@ -2,7 +2,7 @@
  * @file AElf keyStore tools
  * @author atom-yang
  */
-import scrypt from 'scrypt.js';
+import scrypt from 'scryptsy';
 import { createCipheriv, createDecipheriv } from 'browserify-cipher';
 import randomBytes from 'randombytes';
 import { keccak256 } from './hash';
