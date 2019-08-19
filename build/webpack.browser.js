@@ -19,9 +19,7 @@ const browserConfig = {
     umdNamedDefine: true
   },
   resolve: {
-    alias: {
-      'scrypt.js$': 'scrypt.js/js.js',
-    }
+    alias: {}
   },
   node: {
     Buffer: true,
