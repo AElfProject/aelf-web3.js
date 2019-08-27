@@ -86,7 +86,6 @@ rollup({
 })
 ```
 
-
 ### For Node.js usage and use commonjs module system
 
 Webpack:
@@ -122,10 +121,13 @@ rollup({
 ```js
 import AElf from 'aelf-sdk';
 
+// only pass a host parameter
+const aelfInstance = new AElf(new AElf.providers.HttpProvider('http://127.0.0.1:8000'));
+
 // host, timeout, user, password, headers
 const aelf = new AElf(
     new AElf.providers.HttpProvider(
-        host, // https://127.0.0.1:8000/chain
+        host, // https://127.0.0.1:8000
         timeout, // 300
         user, // username
         password, // passowrd
@@ -138,30 +140,12 @@ const aelf = new AElf(
 );
 ```
 
-If you want to use the WebAPI of AElf.
-
-```js
-const aelf = new AElf(
-    new AElf.providers.HttpProvider(
-        host, // https://127.0.0.1:8000/chain
-        timeout, // 300
-        user, // username
-        password, // passowrd
-        // header
-        [{
-            name: 'Accept',
-            value: 'text/plain;v=1.0'
-        }]
-    )
-);
-```
-
-init contract and call methods
+init contract and call contract methods
 
 ```js
 // contractAddress = xxx; wallet = xxx;
 // We use token contract for example.
-aelf.chain.contractAtAsync(contractAddress, wallet, (err, result) => {
+aelf.chain.contractAt(contractAddress, wallet, (err, result) => {
     const contractoktMethods = result;
     // contractMethods.methodName(param01, ..., paramN, callback);
     // contractMethods.methodName.call(param01, ..., paramN, callback);
@@ -186,8 +170,8 @@ Additionally you can set a provider using aelf.setProvider()
 ```js
 import AElf from 'aelf-sdk';
 
-const aelf = new AElf(new AElf.providers.HttpProvider('https://127.0.0.1:8000/chain'));
-aelf.setProvider(new AElf.providers.HttpProvider('https://127.0.0.1:8010/chain'));
+const aelf = new AElf(new AElf.providers.HttpProvider('https://127.0.0.1:8000'));
+aelf.setProvider(new AElf.providers.HttpProvider('https://127.0.0.1:8010'));
 ```
 
 ### wallet
@@ -195,9 +179,9 @@ aelf.setProvider(new AElf.providers.HttpProvider('https://127.0.0.1:8010/chain')
 base on bip39.
 
 ```js
-import Aelf from 'aelf-sdk';
+import AElf from 'aelf-sdk';
 
-Aelf.wallet.createNewWallet();
+AElf.wallet.createNewWallet();
 // wallet.AESDecrypto            wallet.AESEncrypto            wallet.bip39
 // wallet.createNewWallet        wallet.getWalletByMnemonic    wallet.getWalletByPrivateKey
 // wallet.sign                   wallet.signTransaction
@@ -250,14 +234,14 @@ For more information, please see the code in ./lib/aelf/proto.js. It is simple a
 
 ```js
 import AElf from 'aelf-sdk';
-AElf.version // eg. 2.1.10
+AElf.version // eg. 3.2.13
 ```
 
 ## Contributing
 
-- All contributions have to go into the dev-2.0 branch
+- All contributions have to go into the dev branch
 
-- Please follow the code style of the other files, we use 4 spaces as tabs.
+- Please follow the code style of `eslint-config-airbnb-base`
 
 ### Requirements
 
@@ -268,7 +252,7 @@ AElf.version // eg. 2.1.10
 ### Support
 
 ![browsers](https://img.shields.io/badge/browsers-latest%202%20versions-brightgreen.svg)
-![node](https://img.shields.io/badge/node->=6-green.svg)
+![node](https://img.shields.io/badge/node->=10.9.0-green.svg)
 
 ## About contributing
 
