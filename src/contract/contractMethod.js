@@ -111,6 +111,24 @@ const maybePrettifyHash = (obj, forSelf, paths) => reformat(obj, forSelf, paths,
   return target;
 });
 
+const unpackSpecifiedTypeData = ({
+  data,
+  dataType
+}) => {
+  const buffer = Buffer.from(data, 'hex');
+  const decoded = dataType.decode(buffer);
+  const result = dataType.toObject(decoded, {
+    enums: String, // enums as string names
+    longs: String, // longs as strings (requires long.js)
+    bytes: String, // bytes as base64 encoded strings
+    defaults: true, // includes default values
+    arrays: true, // populates empty arrays (repeated fields) even if defaults=false
+    objects: true, // populates empty objects (map fields) even if defaults=false
+    oneofs: true // includes virtual oneof fields set to the present field's name
+  });
+  return result;
+};
+
 export default class ContractMethod {
   constructor(chain, method, contractAddress, walletInstance) {
     this._chain = chain;
@@ -131,12 +149,13 @@ export default class ContractMethod {
     this._wallet = walletInstance;
 
     this.sendTransaction = this.sendTransaction.bind(this);
+    this.unpackPackedInput = this.unpackPackedInput.bind(this);
     this.unpackOutput = this.unpackOutput.bind(this);
     this.bindMethodToContract = this.bindMethodToContract.bind(this);
     this.run = this.run.bind(this);
     this.request = this.request.bind(this);
     this.callReadOnly = this.callReadOnly.bind(this);
-    this.getData = this.getData.bind(this);
+    this.getSignedTx = this.getSignedTx.bind(this);
   }
 
   packInput(input) {
@@ -149,21 +168,25 @@ export default class ContractMethod {
     return this._inputType.encode(message).finish();
   }
 
+  unpackPackedInput(inputPacked) {
+    if (!inputPacked) {
+      return null;
+    }
+    let result = unpackSpecifiedTypeData({
+      data: inputPacked,
+      dataType: this._inputType
+    });
+    result = maybePrettifyAddress(result, this._isInputTypeAddress, this._inputTypeAddressFieldPaths);
+    return maybePrettifyHash(result, this._isInputTypeHash, this._inputTypeHashFieldPaths);
+  }
+
   unpackOutput(output) {
     if (!output) {
       return null;
     }
-
-    const buffer = Buffer.from(output, 'hex');
-    const decoded = this._outputType.decode(buffer);
-    let result = this._outputType.toObject(decoded, {
-      enums: String, // enums as string names
-      longs: String, // longs as strings (requires long.js)
-      bytes: String, // bytes as base64 encoded strings
-      defaults: true, // includes default values
-      arrays: true, // populates empty arrays (repeated fields) even if defaults=false
-      objects: true, // populates empty objects (map fields) even if defaults=false
-      oneofs: true // includes virtual oneof fields set to the present field's name
+    let result = unpackSpecifiedTypeData({
+      data: output,
+      dataType: this._outputType
     });
     result = maybePrettifyAddress(result, this._isOutputTypeAddress, this._outputTypeAddressFieldPaths);
     return maybePrettifyHash(result, this._isOutputTypeHash, this._outputTypeHashFieldPaths);
@@ -171,10 +194,11 @@ export default class ContractMethod {
 
   handleTransaction(height, hash, encoded) {
     const rawTx = getTransaction(this._wallet.address, this._contractAddress, this._name, encoded);
+
     rawTx.refBlockNumber = height;
     const blockHash = hash.match(/^0x/) ? hash.substring(2) : hash;
-
     rawTx.refBlockPrefix = (Buffer.from(blockHash, 'hex')).slice(0, 4);
+
     let tx = wallet.signTransaction(rawTx, this._wallet.keyPair);
 
     tx = Transaction.encode(tx).finish();
@@ -203,6 +227,15 @@ export default class ContractMethod {
     });
 
     return this.handleTransaction(BestChainHeight, BestChainHash, encoded);
+  }
+
+  prepareParametersWithBlockInfo(args) {
+    const filterArgs = args.filter(arg => !isFunction(arg) && !isBoolean(arg.sync));
+    const encoded = this.packInput(filterArgs[0]);
+
+    const { height, hash } = filterArgs[1]; // blockInfo
+
+    return this.handleTransaction(height, hash, encoded);
   }
 
   sendTransaction(...args) {
@@ -255,10 +288,19 @@ export default class ContractMethod {
     return result;
   }
 
-  getData(...args) {
-    const { Params } = this.prepareParameters(args);
+  // getData(...args) {
+  getSignedTx(...args) {
+    const filterArgs = args.filter(arg => !isFunction(arg) && !isBoolean(arg.sync));
 
-    return Params;
+    if (filterArgs[1]) {
+      const { height, hash } = filterArgs[1]; // blockInfo
+      if (hash && height) {
+        return this.prepareParametersWithBlockInfo(args);
+      }
+      throw Error('The second param is the height & hash of a block');
+    }
+
+    return this.prepareParameters(args);
   }
 
   request(...args) {
@@ -281,9 +323,12 @@ export default class ContractMethod {
     run.request = this.request;
     run.call = this.callReadOnly;
     run.inputTypeInfo = this._inputType.toJSON();
+    run.inputType = this._inputType;
     run.outputTypeInfo = this._outputType.toJSON();
+    run.outputType = this._outputType;
+    run.unpackPackedInput = this.unpackPackedInput;
     run.sendTransaction = this.sendTransaction;
-    run.getData = this.getData;
+    run.getSignedTx = this.getSignedTx;
     // eslint-disable-next-line no-param-reassign
     contract[this._name] = run;
   }

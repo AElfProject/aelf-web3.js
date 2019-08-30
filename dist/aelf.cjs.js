@@ -1,5 +1,5 @@
 /*!
- * aelf-sdk.js v3.2.12 
+ * aelf-sdk.js v3.2.13 
  * (c) 2019-2019 AElf 
  * Released under MIT License
  */
@@ -299,7 +299,7 @@ var elliptic = exports;
 elliptic.version = __webpack_require__(92).version;
 elliptic.utils = __webpack_require__(93);
 elliptic.rand = __webpack_require__(95);
-elliptic.curve = __webpack_require__(24);
+elliptic.curve = __webpack_require__(25);
 elliptic.curves = __webpack_require__(102);
 
 // Protocols
@@ -399,7 +399,7 @@ module.exports = Enum;
 var ReflectionObject = __webpack_require__(17);
 ((Enum.prototype = Object.create(ReflectionObject.prototype)).constructor = Enum).className = "Enum";
 
-var Namespace = __webpack_require__(20),
+var Namespace = __webpack_require__(21),
     util = __webpack_require__(0);
 
 /**
@@ -4017,7 +4017,7 @@ Enum.prototype.isReservedName = function isReservedName(name) {
 
 
 var assert = __webpack_require__(16);
-var inherits = __webpack_require__(25);
+var inherits = __webpack_require__(26);
 
 exports.inherits = inherits;
 
@@ -6886,6 +6886,16 @@ types.packed = bake([
 /* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
+var basex = __webpack_require__(86)
+var ALPHABET = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
+
+module.exports = basex(ALPHABET)
+
+
+/***/ }),
+/* 20 */
+/***/ (function(module, exports, __webpack_require__) {
+
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
@@ -7049,7 +7059,7 @@ exports.wordlists = _wordlists_2.wordlists;
 
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7489,7 +7499,7 @@ Namespace._configure = function(Type_, Service_, Enum_) {
 
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7588,7 +7598,7 @@ BlockHash.prototype._pad = function pad() {
 
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var crypto = __webpack_require__(11)
@@ -7601,7 +7611,7 @@ exports.listCiphers = exports.getCiphers = crypto.getCiphers
 
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7811,7 +7821,7 @@ OneOf.d = function decorateOneOf() {
 
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7826,7 +7836,7 @@ curve.edwards = __webpack_require__(101);
 
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 try {
@@ -7838,16 +7848,6 @@ try {
   /* istanbul ignore next */
   module.exports = __webpack_require__(99);
 }
-
-
-/***/ }),
-/* 26 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var basex = __webpack_require__(86)
-var ALPHABET = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
-
-module.exports = basex(ALPHABET)
 
 
 /***/ }),
@@ -8998,11 +8998,11 @@ Reader._configure = function(BufferReader_) {
 module.exports = Type;
 
 // extends Namespace
-var Namespace = __webpack_require__(20);
+var Namespace = __webpack_require__(21);
 ((Type.prototype = Object.create(Namespace.prototype)).constructor = Type).className = "Type";
 
 var Enum      = __webpack_require__(7),
-    OneOf     = __webpack_require__(23),
+    OneOf     = __webpack_require__(24),
     Field     = __webpack_require__(14),
     MapField  = __webpack_require__(33),
     Service   = __webpack_require__(34),
@@ -9727,7 +9727,7 @@ MapField.d = function decorateMapField(fieldId, fieldKeyType, fieldValueType) {
 module.exports = Service;
 
 // extends Namespace
-var Namespace = __webpack_require__(20);
+var Namespace = __webpack_require__(21);
 ((Service.prototype = Object.create(Namespace.prototype)).constructor = Service).className = "Service";
 
 var Method = __webpack_require__(35),
@@ -10204,12 +10204,12 @@ Message.prototype.toJSON = function toJSON() {
 module.exports = Root;
 
 // extends Namespace
-var Namespace = __webpack_require__(20);
+var Namespace = __webpack_require__(21);
 ((Root.prototype = Object.create(Namespace.prototype)).constructor = Root).className = "Root";
 
 var Field   = __webpack_require__(14),
     Enum    = __webpack_require__(7),
-    OneOf   = __webpack_require__(23),
+    OneOf   = __webpack_require__(24),
     util    = __webpack_require__(0);
 
 var Type,   // cyclic
@@ -10560,7 +10560,7 @@ Root._configure = function(Type_, parse_, common_) {
 var hash = exports;
 
 hash.utils = __webpack_require__(9);
-hash.common = __webpack_require__(21);
+hash.common = __webpack_require__(22);
 hash.sha = __webpack_require__(103);
 hash.ripemd = __webpack_require__(107);
 hash.hmac = __webpack_require__(108);
@@ -10952,12 +10952,12 @@ protobuf.converter        = __webpack_require__(51);
 
 // Reflection
 protobuf.ReflectionObject = __webpack_require__(17);
-protobuf.Namespace        = __webpack_require__(20);
+protobuf.Namespace        = __webpack_require__(21);
 protobuf.Root             = __webpack_require__(37);
 protobuf.Enum             = __webpack_require__(7);
 protobuf.Type             = __webpack_require__(32);
 protobuf.Field            = __webpack_require__(14);
-protobuf.OneOf            = __webpack_require__(23);
+protobuf.OneOf            = __webpack_require__(24);
 protobuf.MapField         = __webpack_require__(33);
 protobuf.Service          = __webpack_require__(34);
 protobuf.Method           = __webpack_require__(35);
@@ -12453,7 +12453,7 @@ exports.g1_256 = g1_256;
 
 
 var utils = __webpack_require__(9);
-var common = __webpack_require__(21);
+var common = __webpack_require__(22);
 var shaCommon = __webpack_require__(55);
 var assert = __webpack_require__(16);
 
@@ -12565,7 +12565,7 @@ SHA256.prototype._digest = function digest(enc) {
 
 
 var utils = __webpack_require__(9);
-var common = __webpack_require__(21);
+var common = __webpack_require__(22);
 var assert = __webpack_require__(16);
 
 var rotr64_hi = utils.rotr64_hi;
@@ -16306,7 +16306,7 @@ var tokenize  = __webpack_require__(53),
     Type      = __webpack_require__(32),
     Field     = __webpack_require__(14),
     MapField  = __webpack_require__(33),
-    OneOf     = __webpack_require__(23),
+    OneOf     = __webpack_require__(24),
     Enum      = __webpack_require__(7),
     Service   = __webpack_require__(34),
     Method    = __webpack_require__(35),
@@ -18088,10 +18088,10 @@ BasePoint.prototype.dblp = function dblp(k) {
 "use strict";
 
 
-var curve = __webpack_require__(24);
+var curve = __webpack_require__(25);
 var elliptic = __webpack_require__(2);
 var BN = __webpack_require__(8);
-var inherits = __webpack_require__(25);
+var inherits = __webpack_require__(26);
 var Base = curve.base;
 
 var assert = elliptic.utils.assert;
@@ -19071,9 +19071,9 @@ if (typeof Object.create === 'function') {
 "use strict";
 
 
-var curve = __webpack_require__(24);
+var curve = __webpack_require__(25);
 var BN = __webpack_require__(8);
-var inherits = __webpack_require__(25);
+var inherits = __webpack_require__(26);
 var Base = curve.base;
 
 var elliptic = __webpack_require__(2);
@@ -19258,10 +19258,10 @@ Point.prototype.getX = function getX() {
 "use strict";
 
 
-var curve = __webpack_require__(24);
+var curve = __webpack_require__(25);
 var elliptic = __webpack_require__(2);
 var BN = __webpack_require__(8);
-var inherits = __webpack_require__(25);
+var inherits = __webpack_require__(26);
 var Base = curve.base;
 
 var assert = elliptic.utils.assert;
@@ -19925,7 +19925,7 @@ exports.sha512 = __webpack_require__(57);
 
 
 var utils = __webpack_require__(9);
-var common = __webpack_require__(21);
+var common = __webpack_require__(22);
 var shaCommon = __webpack_require__(55);
 
 var rotl32 = utils.rotl32;
@@ -20085,7 +20085,7 @@ SHA384.prototype._digest = function digest(enc) {
 
 
 var utils = __webpack_require__(9);
-var common = __webpack_require__(21);
+var common = __webpack_require__(22);
 
 var rotl32 = utils.rotl32;
 var sum32 = utils.sum32;
@@ -22172,7 +22172,7 @@ module.exports = require("assert");
 /* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var base58 = __webpack_require__(26)
+var base58 = __webpack_require__(19)
 var createHash = __webpack_require__(39)
 
 function encode (payload, version) {
@@ -25930,6 +25930,7 @@ __webpack_require__.r(__webpack_exports__);
 var utils_namespaceObject = {};
 __webpack_require__.r(utils_namespaceObject);
 __webpack_require__.d(utils_namespaceObject, "base58", function() { return base58; });
+__webpack_require__.d(utils_namespaceObject, "chainIdConvertor", function() { return chainIdConvertor; });
 __webpack_require__.d(utils_namespaceObject, "padLeft", function() { return padLeft; });
 __webpack_require__.d(utils_namespaceObject, "padRight", function() { return padRight; });
 __webpack_require__.d(utils_namespaceObject, "decodeAddressRep", function() { return decodeAddressRep; });
@@ -28897,7 +28898,7 @@ var BigNumber = clone();
 /* harmony default export */ var bignumber = (BigNumber);
 
 // EXTERNAL MODULE: ./node_modules/bs58/index.js
-var bs58 = __webpack_require__(26);
+var bs58 = __webpack_require__(19);
 var bs58_default = /*#__PURE__*/__webpack_require__.n(bs58);
 
 // EXTERNAL MODULE: ./node_modules/@aelfqueen/protobufjs/ext/descriptor/index.js
@@ -28996,6 +28997,12 @@ var CHAIN_METHODS = {
     call: 'blockChain/transactionResults',
     method: 'GET',
     params: ['blockHash', 'offset', 'limit']
+  },
+  getMerklePathByTxId: {
+    name: 'getMerklePathByTxId',
+    call: 'blockChain/merklePathByTransactionId',
+    method: 'GET',
+    params: ['transactionId']
   },
   getTransactionPoolStatus: {
     name: 'getTransactionPoolStatus',
@@ -29154,6 +29161,18 @@ var base58 = {
     }
 
     return data;
+  }
+};
+var chainIdConvertor = {
+  // chainIdToBase58 (int32 chainId)
+  chainIdToBase58: function chainIdToBase58(chainId) {
+    var bufferTemp = Buffer.alloc(4);
+    bufferTemp.writeInt32LE("0x".concat(chainId.toString('16')), 0);
+    var bytes = Buffer.concat([bufferTemp], 3);
+    return bs58_default.a.encode(bytes);
+  },
+  base58ToChainId: function base58ToChainId(base58String) {
+    return Buffer.concat([bs58_default.a.decode(base58String)], 4).readInt32LE();
   }
 };
 /**
@@ -30067,7 +30086,7 @@ var elliptic = __webpack_require__(2);
 var elliptic_default = /*#__PURE__*/__webpack_require__.n(elliptic);
 
 // EXTERNAL MODULE: ./node_modules/bip39/src/index.js
-var src = __webpack_require__(19);
+var src = __webpack_require__(20);
 
 // EXTERNAL MODULE: ./node_modules/hdkey/lib/hdkey.js
 var hdkey = __webpack_require__(28);
@@ -30086,7 +30105,7 @@ var scrypt_polyfill = __webpack_require__(42);
 var scrypt_polyfill_default = /*#__PURE__*/__webpack_require__.n(scrypt_polyfill);
 
 // EXTERNAL MODULE: ./node_modules/browserify-cipher/index.js
-var browserify_cipher = __webpack_require__(22);
+var browserify_cipher = __webpack_require__(23);
 
 // EXTERNAL MODULE: ./node_modules/randombytes/index.js
 var randombytes = __webpack_require__(27);
@@ -31078,6 +31097,30 @@ var contractMethod_maybePrettifyHash = function maybePrettifyHash(obj, forSelf, 
   });
 };
 
+var unpackSpecifiedTypeData = function unpackSpecifiedTypeData(_ref) {
+  var data = _ref.data,
+      dataType = _ref.dataType;
+  var buffer = Buffer.from(data, 'hex');
+  var decoded = dataType.decode(buffer);
+  var result = dataType.toObject(decoded, {
+    enums: String,
+    // enums as string names
+    longs: String,
+    // longs as strings (requires long.js)
+    bytes: String,
+    // bytes as base64 encoded strings
+    defaults: true,
+    // includes default values
+    arrays: true,
+    // populates empty arrays (repeated fields) even if defaults=false
+    objects: true,
+    // populates empty objects (map fields) even if defaults=false
+    oneofs: true // includes virtual oneof fields set to the present field's name
+
+  });
+  return result;
+};
+
 var contractMethod_ContractMethod =
 /*#__PURE__*/
 function () {
@@ -31102,12 +31145,13 @@ function () {
     this._contractAddress = contractAddress;
     this._wallet = walletInstance;
     this.sendTransaction = this.sendTransaction.bind(this);
+    this.unpackPackedInput = this.unpackPackedInput.bind(this);
     this.unpackOutput = this.unpackOutput.bind(this);
     this.bindMethodToContract = this.bindMethodToContract.bind(this);
     this.run = this.run.bind(this);
     this.request = this.request.bind(this);
     this.callReadOnly = this.callReadOnly.bind(this);
-    this.getData = this.getData.bind(this);
+    this.getSignedTx = this.getSignedTx.bind(this);
   }
 
   createClass_default()(ContractMethod, [{
@@ -31125,33 +31169,30 @@ function () {
       return this._inputType.encode(message).finish();
     }
   }, {
+    key: "unpackPackedInput",
+    value: function unpackPackedInput(inputPacked) {
+      if (!inputPacked) {
+        return null;
+      }
+
+      var result = unpackSpecifiedTypeData({
+        data: inputPacked,
+        dataType: this._inputType
+      });
+      result = contractMethod_maybePrettifyAddress(result, this._isInputTypeAddress, this._inputTypeAddressFieldPaths);
+      return contractMethod_maybePrettifyHash(result, this._isInputTypeHash, this._inputTypeHashFieldPaths);
+    }
+  }, {
     key: "unpackOutput",
     value: function unpackOutput(output) {
       if (!output) {
         return null;
       }
 
-      var buffer = Buffer.from(output, 'hex');
-
-      var decoded = this._outputType.decode(buffer);
-
-      var result = this._outputType.toObject(decoded, {
-        enums: String,
-        // enums as string names
-        longs: String,
-        // longs as strings (requires long.js)
-        bytes: String,
-        // bytes as base64 encoded strings
-        defaults: true,
-        // includes default values
-        arrays: true,
-        // populates empty arrays (repeated fields) even if defaults=false
-        objects: true,
-        // populates empty objects (map fields) even if defaults=false
-        oneofs: true // includes virtual oneof fields set to the present field's name
-
+      var result = unpackSpecifiedTypeData({
+        data: output,
+        dataType: this._outputType
       });
-
       result = contractMethod_maybePrettifyAddress(result, this._isOutputTypeAddress, this._outputTypeAddressFieldPaths);
       return contractMethod_maybePrettifyHash(result, this._isOutputTypeHash, this._outputTypeHashFieldPaths);
     }
@@ -31201,6 +31242,19 @@ function () {
           BestChainHash = _this$_chain$getChain.BestChainHash;
 
       return this.handleTransaction(BestChainHeight, BestChainHash, encoded);
+    }
+  }, {
+    key: "prepareParametersWithBlockInfo",
+    value: function prepareParametersWithBlockInfo(args) {
+      var filterArgs = args.filter(function (arg) {
+        return !isFunction(arg) && !isBoolean(arg.sync);
+      });
+      var encoded = this.packInput(filterArgs[0]);
+      var _filterArgs$ = filterArgs[1],
+          height = _filterArgs$.height,
+          hash = _filterArgs$.hash; // blockInfo
+
+      return this.handleTransaction(height, hash, encoded);
     }
   }, {
     key: "sendTransaction",
@@ -31273,18 +31327,32 @@ function () {
         }
       });
       return result;
-    }
+    } // getData(...args) {
+
   }, {
-    key: "getData",
-    value: function getData() {
+    key: "getSignedTx",
+    value: function getSignedTx() {
       for (var _len3 = arguments.length, args = new Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
         args[_key3] = arguments[_key3];
       }
 
-      var _this$prepareParamete = this.prepareParameters(args),
-          Params = _this$prepareParamete.Params;
+      var filterArgs = args.filter(function (arg) {
+        return !isFunction(arg) && !isBoolean(arg.sync);
+      });
 
-      return Params;
+      if (filterArgs[1]) {
+        var _filterArgs$2 = filterArgs[1],
+            height = _filterArgs$2.height,
+            hash = _filterArgs$2.hash; // blockInfo
+
+        if (hash && height) {
+          return this.prepareParametersWithBlockInfo(args);
+        }
+
+        throw Error('The second param is the height & hash of a block');
+      }
+
+      return this.prepareParameters(args);
     }
   }, {
     key: "request",
@@ -31316,9 +31384,12 @@ function () {
       run.request = this.request;
       run.call = this.callReadOnly;
       run.inputTypeInfo = this._inputType.toJSON();
+      run.inputType = this._inputType;
       run.outputTypeInfo = this._outputType.toJSON();
+      run.outputType = this._outputType;
+      run.unpackPackedInput = this.unpackPackedInput;
       run.sendTransaction = this.sendTransaction;
-      run.getData = this.getData; // eslint-disable-next-line no-param-reassign
+      run.getSignedTx = this.getSignedTx; // eslint-disable-next-line no-param-reassign
 
       contract[this._name] = run;
     }
@@ -31524,7 +31595,9 @@ function () {
           throw new Error("txId ".concat(txId, " has no correspond transaction in the block with height ").concat(height));
         }
 
-        var txResults = this.getTxResult(BlockHash, 0, txIds.length);
+        var txResults = this.getTxResults(BlockHash, 0, txIds.length, {
+          sync: true
+        });
         var nodes = txResults.map(function (result, index) {
           var id = txIds[index];
           var status = result.Status;
@@ -31850,7 +31923,7 @@ function () {
     defineProperty_default()(this, "settings", new settings_Settings());
 
     defineProperty_default()(this, "version", {
-      api: "3.2.12"
+      api: "3.2.13"
     });
 
     this._requestManager = new requestManage_RequestManager(provider);
@@ -31889,7 +31962,7 @@ function () {
 /* eslint-enable */
 
 
-defineProperty_default()(src_AElf, "version", "3.2.12");
+defineProperty_default()(src_AElf, "version", "3.2.13");
 
 defineProperty_default()(src_AElf, "providers", {
   HttpProvider: httpProvider_HttpProvider

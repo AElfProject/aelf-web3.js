@@ -43,6 +43,19 @@ export const base58 = {
   }
 };
 
+export const chainIdConvertor = {
+  // chainIdToBase58 (int32 chainId)
+  chainIdToBase58(chainId) {
+    const bufferTemp = Buffer.alloc(4);
+    bufferTemp.writeInt32LE(`0x${chainId.toString('16')}`, 0);
+    const bytes = Buffer.concat([bufferTemp], 3);
+    return bs58.encode(bytes);
+  },
+  base58ToChainId(base58String) {
+    return Buffer.concat([bs58.decode(base58String)], 4).readInt32LE();
+  }
+};
+
 /**
  * Should be called to pad string to expected length
  *
