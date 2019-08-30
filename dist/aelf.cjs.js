@@ -1,5 +1,5 @@
 /*!
- * aelf-sdk.js v3.2.12 
+ * aelf-sdk.js v3.2.13 
  * (c) 2019-2019 AElf 
  * Released under MIT License
  */
@@ -28998,6 +28998,12 @@ var CHAIN_METHODS = {
     method: 'GET',
     params: ['blockHash', 'offset', 'limit']
   },
+  getMerklePathByTxId: {
+    name: 'getMerklePathByTxId',
+    call: 'blockChain/merklePathByTransactionId',
+    method: 'GET',
+    params: ['transactionId']
+  },
   getTransactionPoolStatus: {
     name: 'getTransactionPoolStatus',
     call: 'blockChain/transactionPoolStatus',
@@ -29161,7 +29167,7 @@ var chainIdConvertor = {
   // chainIdToBase58 (int32 chainId)
   chainIdToBase58: function chainIdToBase58(chainId) {
     var bufferTemp = Buffer.alloc(4);
-    bufferTemp.writeInt32LE('0x' + chainId.toString('16'), 0);
+    bufferTemp.writeInt32LE("0x".concat(chainId.toString('16')), 0);
     var bytes = Buffer.concat([bufferTemp], 3);
     return bs58_default.a.encode(bytes);
   },
@@ -31091,6 +31097,30 @@ var contractMethod_maybePrettifyHash = function maybePrettifyHash(obj, forSelf, 
   });
 };
 
+var unpackSpecifiedTypeData = function unpackSpecifiedTypeData(_ref) {
+  var data = _ref.data,
+      dataType = _ref.dataType;
+  var buffer = Buffer.from(data, 'hex');
+  var decoded = dataType.decode(buffer);
+  var result = dataType.toObject(decoded, {
+    enums: String,
+    // enums as string names
+    longs: String,
+    // longs as strings (requires long.js)
+    bytes: String,
+    // bytes as base64 encoded strings
+    defaults: true,
+    // includes default values
+    arrays: true,
+    // populates empty arrays (repeated fields) even if defaults=false
+    objects: true,
+    // populates empty objects (map fields) even if defaults=false
+    oneofs: true // includes virtual oneof fields set to the present field's name
+
+  });
+  return result;
+};
+
 var contractMethod_ContractMethod =
 /*#__PURE__*/
 function () {
@@ -31115,12 +31145,12 @@ function () {
     this._contractAddress = contractAddress;
     this._wallet = walletInstance;
     this.sendTransaction = this.sendTransaction.bind(this);
+    this.unpackPackedInput = this.unpackPackedInput.bind(this);
     this.unpackOutput = this.unpackOutput.bind(this);
     this.bindMethodToContract = this.bindMethodToContract.bind(this);
     this.run = this.run.bind(this);
     this.request = this.request.bind(this);
-    this.callReadOnly = this.callReadOnly.bind(this); // this.getData = this.getData.bind(this);
-
+    this.callReadOnly = this.callReadOnly.bind(this);
     this.getSignedTx = this.getSignedTx.bind(this);
   }
 
@@ -31139,33 +31169,30 @@ function () {
       return this._inputType.encode(message).finish();
     }
   }, {
+    key: "unpackPackedInput",
+    value: function unpackPackedInput(inputPacked) {
+      if (!inputPacked) {
+        return null;
+      }
+
+      var result = unpackSpecifiedTypeData({
+        data: inputPacked,
+        dataType: this._inputType
+      });
+      result = contractMethod_maybePrettifyAddress(result, this._isInputTypeAddress, this._inputTypeAddressFieldPaths);
+      return contractMethod_maybePrettifyHash(result, this._isInputTypeHash, this._inputTypeHashFieldPaths);
+    }
+  }, {
     key: "unpackOutput",
     value: function unpackOutput(output) {
       if (!output) {
         return null;
       }
 
-      var buffer = Buffer.from(output, 'hex');
-
-      var decoded = this._outputType.decode(buffer);
-
-      var result = this._outputType.toObject(decoded, {
-        enums: String,
-        // enums as string names
-        longs: String,
-        // longs as strings (requires long.js)
-        bytes: String,
-        // bytes as base64 encoded strings
-        defaults: true,
-        // includes default values
-        arrays: true,
-        // populates empty arrays (repeated fields) even if defaults=false
-        objects: true,
-        // populates empty objects (map fields) even if defaults=false
-        oneofs: true // includes virtual oneof fields set to the present field's name
-
+      var result = unpackSpecifiedTypeData({
+        data: output,
+        dataType: this._outputType
       });
-
       result = contractMethod_maybePrettifyAddress(result, this._isOutputTypeAddress, this._outputTypeAddressFieldPaths);
       return contractMethod_maybePrettifyHash(result, this._isOutputTypeHash, this._outputTypeHashFieldPaths);
     }
@@ -31320,9 +31347,9 @@ function () {
 
         if (hash && height) {
           return this.prepareParametersWithBlockInfo(args);
-        } else {
-          throw Error('The second param is the height & hash of a block');
         }
+
+        throw Error('The second param is the height & hash of a block');
       }
 
       return this.prepareParameters(args);
@@ -31357,9 +31384,11 @@ function () {
       run.request = this.request;
       run.call = this.callReadOnly;
       run.inputTypeInfo = this._inputType.toJSON();
+      run.inputType = this._inputType;
       run.outputTypeInfo = this._outputType.toJSON();
-      run.sendTransaction = this.sendTransaction; // run.getData = this.getData;
-
+      run.outputType = this._outputType;
+      run.unpackPackedInput = this.unpackPackedInput;
+      run.sendTransaction = this.sendTransaction;
       run.getSignedTx = this.getSignedTx; // eslint-disable-next-line no-param-reassign
 
       contract[this._name] = run;
@@ -31566,7 +31595,9 @@ function () {
           throw new Error("txId ".concat(txId, " has no correspond transaction in the block with height ").concat(height));
         }
 
-        var txResults = this.getTxResult(BlockHash, 0, txIds.length);
+        var txResults = this.getTxResults(BlockHash, 0, txIds.length, {
+          sync: true
+        });
         var nodes = txResults.map(function (result, index) {
           var id = txIds[index];
           var status = result.Status;
@@ -31892,7 +31923,7 @@ function () {
     defineProperty_default()(this, "settings", new settings_Settings());
 
     defineProperty_default()(this, "version", {
-      api: "3.2.12"
+      api: "3.2.13"
     });
 
     this._requestManager = new requestManage_RequestManager(provider);
@@ -31931,7 +31962,7 @@ function () {
 /* eslint-enable */
 
 
-defineProperty_default()(src_AElf, "version", "3.2.12");
+defineProperty_default()(src_AElf, "version", "3.2.13");
 
 defineProperty_default()(src_AElf, "providers", {
   HttpProvider: httpProvider_HttpProvider
