@@ -62,6 +62,12 @@ export const CHAIN_METHODS = {
     method: 'GET',
     params: ['blockHash', 'offset', 'limit']
   },
+  getMerklePathByTxId: {
+    name: 'getMerklePathByTxId',
+    call: 'blockChain/merklePathByTransactionId',
+    method: 'GET',
+    params: ['transactionId']
+  },
   getTransactionPoolStatus: {
     name: 'getTransactionPoolStatus',
     call: 'blockChain/transactionPoolStatus',
