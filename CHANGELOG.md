@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.2.14](https://github.com/AElfProject/aelf-sdk.js/compare/v3.2.13...v3.2.14) (2019-09-02)
+
+
+### Bug Fixes
+
+* bug when getMerklePath, add sync:true; update README ([43afff4](https://github.com/AElfProject/aelf-sdk.js/commit/43afff4))
+
+
+### Features
+
+* 🎸 add chain method getMerklePathByTxId ([c45f492](https://github.com/AElfProject/aelf-sdk.js/commit/c45f492))
+* 🎸 add example for crossChain ([0450e5c](https://github.com/AElfProject/aelf-sdk.js/commit/0450e5c))
+* 🎸 bind new one method and two object to contractMethod ([785b279](https://github.com/AElfProject/aelf-sdk.js/commit/785b279))
+* add chainIdConvertor in utils; add getSignedTx  in contractMethod.js ([be2f031](https://github.com/AElfProject/aelf-sdk.js/commit/be2f031))
+
+
+
 ### [3.2.13](https://github.com/AElfProject/aelf-sdk.js/compare/v3.2.12...v3.2.13) (2019-08-19)
 
 
