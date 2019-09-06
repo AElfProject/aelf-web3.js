@@ -52,7 +52,7 @@ export const chainIdConvertor = {
     return bs58.encode(bytes);
   },
   base58ToChainId(base58String) {
-    return Buffer.concat([bs58.decode(base58String)], 4).readInt32LE();
+    return Buffer.concat([bs58.decode(base58String)], 4).readInt32LE(0);
   }
 };
 

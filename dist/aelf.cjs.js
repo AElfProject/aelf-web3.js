@@ -1,5 +1,5 @@
 /*!
- * aelf-sdk.js v3.2.14 
+ * aelf-sdk.js v3.2.15 
  * (c) 2019-2019 AElf 
  * Released under MIT License
  */
@@ -29172,7 +29172,7 @@ var chainIdConvertor = {
     return bs58_default.a.encode(bytes);
   },
   base58ToChainId: function base58ToChainId(base58String) {
-    return Buffer.concat([bs58_default.a.decode(base58String)], 4).readInt32LE();
+    return Buffer.concat([bs58_default.a.decode(base58String)], 4).readInt32LE(0);
   }
 };
 /**
@@ -31923,7 +31923,7 @@ function () {
     defineProperty_default()(this, "settings", new settings_Settings());
 
     defineProperty_default()(this, "version", {
-      api: "3.2.14"
+      api: "3.2.15"
     });
 
     this._requestManager = new requestManage_RequestManager(provider);
@@ -31962,7 +31962,7 @@ function () {
 /* eslint-enable */
 
 
-defineProperty_default()(src_AElf, "version", "3.2.14");
+defineProperty_default()(src_AElf, "version", "3.2.15");
 
 defineProperty_default()(src_AElf, "providers", {
   HttpProvider: httpProvider_HttpProvider
