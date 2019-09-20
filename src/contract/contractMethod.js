@@ -150,6 +150,7 @@ export default class ContractMethod {
 
     this.sendTransaction = this.sendTransaction.bind(this);
     this.unpackPackedInput = this.unpackPackedInput.bind(this);
+    this.packInput = this.packInput.bind(this);
     this.unpackOutput = this.unpackOutput.bind(this);
     this.bindMethodToContract = this.bindMethodToContract.bind(this);
     this.run = this.run.bind(this);
@@ -327,6 +328,7 @@ export default class ContractMethod {
     run.outputTypeInfo = this._outputType.toJSON();
     run.outputType = this._outputType;
     run.unpackPackedInput = this.unpackPackedInput;
+    run.packInput = this.packInput;
     run.sendTransaction = this.sendTransaction;
     run.getSignedTx = this.getSignedTx;
     // eslint-disable-next-line no-param-reassign
