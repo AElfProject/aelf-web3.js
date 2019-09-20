@@ -22,6 +22,12 @@ export const CHAIN_METHODS = {
     method: 'GET',
     params: ['blockHash']
   },
+  currentRoundInfo: {
+    name: 'currentRoundInfo',
+    call: 'blockChain/currentRoundInformation',
+    method: 'GET',
+    params: []
+  },
   getContractFileDescriptorSet: {
     name: 'getContractFileDescriptorSet',
     call: 'blockChain/contractFileDescriptorSet',
