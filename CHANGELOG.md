@@ -2,6 +2,30 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.2.16](https://github.com/AElfProject/aelf-sdk.js/compare/v3.2.15...v3.2.16) (2019-09-20)
+
+
+### Bug Fixes
+
+* 🐛 set readInt32LE(offset) offset=0 ([4d42b6c](https://github.com/AElfProject/aelf-sdk.js/commit/4d42b6c))
+
+
+### Features
+
+* 🎸 add get current round information method ([6d8529e](https://github.com/AElfProject/aelf-sdk.js/commit/6d8529e))
+* 🎸 exposed packinput method ([4524b00](https://github.com/AElfProject/aelf-sdk.js/commit/4524b00))
+
+
+
+### [3.2.15](https://github.com/AElfProject/aelf-sdk.js/compare/v3.2.14...v3.2.15) (2019-09-06)
+
+
+### Bug Fixes
+
+* set readInt32LE(offset) offset=0 ([4d42b6c](https://github.com/AElfProject/aelf-sdk.js/commit/4d42b6c))
+
+
+
 ### [3.2.14](https://github.com/AElfProject/aelf-sdk.js/compare/v3.2.13...v3.2.14) (2019-09-02)
 
 
