@@ -130,14 +130,4 @@ describe('test AElf-sdk', () => {
     });
     expect(merklePath.length).toBeGreaterThanOrEqual(0);
   }, 30000);
-
-  // test('test chain methods getTxResult', async () => {
-  //   await expect(aelf.chain.getTxResult('ded8f2675bc3980d29e5a4a83be74957cd9ba4a28a15a4e1f9a3aa6bdf1397a')).rejects.toMatchObject({
-  //     Status: 'FAILED'
-  //   });
-  //   const result = await aelf.chain.getTxResult('180ebc9863de31ef2eeb1eeaa4d782e2fef365a409bb68fc3e79365d0fa28d71');
-  //   expect(result.Error).toBeNull();
-  //   expect(result.TransactionId).toBe('180ebc9863de31ef2eeb1eeaa4d782e2fef365a409bb68fc3e79365d0fa28d71');
-  //   expect(result.Transaction).not.toBeNull();
-  // }, 30000);
 });
