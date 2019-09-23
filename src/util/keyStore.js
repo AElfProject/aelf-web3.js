@@ -17,15 +17,15 @@ const defaultOptions = {
 };
 
 /**
- * getKeyStoreFromV1
+ * getKeyStore
  *
- * @method getKeyStoreFromV1
+ * @method getKeyStore
  * @param {Object} walletInfoInput  walletInfo
  * @param {string} password password
  * @param {Object} option option
  * @return {Object} keyStore
  */
-function getKeyStoreFromV1(
+export function getKeystore(
   {
     mnemonic,
     privateKey,
@@ -68,8 +68,6 @@ function getKeyStoreFromV1(
     type: 'aelf',
     nickName,
     address,
-    // todo: have to use uuid?
-    // id: uuid,
     crypto: {
       cipher,
       ciphertext: privateKeyEncrypted.toString('hex'),
@@ -77,13 +75,12 @@ function getKeyStoreFromV1(
         iv: iv.toString('hex')
       },
       mnemonicEncrypted: mnemonicEncrypted.toString('hex'),
-      privateKeyEncrypted: privateKeyEncrypted.toString('hex'),
       kdf: 'scrypt',
       kdfparams: {
         r: opt.r,
         n: opt.n,
         p: opt.p,
-        dkLen: opt.dklen,
+        dklen: opt.dklen,
         salt: salt.toString('hex')
       },
       mac
@@ -94,18 +91,16 @@ function getKeyStoreFromV1(
 /**
  * unlock AElf key store
  *
- * @method unlockKeyStoreFromV1
+ * @method unlockKeystore
  * @param {Object} keyStoreInput  key store input
  * @param {string} password password
  * @return {Object} walletInfo
  */
-function unlockKeyStoreFromV1(
+export function unlockKeystore(
   {
     crypto,
-    type,
     nickName = '',
-    address = '',
-    version = 1
+    address = ''
   },
   password
 ) {
@@ -116,17 +111,9 @@ function unlockKeyStoreFromV1(
     mac,
     cipherparams,
     mnemonicEncrypted,
-    privateKeyEncrypted,
+    ciphertext,
     cipher = 'aes-128-ctr'
   } = crypto;
-  if (+version !== 1) {
-    error = { ...KEY_STORE_ERRORS.WRONG_KEY_STORE_VERSION };
-    throw error;
-  }
-  if (type !== 'aelf') {
-    error = { ...KEY_STORE_ERRORS.NOT_AELF_KEY_STORE };
-    throw error;
-  }
   const sliceLength = /128/.test(cipher) ? 16 : 32;
   const iv = Buffer.from(cipherparams.iv, 'hex');
   const derivedKey = scrypt(
@@ -135,14 +122,14 @@ function unlockKeyStoreFromV1(
     kdfparams.n,
     kdfparams.r,
     kdfparams.p,
-    kdfparams.dkLen
+    kdfparams.dklen || kdfparams.dkLen
   );
-  const rawMac = Buffer.concat([derivedKey.slice(16, 32), Buffer.from(privateKeyEncrypted, 'hex')]);
+  const rawMac = Buffer.concat([derivedKey.slice(16, 32), Buffer.from(ciphertext, 'hex')]);
   const currentMac = keccak256(rawMac).replace('0x', '');
   if (currentMac === mac) {
     const privateKeyDeCipher = createDecipheriv(cipher, derivedKey.slice(0, sliceLength), iv);
     const privateKey = Buffer.concat([
-      privateKeyDeCipher.update(Buffer.from(privateKeyEncrypted, 'hex')),
+      privateKeyDeCipher.update(Buffer.from(ciphertext, 'hex')),
       privateKeyDeCipher.final()
     ]).toString('hex');
 
@@ -166,41 +153,6 @@ function unlockKeyStoreFromV1(
 }
 
 /**
- * getKeystore
- *
- * @method getKeystore
- * @param {Object} walletInfoInput  walletInfo
- * @param {string} password password
- * @params {Object} options custom options
- * @param {number} version version
- * @return {Object}
- */
-export const getKeystore = (walletInfoInput, password, options = {}, version = 1) => {
-  if (+version === 1) {
-    return getKeyStoreFromV1(walletInfoInput, password, options);
-  }
-  const error = { ...KEY_STORE_ERRORS.WRONG_VERSION };
-  throw error;
-};
-
-
-/**
- * unlock keyStore
- * @method unlockKeystore
- * @param {Object} keyStoreInput  walletInfo
- * @param {string} password password
- * @returns {Object}
- */
-export const unlockKeystore = (keyStoreInput, password) => {
-  const { version } = keyStoreInput;
-  if (+version === 1) {
-    return unlockKeyStoreFromV1(keyStoreInput, password);
-  }
-  const error = { ...KEY_STORE_ERRORS.WRONG_VERSION };
-  throw error;
-};
-
-/**
  * checkPassword
  *
  * @method checkPassword
@@ -213,7 +165,7 @@ export const checkPassword = (
   password
 ) => {
   try {
-    const result = unlockKeyStoreFromV1(keyStoreInput, password);
+    const result = unlockKeystore(keyStoreInput, password);
     return !!result.privateKey;
   } catch (e) {
     return false;
