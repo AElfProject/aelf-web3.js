@@ -1,5 +1,5 @@
 /*!
- * aelf-sdk.js v3.2.16 
+ * aelf-sdk.js v3.2.17 
  * (c) 2019-2019 AElf 
  * Released under MIT License
  */
@@ -87,11 +87,32 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 145);
+/******/ 	return __webpack_require__(__webpack_require__.s = 144);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
+/***/ (function(module, exports) {
+
+function _defineProperty(obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+
+  return obj;
+}
+
+module.exports = _defineProperty;
+
+/***/ }),
+/* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -103,14 +124,14 @@ module.exports =
  */
 var util = module.exports = __webpack_require__(9);
 
-var roots = __webpack_require__(48);
+var roots = __webpack_require__(47);
 
 var Type, // cyclic
     Enum;
 
-util.codegen = __webpack_require__(85);
-util.fetch   = __webpack_require__(86);
-util.path    = __webpack_require__(87);
+util.codegen = __webpack_require__(84);
+util.fetch   = __webpack_require__(85);
+util.path    = __webpack_require__(86);
 
 /**
  * Node's fs module if available.
@@ -276,7 +297,7 @@ Object.defineProperty(util, "decorateRoot", {
 
 
 /***/ }),
-/* 1 */
+/* 2 */
 /***/ (function(module, exports) {
 
 function _classCallCheck(instance, Constructor) {
@@ -286,27 +307,6 @@ function _classCallCheck(instance, Constructor) {
 }
 
 module.exports = _classCallCheck;
-
-/***/ }),
-/* 2 */
-/***/ (function(module, exports) {
-
-function _defineProperty(obj, key, value) {
-  if (key in obj) {
-    Object.defineProperty(obj, key, {
-      value: value,
-      enumerable: true,
-      configurable: true,
-      writable: true
-    });
-  } else {
-    obj[key] = value;
-  }
-
-  return obj;
-}
-
-module.exports = _defineProperty;
 
 /***/ }),
 /* 3 */
@@ -340,7 +340,7 @@ module.exports = _createClass;
 var utils = exports;
 var BN = __webpack_require__(7);
 var minAssert = __webpack_require__(15);
-var minUtils = __webpack_require__(55);
+var minUtils = __webpack_require__(54);
 
 utils.assert = minAssert;
 utils.toArray = minUtils.toArray;
@@ -465,7 +465,7 @@ utils.intFromLE = intFromLE;
 // light library entry point.
 
 
-module.exports = __webpack_require__(44);
+module.exports = __webpack_require__(43);
 
 /***/ }),
 /* 6 */
@@ -480,7 +480,7 @@ var ReflectionObject = __webpack_require__(16);
 ((Enum.prototype = Object.create(ReflectionObject.prototype)).constructor = Enum).className = "Enum";
 
 var Namespace = __webpack_require__(20),
-    util = __webpack_require__(0);
+    util = __webpack_require__(1);
 
 /**
  * Constructs a new enum instance.
@@ -4087,7 +4087,7 @@ Enum.prototype.isReservedName = function isReservedName(name) {
   };
 })( false || module, this);
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(96)(module)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(95)(module)))
 
 /***/ }),
 /* 8 */
@@ -4383,28 +4383,28 @@ exports.shr64_lo = shr64_lo;
 var util = exports;
 
 // used to return a Promise where callback is omitted
-util.asPromise = __webpack_require__(45);
+util.asPromise = __webpack_require__(44);
 
 // converts to / from base64 encoded strings
-util.base64 = __webpack_require__(76);
+util.base64 = __webpack_require__(75);
 
 // base class of rpc.Service
-util.EventEmitter = __webpack_require__(77);
+util.EventEmitter = __webpack_require__(76);
 
 // float handling accross browsers
-util.float = __webpack_require__(78);
+util.float = __webpack_require__(77);
 
 // requires modules optionally and hides the call from bundlers
-util.inquire = __webpack_require__(46);
+util.inquire = __webpack_require__(45);
 
 // converts to / from utf8 encoded strings
-util.utf8 = __webpack_require__(79);
+util.utf8 = __webpack_require__(78);
 
 // provides a node-like buffer pool in the browser
-util.pool = __webpack_require__(80);
+util.pool = __webpack_require__(79);
 
 // utility to work with the low and high bits of a 64 bit value
-util.LongBits = __webpack_require__(81);
+util.LongBits = __webpack_require__(80);
 
 // global object reference
 util.global = typeof window !== "undefined" && window
@@ -5594,7 +5594,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/**
     root = self;
   }
   var COMMON_JS = !root.JS_SHA256_NO_COMMON_JS && typeof module === 'object' && module.exports;
-  var AMD =  true && __webpack_require__(88);
+  var AMD =  true && __webpack_require__(87);
   var ARRAY_BUFFER = !root.JS_SHA256_NO_ARRAY_BUFFER && typeof ArrayBuffer !== 'undefined';
   var HEX_CHARS = '0123456789abcdef'.split('');
   var EXTRA = [-2147483648, 8388608, 32768, 128];
@@ -6103,7 +6103,7 @@ var ReflectionObject = __webpack_require__(16);
 
 var Enum  = __webpack_require__(6),
     types = __webpack_require__(17),
-    util  = __webpack_require__(0);
+    util  = __webpack_require__(1);
 
 var Type; // cyclic
 
@@ -6564,7 +6564,7 @@ module.exports = ReflectionObject;
 
 ReflectionObject.className = "ReflectionObject";
 
-var util = __webpack_require__(0);
+var util = __webpack_require__(1);
 
 var Root; // cyclic
 
@@ -6774,7 +6774,7 @@ ReflectionObject._configure = function(Root_) {
  */
 var types = exports;
 
-var util = __webpack_require__(0);
+var util = __webpack_require__(1);
 
 var s = [
     "double",   // 0
@@ -6968,7 +6968,7 @@ types.packed = bake([
 /* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var basex = __webpack_require__(89)
+var basex = __webpack_require__(88)
 var ALPHABET = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
 
 module.exports = basex(ALPHABET)
@@ -6982,9 +6982,9 @@ module.exports = basex(ALPHABET)
 
 Object.defineProperty(exports, "__esModule", { value: true });
 const createHash = __webpack_require__(39);
-const pbkdf2_1 = __webpack_require__(116);
+const pbkdf2_1 = __webpack_require__(115);
 const randomBytes = __webpack_require__(26);
-const _wordlists_1 = __webpack_require__(63);
+const _wordlists_1 = __webpack_require__(62);
 let DEFAULT_WORDLIST = _wordlists_1._default;
 const INVALID_MNEMONIC = 'Invalid mnemonic';
 const INVALID_ENTROPY = 'Invalid entropy';
@@ -7136,7 +7136,7 @@ function getDefaultWordlist() {
     })[0];
 }
 exports.getDefaultWordlist = getDefaultWordlist;
-var _wordlists_2 = __webpack_require__(63);
+var _wordlists_2 = __webpack_require__(62);
 exports.wordlists = _wordlists_2.wordlists;
 
 
@@ -7153,7 +7153,7 @@ var ReflectionObject = __webpack_require__(16);
 ((Namespace.prototype = Object.create(ReflectionObject.prototype)).constructor = Namespace).className = "Namespace";
 
 var Field    = __webpack_require__(13),
-    util     = __webpack_require__(0);
+    util     = __webpack_require__(1);
 
 var Type,    // cyclic
     Service,
@@ -7705,7 +7705,7 @@ var ReflectionObject = __webpack_require__(16);
 ((OneOf.prototype = Object.create(ReflectionObject.prototype)).constructor = OneOf).className = "OneOf";
 
 var Field = __webpack_require__(13),
-    util  = __webpack_require__(0);
+    util  = __webpack_require__(1);
 
 /**
  * Constructs a new oneof instance.
@@ -8288,13 +8288,13 @@ BasePoint.prototype.dblp = function dblp(k) {
 /***/ (function(module, exports, __webpack_require__) {
 
 try {
-  var util = __webpack_require__(98);
+  var util = __webpack_require__(97);
   /* istanbul ignore next */
   if (typeof util.inherits !== 'function') throw '';
   module.exports = util.inherits;
 } catch (e) {
   /* istanbul ignore next */
-  module.exports = __webpack_require__(99);
+  module.exports = __webpack_require__(98);
 }
 
 
@@ -8309,11 +8309,11 @@ module.exports = __webpack_require__(10).randomBytes
 /* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var assert = __webpack_require__(120)
+var assert = __webpack_require__(119)
 var Buffer = __webpack_require__(14).Buffer
 var crypto = __webpack_require__(10)
-var cs = __webpack_require__(121)
-var secp256k1 = __webpack_require__(122)
+var cs = __webpack_require__(120)
+var secp256k1 = __webpack_require__(121)
 
 var MASTER_SECRET = Buffer.from('Bitcoin seed', 'utf8')
 var HARDENED_OFFSET = 0x80000000
@@ -9457,12 +9457,12 @@ var Enum      = __webpack_require__(6),
     Message   = __webpack_require__(35),
     Reader    = __webpack_require__(30),
     Writer    = __webpack_require__(28),
-    util      = __webpack_require__(0),
-    encoder   = __webpack_require__(49),
-    decoder   = __webpack_require__(50),
-    verifier  = __webpack_require__(51),
-    converter = __webpack_require__(52),
-    wrappers  = __webpack_require__(53);
+    util      = __webpack_require__(1),
+    encoder   = __webpack_require__(48),
+    decoder   = __webpack_require__(49),
+    verifier  = __webpack_require__(50),
+    converter = __webpack_require__(51),
+    wrappers  = __webpack_require__(52);
 
 /**
  * Constructs a new reflected message type instance.
@@ -10046,7 +10046,7 @@ var Field = __webpack_require__(13);
 ((MapField.prototype = Object.create(Field.prototype)).constructor = MapField).className = "MapField";
 
 var types   = __webpack_require__(17),
-    util    = __webpack_require__(0);
+    util    = __webpack_require__(1);
 
 /**
  * Constructs a new map field instance.
@@ -10179,8 +10179,8 @@ var Namespace = __webpack_require__(20);
 ((Service.prototype = Object.create(Namespace.prototype)).constructor = Service).className = "Service";
 
 var Method = __webpack_require__(34),
-    util   = __webpack_require__(0),
-    rpc    = __webpack_require__(47);
+    util   = __webpack_require__(1),
+    rpc    = __webpack_require__(46);
 
 /**
  * Constructs a new service instance.
@@ -10352,7 +10352,7 @@ module.exports = Method;
 var ReflectionObject = __webpack_require__(16);
 ((Method.prototype = Object.create(ReflectionObject.prototype)).constructor = Method).className = "Method";
 
-var util = __webpack_require__(0);
+var util = __webpack_require__(1);
 
 /**
  * Constructs a new service method instance.
@@ -10658,7 +10658,7 @@ var Namespace = __webpack_require__(20);
 var Field   = __webpack_require__(13),
     Enum    = __webpack_require__(6),
     OneOf   = __webpack_require__(23),
-    util    = __webpack_require__(0);
+    util    = __webpack_require__(1);
 
 var Type,   // cyclic
     parse,  // might be excluded
@@ -11011,7 +11011,7 @@ Root._configure = function(Type_, parse_, common_) {
 var curves = exports;
 
 var hash = __webpack_require__(38);
-var curve = __webpack_require__(57);
+var curve = __webpack_require__(56);
 var utils = __webpack_require__(4);
 
 var assert = utils.assert;
@@ -11176,7 +11176,7 @@ defineCurve('ed25519', {
 
 var pre;
 try {
-  pre = __webpack_require__(108);
+  pre = __webpack_require__(107);
 } catch (e) {
   pre = undefined;
 }
@@ -11222,9 +11222,9 @@ var hash = exports;
 
 hash.utils = __webpack_require__(8);
 hash.common = __webpack_require__(21);
-hash.sha = __webpack_require__(102);
-hash.ripemd = __webpack_require__(106);
-hash.hmac = __webpack_require__(107);
+hash.sha = __webpack_require__(101);
+hash.ripemd = __webpack_require__(105);
+hash.hmac = __webpack_require__(106);
 
 // Proxy hash functions to the main object
 hash.sha1 = hash.sha.sha1;
@@ -11285,15 +11285,15 @@ module.exports = function (password, salt, iterations, keylen) {
 
 var elliptic = exports;
 
-elliptic.version = __webpack_require__(95).version;
+elliptic.version = __webpack_require__(94).version;
 elliptic.utils = __webpack_require__(4);
-elliptic.rand = __webpack_require__(56);
-elliptic.curve = __webpack_require__(57);
+elliptic.rand = __webpack_require__(55);
+elliptic.curve = __webpack_require__(56);
 elliptic.curves = __webpack_require__(37);
 
 // Protocols
-elliptic.ec = __webpack_require__(109);
-elliptic.eddsa = __webpack_require__(113);
+elliptic.ec = __webpack_require__(108);
+elliptic.eddsa = __webpack_require__(112);
 
 
 /***/ }),
@@ -11303,7 +11303,7 @@ elliptic.eddsa = __webpack_require__(113);
 ;(function (root, factory, undef) {
 	if (true) {
 		// CommonJS
-		module.exports = exports = factory(__webpack_require__(11), __webpack_require__(132), __webpack_require__(133), __webpack_require__(67), __webpack_require__(136));
+		module.exports = exports = factory(__webpack_require__(11), __webpack_require__(131), __webpack_require__(132), __webpack_require__(66), __webpack_require__(135));
 	}
 	else {}
 }(this, function (CryptoJS) {
@@ -11530,30 +11530,9 @@ elliptic.eddsa = __webpack_require__(113);
 /* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/**
- * @file scrypt.js for scrypt polyfill
- * @author atom-yang
- * @date 2019-07-25
- */
-var crypto = __webpack_require__(10);
-
-function scrypt(password, salt, N, r, p, dklen) {
-  return crypto.scryptSync(password, salt, dklen, {
-    N: N,
-    r: r,
-    p: p
-  });
-}
-
-module.exports = scrypt;
-
-/***/ }),
-/* 44 */
-/***/ (function(module, exports, __webpack_require__) {
-
 "use strict";
 
-var protobuf = module.exports = __webpack_require__(75);
+var protobuf = module.exports = __webpack_require__(74);
 
 protobuf.build = "light";
 
@@ -11626,10 +11605,10 @@ function loadSync(filename, root) {
 protobuf.loadSync = loadSync;
 
 // Serialization
-protobuf.encoder          = __webpack_require__(49);
-protobuf.decoder          = __webpack_require__(50);
-protobuf.verifier         = __webpack_require__(51);
-protobuf.converter        = __webpack_require__(52);
+protobuf.encoder          = __webpack_require__(48);
+protobuf.decoder          = __webpack_require__(49);
+protobuf.verifier         = __webpack_require__(50);
+protobuf.converter        = __webpack_require__(51);
 
 // Reflection
 protobuf.ReflectionObject = __webpack_require__(16);
@@ -11645,11 +11624,11 @@ protobuf.Method           = __webpack_require__(34);
 
 // Runtime
 protobuf.Message          = __webpack_require__(35);
-protobuf.wrappers         = __webpack_require__(53);
+protobuf.wrappers         = __webpack_require__(52);
 
 // Utility
 protobuf.types            = __webpack_require__(17);
-protobuf.util             = __webpack_require__(0);
+protobuf.util             = __webpack_require__(1);
 
 // Set up possibly cyclic reflection dependencies
 protobuf.ReflectionObject._configure(protobuf.Root);
@@ -11659,7 +11638,7 @@ protobuf.Field._configure(protobuf.Type);
 
 
 /***/ }),
-/* 45 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11718,7 +11697,7 @@ function asPromise(fn, ctx/*, varargs */) {
 
 
 /***/ }),
-/* 46 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11742,7 +11721,7 @@ function inquire(moduleName) {
 
 
 /***/ }),
-/* 47 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11781,11 +11760,11 @@ var rpc = exports;
  * @returns {undefined}
  */
 
-rpc.Service = __webpack_require__(84);
+rpc.Service = __webpack_require__(83);
 
 
 /***/ }),
-/* 48 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11810,7 +11789,7 @@ module.exports = {};
 
 
 /***/ }),
-/* 49 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11819,7 +11798,7 @@ module.exports = encoder;
 
 var Enum     = __webpack_require__(6),
     types    = __webpack_require__(17),
-    util     = __webpack_require__(0);
+    util     = __webpack_require__(1);
 
 /**
  * Generates a partial message type encoder.
@@ -11916,7 +11895,7 @@ function encoder(mtype) {
 }
 
 /***/ }),
-/* 50 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11925,7 +11904,7 @@ module.exports = decoder;
 
 var Enum    = __webpack_require__(6),
     types   = __webpack_require__(17),
-    util    = __webpack_require__(0);
+    util    = __webpack_require__(1);
 
 function missing(field) {
     return "missing required '" + field.name + "'";
@@ -12029,7 +12008,7 @@ function decoder(mtype) {
 
 
 /***/ }),
-/* 51 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12037,7 +12016,7 @@ function decoder(mtype) {
 module.exports = verifier;
 
 var Enum      = __webpack_require__(6),
-    util      = __webpack_require__(0);
+    util      = __webpack_require__(1);
 
 function invalid(field, expected) {
     return field.name + ": " + expected + (field.repeated && expected !== "array" ? "[]" : field.map && expected !== "object" ? "{k:"+field.keyType+"}" : "") + " expected";
@@ -12212,7 +12191,7 @@ function verifier(mtype) {
 }
 
 /***/ }),
-/* 52 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12224,7 +12203,7 @@ function verifier(mtype) {
 var converter = exports;
 
 var Enum = __webpack_require__(6),
-    util = __webpack_require__(0);
+    util = __webpack_require__(1);
 
 /**
  * Generates a partial value fromObject conveter.
@@ -12512,7 +12491,7 @@ converter.toObject = function toObject(mtype) {
 
 
 /***/ }),
-/* 53 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12602,7 +12581,7 @@ wrappers[".google.protobuf.Any"] = {
 
 
 /***/ }),
-/* 54 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13006,7 +12985,7 @@ function tokenize(source, alternateCommentMode) {
 
 
 /***/ }),
-/* 55 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13071,7 +13050,7 @@ utils.encode = function encode(arr, enc) {
 
 
 /***/ }),
-/* 56 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var r;
@@ -13142,7 +13121,7 @@ if (typeof self === 'object') {
 
 
 /***/ }),
-/* 57 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13151,13 +13130,13 @@ if (typeof self === 'object') {
 var curve = exports;
 
 curve.base = __webpack_require__(24);
-curve.short = __webpack_require__(97);
-curve.mont = __webpack_require__(100);
-curve.edwards = __webpack_require__(101);
+curve.short = __webpack_require__(96);
+curve.mont = __webpack_require__(99);
+curve.edwards = __webpack_require__(100);
 
 
 /***/ }),
-/* 58 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13213,7 +13192,7 @@ exports.g1_256 = g1_256;
 
 
 /***/ }),
-/* 59 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13221,7 +13200,7 @@ exports.g1_256 = g1_256;
 
 var utils = __webpack_require__(8);
 var common = __webpack_require__(21);
-var shaCommon = __webpack_require__(58);
+var shaCommon = __webpack_require__(57);
 var assert = __webpack_require__(15);
 
 var sum32 = utils.sum32;
@@ -13325,7 +13304,7 @@ SHA256.prototype._digest = function digest(enc) {
 
 
 /***/ }),
-/* 60 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13662,7 +13641,7 @@ function g1_512_lo(xh, xl) {
 
 
 /***/ }),
-/* 61 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var sizes = {
@@ -13676,9 +13655,9 @@ var sizes = {
   ripemd160: 20
 }
 
-var createHmac = __webpack_require__(117)
+var createHmac = __webpack_require__(116)
 var checkParameters = __webpack_require__(40)
-var defaultEncoding = __webpack_require__(62)
+var defaultEncoding = __webpack_require__(61)
 var Buffer = __webpack_require__(14).Buffer
 
 function pbkdf2 (password, salt, iterations, keylen, digest) {
@@ -13719,7 +13698,7 @@ module.exports = pbkdf2
 
 
 /***/ }),
-/* 62 */
+/* 61 */
 /***/ (function(module, exports) {
 
 var defaultEncoding
@@ -13735,7 +13714,7 @@ module.exports = defaultEncoding
 
 
 /***/ }),
-/* 63 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13785,7 +13764,7 @@ try {
 }
 catch (err) { }
 try {
-    exports._default = _default = __webpack_require__(119);
+    exports._default = _default = __webpack_require__(118);
     wordlists.english = _default;
     wordlists.EN = _default;
 }
@@ -13793,31 +13772,31 @@ catch (err) { }
 
 
 /***/ }),
-/* 64 */
+/* 63 */
 /***/ (function(module, exports) {
 
 module.exports = require("fs");
 
 /***/ }),
-/* 65 */
+/* 64 */
 /***/ (function(module, exports) {
 
 module.exports = require("path");
 
 /***/ }),
-/* 66 */
+/* 65 */
 /***/ (function(module) {
 
 module.exports = JSON.parse("{\"COMPRESSED_TYPE_INVALID\":\"compressed should be a boolean\",\"EC_PRIVATE_KEY_TYPE_INVALID\":\"private key should be a Buffer\",\"EC_PRIVATE_KEY_LENGTH_INVALID\":\"private key length is invalid\",\"EC_PRIVATE_KEY_RANGE_INVALID\":\"private key range is invalid\",\"EC_PRIVATE_KEY_TWEAK_ADD_FAIL\":\"tweak out of range or resulting private key is invalid\",\"EC_PRIVATE_KEY_TWEAK_MUL_FAIL\":\"tweak out of range\",\"EC_PRIVATE_KEY_EXPORT_DER_FAIL\":\"couldn't export to DER format\",\"EC_PRIVATE_KEY_IMPORT_DER_FAIL\":\"couldn't import from DER format\",\"EC_PUBLIC_KEYS_TYPE_INVALID\":\"public keys should be an Array\",\"EC_PUBLIC_KEYS_LENGTH_INVALID\":\"public keys Array should have at least 1 element\",\"EC_PUBLIC_KEY_TYPE_INVALID\":\"public key should be a Buffer\",\"EC_PUBLIC_KEY_LENGTH_INVALID\":\"public key length is invalid\",\"EC_PUBLIC_KEY_PARSE_FAIL\":\"the public key could not be parsed or is invalid\",\"EC_PUBLIC_KEY_CREATE_FAIL\":\"private was invalid, try again\",\"EC_PUBLIC_KEY_TWEAK_ADD_FAIL\":\"tweak out of range or resulting public key is invalid\",\"EC_PUBLIC_KEY_TWEAK_MUL_FAIL\":\"tweak out of range\",\"EC_PUBLIC_KEY_COMBINE_FAIL\":\"the sum of the public keys is not valid\",\"ECDH_FAIL\":\"scalar was invalid (zero or overflow)\",\"ECDSA_SIGNATURE_TYPE_INVALID\":\"signature should be a Buffer\",\"ECDSA_SIGNATURE_LENGTH_INVALID\":\"signature length is invalid\",\"ECDSA_SIGNATURE_PARSE_FAIL\":\"couldn't parse signature\",\"ECDSA_SIGNATURE_PARSE_DER_FAIL\":\"couldn't parse DER signature\",\"ECDSA_SIGNATURE_SERIALIZE_DER_FAIL\":\"couldn't serialize signature to DER format\",\"ECDSA_SIGN_FAIL\":\"nonce generation function failed or private key is invalid\",\"ECDSA_RECOVER_FAIL\":\"couldn't recover public key from signature\",\"MSG32_TYPE_INVALID\":\"message should be a Buffer\",\"MSG32_LENGTH_INVALID\":\"message length is invalid\",\"OPTIONS_TYPE_INVALID\":\"options should be an Object\",\"OPTIONS_DATA_TYPE_INVALID\":\"options.data should be a Buffer\",\"OPTIONS_DATA_LENGTH_INVALID\":\"options.data length is invalid\",\"OPTIONS_NONCEFN_TYPE_INVALID\":\"options.noncefn should be a Function\",\"RECOVERY_ID_TYPE_INVALID\":\"recovery should be a Number\",\"RECOVERY_ID_VALUE_INVALID\":\"recovery should have value between -1 and 4\",\"TWEAK_TYPE_INVALID\":\"tweak should be a Buffer\",\"TWEAK_LENGTH_INVALID\":\"tweak length is invalid\"}");
 
 /***/ }),
-/* 67 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory, undef) {
 	if (true) {
 		// CommonJS
-		module.exports = exports = factory(__webpack_require__(11), __webpack_require__(134), __webpack_require__(135));
+		module.exports = exports = factory(__webpack_require__(11), __webpack_require__(133), __webpack_require__(134));
 	}
 	else {}
 }(this, function (CryptoJS) {
@@ -13941,7 +13920,7 @@ module.exports = JSON.parse("{\"COMPRESSED_TYPE_INVALID\":\"compressed should be
 }));
 
 /***/ }),
-/* 68 */
+/* 67 */
 /***/ (function(module, exports) {
 
 function _typeof2(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof2 = function _typeof2(obj) { return typeof obj; }; } else { _typeof2 = function _typeof2(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof2(obj); }
@@ -13963,13 +13942,13 @@ function _typeof(obj) {
 module.exports = _typeof;
 
 /***/ }),
-/* 69 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var $protobuf = __webpack_require__(90);
-module.exports = exports = $protobuf.descriptor = $protobuf.Root.fromJSON(__webpack_require__(94)).lookup(".google.protobuf");
+var $protobuf = __webpack_require__(89);
+module.exports = exports = $protobuf.descriptor = $protobuf.Root.fromJSON(__webpack_require__(93)).lookup(".google.protobuf");
 
 var Namespace = $protobuf.Namespace,
     Root      = $protobuf.Root,
@@ -15022,25 +15001,25 @@ function underScore(str) {
 
 
 /***/ }),
-/* 70 */
+/* 69 */
 /***/ (function(module) {
 
 module.exports = JSON.parse("{\"options\":{\"csharp_namespace\":\"AElf.Kernel\"},\"nested\":{\"TransactionStatus\":{\"values\":{\"UNKNOWN_TRANSACTION_STATUS\":0,\"TRANSACTION_EXECUTING\":1,\"TRANSACTION_EXECUTED\":2}},\"RefBlockStatus\":{\"values\":{\"UNKNOWN_REF_BLOCK_STATUS\":0,\"REF_BLOCK_VALID\":1,\"REF_BLOCK_INVALID\":-1,\"REF_BLOCK_EXPIRED\":-2,\"FUTURE_REF_BLOCK\":-3}},\"TransactionReceipt\":{\"fields\":{\"transactionId\":{\"type\":\"Hash\",\"id\":1},\"transaction\":{\"type\":\"Transaction\",\"id\":2},\"refBlockStatus\":{\"type\":\"RefBlockStatus\",\"id\":3},\"transactionStatus\":{\"type\":\"TransactionStatus\",\"id\":4},\"isSystemTxn\":{\"type\":\"bool\",\"id\":5},\"executedBlockNumber\":{\"type\":\"int64\",\"id\":6}}},\"StateValue\":{\"fields\":{\"currentValue\":{\"type\":\"bytes\",\"id\":1},\"originalValue\":{\"type\":\"bytes\",\"id\":2}}},\"StateChange\":{\"fields\":{\"statePath\":{\"type\":\"StatePath\",\"id\":1},\"stateValue\":{\"type\":\"StateValue\",\"id\":2}}},\"ExecutionStatus\":{\"values\":{\"UNDEFINED\":0,\"EXECUTED\":1,\"CANCELED\":-1,\"SYSTEM_ERROR\":-2,\"CONTRACT_ERROR\":-10,\"EXCEEDED_MAX_CALL_DEPTH\":-11,\"INSUFFICIENT_TRANSACTION_FEES\":-12,\"PREFAILED\":-99}},\"TransactionTrace\":{\"fields\":{\"transactionId\":{\"type\":\"Hash\",\"id\":1},\"returnValue\":{\"type\":\"bytes\",\"id\":2},\"error\":{\"type\":\"string\",\"id\":3},\"preTransactions\":{\"rule\":\"repeated\",\"type\":\"Transaction\",\"id\":4},\"preTraces\":{\"rule\":\"repeated\",\"type\":\"TransactionTrace\",\"id\":5},\"inlineTransactions\":{\"rule\":\"repeated\",\"type\":\"Transaction\",\"id\":6},\"inlineTraces\":{\"rule\":\"repeated\",\"type\":\"TransactionTrace\",\"id\":7},\"logs\":{\"rule\":\"repeated\",\"type\":\"LogEvent\",\"id\":8},\"elapsed\":{\"type\":\"int64\",\"id\":9},\"executionStatus\":{\"type\":\"ExecutionStatus\",\"id\":10},\"stateSet\":{\"type\":\"TransactionExecutingStateSet\",\"id\":11},\"readableReturnValue\":{\"type\":\"string\",\"id\":12}}},\"ExecutionReturnSet\":{\"fields\":{\"transactionId\":{\"type\":\"Hash\",\"id\":1},\"status\":{\"type\":\"TransactionResultStatus\",\"id\":2},\"stateChanges\":{\"keyType\":\"string\",\"type\":\"bytes\",\"id\":3},\"StateAccesses\":{\"keyType\":\"string\",\"type\":\"bool\",\"id\":4},\"bloom\":{\"type\":\"bytes\",\"id\":5},\"returnValue\":{\"type\":\"bytes\",\"id\":6}}},\"BlockHeaderList\":{\"fields\":{\"headers\":{\"rule\":\"repeated\",\"type\":\"BlockHeader\",\"id\":1}}},\"BlockHeader\":{\"fields\":{\"version\":{\"type\":\"int32\",\"id\":1},\"chainId\":{\"type\":\"int32\",\"id\":2},\"previousBlockHash\":{\"type\":\"Hash\",\"id\":3},\"merkleTreeRootOfTransactions\":{\"type\":\"Hash\",\"id\":4},\"merkleTreeRootOfWorldState\":{\"type\":\"Hash\",\"id\":5},\"bloom\":{\"type\":\"bytes\",\"id\":6},\"height\":{\"type\":\"int64\",\"id\":7},\"extraData\":{\"rule\":\"repeated\",\"type\":\"bytes\",\"id\":8},\"time\":{\"type\":\"google.protobuf.Timestamp\",\"id\":9},\"merkleTreeRootOfTransactionStatus\":{\"type\":\"Hash\",\"id\":10},\"signerPubkey\":{\"type\":\"bytes\",\"id\":9999},\"signature\":{\"type\":\"bytes\",\"id\":10000}}},\"BlockBody\":{\"fields\":{\"blockHeader\":{\"type\":\"Hash\",\"id\":1},\"transactions\":{\"rule\":\"repeated\",\"type\":\"Hash\",\"id\":2}}},\"Block\":{\"fields\":{\"header\":{\"type\":\"BlockHeader\",\"id\":1},\"body\":{\"type\":\"BlockBody\",\"id\":2}}},\"BinaryMerkleTree\":{\"fields\":{\"nodes\":{\"rule\":\"repeated\",\"type\":\"Hash\",\"id\":1},\"root\":{\"type\":\"Hash\",\"id\":2},\"leafCount\":{\"type\":\"int32\",\"id\":3}}},\"VersionedState\":{\"fields\":{\"key\":{\"type\":\"string\",\"id\":1},\"value\":{\"type\":\"bytes\",\"id\":2},\"blockHeight\":{\"type\":\"int64\",\"id\":3},\"blockHash\":{\"type\":\"Hash\",\"id\":4},\"originBlockHash\":{\"type\":\"Hash\",\"id\":5}}},\"BlockStateSet\":{\"fields\":{\"blockHash\":{\"type\":\"Hash\",\"id\":1},\"previousHash\":{\"type\":\"Hash\",\"id\":2},\"blockHeight\":{\"type\":\"int64\",\"id\":3},\"changes\":{\"keyType\":\"string\",\"type\":\"bytes\",\"id\":4}}},\"ChainStateMergingStatus\":{\"values\":{\"COMMON\":0,\"MERGING\":1,\"MERGED\":2}},\"ChainStateInfo\":{\"fields\":{\"chainId\":{\"type\":\"int32\",\"id\":1},\"blockHash\":{\"type\":\"Hash\",\"id\":2},\"blockHeight\":{\"type\":\"int64\",\"id\":3},\"mergingBlockHash\":{\"type\":\"Hash\",\"id\":4},\"status\":{\"type\":\"ChainStateMergingStatus\",\"id\":5}}},\"ChainBlockLinkExecutionStatus\":{\"values\":{\"EXECUTION_NONE\":0,\"EXECUTION_SUCCESS\":1,\"EXECUTION_FAILED\":2}},\"ChainBlockLink\":{\"fields\":{\"blockHash\":{\"type\":\"Hash\",\"id\":1},\"height\":{\"type\":\"int64\",\"id\":2},\"previousBlockHash\":{\"type\":\"Hash\",\"id\":3},\"executionStatus\":{\"type\":\"ChainBlockLinkExecutionStatus\",\"id\":4},\"isIrreversibleBlock\":{\"type\":\"bool\",\"id\":5},\"isLinked\":{\"type\":\"bool\",\"id\":6},\"isLightBlock\":{\"type\":\"bool\",\"id\":7}}},\"Chain\":{\"fields\":{\"id\":{\"type\":\"int32\",\"id\":1},\"genesisBlockHash\":{\"type\":\"Hash\",\"id\":2},\"longestChainHash\":{\"type\":\"Hash\",\"id\":3},\"longestChainHeight\":{\"type\":\"int64\",\"id\":4},\"branches\":{\"keyType\":\"string\",\"type\":\"int64\",\"id\":5},\"notLinkedBlocks\":{\"keyType\":\"string\",\"type\":\"string\",\"id\":6},\"lastIrreversibleBlockHash\":{\"type\":\"Hash\",\"id\":7},\"lastIrreversibleBlockHeight\":{\"type\":\"int64\",\"id\":8},\"bestChainHash\":{\"type\":\"Hash\",\"id\":9},\"bestChainHeight\":{\"type\":\"int64\",\"id\":10}}},\"ChainBlockIndex\":{\"fields\":{\"blockHash\":{\"type\":\"Hash\",\"id\":1}}},\"TransactionBlockIndex\":{\"fields\":{\"blockHash\":{\"type\":\"Hash\",\"id\":1}}},\"google\":{\"nested\":{\"protobuf\":{\"nested\":{\"Timestamp\":{\"fields\":{\"seconds\":{\"type\":\"int64\",\"id\":1},\"nanos\":{\"type\":\"int32\",\"id\":2}}}}}}},\"Transaction\":{\"fields\":{\"from\":{\"type\":\"Address\",\"id\":1},\"to\":{\"type\":\"Address\",\"id\":2},\"refBlockNumber\":{\"type\":\"int64\",\"id\":3},\"refBlockPrefix\":{\"type\":\"bytes\",\"id\":4},\"methodName\":{\"type\":\"string\",\"id\":5},\"params\":{\"type\":\"bytes\",\"id\":6},\"signature\":{\"type\":\"bytes\",\"id\":10000}}},\"StatePath\":{\"fields\":{\"parts\":{\"rule\":\"repeated\",\"type\":\"string\",\"id\":1}}},\"ScopedStatePath\":{\"fields\":{\"address\":{\"type\":\"Address\",\"id\":1},\"path\":{\"type\":\"StatePath\",\"id\":2}}},\"TransactionResultStatus\":{\"values\":{\"NOT_EXISTED\":0,\"PENDING\":1,\"FAILED\":2,\"MINED\":3,\"UNEXECUTABLE\":4}},\"TransactionResult\":{\"fields\":{\"transactionId\":{\"type\":\"Hash\",\"id\":1},\"status\":{\"type\":\"TransactionResultStatus\",\"id\":2},\"logs\":{\"rule\":\"repeated\",\"type\":\"LogEvent\",\"id\":3},\"bloom\":{\"type\":\"bytes\",\"id\":4},\"returnValue\":{\"type\":\"bytes\",\"id\":5},\"blockNumber\":{\"type\":\"int64\",\"id\":6},\"blockHash\":{\"type\":\"Hash\",\"id\":7},\"index\":{\"type\":\"int32\",\"id\":8},\"stateHash\":{\"type\":\"Hash\",\"id\":9},\"Error\":{\"type\":\"string\",\"id\":10},\"ReadableReturnValue\":{\"type\":\"string\",\"id\":11}}},\"LogEvent\":{\"fields\":{\"address\":{\"type\":\"Address\",\"id\":1},\"name\":{\"type\":\"string\",\"id\":2},\"indexed\":{\"rule\":\"repeated\",\"type\":\"bytes\",\"id\":3},\"nonIndexed\":{\"type\":\"bytes\",\"id\":4}}},\"SmartContractRegistration\":{\"fields\":{\"category\":{\"type\":\"int32\",\"id\":1},\"code\":{\"type\":\"bytes\",\"id\":2},\"codeHash\":{\"type\":\"Hash\",\"id\":3}}},\"TransactionExecutingStateSet\":{\"fields\":{\"writes\":{\"keyType\":\"string\",\"type\":\"bytes\",\"id\":1},\"reads\":{\"keyType\":\"string\",\"type\":\"bool\",\"id\":2}}},\"Address\":{\"fields\":{\"value\":{\"type\":\"bytes\",\"id\":1}}},\"Hash\":{\"fields\":{\"value\":{\"type\":\"bytes\",\"id\":1}}},\"SInt32Value\":{\"fields\":{\"value\":{\"type\":\"sint32\",\"id\":1}}},\"SInt64Value\":{\"fields\":{\"value\":{\"type\":\"sint64\",\"id\":1}}}}}");
 
 /***/ }),
-/* 71 */
+/* 70 */
 /***/ (function(module) {
 
 module.exports = JSON.parse("{\"options\":{\"csharp_namespace\":\"AElf\"},\"nested\":{\"Authorization\":{\"fields\":{\"MultiSigAccount\":{\"type\":\"Address\",\"id\":1},\"ExecutionThreshold\":{\"type\":\"uint32\",\"id\":2},\"ProposerThreshold\":{\"type\":\"uint32\",\"id\":3},\"Reviewers\":{\"rule\":\"repeated\",\"type\":\"Reviewer\",\"id\":4}}},\"Reviewer\":{\"fields\":{\"PubKey\":{\"type\":\"bytes\",\"id\":1},\"Weight\":{\"type\":\"uint32\",\"id\":2}}},\"Proposal\":{\"fields\":{\"MultiSigAccount\":{\"type\":\"Address\",\"id\":1},\"Name\":{\"type\":\"string\",\"id\":2},\"TxnData\":{\"type\":\"bytes\",\"id\":3},\"ExpiredTime\":{\"type\":\"google.protobuf.Timestamp\",\"id\":4},\"Status\":{\"type\":\"ProposalStatus\",\"id\":5},\"Proposer\":{\"type\":\"Address\",\"id\":6}}},\"ProposalStatus\":{\"values\":{\"ToBeDecided\":0,\"Decided\":1,\"Released\":2,\"Expired\":3}},\"Approved\":{\"fields\":{\"ProposalHash\":{\"type\":\"Hash\",\"id\":1},\"Approvals\":{\"rule\":\"repeated\",\"type\":\"Approval\",\"id\":5}}},\"Approval\":{\"fields\":{\"ProposalHash\":{\"type\":\"Hash\",\"id\":1},\"Signature\":{\"type\":\"bytes\",\"id\":2}}},\"Address\":{\"fields\":{\"Value\":{\"type\":\"bytes\",\"id\":1}}},\"Hash\":{\"fields\":{\"Value\":{\"type\":\"bytes\",\"id\":1}}},\"SInt32Value\":{\"fields\":{\"Value\":{\"type\":\"sint32\",\"id\":1}}},\"SInt64Value\":{\"fields\":{\"Value\":{\"type\":\"sint64\",\"id\":1}}},\"google\":{\"nested\":{\"protobuf\":{\"nested\":{\"Timestamp\":{\"fields\":{\"seconds\":{\"type\":\"int64\",\"id\":1},\"nanos\":{\"type\":\"int32\",\"id\":2}}}}}}}}}");
 
 /***/ }),
-/* 72 */
+/* 71 */
 /***/ (function(module) {
 
 module.exports = JSON.parse("{\"options\":{\"csharp_namespace\":\"AElf\"},\"nested\":{\"SideChainBlockData\":{\"fields\":{\"SideChainHeight\":{\"type\":\"int64\",\"id\":1},\"BlockHeaderHash\":{\"type\":\"Hash\",\"id\":2},\"TransactionMerkleTreeRoot\":{\"type\":\"Hash\",\"id\":3},\"SideChainId\":{\"type\":\"int32\",\"id\":4}}},\"IndexedSideChainBlockDataResult\":{\"fields\":{\"Height\":{\"type\":\"int64\",\"id\":1},\"Miner\":{\"type\":\"Address\",\"id\":2},\"SideChainBlockData\":{\"rule\":\"repeated\",\"type\":\"SideChainBlockData\",\"id\":3}}},\"ParentChainBlockData\":{\"fields\":{\"Root\":{\"type\":\"ParentChainBlockRootInfo\",\"id\":1},\"IndexedMerklePath\":{\"keyType\":\"int64\",\"type\":\"MerklePath\",\"id\":2},\"ExtraData\":{\"keyType\":\"string\",\"type\":\"bytes\",\"id\":3}}},\"ParentChainBlockRootInfo\":{\"fields\":{\"ParentChainHeight\":{\"type\":\"int64\",\"id\":1},\"CrossChainExtraData\":{\"type\":\"CrossChainExtraData\",\"id\":2},\"ParentChainId\":{\"type\":\"int32\",\"id\":3},\"TransactionStatusMerkleRoot\":{\"type\":\"Hash\",\"id\":4}}},\"CrossChainExtraData\":{\"fields\":{\"SideChainBlockHeadersRoot\":{\"type\":\"Hash\",\"id\":2},\"SideChainTransactionsRoot\":{\"type\":\"Hash\",\"id\":3}}},\"SideChainStatus\":{\"values\":{\"Apply\":0,\"Review\":1,\"Active\":2,\"InsufficientBalance\":3,\"Terminated\":4}},\"SideChainIdAndHeightDict\":{\"fields\":{\"IdHeightDict\":{\"keyType\":\"int32\",\"type\":\"int64\",\"id\":1}}},\"CrossChainBlockData\":{\"fields\":{\"SideChainBlockData\":{\"rule\":\"repeated\",\"type\":\"SideChainBlockData\",\"id\":1},\"ParentChainBlockData\":{\"rule\":\"repeated\",\"type\":\"ParentChainBlockData\",\"id\":2},\"PreviousBlockHeight\":{\"type\":\"int64\",\"id\":3}}},\"CrossChainMerkleProofContext\":{\"fields\":{\"BoundParentChainHeight\":{\"type\":\"int64\",\"id\":1},\"MerklePathForParentChainRoot\":{\"type\":\"MerklePath\",\"id\":2}}},\"ChainInitializationContext\":{\"fields\":{\"chainId\":{\"type\":\"int32\",\"id\":1},\"Creator\":{\"type\":\"Address\",\"id\":2},\"CreatedTime\":{\"type\":\"google.protobuf.Timestamp\",\"id\":3},\"ExtraInformation\":{\"rule\":\"repeated\",\"type\":\"bytes\",\"id\":4},\"ParentChainHeightOfCreation\":{\"type\":\"int64\",\"id\":5}}},\"Transaction\":{\"fields\":{\"From\":{\"type\":\"Address\",\"id\":1},\"To\":{\"type\":\"Address\",\"id\":2},\"RefBlockNumber\":{\"type\":\"int64\",\"id\":3},\"RefBlockPrefix\":{\"type\":\"bytes\",\"id\":4},\"MethodName\":{\"type\":\"string\",\"id\":5},\"Params\":{\"type\":\"bytes\",\"id\":6},\"Signature\":{\"type\":\"bytes\",\"id\":10000}}},\"StatePath\":{\"fields\":{\"parts\":{\"rule\":\"repeated\",\"type\":\"string\",\"id\":1}}},\"ScopedStatePath\":{\"fields\":{\"address\":{\"type\":\"Address\",\"id\":1},\"path\":{\"type\":\"StatePath\",\"id\":2}}},\"TransactionList\":{\"fields\":{\"Transactions\":{\"rule\":\"repeated\",\"type\":\"Transaction\",\"id\":1}}},\"TransactionResultStatus\":{\"values\":{\"NotExisted\":0,\"Pending\":1,\"Failed\":2,\"Mined\":3,\"Unexecutable\":4}},\"TransactionResult\":{\"fields\":{\"TransactionId\":{\"type\":\"Hash\",\"id\":1},\"Status\":{\"type\":\"TransactionResultStatus\",\"id\":2},\"Logs\":{\"rule\":\"repeated\",\"type\":\"LogEvent\",\"id\":3},\"Bloom\":{\"type\":\"bytes\",\"id\":4},\"ReturnValue\":{\"type\":\"bytes\",\"id\":5},\"BlockNumber\":{\"type\":\"int64\",\"id\":6},\"BlockHash\":{\"type\":\"Hash\",\"id\":7},\"Index\":{\"type\":\"int32\",\"id\":8},\"StateHash\":{\"type\":\"Hash\",\"id\":9},\"DeferredTransactions\":{\"rule\":\"repeated\",\"type\":\"Transaction\",\"id\":10},\"DeferredTxnId\":{\"type\":\"Hash\",\"id\":11},\"Error\":{\"type\":\"string\",\"id\":12},\"ReadableReturnValue\":{\"type\":\"string\",\"id\":13}}},\"LogEvent\":{\"fields\":{\"Address\":{\"type\":\"Address\",\"id\":1},\"Name\":{\"type\":\"string\",\"id\":2},\"Indexed\":{\"rule\":\"repeated\",\"type\":\"bytes\",\"id\":3},\"NonIndexed\":{\"type\":\"bytes\",\"id\":4}}},\"SmartContractRegistration\":{\"fields\":{\"Category\":{\"type\":\"int32\",\"id\":1},\"Code\":{\"type\":\"bytes\",\"id\":2},\"CodeHash\":{\"type\":\"Hash\",\"id\":3}}},\"MerklePath\":{\"fields\":{\"Path\":{\"rule\":\"repeated\",\"type\":\"Hash\",\"id\":1}}},\"StringList\":{\"fields\":{\"Values\":{\"rule\":\"repeated\",\"type\":\"string\",\"id\":1},\"Remark\":{\"type\":\"string\",\"id\":2}}},\"HashList\":{\"fields\":{\"Values\":{\"rule\":\"repeated\",\"type\":\"Hash\",\"id\":1}}},\"LongList\":{\"fields\":{\"Values\":{\"rule\":\"repeated\",\"type\":\"int64\",\"id\":1},\"Remark\":{\"type\":\"string\",\"id\":2}}},\"TransactionExecutingStateSet\":{\"fields\":{\"Version\":{\"type\":\"int64\",\"id\":1},\"Writes\":{\"keyType\":\"string\",\"type\":\"bytes\",\"id\":2},\"Reads\":{\"keyType\":\"string\",\"type\":\"bool\",\"id\":3}}},\"ActionResult\":{\"fields\":{\"Success\":{\"type\":\"bool\",\"id\":1},\"ErrorMessage\":{\"type\":\"string\",\"id\":2}}},\"ContractInfo\":{\"fields\":{\"SerialNumber\":{\"type\":\"uint64\",\"id\":1},\"Owner\":{\"type\":\"Address\",\"id\":2},\"Category\":{\"type\":\"int32\",\"id\":3},\"CodeHash\":{\"type\":\"Hash\",\"id\":4}}},\"ContractDeploymentInput\":{\"fields\":{\"category\":{\"type\":\"sint32\",\"id\":1},\"code\":{\"type\":\"bytes\",\"id\":2}}},\"SystemContractDeploymentInput\":{\"fields\":{\"category\":{\"type\":\"sint32\",\"id\":1},\"code\":{\"type\":\"bytes\",\"id\":2},\"name\":{\"type\":\"Hash\",\"id\":3},\"transactionMethodCallList\":{\"type\":\"SystemTransactionMethodCallList\",\"id\":4}},\"nested\":{\"SystemTransactionMethodCall\":{\"fields\":{\"MethodName\":{\"type\":\"string\",\"id\":1},\"Params\":{\"type\":\"bytes\",\"id\":2}}},\"SystemTransactionMethodCallList\":{\"fields\":{\"Value\":{\"rule\":\"repeated\",\"type\":\"SystemTransactionMethodCall\",\"id\":1}}}}},\"ContractUpdateInput\":{\"fields\":{\"address\":{\"type\":\"Address\",\"id\":1},\"code\":{\"type\":\"bytes\",\"id\":2}}},\"ChangeContractOwnerInput\":{\"fields\":{\"contractAddress\":{\"type\":\"Address\",\"id\":1},\"newOwner\":{\"type\":\"Address\",\"id\":2}}},\"ConsensusCommand\":{\"fields\":{\"NextBlockMiningLeftMilliseconds\":{\"type\":\"int32\",\"id\":1},\"LimitMillisecondsOfMiningBlock\":{\"type\":\"int32\",\"id\":2},\"Hint\":{\"type\":\"bytes\",\"id\":3},\"ExpectedMiningTime\":{\"type\":\"google.protobuf.Timestamp\",\"id\":4}}},\"ValidationResult\":{\"fields\":{\"Success\":{\"type\":\"bool\",\"id\":1},\"Message\":{\"type\":\"string\",\"id\":2}}},\"ConsensusInformation\":{\"fields\":{\"Bytes\":{\"type\":\"bytes\",\"id\":1}}},\"google\":{\"nested\":{\"protobuf\":{\"nested\":{\"Timestamp\":{\"fields\":{\"seconds\":{\"type\":\"int64\",\"id\":1},\"nanos\":{\"type\":\"int32\",\"id\":2}}}}}}},\"Address\":{\"fields\":{\"Value\":{\"type\":\"bytes\",\"id\":1}}},\"Hash\":{\"fields\":{\"Value\":{\"type\":\"bytes\",\"id\":1}}},\"SInt32Value\":{\"fields\":{\"Value\":{\"type\":\"sint32\",\"id\":1}}},\"SInt64Value\":{\"fields\":{\"Value\":{\"type\":\"sint64\",\"id\":1}}}}}");
 
 /***/ }),
-/* 73 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory) {
@@ -15056,14 +15035,14 @@ module.exports = JSON.parse("{\"options\":{\"csharp_namespace\":\"AElf\"},\"nest
 }));
 
 /***/ }),
-/* 74 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var strictUriEncode = __webpack_require__(137);
-var objectAssign = __webpack_require__(138);
-var decodeComponent = __webpack_require__(139);
+var strictUriEncode = __webpack_require__(136);
+var objectAssign = __webpack_require__(137);
+var decodeComponent = __webpack_require__(138);
 
 function encoderForArrayFormat(opts) {
 	switch (opts.arrayFormat) {
@@ -15287,7 +15266,7 @@ exports.parseUrl = function (str, opts) {
 
 
 /***/ }),
-/* 75 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15304,14 +15283,14 @@ protobuf.build = "minimal";
 
 // Serialization
 protobuf.Writer       = __webpack_require__(28);
-protobuf.BufferWriter = __webpack_require__(82);
+protobuf.BufferWriter = __webpack_require__(81);
 protobuf.Reader       = __webpack_require__(30);
-protobuf.BufferReader = __webpack_require__(83);
+protobuf.BufferReader = __webpack_require__(82);
 
 // Utility
 protobuf.util         = __webpack_require__(9);
-protobuf.rpc          = __webpack_require__(47);
-protobuf.roots        = __webpack_require__(48);
+protobuf.rpc          = __webpack_require__(46);
+protobuf.roots        = __webpack_require__(47);
 protobuf.configure    = configure;
 
 /* istanbul ignore next */
@@ -15330,7 +15309,7 @@ configure();
 
 
 /***/ }),
-/* 76 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15476,7 +15455,7 @@ base64.test = function test(string) {
 
 
 /***/ }),
-/* 77 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15559,7 +15538,7 @@ EventEmitter.prototype.emit = function emit(evt) {
 
 
 /***/ }),
-/* 78 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15901,7 +15880,7 @@ function readUintBE(buf, pos) {
 
 
 /***/ }),
-/* 79 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16013,7 +15992,7 @@ utf8.write = function utf8_write(string, buffer, offset) {
 
 
 /***/ }),
-/* 80 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16068,7 +16047,7 @@ function pool(alloc, slice, size) {
 
 
 /***/ }),
-/* 81 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16275,7 +16254,7 @@ LongBits.prototype.length = function length() {
 
 
 /***/ }),
-/* 82 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16363,7 +16342,7 @@ BufferWriter.prototype.string = function write_string_buffer(value) {
 
 
 /***/ }),
-/* 83 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16414,7 +16393,7 @@ BufferReader.prototype.string = function read_string_buffer() {
 
 
 /***/ }),
-/* 84 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16563,7 +16542,7 @@ Service.prototype.end = function end(endedByRPC) {
 
 
 /***/ }),
-/* 85 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16669,15 +16648,15 @@ codegen.verbose = false;
 
 
 /***/ }),
-/* 86 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 module.exports = fetch;
 
-var asPromise = __webpack_require__(45),
-    inquire   = __webpack_require__(46);
+var asPromise = __webpack_require__(44),
+    inquire   = __webpack_require__(45);
 
 var fs = inquire("fs");
 
@@ -16791,7 +16770,7 @@ fetch.xhr = function fetch_xhr(filename, options, callback) {
 
 
 /***/ }),
-/* 87 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16863,7 +16842,7 @@ path.resolve = function resolve(originPath, includePath, alreadyNormalized) {
 
 
 /***/ }),
-/* 88 */
+/* 87 */
 /***/ (function(module, exports) {
 
 /* WEBPACK VAR INJECTION */(function(__webpack_amd_options__) {/* globals __webpack_amd_options__ */
@@ -16872,7 +16851,7 @@ module.exports = __webpack_amd_options__;
 /* WEBPACK VAR INJECTION */}.call(this, {}))
 
 /***/ }),
-/* 89 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16999,37 +16978,37 @@ module.exports = base
 
 
 /***/ }),
-/* 90 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 // full library entry point.
 
 
-module.exports = __webpack_require__(91);
+module.exports = __webpack_require__(90);
 
 
 /***/ }),
-/* 91 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var protobuf = module.exports = __webpack_require__(44);
+var protobuf = module.exports = __webpack_require__(43);
 
 protobuf.build = "full";
 
 // Parser
-protobuf.tokenize         = __webpack_require__(54);
-protobuf.parse            = __webpack_require__(92);
-protobuf.common           = __webpack_require__(93);
+protobuf.tokenize         = __webpack_require__(53);
+protobuf.parse            = __webpack_require__(91);
+protobuf.common           = __webpack_require__(92);
 
 // Configure parser
 protobuf.Root._configure(protobuf.Type, protobuf.parse, protobuf.common);
 
 
 /***/ }),
-/* 92 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17039,7 +17018,7 @@ module.exports = parse;
 parse.filename = null;
 parse.defaults = { keepCase: false };
 
-var tokenize  = __webpack_require__(54),
+var tokenize  = __webpack_require__(53),
     Root      = __webpack_require__(36),
     Type      = __webpack_require__(31),
     Field     = __webpack_require__(13),
@@ -17049,7 +17028,7 @@ var tokenize  = __webpack_require__(54),
     Service   = __webpack_require__(33),
     Method    = __webpack_require__(34),
     types     = __webpack_require__(17),
-    util      = __webpack_require__(0);
+    util      = __webpack_require__(1);
 
 var base10Re    = /^[1-9][0-9]*$/,
     base10NegRe = /^-?[1-9][0-9]*$/,
@@ -17794,7 +17773,7 @@ function parse(source, root, options) {
 
 
 /***/ }),
-/* 93 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18200,19 +18179,19 @@ common.get = function get(file) {
 
 
 /***/ }),
-/* 94 */
+/* 93 */
 /***/ (function(module) {
 
 module.exports = JSON.parse("{\"nested\":{\"google\":{\"nested\":{\"protobuf\":{\"nested\":{\"FileDescriptorSet\":{\"fields\":{\"file\":{\"rule\":\"repeated\",\"type\":\"FileDescriptorProto\",\"id\":1}}},\"FileDescriptorProto\":{\"fields\":{\"name\":{\"type\":\"string\",\"id\":1},\"package\":{\"type\":\"string\",\"id\":2},\"dependency\":{\"rule\":\"repeated\",\"type\":\"string\",\"id\":3},\"publicDependency\":{\"rule\":\"repeated\",\"type\":\"int32\",\"id\":10,\"options\":{\"packed\":false}},\"weakDependency\":{\"rule\":\"repeated\",\"type\":\"int32\",\"id\":11,\"options\":{\"packed\":false}},\"messageType\":{\"rule\":\"repeated\",\"type\":\"DescriptorProto\",\"id\":4},\"enumType\":{\"rule\":\"repeated\",\"type\":\"EnumDescriptorProto\",\"id\":5},\"service\":{\"rule\":\"repeated\",\"type\":\"ServiceDescriptorProto\",\"id\":6},\"extension\":{\"rule\":\"repeated\",\"type\":\"FieldDescriptorProto\",\"id\":7},\"options\":{\"type\":\"FileOptions\",\"id\":8},\"sourceCodeInfo\":{\"type\":\"SourceCodeInfo\",\"id\":9},\"syntax\":{\"type\":\"string\",\"id\":12}}},\"DescriptorProto\":{\"fields\":{\"name\":{\"type\":\"string\",\"id\":1},\"field\":{\"rule\":\"repeated\",\"type\":\"FieldDescriptorProto\",\"id\":2},\"extension\":{\"rule\":\"repeated\",\"type\":\"FieldDescriptorProto\",\"id\":6},\"nestedType\":{\"rule\":\"repeated\",\"type\":\"DescriptorProto\",\"id\":3},\"enumType\":{\"rule\":\"repeated\",\"type\":\"EnumDescriptorProto\",\"id\":4},\"extensionRange\":{\"rule\":\"repeated\",\"type\":\"ExtensionRange\",\"id\":5},\"oneofDecl\":{\"rule\":\"repeated\",\"type\":\"OneofDescriptorProto\",\"id\":8},\"options\":{\"type\":\"MessageOptions\",\"id\":7},\"reservedRange\":{\"rule\":\"repeated\",\"type\":\"ReservedRange\",\"id\":9},\"reservedName\":{\"rule\":\"repeated\",\"type\":\"string\",\"id\":10}},\"nested\":{\"ExtensionRange\":{\"fields\":{\"start\":{\"type\":\"int32\",\"id\":1},\"end\":{\"type\":\"int32\",\"id\":2}}},\"ReservedRange\":{\"fields\":{\"start\":{\"type\":\"int32\",\"id\":1},\"end\":{\"type\":\"int32\",\"id\":2}}}}},\"FieldDescriptorProto\":{\"fields\":{\"name\":{\"type\":\"string\",\"id\":1},\"number\":{\"type\":\"int32\",\"id\":3},\"label\":{\"type\":\"Label\",\"id\":4},\"type\":{\"type\":\"Type\",\"id\":5},\"typeName\":{\"type\":\"string\",\"id\":6},\"extendee\":{\"type\":\"string\",\"id\":2},\"defaultValue\":{\"type\":\"string\",\"id\":7},\"oneofIndex\":{\"type\":\"int32\",\"id\":9},\"jsonName\":{\"type\":\"string\",\"id\":10},\"options\":{\"type\":\"FieldOptions\",\"id\":8}},\"nested\":{\"Type\":{\"values\":{\"TYPE_DOUBLE\":1,\"TYPE_FLOAT\":2,\"TYPE_INT64\":3,\"TYPE_UINT64\":4,\"TYPE_INT32\":5,\"TYPE_FIXED64\":6,\"TYPE_FIXED32\":7,\"TYPE_BOOL\":8,\"TYPE_STRING\":9,\"TYPE_GROUP\":10,\"TYPE_MESSAGE\":11,\"TYPE_BYTES\":12,\"TYPE_UINT32\":13,\"TYPE_ENUM\":14,\"TYPE_SFIXED32\":15,\"TYPE_SFIXED64\":16,\"TYPE_SINT32\":17,\"TYPE_SINT64\":18}},\"Label\":{\"values\":{\"LABEL_OPTIONAL\":1,\"LABEL_REQUIRED\":2,\"LABEL_REPEATED\":3}}}},\"OneofDescriptorProto\":{\"fields\":{\"name\":{\"type\":\"string\",\"id\":1},\"options\":{\"type\":\"OneofOptions\",\"id\":2}}},\"EnumDescriptorProto\":{\"fields\":{\"name\":{\"type\":\"string\",\"id\":1},\"value\":{\"rule\":\"repeated\",\"type\":\"EnumValueDescriptorProto\",\"id\":2},\"options\":{\"type\":\"EnumOptions\",\"id\":3}}},\"EnumValueDescriptorProto\":{\"fields\":{\"name\":{\"type\":\"string\",\"id\":1},\"number\":{\"type\":\"int32\",\"id\":2},\"options\":{\"type\":\"EnumValueOptions\",\"id\":3}}},\"ServiceDescriptorProto\":{\"fields\":{\"name\":{\"type\":\"string\",\"id\":1},\"method\":{\"rule\":\"repeated\",\"type\":\"MethodDescriptorProto\",\"id\":2},\"options\":{\"type\":\"ServiceOptions\",\"id\":3}}},\"MethodDescriptorProto\":{\"fields\":{\"name\":{\"type\":\"string\",\"id\":1},\"inputType\":{\"type\":\"string\",\"id\":2},\"outputType\":{\"type\":\"string\",\"id\":3},\"options\":{\"type\":\"MethodOptions\",\"id\":4},\"clientStreaming\":{\"type\":\"bool\",\"id\":5},\"serverStreaming\":{\"type\":\"bool\",\"id\":6}}},\"FileOptions\":{\"fields\":{\"javaPackage\":{\"type\":\"string\",\"id\":1},\"javaOuterClassname\":{\"type\":\"string\",\"id\":8},\"javaMultipleFiles\":{\"type\":\"bool\",\"id\":10},\"javaGenerateEqualsAndHash\":{\"type\":\"bool\",\"id\":20,\"options\":{\"deprecated\":true}},\"javaStringCheckUtf8\":{\"type\":\"bool\",\"id\":27},\"optimizeFor\":{\"type\":\"OptimizeMode\",\"id\":9,\"options\":{\"default\":\"SPEED\"}},\"goPackage\":{\"type\":\"string\",\"id\":11},\"ccGenericServices\":{\"type\":\"bool\",\"id\":16},\"javaGenericServices\":{\"type\":\"bool\",\"id\":17},\"pyGenericServices\":{\"type\":\"bool\",\"id\":18},\"deprecated\":{\"type\":\"bool\",\"id\":23},\"ccEnableArenas\":{\"type\":\"bool\",\"id\":31},\"objcClassPrefix\":{\"type\":\"string\",\"id\":36},\"csharpNamespace\":{\"type\":\"string\",\"id\":37},\"uninterpretedOption\":{\"rule\":\"repeated\",\"type\":\"UninterpretedOption\",\"id\":999}},\"extensions\":[[1000,536870911]],\"reserved\":[[38,38]],\"nested\":{\"OptimizeMode\":{\"values\":{\"SPEED\":1,\"CODE_SIZE\":2,\"LITE_RUNTIME\":3}}}},\"MessageOptions\":{\"fields\":{\"messageSetWireFormat\":{\"type\":\"bool\",\"id\":1},\"noStandardDescriptorAccessor\":{\"type\":\"bool\",\"id\":2},\"deprecated\":{\"type\":\"bool\",\"id\":3},\"mapEntry\":{\"type\":\"bool\",\"id\":7},\"uninterpretedOption\":{\"rule\":\"repeated\",\"type\":\"UninterpretedOption\",\"id\":999}},\"extensions\":[[1000,536870911]],\"reserved\":[[8,8]]},\"FieldOptions\":{\"fields\":{\"ctype\":{\"type\":\"CType\",\"id\":1,\"options\":{\"default\":\"STRING\"}},\"packed\":{\"type\":\"bool\",\"id\":2},\"jstype\":{\"type\":\"JSType\",\"id\":6,\"options\":{\"default\":\"JS_NORMAL\"}},\"lazy\":{\"type\":\"bool\",\"id\":5},\"deprecated\":{\"type\":\"bool\",\"id\":3},\"weak\":{\"type\":\"bool\",\"id\":10},\"uninterpretedOption\":{\"rule\":\"repeated\",\"type\":\"UninterpretedOption\",\"id\":999}},\"extensions\":[[1000,536870911]],\"reserved\":[[4,4]],\"nested\":{\"CType\":{\"values\":{\"STRING\":0,\"CORD\":1,\"STRING_PIECE\":2}},\"JSType\":{\"values\":{\"JS_NORMAL\":0,\"JS_STRING\":1,\"JS_NUMBER\":2}}}},\"OneofOptions\":{\"fields\":{\"uninterpretedOption\":{\"rule\":\"repeated\",\"type\":\"UninterpretedOption\",\"id\":999}},\"extensions\":[[1000,536870911]]},\"EnumOptions\":{\"fields\":{\"allowAlias\":{\"type\":\"bool\",\"id\":2},\"deprecated\":{\"type\":\"bool\",\"id\":3},\"uninterpretedOption\":{\"rule\":\"repeated\",\"type\":\"UninterpretedOption\",\"id\":999}},\"extensions\":[[1000,536870911]]},\"EnumValueOptions\":{\"fields\":{\"deprecated\":{\"type\":\"bool\",\"id\":1},\"uninterpretedOption\":{\"rule\":\"repeated\",\"type\":\"UninterpretedOption\",\"id\":999}},\"extensions\":[[1000,536870911]]},\"ServiceOptions\":{\"fields\":{\"deprecated\":{\"type\":\"bool\",\"id\":33},\"uninterpretedOption\":{\"rule\":\"repeated\",\"type\":\"UninterpretedOption\",\"id\":999}},\"extensions\":[[1000,536870911]]},\"MethodOptions\":{\"fields\":{\"deprecated\":{\"type\":\"bool\",\"id\":33},\"uninterpretedOption\":{\"rule\":\"repeated\",\"type\":\"UninterpretedOption\",\"id\":999}},\"extensions\":[[1000,536870911]]},\"UninterpretedOption\":{\"fields\":{\"name\":{\"rule\":\"repeated\",\"type\":\"NamePart\",\"id\":2},\"identifierValue\":{\"type\":\"string\",\"id\":3},\"positiveIntValue\":{\"type\":\"uint64\",\"id\":4},\"negativeIntValue\":{\"type\":\"int64\",\"id\":5},\"doubleValue\":{\"type\":\"double\",\"id\":6},\"stringValue\":{\"type\":\"bytes\",\"id\":7},\"aggregateValue\":{\"type\":\"string\",\"id\":8}},\"nested\":{\"NamePart\":{\"fields\":{\"namePart\":{\"rule\":\"required\",\"type\":\"string\",\"id\":1},\"isExtension\":{\"rule\":\"required\",\"type\":\"bool\",\"id\":2}}}}},\"SourceCodeInfo\":{\"fields\":{\"location\":{\"rule\":\"repeated\",\"type\":\"Location\",\"id\":1}},\"nested\":{\"Location\":{\"fields\":{\"path\":{\"rule\":\"repeated\",\"type\":\"int32\",\"id\":1},\"span\":{\"rule\":\"repeated\",\"type\":\"int32\",\"id\":2},\"leadingComments\":{\"type\":\"string\",\"id\":3},\"trailingComments\":{\"type\":\"string\",\"id\":4},\"leadingDetachedComments\":{\"rule\":\"repeated\",\"type\":\"string\",\"id\":6}}}}},\"GeneratedCodeInfo\":{\"fields\":{\"annotation\":{\"rule\":\"repeated\",\"type\":\"Annotation\",\"id\":1}},\"nested\":{\"Annotation\":{\"fields\":{\"path\":{\"rule\":\"repeated\",\"type\":\"int32\",\"id\":1},\"sourceFile\":{\"type\":\"string\",\"id\":2},\"begin\":{\"type\":\"int32\",\"id\":3},\"end\":{\"type\":\"int32\",\"id\":4}}}}}}}}}}}");
 
 /***/ }),
-/* 95 */
+/* 94 */
 /***/ (function(module) {
 
 module.exports = JSON.parse("{\"name\":\"elliptic\",\"version\":\"6.5.1\",\"description\":\"EC cryptography\",\"main\":\"lib/elliptic.js\",\"files\":[\"lib\"],\"scripts\":{\"jscs\":\"jscs benchmarks/*.js lib/*.js lib/**/*.js lib/**/**/*.js test/index.js\",\"jshint\":\"jscs benchmarks/*.js lib/*.js lib/**/*.js lib/**/**/*.js test/index.js\",\"lint\":\"npm run jscs && npm run jshint\",\"unit\":\"istanbul test _mocha --reporter=spec test/index.js\",\"test\":\"npm run lint && npm run unit\",\"version\":\"grunt dist && git add dist/\"},\"repository\":{\"type\":\"git\",\"url\":\"git@github.com:indutny/elliptic\"},\"keywords\":[\"EC\",\"Elliptic\",\"curve\",\"Cryptography\"],\"author\":\"Fedor Indutny <fedor@indutny.com>\",\"license\":\"MIT\",\"bugs\":{\"url\":\"https://github.com/indutny/elliptic/issues\"},\"homepage\":\"https://github.com/indutny/elliptic\",\"devDependencies\":{\"brfs\":\"^1.4.3\",\"coveralls\":\"^3.0.4\",\"grunt\":\"^1.0.4\",\"grunt-browserify\":\"^5.0.0\",\"grunt-cli\":\"^1.2.0\",\"grunt-contrib-connect\":\"^1.0.0\",\"grunt-contrib-copy\":\"^1.0.0\",\"grunt-contrib-uglify\":\"^1.0.1\",\"grunt-mocha-istanbul\":\"^3.0.1\",\"grunt-saucelabs\":\"^9.0.1\",\"istanbul\":\"^0.4.2\",\"jscs\":\"^3.0.7\",\"jshint\":\"^2.6.0\",\"mocha\":\"^6.1.4\"},\"dependencies\":{\"bn.js\":\"^4.4.0\",\"brorand\":\"^1.0.1\",\"hash.js\":\"^1.0.0\",\"hmac-drbg\":\"^1.0.0\",\"inherits\":\"^2.0.1\",\"minimalistic-assert\":\"^1.0.0\",\"minimalistic-crypto-utils\":\"^1.0.0\"}}");
 
 /***/ }),
-/* 96 */
+/* 95 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -18240,7 +18219,7 @@ module.exports = function(module) {
 
 
 /***/ }),
-/* 97 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19184,13 +19163,13 @@ JPoint.prototype.isInfinity = function isInfinity() {
 
 
 /***/ }),
-/* 98 */
+/* 97 */
 /***/ (function(module, exports) {
 
 module.exports = require("util");
 
 /***/ }),
-/* 99 */
+/* 98 */
 /***/ (function(module, exports) {
 
 if (typeof Object.create === 'function') {
@@ -19223,7 +19202,7 @@ if (typeof Object.create === 'function') {
 
 
 /***/ }),
-/* 100 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19408,7 +19387,7 @@ Point.prototype.getX = function getX() {
 
 
 /***/ }),
-/* 101 */
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19847,21 +19826,21 @@ Point.prototype.mixedAdd = Point.prototype.add;
 
 
 /***/ }),
-/* 102 */
+/* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-exports.sha1 = __webpack_require__(103);
-exports.sha224 = __webpack_require__(104);
-exports.sha256 = __webpack_require__(59);
-exports.sha384 = __webpack_require__(105);
-exports.sha512 = __webpack_require__(60);
+exports.sha1 = __webpack_require__(102);
+exports.sha224 = __webpack_require__(103);
+exports.sha256 = __webpack_require__(58);
+exports.sha384 = __webpack_require__(104);
+exports.sha512 = __webpack_require__(59);
 
 
 /***/ }),
-/* 103 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19869,7 +19848,7 @@ exports.sha512 = __webpack_require__(60);
 
 var utils = __webpack_require__(8);
 var common = __webpack_require__(21);
-var shaCommon = __webpack_require__(58);
+var shaCommon = __webpack_require__(57);
 
 var rotl32 = utils.rotl32;
 var sum32 = utils.sum32;
@@ -19942,14 +19921,14 @@ SHA1.prototype._digest = function digest(enc) {
 
 
 /***/ }),
-/* 104 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var utils = __webpack_require__(8);
-var SHA256 = __webpack_require__(59);
+var SHA256 = __webpack_require__(58);
 
 function SHA224() {
   if (!(this instanceof SHA224))
@@ -19979,7 +19958,7 @@ SHA224.prototype._digest = function digest(enc) {
 
 
 /***/ }),
-/* 105 */
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19987,7 +19966,7 @@ SHA224.prototype._digest = function digest(enc) {
 
 var utils = __webpack_require__(8);
 
-var SHA512 = __webpack_require__(60);
+var SHA512 = __webpack_require__(59);
 
 function SHA384() {
   if (!(this instanceof SHA384))
@@ -20021,7 +20000,7 @@ SHA384.prototype._digest = function digest(enc) {
 
 
 /***/ }),
-/* 106 */
+/* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20174,7 +20153,7 @@ var sh = [
 
 
 /***/ }),
-/* 107 */
+/* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20228,7 +20207,7 @@ Hmac.prototype.digest = function digest(enc) {
 
 
 /***/ }),
-/* 108 */
+/* 107 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -21014,21 +20993,21 @@ module.exports = {
 
 
 /***/ }),
-/* 109 */
+/* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var BN = __webpack_require__(7);
-var HmacDRBG = __webpack_require__(110);
+var HmacDRBG = __webpack_require__(109);
 var utils = __webpack_require__(4);
 var curves = __webpack_require__(37);
-var rand = __webpack_require__(56);
+var rand = __webpack_require__(55);
 var assert = utils.assert;
 
-var KeyPair = __webpack_require__(111);
-var Signature = __webpack_require__(112);
+var KeyPair = __webpack_require__(110);
+var Signature = __webpack_require__(111);
 
 function EC(options) {
   if (!(this instanceof EC))
@@ -21262,14 +21241,14 @@ EC.prototype.getKeyRecoveryParam = function(e, signature, Q, enc) {
 
 
 /***/ }),
-/* 110 */
+/* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var hash = __webpack_require__(38);
-var utils = __webpack_require__(55);
+var utils = __webpack_require__(54);
 var assert = __webpack_require__(15);
 
 function HmacDRBG(options) {
@@ -21382,7 +21361,7 @@ HmacDRBG.prototype.generate = function generate(len, enc, add, addEnc) {
 
 
 /***/ }),
-/* 111 */
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21507,7 +21486,7 @@ KeyPair.prototype.inspect = function inspect() {
 
 
 /***/ }),
-/* 112 */
+/* 111 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21648,7 +21627,7 @@ Signature.prototype.toDER = function toDER(enc) {
 
 
 /***/ }),
-/* 113 */
+/* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21659,8 +21638,8 @@ var curves = __webpack_require__(37);
 var utils = __webpack_require__(4);
 var assert = utils.assert;
 var parseBytes = utils.parseBytes;
-var KeyPair = __webpack_require__(114);
-var Signature = __webpack_require__(115);
+var KeyPair = __webpack_require__(113);
+var Signature = __webpack_require__(114);
 
 function EDDSA(curve) {
   assert(curve === 'ed25519', 'only tested with ed25519 so far');
@@ -21773,7 +21752,7 @@ EDDSA.prototype.isPoint = function isPoint(val) {
 
 
 /***/ }),
-/* 114 */
+/* 113 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21875,7 +21854,7 @@ module.exports = KeyPair;
 
 
 /***/ }),
-/* 115 */
+/* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21947,7 +21926,7 @@ module.exports = Signature;
 
 
 /***/ }),
-/* 116 */
+/* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var checkParameters = __webpack_require__(40)
@@ -21973,8 +21952,8 @@ function nativePBKDF2Sync (password, salt, iterations, keylen, digest) {
 
 /* istanbul ignore next */
 if (!native.pbkdf2Sync || native.pbkdf2Sync.toString().indexOf('keylen, digest') === -1) {
-  exports.pbkdf2Sync = __webpack_require__(61)
-  exports.pbkdf2 = __webpack_require__(118)
+  exports.pbkdf2Sync = __webpack_require__(60)
+  exports.pbkdf2 = __webpack_require__(117)
 
 // native
 } else {
@@ -21984,19 +21963,19 @@ if (!native.pbkdf2Sync || native.pbkdf2Sync.toString().indexOf('keylen, digest')
 
 
 /***/ }),
-/* 117 */
+/* 116 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(10).createHmac
 
 
 /***/ }),
-/* 118 */
+/* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var checkParameters = __webpack_require__(40)
-var defaultEncoding = __webpack_require__(62)
-var sync = __webpack_require__(61)
+var defaultEncoding = __webpack_require__(61)
+var sync = __webpack_require__(60)
 var Buffer = __webpack_require__(14).Buffer
 
 var ZERO_BUF
@@ -22097,19 +22076,19 @@ module.exports = function (password, salt, iterations, keylen, digest, callback)
 
 
 /***/ }),
-/* 119 */
+/* 118 */
 /***/ (function(module) {
 
 module.exports = JSON.parse("[\"abandon\",\"ability\",\"able\",\"about\",\"above\",\"absent\",\"absorb\",\"abstract\",\"absurd\",\"abuse\",\"access\",\"accident\",\"account\",\"accuse\",\"achieve\",\"acid\",\"acoustic\",\"acquire\",\"across\",\"act\",\"action\",\"actor\",\"actress\",\"actual\",\"adapt\",\"add\",\"addict\",\"address\",\"adjust\",\"admit\",\"adult\",\"advance\",\"advice\",\"aerobic\",\"affair\",\"afford\",\"afraid\",\"again\",\"age\",\"agent\",\"agree\",\"ahead\",\"aim\",\"air\",\"airport\",\"aisle\",\"alarm\",\"album\",\"alcohol\",\"alert\",\"alien\",\"all\",\"alley\",\"allow\",\"almost\",\"alone\",\"alpha\",\"already\",\"also\",\"alter\",\"always\",\"amateur\",\"amazing\",\"among\",\"amount\",\"amused\",\"analyst\",\"anchor\",\"ancient\",\"anger\",\"angle\",\"angry\",\"animal\",\"ankle\",\"announce\",\"annual\",\"another\",\"answer\",\"antenna\",\"antique\",\"anxiety\",\"any\",\"apart\",\"apology\",\"appear\",\"apple\",\"approve\",\"april\",\"arch\",\"arctic\",\"area\",\"arena\",\"argue\",\"arm\",\"armed\",\"armor\",\"army\",\"around\",\"arrange\",\"arrest\",\"arrive\",\"arrow\",\"art\",\"artefact\",\"artist\",\"artwork\",\"ask\",\"aspect\",\"assault\",\"asset\",\"assist\",\"assume\",\"asthma\",\"athlete\",\"atom\",\"attack\",\"attend\",\"attitude\",\"attract\",\"auction\",\"audit\",\"august\",\"aunt\",\"author\",\"auto\",\"autumn\",\"average\",\"avocado\",\"avoid\",\"awake\",\"aware\",\"away\",\"awesome\",\"awful\",\"awkward\",\"axis\",\"baby\",\"bachelor\",\"bacon\",\"badge\",\"bag\",\"balance\",\"balcony\",\"ball\",\"bamboo\",\"banana\",\"banner\",\"bar\",\"barely\",\"bargain\",\"barrel\",\"base\",\"basic\",\"basket\",\"battle\",\"beach\",\"bean\",\"beauty\",\"because\",\"become\",\"beef\",\"before\",\"begin\",\"behave\",\"behind\",\"believe\",\"below\",\"belt\",\"bench\",\"benefit\",\"best\",\"betray\",\"better\",\"between\",\"beyond\",\"bicycle\",\"bid\",\"bike\",\"bind\",\"biology\",\"bird\",\"birth\",\"bitter\",\"black\",\"blade\",\"blame\",\"blanket\",\"blast\",\"bleak\",\"bless\",\"blind\",\"blood\",\"blossom\",\"blouse\",\"blue\",\"blur\",\"blush\",\"board\",\"boat\",\"body\",\"boil\",\"bomb\",\"bone\",\"bonus\",\"book\",\"boost\",\"border\",\"boring\",\"borrow\",\"boss\",\"bottom\",\"bounce\",\"box\",\"boy\",\"bracket\",\"brain\",\"brand\",\"brass\",\"brave\",\"bread\",\"breeze\",\"brick\",\"bridge\",\"brief\",\"bright\",\"bring\",\"brisk\",\"broccoli\",\"broken\",\"bronze\",\"broom\",\"brother\",\"brown\",\"brush\",\"bubble\",\"buddy\",\"budget\",\"buffalo\",\"build\",\"bulb\",\"bulk\",\"bullet\",\"bundle\",\"bunker\",\"burden\",\"burger\",\"burst\",\"bus\",\"business\",\"busy\",\"butter\",\"buyer\",\"buzz\",\"cabbage\",\"cabin\",\"cable\",\"cactus\",\"cage\",\"cake\",\"call\",\"calm\",\"camera\",\"camp\",\"can\",\"canal\",\"cancel\",\"candy\",\"cannon\",\"canoe\",\"canvas\",\"canyon\",\"capable\",\"capital\",\"captain\",\"car\",\"carbon\",\"card\",\"cargo\",\"carpet\",\"carry\",\"cart\",\"case\",\"cash\",\"casino\",\"castle\",\"casual\",\"cat\",\"catalog\",\"catch\",\"category\",\"cattle\",\"caught\",\"cause\",\"caution\",\"cave\",\"ceiling\",\"celery\",\"cement\",\"census\",\"century\",\"cereal\",\"certain\",\"chair\",\"chalk\",\"champion\",\"change\",\"chaos\",\"chapter\",\"charge\",\"chase\",\"chat\",\"cheap\",\"check\",\"cheese\",\"chef\",\"cherry\",\"chest\",\"chicken\",\"chief\",\"child\",\"chimney\",\"choice\",\"choose\",\"chronic\",\"chuckle\",\"chunk\",\"churn\",\"cigar\",\"cinnamon\",\"circle\",\"citizen\",\"city\",\"civil\",\"claim\",\"clap\",\"clarify\",\"claw\",\"clay\",\"clean\",\"clerk\",\"clever\",\"click\",\"client\",\"cliff\",\"climb\",\"clinic\",\"clip\",\"clock\",\"clog\",\"close\",\"cloth\",\"cloud\",\"clown\",\"club\",\"clump\",\"cluster\",\"clutch\",\"coach\",\"coast\",\"coconut\",\"code\",\"coffee\",\"coil\",\"coin\",\"collect\",\"color\",\"column\",\"combine\",\"come\",\"comfort\",\"comic\",\"common\",\"company\",\"concert\",\"conduct\",\"confirm\",\"congress\",\"connect\",\"consider\",\"control\",\"convince\",\"cook\",\"cool\",\"copper\",\"copy\",\"coral\",\"core\",\"corn\",\"correct\",\"cost\",\"cotton\",\"couch\",\"country\",\"couple\",\"course\",\"cousin\",\"cover\",\"coyote\",\"crack\",\"cradle\",\"craft\",\"cram\",\"crane\",\"crash\",\"crater\",\"crawl\",\"crazy\",\"cream\",\"credit\",\"creek\",\"crew\",\"cricket\",\"crime\",\"crisp\",\"critic\",\"crop\",\"cross\",\"crouch\",\"crowd\",\"crucial\",\"cruel\",\"cruise\",\"crumble\",\"crunch\",\"crush\",\"cry\",\"crystal\",\"cube\",\"culture\",\"cup\",\"cupboard\",\"curious\",\"current\",\"curtain\",\"curve\",\"cushion\",\"custom\",\"cute\",\"cycle\",\"dad\",\"damage\",\"damp\",\"dance\",\"danger\",\"daring\",\"dash\",\"daughter\",\"dawn\",\"day\",\"deal\",\"debate\",\"debris\",\"decade\",\"december\",\"decide\",\"decline\",\"decorate\",\"decrease\",\"deer\",\"defense\",\"define\",\"defy\",\"degree\",\"delay\",\"deliver\",\"demand\",\"demise\",\"denial\",\"dentist\",\"deny\",\"depart\",\"depend\",\"deposit\",\"depth\",\"deputy\",\"derive\",\"describe\",\"desert\",\"design\",\"desk\",\"despair\",\"destroy\",\"detail\",\"detect\",\"develop\",\"device\",\"devote\",\"diagram\",\"dial\",\"diamond\",\"diary\",\"dice\",\"diesel\",\"diet\",\"differ\",\"digital\",\"dignity\",\"dilemma\",\"dinner\",\"dinosaur\",\"direct\",\"dirt\",\"disagree\",\"discover\",\"disease\",\"dish\",\"dismiss\",\"disorder\",\"display\",\"distance\",\"divert\",\"divide\",\"divorce\",\"dizzy\",\"doctor\",\"document\",\"dog\",\"doll\",\"dolphin\",\"domain\",\"donate\",\"donkey\",\"donor\",\"door\",\"dose\",\"double\",\"dove\",\"draft\",\"dragon\",\"drama\",\"drastic\",\"draw\",\"dream\",\"dress\",\"drift\",\"drill\",\"drink\",\"drip\",\"drive\",\"drop\",\"drum\",\"dry\",\"duck\",\"dumb\",\"dune\",\"during\",\"dust\",\"dutch\",\"duty\",\"dwarf\",\"dynamic\",\"eager\",\"eagle\",\"early\",\"earn\",\"earth\",\"easily\",\"east\",\"easy\",\"echo\",\"ecology\",\"economy\",\"edge\",\"edit\",\"educate\",\"effort\",\"egg\",\"eight\",\"either\",\"elbow\",\"elder\",\"electric\",\"elegant\",\"element\",\"elephant\",\"elevator\",\"elite\",\"else\",\"embark\",\"embody\",\"embrace\",\"emerge\",\"emotion\",\"employ\",\"empower\",\"empty\",\"enable\",\"enact\",\"end\",\"endless\",\"endorse\",\"enemy\",\"energy\",\"enforce\",\"engage\",\"engine\",\"enhance\",\"enjoy\",\"enlist\",\"enough\",\"enrich\",\"enroll\",\"ensure\",\"enter\",\"entire\",\"entry\",\"envelope\",\"episode\",\"equal\",\"equip\",\"era\",\"erase\",\"erode\",\"erosion\",\"error\",\"erupt\",\"escape\",\"essay\",\"essence\",\"estate\",\"eternal\",\"ethics\",\"evidence\",\"evil\",\"evoke\",\"evolve\",\"exact\",\"example\",\"excess\",\"exchange\",\"excite\",\"exclude\",\"excuse\",\"execute\",\"exercise\",\"exhaust\",\"exhibit\",\"exile\",\"exist\",\"exit\",\"exotic\",\"expand\",\"expect\",\"expire\",\"explain\",\"expose\",\"express\",\"extend\",\"extra\",\"eye\",\"eyebrow\",\"fabric\",\"face\",\"faculty\",\"fade\",\"faint\",\"faith\",\"fall\",\"false\",\"fame\",\"family\",\"famous\",\"fan\",\"fancy\",\"fantasy\",\"farm\",\"fashion\",\"fat\",\"fatal\",\"father\",\"fatigue\",\"fault\",\"favorite\",\"feature\",\"february\",\"federal\",\"fee\",\"feed\",\"feel\",\"female\",\"fence\",\"festival\",\"fetch\",\"fever\",\"few\",\"fiber\",\"fiction\",\"field\",\"figure\",\"file\",\"film\",\"filter\",\"final\",\"find\",\"fine\",\"finger\",\"finish\",\"fire\",\"firm\",\"first\",\"fiscal\",\"fish\",\"fit\",\"fitness\",\"fix\",\"flag\",\"flame\",\"flash\",\"flat\",\"flavor\",\"flee\",\"flight\",\"flip\",\"float\",\"flock\",\"floor\",\"flower\",\"fluid\",\"flush\",\"fly\",\"foam\",\"focus\",\"fog\",\"foil\",\"fold\",\"follow\",\"food\",\"foot\",\"force\",\"forest\",\"forget\",\"fork\",\"fortune\",\"forum\",\"forward\",\"fossil\",\"foster\",\"found\",\"fox\",\"fragile\",\"frame\",\"frequent\",\"fresh\",\"friend\",\"fringe\",\"frog\",\"front\",\"frost\",\"frown\",\"frozen\",\"fruit\",\"fuel\",\"fun\",\"funny\",\"furnace\",\"fury\",\"future\",\"gadget\",\"gain\",\"galaxy\",\"gallery\",\"game\",\"gap\",\"garage\",\"garbage\",\"garden\",\"garlic\",\"garment\",\"gas\",\"gasp\",\"gate\",\"gather\",\"gauge\",\"gaze\",\"general\",\"genius\",\"genre\",\"gentle\",\"genuine\",\"gesture\",\"ghost\",\"giant\",\"gift\",\"giggle\",\"ginger\",\"giraffe\",\"girl\",\"give\",\"glad\",\"glance\",\"glare\",\"glass\",\"glide\",\"glimpse\",\"globe\",\"gloom\",\"glory\",\"glove\",\"glow\",\"glue\",\"goat\",\"goddess\",\"gold\",\"good\",\"goose\",\"gorilla\",\"gospel\",\"gossip\",\"govern\",\"gown\",\"grab\",\"grace\",\"grain\",\"grant\",\"grape\",\"grass\",\"gravity\",\"great\",\"green\",\"grid\",\"grief\",\"grit\",\"grocery\",\"group\",\"grow\",\"grunt\",\"guard\",\"guess\",\"guide\",\"guilt\",\"guitar\",\"gun\",\"gym\",\"habit\",\"hair\",\"half\",\"hammer\",\"hamster\",\"hand\",\"happy\",\"harbor\",\"hard\",\"harsh\",\"harvest\",\"hat\",\"have\",\"hawk\",\"hazard\",\"head\",\"health\",\"heart\",\"heavy\",\"hedgehog\",\"height\",\"hello\",\"helmet\",\"help\",\"hen\",\"hero\",\"hidden\",\"high\",\"hill\",\"hint\",\"hip\",\"hire\",\"history\",\"hobby\",\"hockey\",\"hold\",\"hole\",\"holiday\",\"hollow\",\"home\",\"honey\",\"hood\",\"hope\",\"horn\",\"horror\",\"horse\",\"hospital\",\"host\",\"hotel\",\"hour\",\"hover\",\"hub\",\"huge\",\"human\",\"humble\",\"humor\",\"hundred\",\"hungry\",\"hunt\",\"hurdle\",\"hurry\",\"hurt\",\"husband\",\"hybrid\",\"ice\",\"icon\",\"idea\",\"identify\",\"idle\",\"ignore\",\"ill\",\"illegal\",\"illness\",\"image\",\"imitate\",\"immense\",\"immune\",\"impact\",\"impose\",\"improve\",\"impulse\",\"inch\",\"include\",\"income\",\"increase\",\"index\",\"indicate\",\"indoor\",\"industry\",\"infant\",\"inflict\",\"inform\",\"inhale\",\"inherit\",\"initial\",\"inject\",\"injury\",\"inmate\",\"inner\",\"innocent\",\"input\",\"inquiry\",\"insane\",\"insect\",\"inside\",\"inspire\",\"install\",\"intact\",\"interest\",\"into\",\"invest\",\"invite\",\"involve\",\"iron\",\"island\",\"isolate\",\"issue\",\"item\",\"ivory\",\"jacket\",\"jaguar\",\"jar\",\"jazz\",\"jealous\",\"jeans\",\"jelly\",\"jewel\",\"job\",\"join\",\"joke\",\"journey\",\"joy\",\"judge\",\"juice\",\"jump\",\"jungle\",\"junior\",\"junk\",\"just\",\"kangaroo\",\"keen\",\"keep\",\"ketchup\",\"key\",\"kick\",\"kid\",\"kidney\",\"kind\",\"kingdom\",\"kiss\",\"kit\",\"kitchen\",\"kite\",\"kitten\",\"kiwi\",\"knee\",\"knife\",\"knock\",\"know\",\"lab\",\"label\",\"labor\",\"ladder\",\"lady\",\"lake\",\"lamp\",\"language\",\"laptop\",\"large\",\"later\",\"latin\",\"laugh\",\"laundry\",\"lava\",\"law\",\"lawn\",\"lawsuit\",\"layer\",\"lazy\",\"leader\",\"leaf\",\"learn\",\"leave\",\"lecture\",\"left\",\"leg\",\"legal\",\"legend\",\"leisure\",\"lemon\",\"lend\",\"length\",\"lens\",\"leopard\",\"lesson\",\"letter\",\"level\",\"liar\",\"liberty\",\"library\",\"license\",\"life\",\"lift\",\"light\",\"like\",\"limb\",\"limit\",\"link\",\"lion\",\"liquid\",\"list\",\"little\",\"live\",\"lizard\",\"load\",\"loan\",\"lobster\",\"local\",\"lock\",\"logic\",\"lonely\",\"long\",\"loop\",\"lottery\",\"loud\",\"lounge\",\"love\",\"loyal\",\"lucky\",\"luggage\",\"lumber\",\"lunar\",\"lunch\",\"luxury\",\"lyrics\",\"machine\",\"mad\",\"magic\",\"magnet\",\"maid\",\"mail\",\"main\",\"major\",\"make\",\"mammal\",\"man\",\"manage\",\"mandate\",\"mango\",\"mansion\",\"manual\",\"maple\",\"marble\",\"march\",\"margin\",\"marine\",\"market\",\"marriage\",\"mask\",\"mass\",\"master\",\"match\",\"material\",\"math\",\"matrix\",\"matter\",\"maximum\",\"maze\",\"meadow\",\"mean\",\"measure\",\"meat\",\"mechanic\",\"medal\",\"media\",\"melody\",\"melt\",\"member\",\"memory\",\"mention\",\"menu\",\"mercy\",\"merge\",\"merit\",\"merry\",\"mesh\",\"message\",\"metal\",\"method\",\"middle\",\"midnight\",\"milk\",\"million\",\"mimic\",\"mind\",\"minimum\",\"minor\",\"minute\",\"miracle\",\"mirror\",\"misery\",\"miss\",\"mistake\",\"mix\",\"mixed\",\"mixture\",\"mobile\",\"model\",\"modify\",\"mom\",\"moment\",\"monitor\",\"monkey\",\"monster\",\"month\",\"moon\",\"moral\",\"more\",\"morning\",\"mosquito\",\"mother\",\"motion\",\"motor\",\"mountain\",\"mouse\",\"move\",\"movie\",\"much\",\"muffin\",\"mule\",\"multiply\",\"muscle\",\"museum\",\"mushroom\",\"music\",\"must\",\"mutual\",\"myself\",\"mystery\",\"myth\",\"naive\",\"name\",\"napkin\",\"narrow\",\"nasty\",\"nation\",\"nature\",\"near\",\"neck\",\"need\",\"negative\",\"neglect\",\"neither\",\"nephew\",\"nerve\",\"nest\",\"net\",\"network\",\"neutral\",\"never\",\"news\",\"next\",\"nice\",\"night\",\"noble\",\"noise\",\"nominee\",\"noodle\",\"normal\",\"north\",\"nose\",\"notable\",\"note\",\"nothing\",\"notice\",\"novel\",\"now\",\"nuclear\",\"number\",\"nurse\",\"nut\",\"oak\",\"obey\",\"object\",\"oblige\",\"obscure\",\"observe\",\"obtain\",\"obvious\",\"occur\",\"ocean\",\"october\",\"odor\",\"off\",\"offer\",\"office\",\"often\",\"oil\",\"okay\",\"old\",\"olive\",\"olympic\",\"omit\",\"once\",\"one\",\"onion\",\"online\",\"only\",\"open\",\"opera\",\"opinion\",\"oppose\",\"option\",\"orange\",\"orbit\",\"orchard\",\"order\",\"ordinary\",\"organ\",\"orient\",\"original\",\"orphan\",\"ostrich\",\"other\",\"outdoor\",\"outer\",\"output\",\"outside\",\"oval\",\"oven\",\"over\",\"own\",\"owner\",\"oxygen\",\"oyster\",\"ozone\",\"pact\",\"paddle\",\"page\",\"pair\",\"palace\",\"palm\",\"panda\",\"panel\",\"panic\",\"panther\",\"paper\",\"parade\",\"parent\",\"park\",\"parrot\",\"party\",\"pass\",\"patch\",\"path\",\"patient\",\"patrol\",\"pattern\",\"pause\",\"pave\",\"payment\",\"peace\",\"peanut\",\"pear\",\"peasant\",\"pelican\",\"pen\",\"penalty\",\"pencil\",\"people\",\"pepper\",\"perfect\",\"permit\",\"person\",\"pet\",\"phone\",\"photo\",\"phrase\",\"physical\",\"piano\",\"picnic\",\"picture\",\"piece\",\"pig\",\"pigeon\",\"pill\",\"pilot\",\"pink\",\"pioneer\",\"pipe\",\"pistol\",\"pitch\",\"pizza\",\"place\",\"planet\",\"plastic\",\"plate\",\"play\",\"please\",\"pledge\",\"pluck\",\"plug\",\"plunge\",\"poem\",\"poet\",\"point\",\"polar\",\"pole\",\"police\",\"pond\",\"pony\",\"pool\",\"popular\",\"portion\",\"position\",\"possible\",\"post\",\"potato\",\"pottery\",\"poverty\",\"powder\",\"power\",\"practice\",\"praise\",\"predict\",\"prefer\",\"prepare\",\"present\",\"pretty\",\"prevent\",\"price\",\"pride\",\"primary\",\"print\",\"priority\",\"prison\",\"private\",\"prize\",\"problem\",\"process\",\"produce\",\"profit\",\"program\",\"project\",\"promote\",\"proof\",\"property\",\"prosper\",\"protect\",\"proud\",\"provide\",\"public\",\"pudding\",\"pull\",\"pulp\",\"pulse\",\"pumpkin\",\"punch\",\"pupil\",\"puppy\",\"purchase\",\"purity\",\"purpose\",\"purse\",\"push\",\"put\",\"puzzle\",\"pyramid\",\"quality\",\"quantum\",\"quarter\",\"question\",\"quick\",\"quit\",\"quiz\",\"quote\",\"rabbit\",\"raccoon\",\"race\",\"rack\",\"radar\",\"radio\",\"rail\",\"rain\",\"raise\",\"rally\",\"ramp\",\"ranch\",\"random\",\"range\",\"rapid\",\"rare\",\"rate\",\"rather\",\"raven\",\"raw\",\"razor\",\"ready\",\"real\",\"reason\",\"rebel\",\"rebuild\",\"recall\",\"receive\",\"recipe\",\"record\",\"recycle\",\"reduce\",\"reflect\",\"reform\",\"refuse\",\"region\",\"regret\",\"regular\",\"reject\",\"relax\",\"release\",\"relief\",\"rely\",\"remain\",\"remember\",\"remind\",\"remove\",\"render\",\"renew\",\"rent\",\"reopen\",\"repair\",\"repeat\",\"replace\",\"report\",\"require\",\"rescue\",\"resemble\",\"resist\",\"resource\",\"response\",\"result\",\"retire\",\"retreat\",\"return\",\"reunion\",\"reveal\",\"review\",\"reward\",\"rhythm\",\"rib\",\"ribbon\",\"rice\",\"rich\",\"ride\",\"ridge\",\"rifle\",\"right\",\"rigid\",\"ring\",\"riot\",\"ripple\",\"risk\",\"ritual\",\"rival\",\"river\",\"road\",\"roast\",\"robot\",\"robust\",\"rocket\",\"romance\",\"roof\",\"rookie\",\"room\",\"rose\",\"rotate\",\"rough\",\"round\",\"route\",\"royal\",\"rubber\",\"rude\",\"rug\",\"rule\",\"run\",\"runway\",\"rural\",\"sad\",\"saddle\",\"sadness\",\"safe\",\"sail\",\"salad\",\"salmon\",\"salon\",\"salt\",\"salute\",\"same\",\"sample\",\"sand\",\"satisfy\",\"satoshi\",\"sauce\",\"sausage\",\"save\",\"say\",\"scale\",\"scan\",\"scare\",\"scatter\",\"scene\",\"scheme\",\"school\",\"science\",\"scissors\",\"scorpion\",\"scout\",\"scrap\",\"screen\",\"script\",\"scrub\",\"sea\",\"search\",\"season\",\"seat\",\"second\",\"secret\",\"section\",\"security\",\"seed\",\"seek\",\"segment\",\"select\",\"sell\",\"seminar\",\"senior\",\"sense\",\"sentence\",\"series\",\"service\",\"session\",\"settle\",\"setup\",\"seven\",\"shadow\",\"shaft\",\"shallow\",\"share\",\"shed\",\"shell\",\"sheriff\",\"shield\",\"shift\",\"shine\",\"ship\",\"shiver\",\"shock\",\"shoe\",\"shoot\",\"shop\",\"short\",\"shoulder\",\"shove\",\"shrimp\",\"shrug\",\"shuffle\",\"shy\",\"sibling\",\"sick\",\"side\",\"siege\",\"sight\",\"sign\",\"silent\",\"silk\",\"silly\",\"silver\",\"similar\",\"simple\",\"since\",\"sing\",\"siren\",\"sister\",\"situate\",\"six\",\"size\",\"skate\",\"sketch\",\"ski\",\"skill\",\"skin\",\"skirt\",\"skull\",\"slab\",\"slam\",\"sleep\",\"slender\",\"slice\",\"slide\",\"slight\",\"slim\",\"slogan\",\"slot\",\"slow\",\"slush\",\"small\",\"smart\",\"smile\",\"smoke\",\"smooth\",\"snack\",\"snake\",\"snap\",\"sniff\",\"snow\",\"soap\",\"soccer\",\"social\",\"sock\",\"soda\",\"soft\",\"solar\",\"soldier\",\"solid\",\"solution\",\"solve\",\"someone\",\"song\",\"soon\",\"sorry\",\"sort\",\"soul\",\"sound\",\"soup\",\"source\",\"south\",\"space\",\"spare\",\"spatial\",\"spawn\",\"speak\",\"special\",\"speed\",\"spell\",\"spend\",\"sphere\",\"spice\",\"spider\",\"spike\",\"spin\",\"spirit\",\"split\",\"spoil\",\"sponsor\",\"spoon\",\"sport\",\"spot\",\"spray\",\"spread\",\"spring\",\"spy\",\"square\",\"squeeze\",\"squirrel\",\"stable\",\"stadium\",\"staff\",\"stage\",\"stairs\",\"stamp\",\"stand\",\"start\",\"state\",\"stay\",\"steak\",\"steel\",\"stem\",\"step\",\"stereo\",\"stick\",\"still\",\"sting\",\"stock\",\"stomach\",\"stone\",\"stool\",\"story\",\"stove\",\"strategy\",\"street\",\"strike\",\"strong\",\"struggle\",\"student\",\"stuff\",\"stumble\",\"style\",\"subject\",\"submit\",\"subway\",\"success\",\"such\",\"sudden\",\"suffer\",\"sugar\",\"suggest\",\"suit\",\"summer\",\"sun\",\"sunny\",\"sunset\",\"super\",\"supply\",\"supreme\",\"sure\",\"surface\",\"surge\",\"surprise\",\"surround\",\"survey\",\"suspect\",\"sustain\",\"swallow\",\"swamp\",\"swap\",\"swarm\",\"swear\",\"sweet\",\"swift\",\"swim\",\"swing\",\"switch\",\"sword\",\"symbol\",\"symptom\",\"syrup\",\"system\",\"table\",\"tackle\",\"tag\",\"tail\",\"talent\",\"talk\",\"tank\",\"tape\",\"target\",\"task\",\"taste\",\"tattoo\",\"taxi\",\"teach\",\"team\",\"tell\",\"ten\",\"tenant\",\"tennis\",\"tent\",\"term\",\"test\",\"text\",\"thank\",\"that\",\"theme\",\"then\",\"theory\",\"there\",\"they\",\"thing\",\"this\",\"thought\",\"three\",\"thrive\",\"throw\",\"thumb\",\"thunder\",\"ticket\",\"tide\",\"tiger\",\"tilt\",\"timber\",\"time\",\"tiny\",\"tip\",\"tired\",\"tissue\",\"title\",\"toast\",\"tobacco\",\"today\",\"toddler\",\"toe\",\"together\",\"toilet\",\"token\",\"tomato\",\"tomorrow\",\"tone\",\"tongue\",\"tonight\",\"tool\",\"tooth\",\"top\",\"topic\",\"topple\",\"torch\",\"tornado\",\"tortoise\",\"toss\",\"total\",\"tourist\",\"toward\",\"tower\",\"town\",\"toy\",\"track\",\"trade\",\"traffic\",\"tragic\",\"train\",\"transfer\",\"trap\",\"trash\",\"travel\",\"tray\",\"treat\",\"tree\",\"trend\",\"trial\",\"tribe\",\"trick\",\"trigger\",\"trim\",\"trip\",\"trophy\",\"trouble\",\"truck\",\"true\",\"truly\",\"trumpet\",\"trust\",\"truth\",\"try\",\"tube\",\"tuition\",\"tumble\",\"tuna\",\"tunnel\",\"turkey\",\"turn\",\"turtle\",\"twelve\",\"twenty\",\"twice\",\"twin\",\"twist\",\"two\",\"type\",\"typical\",\"ugly\",\"umbrella\",\"unable\",\"unaware\",\"uncle\",\"uncover\",\"under\",\"undo\",\"unfair\",\"unfold\",\"unhappy\",\"uniform\",\"unique\",\"unit\",\"universe\",\"unknown\",\"unlock\",\"until\",\"unusual\",\"unveil\",\"update\",\"upgrade\",\"uphold\",\"upon\",\"upper\",\"upset\",\"urban\",\"urge\",\"usage\",\"use\",\"used\",\"useful\",\"useless\",\"usual\",\"utility\",\"vacant\",\"vacuum\",\"vague\",\"valid\",\"valley\",\"valve\",\"van\",\"vanish\",\"vapor\",\"various\",\"vast\",\"vault\",\"vehicle\",\"velvet\",\"vendor\",\"venture\",\"venue\",\"verb\",\"verify\",\"version\",\"very\",\"vessel\",\"veteran\",\"viable\",\"vibrant\",\"vicious\",\"victory\",\"video\",\"view\",\"village\",\"vintage\",\"violin\",\"virtual\",\"virus\",\"visa\",\"visit\",\"visual\",\"vital\",\"vivid\",\"vocal\",\"voice\",\"void\",\"volcano\",\"volume\",\"vote\",\"voyage\",\"wage\",\"wagon\",\"wait\",\"walk\",\"wall\",\"walnut\",\"want\",\"warfare\",\"warm\",\"warrior\",\"wash\",\"wasp\",\"waste\",\"water\",\"wave\",\"way\",\"wealth\",\"weapon\",\"wear\",\"weasel\",\"weather\",\"web\",\"wedding\",\"weekend\",\"weird\",\"welcome\",\"west\",\"wet\",\"whale\",\"what\",\"wheat\",\"wheel\",\"when\",\"where\",\"whip\",\"whisper\",\"wide\",\"width\",\"wife\",\"wild\",\"will\",\"win\",\"window\",\"wine\",\"wing\",\"wink\",\"winner\",\"winter\",\"wire\",\"wisdom\",\"wise\",\"wish\",\"witness\",\"wolf\",\"woman\",\"wonder\",\"wood\",\"wool\",\"word\",\"work\",\"world\",\"worry\",\"worth\",\"wrap\",\"wreck\",\"wrestle\",\"wrist\",\"write\",\"wrong\",\"yard\",\"year\",\"yellow\",\"you\",\"young\",\"youth\",\"zebra\",\"zero\",\"zone\",\"zoo\"]");
 
 /***/ }),
-/* 120 */
+/* 119 */
 /***/ (function(module, exports) {
 
 module.exports = require("assert");
 
 /***/ }),
-/* 121 */
+/* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var base58 = __webpack_require__(18)
@@ -22208,42 +22187,42 @@ module.exports = {
 
 
 /***/ }),
-/* 122 */
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 try {
-  module.exports = __webpack_require__(123)
+  module.exports = __webpack_require__(122)
 } catch (err) {
   if (process.env.DEBUG) {
     console.error('Secp256k1 bindings are not compiled. Pure JS implementation will be used.')
   }
 
-  module.exports = __webpack_require__(126)
+  module.exports = __webpack_require__(125)
 }
+
+
+/***/ }),
+/* 122 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+module.exports = __webpack_require__(123)('secp256k1')
 
 
 /***/ }),
 /* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-module.exports = __webpack_require__(124)('secp256k1')
-
-
-/***/ }),
-/* 124 */
-/***/ (function(module, exports, __webpack_require__) {
-
 /* WEBPACK VAR INJECTION */(function(__filename) {/**
  * Module dependencies.
  */
 
-var fs = __webpack_require__(64),
-  path = __webpack_require__(65),
-  fileURLToPath = __webpack_require__(125),
+var fs = __webpack_require__(63),
+  path = __webpack_require__(64),
+  fileURLToPath = __webpack_require__(124),
   join = path.join,
   dirname = path.dirname,
   exists =
@@ -22462,7 +22441,7 @@ exports.getRoot = function getRoot(file) {
 /* WEBPACK VAR INJECTION */}.call(this, "/index.js"))
 
 /***/ }),
-/* 125 */
+/* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
@@ -22470,7 +22449,7 @@ exports.getRoot = function getRoot(file) {
  * Module dependencies.
  */
 
-var sep = __webpack_require__(65).sep || '/';
+var sep = __webpack_require__(64).sep || '/';
 
 /**
  * Module exports.
@@ -22534,23 +22513,23 @@ function fileUriToPath (uri) {
 
 
 /***/ }),
+/* 125 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+module.exports = __webpack_require__(126)(__webpack_require__(130))
+
+
+/***/ }),
 /* 126 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-module.exports = __webpack_require__(127)(__webpack_require__(131))
-
-
-/***/ }),
-/* 127 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var assert = __webpack_require__(128)
-var der = __webpack_require__(129)
-var messages = __webpack_require__(66)
+var assert = __webpack_require__(127)
+var der = __webpack_require__(128)
+var messages = __webpack_require__(65)
 
 function initCompressedValue (value, defaultValue) {
   if (value === undefined) return defaultValue
@@ -22795,7 +22774,7 @@ module.exports = function (secp256k1) {
 
 
 /***/ }),
-/* 128 */
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22846,13 +22825,13 @@ exports.isNumberInInterval = function (number, x, y, message) {
 
 
 /***/ }),
-/* 129 */
+/* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 var Buffer = __webpack_require__(14).Buffer
-var bip66 = __webpack_require__(130)
+var bip66 = __webpack_require__(129)
 
 var EC_PRIVKEY_EXPORT_DER_COMPRESSED = Buffer.from([
   // begin
@@ -23046,7 +23025,7 @@ exports.signatureImportLax = function (sig) {
 
 
 /***/ }),
-/* 130 */
+/* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Reference https://github.com/bitcoin/bips/blob/master/bip-0066.mediawiki
@@ -23165,7 +23144,7 @@ module.exports = {
 
 
 /***/ }),
-/* 131 */
+/* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23175,7 +23154,7 @@ var createHash = __webpack_require__(39)
 var BN = __webpack_require__(7)
 var EC = __webpack_require__(41).ec
 
-var messages = __webpack_require__(66)
+var messages = __webpack_require__(65)
 
 var ec = new EC('secp256k1')
 var ecparams = ec.curve
@@ -23435,7 +23414,7 @@ exports.ecdhUnsafe = function (publicKey, privateKey, compressed) {
 
 
 /***/ }),
-/* 132 */
+/* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory) {
@@ -23568,7 +23547,7 @@ exports.ecdhUnsafe = function (publicKey, privateKey, compressed) {
 }));
 
 /***/ }),
-/* 133 */
+/* 132 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory) {
@@ -23834,7 +23813,7 @@ exports.ecdhUnsafe = function (publicKey, privateKey, compressed) {
 }));
 
 /***/ }),
-/* 134 */
+/* 133 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory) {
@@ -23982,7 +23961,7 @@ exports.ecdhUnsafe = function (publicKey, privateKey, compressed) {
 }));
 
 /***/ }),
-/* 135 */
+/* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory) {
@@ -24123,13 +24102,13 @@ exports.ecdhUnsafe = function (publicKey, privateKey, compressed) {
 }));
 
 /***/ }),
-/* 136 */
+/* 135 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory, undef) {
 	if (true) {
 		// CommonJS
-		module.exports = exports = factory(__webpack_require__(11), __webpack_require__(67));
+		module.exports = exports = factory(__webpack_require__(11), __webpack_require__(66));
 	}
 	else {}
 }(this, function (CryptoJS) {
@@ -25001,7 +24980,7 @@ exports.ecdhUnsafe = function (publicKey, privateKey, compressed) {
 }));
 
 /***/ }),
-/* 137 */
+/* 136 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25014,7 +24993,7 @@ module.exports = function (str) {
 
 
 /***/ }),
-/* 138 */
+/* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25111,7 +25090,7 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 
 
 /***/ }),
-/* 139 */
+/* 138 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25212,7 +25191,7 @@ module.exports = function (encodedURI) {
 
 
 /***/ }),
-/* 140 */
+/* 139 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -25228,9 +25207,9 @@ module.exports = function (encodedURI) {
  * @license MIT
  */
 
-var Url = __webpack_require__(141);
-var spawn = __webpack_require__(142).spawn;
-var fs = __webpack_require__(64);
+var Url = __webpack_require__(140);
+var spawn = __webpack_require__(141).spawn;
+var fs = __webpack_require__(63);
 
 exports.XMLHttpRequest = function() {
   "use strict";
@@ -25239,8 +25218,8 @@ exports.XMLHttpRequest = function() {
    * Private variables
    */
   var self = this;
-  var http = __webpack_require__(143);
-  var https = __webpack_require__(144);
+  var http = __webpack_require__(142);
+  var https = __webpack_require__(143);
 
   // Holds http.js objects
   var request;
@@ -25838,31 +25817,31 @@ exports.XMLHttpRequest = function() {
 
 
 /***/ }),
-/* 141 */
+/* 140 */
 /***/ (function(module, exports) {
 
 module.exports = require("url");
 
 /***/ }),
-/* 142 */
+/* 141 */
 /***/ (function(module, exports) {
 
 module.exports = require("child_process");
 
 /***/ }),
-/* 143 */
+/* 142 */
 /***/ (function(module, exports) {
 
 module.exports = require("http");
 
 /***/ }),
-/* 144 */
+/* 143 */
 /***/ (function(module, exports) {
 
 module.exports = require("https");
 
 /***/ }),
-/* 145 */
+/* 144 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -25916,12 +25895,12 @@ __webpack_require__.d(proto_namespaceObject, "getTransaction", function() { retu
 __webpack_require__.d(proto_namespaceObject, "getMsigTransaction", function() { return getMsigTransaction; });
 var keyStore_namespaceObject = {};
 __webpack_require__.r(keyStore_namespaceObject);
-__webpack_require__.d(keyStore_namespaceObject, "getKeystore", function() { return keyStore_getKeystore; });
-__webpack_require__.d(keyStore_namespaceObject, "unlockKeystore", function() { return keyStore_unlockKeystore; });
+__webpack_require__.d(keyStore_namespaceObject, "getKeystore", function() { return getKeystore; });
+__webpack_require__.d(keyStore_namespaceObject, "unlockKeystore", function() { return unlockKeystore; });
 __webpack_require__.d(keyStore_namespaceObject, "checkPassword", function() { return checkPassword; });
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/classCallCheck.js
-var classCallCheck = __webpack_require__(1);
+var classCallCheck = __webpack_require__(2);
 var classCallCheck_default = /*#__PURE__*/__webpack_require__.n(classCallCheck);
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/createClass.js
@@ -25929,7 +25908,7 @@ var createClass = __webpack_require__(3);
 var createClass_default = /*#__PURE__*/__webpack_require__.n(createClass);
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/defineProperty.js
-var defineProperty = __webpack_require__(2);
+var defineProperty = __webpack_require__(0);
 var defineProperty_default = /*#__PURE__*/__webpack_require__.n(defineProperty);
 
 // EXTERNAL MODULE: ./node_modules/@aelfqueen/protobufjs/light.js
@@ -25940,7 +25919,7 @@ var sha256 = __webpack_require__(12);
 var sha256_default = /*#__PURE__*/__webpack_require__.n(sha256);
 
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/typeof.js
-var helpers_typeof = __webpack_require__(68);
+var helpers_typeof = __webpack_require__(67);
 var typeof_default = /*#__PURE__*/__webpack_require__.n(helpers_typeof);
 
 // CONCATENATED MODULE: ./node_modules/bignumber.js/bignumber.mjs
@@ -28838,7 +28817,7 @@ var bs58 = __webpack_require__(18);
 var bs58_default = /*#__PURE__*/__webpack_require__.n(bs58);
 
 // EXTERNAL MODULE: ./node_modules/@aelfqueen/protobufjs/ext/descriptor/index.js
-var descriptor = __webpack_require__(69);
+var descriptor = __webpack_require__(68);
 var descriptor_default = /*#__PURE__*/__webpack_require__.n(descriptor);
 
 // CONCATENATED MODULE: ./src/util/formatters.js
@@ -29653,13 +29632,13 @@ var node = function node(buffer) {
   return Buffer.from(merkleTree_sha256(buffer), 'hex');
 };
 // EXTERNAL MODULE: ./proto/kernel.proto.json
-var kernel_proto = __webpack_require__(70);
+var kernel_proto = __webpack_require__(69);
 
 // EXTERNAL MODULE: ./proto/auth.proto.json
-var auth_proto = __webpack_require__(71);
+var auth_proto = __webpack_require__(70);
 
 // EXTERNAL MODULE: ./proto/crosschain.proto.json
-var crosschain_proto = __webpack_require__(72);
+var crosschain_proto = __webpack_require__(71);
 
 // CONCATENATED MODULE: ./src/util/proto.js
 /**
@@ -30039,13 +30018,37 @@ var aes = __webpack_require__(42);
 var aes_default = /*#__PURE__*/__webpack_require__.n(aes);
 
 // EXTERNAL MODULE: ./node_modules/crypto-js/enc-utf8.js
-var enc_utf8 = __webpack_require__(73);
+var enc_utf8 = __webpack_require__(72);
 var enc_utf8_default = /*#__PURE__*/__webpack_require__.n(enc_utf8);
 
-// EXTERNAL MODULE: ./src/scrypt-polyfill.js
-var scrypt_polyfill = __webpack_require__(43);
-var scrypt_polyfill_default = /*#__PURE__*/__webpack_require__.n(scrypt_polyfill);
+// CONCATENATED MODULE: ./src/scrypt-polyfill.js
 
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { defineProperty_default()(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+/**
+ * @file scrypt.js for scrypt polyfill
+ * @author atom-yang
+ * @date 2019-07-25
+ */
+var scrypt_polyfill_crypto = __webpack_require__(10);
+
+var defaultOptions = {
+  maxmem: 32 * 1024 * 1024
+};
+
+function scrypt(password, salt, N, r, p, dklen) {
+  var options = arguments.length > 6 && arguments[6] !== undefined ? arguments[6] : defaultOptions;
+  return scrypt_polyfill_crypto.scryptSync(password, salt, dklen, _objectSpread({}, options, {
+    N: N,
+    r: r,
+    p: p
+  }));
+}
+
+/* harmony default export */ var scrypt_polyfill = (scrypt);
 // EXTERNAL MODULE: ./node_modules/browserify-cipher/index.js
 var browserify_cipher = __webpack_require__(22);
 
@@ -30408,9 +30411,9 @@ var keccak512s = keccak(512);
 // CONCATENATED MODULE: ./src/util/keyStore.js
 
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+function keyStore_ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { defineProperty_default()(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function keyStore_objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { keyStore_ownKeys(source, true).forEach(function (key) { defineProperty_default()(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { keyStore_ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 /**
  * @file AElf keyStore tools
@@ -30421,7 +30424,7 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 
 
-var defaultOptions = {
+var keyStore_defaultOptions = {
   dklen: 32,
   n: 8192,
   // 2048 4096 8192 16384
@@ -30430,25 +30433,25 @@ var defaultOptions = {
   cipher: 'aes-128-ctr'
 };
 /**
- * getKeyStoreFromV1
+ * getKeyStore
  *
- * @method getKeyStoreFromV1
+ * @method getKeyStore
  * @param {Object} walletInfoInput  walletInfo
  * @param {string} password password
  * @param {Object} option option
  * @return {Object} keyStore
  */
 
-function getKeyStoreFromV1(_ref, password) {
+function getKeystore(_ref, password) {
   var mnemonic = _ref.mnemonic,
       privateKey = _ref.privateKey,
       _ref$nickName = _ref.nickName,
       nickName = _ref$nickName === void 0 ? '' : _ref$nickName,
       _ref$address = _ref.address,
       address = _ref$address === void 0 ? '' : _ref$address;
-  var option = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : defaultOptions;
+  var option = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : keyStore_defaultOptions;
 
-  var opt = _objectSpread({}, defaultOptions, {}, option);
+  var opt = keyStore_objectSpread({}, keyStore_defaultOptions, {}, option);
 
   var _opt$cipher = opt.cipher,
       cipher = _opt$cipher === void 0 ? 'aes-128-ctr' : _opt$cipher;
@@ -30457,7 +30460,7 @@ function getKeyStoreFromV1(_ref, password) {
 
   var iv = randombytes_default()(16); // instance of Buffer
 
-  var derivedKey = scrypt_polyfill_default()(Buffer.from(password, 'utf8'), salt, opt.n, opt.r, opt.p, opt.dklen); // instance of Buffer
+  var derivedKey = scrypt_polyfill(Buffer.from(password, 'utf8'), salt, opt.n, opt.r, opt.p, opt.dklen); // instance of Buffer
 
   var privateKeyCipher = Object(browserify_cipher["createCipheriv"])(cipher, derivedKey.slice(0, sliceLength), iv);
   var privateKeyEncrypted = Buffer.concat([privateKeyCipher.update(Buffer.from(privateKey, 'hex')), privateKeyCipher.final()]);
@@ -30470,8 +30473,6 @@ function getKeyStoreFromV1(_ref, password) {
     type: 'aelf',
     nickName: nickName,
     address: address,
-    // todo: have to use uuid?
-    // id: uuid,
     crypto: {
       cipher: cipher,
       ciphertext: privateKeyEncrypted.toString('hex'),
@@ -30479,13 +30480,12 @@ function getKeyStoreFromV1(_ref, password) {
         iv: iv.toString('hex')
       },
       mnemonicEncrypted: mnemonicEncrypted.toString('hex'),
-      privateKeyEncrypted: privateKeyEncrypted.toString('hex'),
       kdf: 'scrypt',
       kdfparams: {
         r: opt.r,
         n: opt.n,
         p: opt.p,
-        dkLen: opt.dklen,
+        dklen: opt.dklen,
         salt: salt.toString('hex')
       },
       mac: mac
@@ -30495,51 +30495,37 @@ function getKeyStoreFromV1(_ref, password) {
 /**
  * unlock AElf key store
  *
- * @method unlockKeyStoreFromV1
+ * @method unlockKeystore
  * @param {Object} keyStoreInput  key store input
  * @param {string} password password
  * @return {Object} walletInfo
  */
 
-
-function unlockKeyStoreFromV1(_ref2, password) {
+function unlockKeystore(_ref2, password) {
   var crypto = _ref2.crypto,
-      type = _ref2.type,
       _ref2$nickName = _ref2.nickName,
       nickName = _ref2$nickName === void 0 ? '' : _ref2$nickName,
       _ref2$address = _ref2.address,
-      address = _ref2$address === void 0 ? '' : _ref2$address,
-      _ref2$version = _ref2.version,
-      version = _ref2$version === void 0 ? 1 : _ref2$version;
+      address = _ref2$address === void 0 ? '' : _ref2$address;
   var error = null;
   var result = null;
   var kdfparams = crypto.kdfparams,
       mac = crypto.mac,
       cipherparams = crypto.cipherparams,
-      mnemonicEncrypted = crypto.mnemonicEncrypted,
-      privateKeyEncrypted = crypto.privateKeyEncrypted,
+      _crypto$mnemonicEncry = crypto.mnemonicEncrypted,
+      mnemonicEncrypted = _crypto$mnemonicEncry === void 0 ? '' : _crypto$mnemonicEncry,
+      ciphertext = crypto.ciphertext,
       _crypto$cipher = crypto.cipher,
       cipher = _crypto$cipher === void 0 ? 'aes-128-ctr' : _crypto$cipher;
-
-  if (+version !== 1) {
-    error = _objectSpread({}, KEY_STORE_ERRORS.WRONG_KEY_STORE_VERSION);
-    throw error;
-  }
-
-  if (type !== 'aelf') {
-    error = _objectSpread({}, KEY_STORE_ERRORS.NOT_AELF_KEY_STORE);
-    throw error;
-  }
-
   var sliceLength = /128/.test(cipher) ? 16 : 32;
   var iv = Buffer.from(cipherparams.iv, 'hex');
-  var derivedKey = scrypt_polyfill_default()(Buffer.from(password), Buffer.from(kdfparams.salt, 'hex'), kdfparams.n, kdfparams.r, kdfparams.p, kdfparams.dkLen);
-  var rawMac = Buffer.concat([derivedKey.slice(16, 32), Buffer.from(privateKeyEncrypted, 'hex')]);
+  var derivedKey = scrypt_polyfill(Buffer.from(password), Buffer.from(kdfparams.salt, 'hex'), kdfparams.n, kdfparams.r, kdfparams.p, kdfparams.dklen || kdfparams.dkLen);
+  var rawMac = Buffer.concat([derivedKey.slice(16, 32), Buffer.from(ciphertext, 'hex')]);
   var currentMac = keccak256(rawMac).replace('0x', '');
 
   if (currentMac === mac) {
     var privateKeyDeCipher = Object(browserify_cipher["createDecipheriv"])(cipher, derivedKey.slice(0, sliceLength), iv);
-    var privateKey = Buffer.concat([privateKeyDeCipher.update(Buffer.from(privateKeyEncrypted, 'hex')), privateKeyDeCipher.final()]).toString('hex');
+    var privateKey = Buffer.concat([privateKeyDeCipher.update(Buffer.from(ciphertext, 'hex')), privateKeyDeCipher.final()]).toString('hex');
     var mnemonicDeCipher = Object(browserify_cipher["createDecipheriv"])(cipher, derivedKey.slice(0, sliceLength), iv);
     var mnemonic = Buffer.concat([mnemonicDeCipher.update(Buffer.from(mnemonicEncrypted, 'hex')), mnemonicDeCipher.final()]).toString('utf8');
     result = {
@@ -30549,55 +30535,12 @@ function unlockKeyStoreFromV1(_ref2, password) {
       privateKey: privateKey
     };
   } else {
-    error = _objectSpread({}, KEY_STORE_ERRORS.INVALID_PASSWORD);
+    error = keyStore_objectSpread({}, KEY_STORE_ERRORS.INVALID_PASSWORD);
     throw error;
   }
 
   return result;
 }
-/**
- * getKeystore
- *
- * @method getKeystore
- * @param {Object} walletInfoInput  walletInfo
- * @param {string} password password
- * @params {Object} options custom options
- * @param {number} version version
- * @return {Object}
- */
-
-
-var keyStore_getKeystore = function getKeystore(walletInfoInput, password) {
-  var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-  var version = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 1;
-
-  if (+version === 1) {
-    return getKeyStoreFromV1(walletInfoInput, password, options);
-  }
-
-  var error = _objectSpread({}, KEY_STORE_ERRORS.WRONG_VERSION);
-
-  throw error;
-};
-/**
- * unlock keyStore
- * @method unlockKeystore
- * @param {Object} keyStoreInput  walletInfo
- * @param {string} password password
- * @returns {Object}
- */
-
-var keyStore_unlockKeystore = function unlockKeystore(keyStoreInput, password) {
-  var version = keyStoreInput.version;
-
-  if (+version === 1) {
-    return unlockKeyStoreFromV1(keyStoreInput, password);
-  }
-
-  var error = _objectSpread({}, KEY_STORE_ERRORS.WRONG_VERSION);
-
-  throw error;
-};
 /**
  * checkPassword
  *
@@ -30609,7 +30552,7 @@ var keyStore_unlockKeystore = function unlockKeystore(keyStoreInput, password) {
 
 var checkPassword = function checkPassword(keyStoreInput, password) {
   try {
-    var result = unlockKeyStoreFromV1(keyStoreInput, password);
+    var result = unlockKeystore(keyStoreInput, password);
     return !!result.privateKey;
   } catch (e) {
     return false;
@@ -31650,7 +31593,7 @@ function () {
 
 
 // EXTERNAL MODULE: ./node_modules/query-string/index.js
-var query_string = __webpack_require__(74);
+var query_string = __webpack_require__(73);
 
 // CONCATENATED MODULE: ./src/util/httpProvider.js
 
@@ -31675,7 +31618,7 @@ var RequestLibrary = {};
 if (false) {} else {
   // For node use xmlhttprequest
   // eslint-disable-next-line global-require
-  RequestLibrary = __webpack_require__(140).XMLHttpRequest;
+  RequestLibrary = __webpack_require__(139).XMLHttpRequest;
 }
 
 var httpProvider_HttpProvider =
@@ -31882,7 +31825,7 @@ function () {
     defineProperty_default()(this, "settings", new settings_Settings());
 
     defineProperty_default()(this, "version", {
-      api: "3.2.16"
+      api: "3.2.17"
     });
 
     this._requestManager = new requestManage_RequestManager(provider);
@@ -31921,7 +31864,7 @@ function () {
 /* eslint-enable */
 
 
-defineProperty_default()(src_AElf, "version", "3.2.16");
+defineProperty_default()(src_AElf, "version", "3.2.17");
 
 defineProperty_default()(src_AElf, "providers", {
   HttpProvider: httpProvider_HttpProvider

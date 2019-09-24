@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.2.17](https://github.com/AElfProject/aelf-sdk.js/compare/v3.2.16...v3.2.17) (2019-09-24)
+
+
+### Bug Fixes
+
+* 🐛 add scrypt config ([9523dbd](https://github.com/AElfProject/aelf-sdk.js/commit/9523dbd))
+* 🐛 fix keyStore params ([da201a4](https://github.com/AElfProject/aelf-sdk.js/commit/da201a4))
+
+
+
 ### [3.2.16](https://github.com/AElfProject/aelf-sdk.js/compare/v3.2.15...v3.2.16) (2019-09-20)
 
 
