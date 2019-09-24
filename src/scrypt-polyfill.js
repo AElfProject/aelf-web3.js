@@ -5,12 +5,17 @@
  */
 const crypto = require('crypto');
 
-function scrypt(password, salt, N, r, p, dklen) {
+const defaultOptions = {
+  maxmem: 32 * 1024 * 1024
+};
+
+function scrypt(password, salt, N, r, p, dklen, options = defaultOptions) {
   return crypto.scryptSync(password, salt, dklen, {
+    ...options,
     N,
     r,
     p
   });
 }
 
-module.exports = scrypt;
+export default scrypt;
