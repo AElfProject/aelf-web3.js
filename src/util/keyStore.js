@@ -110,7 +110,7 @@ export function unlockKeystore(
     kdfparams,
     mac,
     cipherparams,
-    mnemonicEncrypted,
+    mnemonicEncrypted = '',
     ciphertext,
     cipher = 'aes-128-ctr'
   } = crypto;
