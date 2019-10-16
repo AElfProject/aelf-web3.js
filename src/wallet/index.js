@@ -261,6 +261,8 @@ export default {
   createNewWallet,
   getWalletByMnemonic,
   getWalletByPrivateKey,
+  getAddressFromPubKey,
+  ellipticEc,
   AESEncrypt,
   AESDecrypt,
   keyStore
