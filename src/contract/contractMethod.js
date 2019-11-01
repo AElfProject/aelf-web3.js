@@ -84,6 +84,9 @@ const maybeUglifyAddress = (obj, forSelf, paths) => reformat(obj, forSelf, paths
 });
 
 export const maybePrettifyAddress = (obj, forSelf, paths) => reformat(obj, forSelf, paths, target => {
+  if (Array.isArray(target)) {
+    return target.map(h => getRepForAddress(h));
+  }
   if (typeof target !== 'string') {
     return getRepForAddress(target);
   }
