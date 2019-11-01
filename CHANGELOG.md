@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.2.19](https://github.com/AElfProject/aelf-sdk.js/compare/v3.2.18...v3.2.19) (2019-11-01)
+
+
+### Bug Fixes
+
+* 🐛 add condition hanler for repeated aelf.Address ([94fdbc3](https://github.com/AElfProject/aelf-sdk.js/commit/94fdbc3))
+
+
+
 ### [3.2.18](https://github.com/AElfProject/aelf-sdk.js/compare/v3.2.17...v3.2.18) (2019-10-16)
 
 
