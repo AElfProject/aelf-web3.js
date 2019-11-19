@@ -160,6 +160,7 @@ export default class ContractMethod {
     this.request = this.request.bind(this);
     this.callReadOnly = this.callReadOnly.bind(this);
     this.getSignedTx = this.getSignedTx.bind(this);
+    this.getRawTx = this.getRawTx.bind(this);
   }
 
   packInput(input) {
@@ -197,11 +198,7 @@ export default class ContractMethod {
   }
 
   handleTransaction(height, hash, encoded) {
-    const rawTx = getTransaction(this._wallet.address, this._contractAddress, this._name, encoded);
-
-    rawTx.refBlockNumber = height;
-    const blockHash = hash.match(/^0x/) ? hash.substring(2) : hash;
-    rawTx.refBlockPrefix = (Buffer.from(blockHash, 'hex')).slice(0, 4);
+    const rawTx = this.getRawTx(height, hash, encoded);
 
     let tx = wallet.signTransaction(rawTx, this._wallet.keyPair);
 
@@ -307,6 +304,15 @@ export default class ContractMethod {
     return this.prepareParameters(args);
   }
 
+  getRawTx(blockHeightInput, blockHashInput, packedInput) {
+    const rawTx = getTransaction(this._wallet.address, this._contractAddress, this._name, packedInput);
+
+    rawTx.refBlockNumber = blockHeightInput;
+    const blockHash = blockHashInput.match(/^0x/) ? blockHashInput.substring(2) : blockHashInput;
+    rawTx.refBlockPrefix = (Buffer.from(blockHash, 'hex')).slice(0, 4);
+    return rawTx;
+  }
+
   request(...args) {
     const { callback } = this.extractArgumentsIntoObject(args);
     const params = this.prepareParameters(args);
@@ -334,6 +340,7 @@ export default class ContractMethod {
     run.packInput = this.packInput;
     run.sendTransaction = this.sendTransaction;
     run.getSignedTx = this.getSignedTx;
+    run.getRawTx = this.getRawTx;
     // eslint-disable-next-line no-param-reassign
     contract[this._name] = run;
   }
