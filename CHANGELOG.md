@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.2.20](https://github.com/AElfProject/aelf-sdk.js/compare/v3.2.19...v3.2.20) (2019-11-19)
+
+
+### Features
+
+* 🎸 we can get getRawTx by three params ([4d71c2a](https://github.com/AElfProject/aelf-sdk.js/commit/4d71c2a))
+
+
+
 ### [3.2.19](https://github.com/AElfProject/aelf-sdk.js/compare/v3.2.18...v3.2.19) (2019-11-01)
 
 

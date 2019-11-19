@@ -1,5 +1,5 @@
 /*!
- * aelf-sdk.js v3.2.19 
+ * aelf-sdk.js v3.2.20 
  * (c) 2019-2019 AElf 
  * Released under MIT License
  */
@@ -31054,6 +31054,7 @@ function () {
     this.request = this.request.bind(this);
     this.callReadOnly = this.callReadOnly.bind(this);
     this.getSignedTx = this.getSignedTx.bind(this);
+    this.getRawTx = this.getRawTx.bind(this);
   }
 
   createClass_default()(ContractMethod, [{
@@ -31101,10 +31102,7 @@ function () {
   }, {
     key: "handleTransaction",
     value: function handleTransaction(height, hash, encoded) {
-      var rawTx = getTransaction(this._wallet.address, this._contractAddress, this._name, encoded);
-      rawTx.refBlockNumber = height;
-      var blockHash = hash.match(/^0x/) ? hash.substring(2) : hash;
-      rawTx.refBlockPrefix = Buffer.from(blockHash, 'hex').slice(0, 4);
+      var rawTx = this.getRawTx(height, hash, encoded);
       var tx = src_wallet.signTransaction(rawTx, this._wallet.keyPair);
       tx = Transaction.encode(tx).finish();
 
@@ -31257,6 +31255,15 @@ function () {
       return this.prepareParameters(args);
     }
   }, {
+    key: "getRawTx",
+    value: function getRawTx(blockHeightInput, blockHashInput, packedInput) {
+      var rawTx = getTransaction(this._wallet.address, this._contractAddress, this._name, packedInput);
+      rawTx.refBlockNumber = blockHeightInput;
+      var blockHash = blockHashInput.match(/^0x/) ? blockHashInput.substring(2) : blockHashInput;
+      rawTx.refBlockPrefix = Buffer.from(blockHash, 'hex').slice(0, 4);
+      return rawTx;
+    }
+  }, {
     key: "request",
     value: function request() {
       for (var _len4 = arguments.length, args = new Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
@@ -31292,7 +31299,8 @@ function () {
       run.unpackPackedInput = this.unpackPackedInput;
       run.packInput = this.packInput;
       run.sendTransaction = this.sendTransaction;
-      run.getSignedTx = this.getSignedTx; // eslint-disable-next-line no-param-reassign
+      run.getSignedTx = this.getSignedTx;
+      run.getRawTx = this.getRawTx; // eslint-disable-next-line no-param-reassign
 
       contract[this._name] = run;
     }
@@ -31833,7 +31841,7 @@ function () {
     defineProperty_default()(this, "settings", new settings_Settings());
 
     defineProperty_default()(this, "version", {
-      api: "3.2.19"
+      api: "3.2.20"
     });
 
     this._requestManager = new requestManage_RequestManager(provider);
@@ -31872,7 +31880,7 @@ function () {
 /* eslint-enable */
 
 
-defineProperty_default()(src_AElf, "version", "3.2.19");
+defineProperty_default()(src_AElf, "version", "3.2.20");
 
 defineProperty_default()(src_AElf, "providers", {
   HttpProvider: httpProvider_HttpProvider
