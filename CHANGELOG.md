@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.2.21](https://github.com/AElfProject/aelf-sdk.js/compare/v3.2.19...v3.2.21) (2019-11-20)
+
+
+### Bug Fixes
+
+* 🐛 remove useless arguments of HttpProvider ([6a5894a](https://github.com/AElfProject/aelf-sdk.js/commit/6a5894a))
+
+
+### Features
+
+* 🎸 we can get getRawTx by three params ([4d71c2a](https://github.com/AElfProject/aelf-sdk.js/commit/4d71c2a))
+
+
+
 ### [3.2.20](https://github.com/AElfProject/aelf-sdk.js/compare/v3.2.19...v3.2.20) (2019-11-19)
 
 

@@ -1,5 +1,5 @@
 /*!
- * aelf-sdk.js v3.2.20 
+ * aelf-sdk.js v3.2.21 
  * (c) 2019-2019 AElf 
  * Released under MIT License
  */
@@ -31318,6 +31318,7 @@ function () {
  * @file contract
  * @author atom-yang
  */
+// eslint-disable-next-line max-classes-per-file
 
 
 
@@ -31338,7 +31339,6 @@ var contract_Contract = function Contract(chain, services, address) {
   classCallCheck_default()(this, Contract);
 
   this._chain = chain;
-  this.transactionHash = null;
   this.address = address;
   this.services = services;
 };
@@ -31644,17 +31644,13 @@ function () {
     var _this = this;
 
     var host = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'http://localhost:8545';
-    var timeout = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-    var user = arguments.length > 2 ? arguments[2] : undefined;
-    var password = arguments.length > 3 ? arguments[3] : undefined;
-    var headers = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : defaultHeaders;
+    var timeout = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 8000;
+    var headers = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : defaultHeaders;
 
     classCallCheck_default()(this, HttpProvider);
 
     this.host = host;
     this.timeout = timeout;
-    this.user = user;
-    this.password = password;
     this.headers = {};
 
     if (Array.isArray(headers)) {
@@ -31692,15 +31688,10 @@ function () {
         request.setRequestHeader(header, _this2.headers[header]);
       });
 
-      try {
-        if (method.toUpperCase() === 'GET') {
-          request.send();
-        } else {
-          request.send(JSON.stringify(params));
-        }
-      } catch (error) {
-        // todo: error handle
-        throw error;
+      if (method.toUpperCase() === 'GET') {
+        request.send();
+      } else {
+        request.send(JSON.stringify(params));
       }
     }
   }, {
@@ -31841,7 +31832,7 @@ function () {
     defineProperty_default()(this, "settings", new settings_Settings());
 
     defineProperty_default()(this, "version", {
-      api: "3.2.20"
+      api: "3.2.21"
     });
 
     this._requestManager = new requestManage_RequestManager(provider);
@@ -31880,7 +31871,7 @@ function () {
 /* eslint-enable */
 
 
-defineProperty_default()(src_AElf, "version", "3.2.20");
+defineProperty_default()(src_AElf, "version", "3.2.21");
 
 defineProperty_default()(src_AElf, "providers", {
   HttpProvider: httpProvider_HttpProvider
