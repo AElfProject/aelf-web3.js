@@ -2,7 +2,7 @@
  * @file contract
  * @author atom-yang
  */
-
+// eslint-disable-next-line max-classes-per-file
 import * as protobuf from '@aelfqueen/protobufjs/light';
 import ContractMethod from './contractMethod';
 import { noop } from '../util/utils';
@@ -21,7 +21,6 @@ const getServicesFromFileDescriptors = descriptors => {
 class Contract {
   constructor(chain, services, address) {
     this._chain = chain;
-    this.transactionHash = null;
     this.address = address;
     this.services = services;
   }

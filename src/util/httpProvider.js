@@ -22,15 +22,11 @@ if (process.env.RUNTIME_ENV === 'browser') {
 export default class HttpProvider {
   constructor(
     host = 'http://localhost:8545',
-    timeout = null,
-    user,
-    password,
+    timeout = 8000,
     headers = defaultHeaders
   ) {
     this.host = host;
     this.timeout = timeout;
-    this.user = user;
-    this.password = password;
     this.headers = {};
     if (Array.isArray(headers)) {
       headers.forEach(({ name, value }) => {
@@ -73,15 +69,10 @@ export default class HttpProvider {
     Object.keys(this.headers).forEach(header => {
       request.setRequestHeader(header, this.headers[header]);
     });
-    try {
-      if (method.toUpperCase() === 'GET') {
-        request.send();
-      } else {
-        request.send(JSON.stringify(params));
-      }
-    } catch (error) {
-      // todo: error handle
-      throw error;
+    if (method.toUpperCase() === 'GET') {
+      request.send();
+    } else {
+      request.send(JSON.stringify(params));
     }
   }
 
