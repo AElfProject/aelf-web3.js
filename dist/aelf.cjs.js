@@ -1,5 +1,5 @@
 /*!
- * aelf-sdk.js v3.2.21 
+ * aelf-sdk.js v3.2.22 
  * (c) 2019-2019 AElf 
  * Released under MIT License
  */
@@ -31699,7 +31699,6 @@ function () {
     value: function send(requestConfig) {
       var request = new RequestLibrary();
       request.withCredentials = false;
-      request.timeout = this.timeout;
       this.requestSend(requestConfig, request);
       var result = request.responseText;
       result = HttpProvider.formatResponse(result);
@@ -31832,7 +31831,7 @@ function () {
     defineProperty_default()(this, "settings", new settings_Settings());
 
     defineProperty_default()(this, "version", {
-      api: "3.2.21"
+      api: "3.2.22"
     });
 
     this._requestManager = new requestManage_RequestManager(provider);
@@ -31871,7 +31870,7 @@ function () {
 /* eslint-enable */
 
 
-defineProperty_default()(src_AElf, "version", "3.2.21");
+defineProperty_default()(src_AElf, "version", "3.2.22");
 
 defineProperty_default()(src_AElf, "providers", {
   HttpProvider: httpProvider_HttpProvider

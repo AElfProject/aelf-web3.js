@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.2.22](https://github.com/AElfProject/aelf-sdk.js/compare/v3.2.21...v3.2.22) (2019-11-30)
+
+
+### Bug Fixes
+
+* 🐛 remove sync timeout when some browsers throw an error ([7e95168](https://github.com/AElfProject/aelf-sdk.js/commit/7e95168))
+
+
+
 ### [3.2.21](https://github.com/AElfProject/aelf-sdk.js/compare/v3.2.19...v3.2.21) (2019-11-20)
 
 
