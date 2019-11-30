@@ -79,7 +79,6 @@ export default class HttpProvider {
   send(requestConfig) {
     const request = new RequestLibrary();
     request.withCredentials = false;
-    request.timeout = this.timeout;
     this.requestSend(requestConfig, request);
     let result = request.responseText;
 
