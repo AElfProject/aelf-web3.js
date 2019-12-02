@@ -16,6 +16,9 @@ import {
   noop,
   uint8ArrayToHex
 } from '../util/utils';
+import {
+  inputAddressFormatter
+} from '../util/formatters';
 import wallet from '../wallet';
 
 const isWrappedBytes = (resolvedType, name) => {
@@ -78,7 +81,10 @@ const getAddressFieldPaths = (resolvedType, path = []) => getFieldPaths(isAddres
 
 const maybeUglifyAddress = (obj, forSelf, paths) => reformat(obj, forSelf, paths, target => {
   if (typeof target === 'string') {
-    return getAddressObjectFromRep(target);
+    return getAddressObjectFromRep(inputAddressFormatter(target));
+  }
+  if (Array.isArray(target)) {
+    return target.map(h => getAddressObjectFromRep(inputAddressFormatter(h)));
   }
   return target;
 });

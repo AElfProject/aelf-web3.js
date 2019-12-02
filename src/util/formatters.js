@@ -5,18 +5,34 @@
  * @date 2015
  */
 import descriptor from '@aelfqueen/protobufjs/ext/descriptor';
+import {
+  base58
+} from './utils';
 
-// export const inputAddressFormatter = address => {
-//   // if (address.startsWith('ELF_')) {
-//   //     var parts = address.split('_');
-//   //     var b58rep = parts[parts.length - 1];
-//   //     return base58check.decode(b58rep, 'hex');
-//   // }
-//   // throw new Error('invalid address');
-//   return address;
-// };
-
-export const inputAddressFormatter = address => address;
+export const inputAddressFormatter = address => {
+  let realAddress = address;
+  if (address.indexOf('_') > 0) {
+    const parts = address.split('_');
+    const list = parts.filter(v => {
+      try {
+        base58.decode(v);
+        return true;
+      } catch (e) {
+        return false;
+      }
+    });
+    if (list.length === 0) {
+      throw new Error('Invalid address');
+    }
+    [realAddress] = list;
+  }
+  try {
+    base58.decode(realAddress, 'hex');
+  } catch (e) {
+    throw new Error('Invalid address');
+  }
+  return realAddress;
+};
 
 /**
  * @param {String} result base64 representation of serialized FileDescriptorSet
