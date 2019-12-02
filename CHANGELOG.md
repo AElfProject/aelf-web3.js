@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.2.23](https://github.com/AElfProject/aelf-sdk.js/compare/v3.2.22...v3.2.23) (2019-12-02)
+
+
+### Features
+
+* 🎸 add address with _ formatter ([4bd7102](https://github.com/AElfProject/aelf-sdk.js/commit/4bd7102))
+
+
+
 ### [3.2.22](https://github.com/AElfProject/aelf-sdk.js/compare/v3.2.21...v3.2.22) (2019-11-30)
 
 
