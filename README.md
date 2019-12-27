@@ -7,13 +7,9 @@
 
 ## Introduction
 
-This is the AElf JavaScript API which connects to the Generic JSON RPC spec.
+For dApp developers we have a javascript sdk to help interact with the node's web API. Of course, you need to run an AELF node to use the sdk.
 
-You need to run a local or remote AElf node to use this library.
-
-Please read the ./docs for more.
-
-Get the examples in the `./examples` directory
+Get the full examples in the `./examples` directory
 
 ## Installation
 
@@ -60,7 +56,7 @@ if you want to use a bundle system such as webpack or rollup, and build your app
 
 Webpack:
 
-```js
+```javascript
 module.exports = {
   // ...
   resolve: {
@@ -73,7 +69,7 @@ module.exports = {
 
 Rollup:
 
-```js
+```javascript
 const alias = require('rollup-plugin-alias');
 
 rollup({
@@ -90,7 +86,7 @@ rollup({
 
 Webpack:
 
-```js
+```javascript
 module.exports = {
   // ...
   resolve: {
@@ -103,7 +99,7 @@ module.exports = {
 
 Rollup:
 
-```js
+```javascript
 const alias = require('rollup-plugin-alias');
 
 rollup({
