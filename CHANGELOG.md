@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.2.24](https://github.com/AElfProject/aelf-sdk.js/compare/v3.2.23...v3.2.24) (2019-12-27)
+
+
+### Bug Fixes
+
+* 🐛 fix aelf.Hash deserialize bug ([5e108eb](https://github.com/AElfProject/aelf-sdk.js/commit/5e108eb))
+
+
+
 ### [3.2.23](https://github.com/AElfProject/aelf-sdk.js/compare/v3.2.22...v3.2.23) (2019-12-02)
 
 

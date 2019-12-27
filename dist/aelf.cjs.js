@@ -1,5 +1,5 @@
 /*!
- * aelf-sdk.js v3.2.23 
+ * aelf-sdk.js v3.2.24 
  * (c) 2019-2019 AElf 
  * Released under MIT License
  */
@@ -31095,6 +31095,12 @@ var contractMethod_maybeUglifyHash = function maybeUglifyHash(obj, forSelf, path
 
 var contractMethod_maybePrettifyHash = function maybePrettifyHash(obj, forSelf, paths) {
   return reformat(obj, forSelf, paths, function (target) {
+    if (Array.isArray(target)) {
+      return target.map(function (h) {
+        return getRepForHash(h);
+      });
+    }
+
     if (typeof target !== 'string') {
       return getRepForHash(target);
     }
@@ -31936,7 +31942,7 @@ function () {
     defineProperty_default()(this, "settings", new settings_Settings());
 
     defineProperty_default()(this, "version", {
-      api: "3.2.23"
+      api: "3.2.24"
     });
 
     this._requestManager = new requestManage_RequestManager(provider);
@@ -31975,7 +31981,7 @@ function () {
 /* eslint-enable */
 
 
-defineProperty_default()(src_AElf, "version", "3.2.23");
+defineProperty_default()(src_AElf, "version", "3.2.24");
 
 defineProperty_default()(src_AElf, "providers", {
   HttpProvider: httpProvider_HttpProvider
