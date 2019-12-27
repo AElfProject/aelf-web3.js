@@ -114,6 +114,9 @@ const maybeUglifyHash = (obj, forSelf, paths) => reformat(obj, forSelf, paths, t
 });
 
 const maybePrettifyHash = (obj, forSelf, paths) => reformat(obj, forSelf, paths, target => {
+  if (Array.isArray(target)) {
+    return target.map(h => getRepForHash(h));
+  }
   if (typeof target !== 'string') {
     return getRepForHash(target);
   }

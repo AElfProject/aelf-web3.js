@@ -120,118 +120,119 @@ rollup({
 
 ### Examples
 
-You can also see a full examples in `./examples`;
+You can also see full examples in `./examples`;
 
-1. Create a new instance of AElf, connect to an AELF chain node
-```js
-import AElf from 'aelf-sdk';
+1. Create a new instance of AElf, connect to an AELF chain node.
 
-// create a new instance of AElf
-const aelf = new AElf(new AElf.providers.HttpProvider('http://127.0.0.1:1235'));
-```
+    ```javascript
+    import AElf from 'aelf-sdk';
 
-2. Create or load a wallet by `AElf.wallet`
+    // create a new instance of AElf
+    const aelf = new AElf(new AElf.providers.HttpProvider('http://127.0.0.1:1235'));
+    ```
 
-```javascript
-// create a new wallet
-const newWallet = AElf.wallet.createNewWallet();
-// load a wallet by private key
-const priviteKeyWallet = AElf.wallet.getWalletByPrivateKey('xxxxxxx');
-// load a wallet by mnemonic
-const mnemonicWallet = AElf.wallet.getWalletByMnemonic('set kite ...');
-```
+2. Create or load a wallet with `AElf.wallet`
+
+    ```javascript
+    // create a new wallet
+    const newWallet = AElf.wallet.createNewWallet();
+    // load a wallet by private key
+    const priviteKeyWallet = AElf.wallet.getWalletByPrivateKey('xxxxxxx');
+    // load a wallet by mnemonic
+    const mnemonicWallet = AElf.wallet.getWalletByMnemonic('set kite ...');
+    ```
 
 3. Get a system contract address, take `AElf.ContractNames.Token` as an example
 
-```javascript
-const tokenContractName = 'AElf.ContractNames.Token';
-let tokenContractAddress;
-(async () => {
-  // get chain status
-  const chainStatus = await aelf.chain.getChainStatus();
-  // get genesis contract address
-  const GenesisContractAddress = chainStatus.GenesisContractAddress;
-  // get genesis contract instance
-  const zeroContract = await aelf.chain.contractAt(GenesisContractAddress, newWallet);
-  // Get contract address by the read only method `GetContractAddressByName` of genesis contract
-  tokenContractAddress = await zeroContract.GetContractAddressByName.call(AElf.utils.sha256(tokenContractName));
-})()
-```
+    ```javascript
+    const tokenContractName = 'AElf.ContractNames.Token';
+    let tokenContractAddress;
+    (async () => {
+      // get chain status
+      const chainStatus = await aelf.chain.getChainStatus();
+      // get genesis contract address
+      const GenesisContractAddress = chainStatus.GenesisContractAddress;
+      // get genesis contract instance
+      const zeroContract = await aelf.chain.contractAt(GenesisContractAddress, newWallet);
+      // Get contract address by the read only method `GetContractAddressByName` of genesis contract
+      tokenContractAddress = await zeroContract.GetContractAddressByName.call(AElf.utils.sha256(tokenContractName));
+    })()
+    ```
 
 4. Get a contract instance by contract address
 
-```js
-const wallet = AElf.wallet.createNewWallet();
-let tokenContract;
-// Use token contract for examples to demonstrate how to get a contract instance in different ways
-// in async function
-(async () => {
-  tokenContract = await aelf.chain.contractAt(tokenContractAddress, wallet)
-})();
+    ```javascript
+    const wallet = AElf.wallet.createNewWallet();
+    let tokenContract;
+    // Use token contract for examples to demonstrate how to get a contract instance in different ways
+    // in async function
+    (async () => {
+      tokenContract = await aelf.chain.contractAt(tokenContractAddress, wallet)
+    })();
 
-// promise way
-aelf.chain.contractAt(tokenContractAddress, wallet)
-  .then(result => {
-     tokenContract = result;
-  });
+    // promise way
+    aelf.chain.contractAt(tokenContractAddress, wallet)
+      .then(result => {
+        tokenContract = result;
+      });
 
-// callback way
-aelf.chain.contractAt(tokenContractAddress, wallet, (error, result) => {if (error) throw error; tokenContract = result;});
+    // callback way
+    aelf.chain.contractAt(tokenContractAddress, wallet, (error, result) => {if (error) throw error; tokenContract = result;});
 
-```
+    ```
 
 5. How to use contract instance
 
-A contract instance consists of several contract methods, and methods have two kind ways of calling: read-only and send transactions
+    A contract instance consists of several contract methods and methods can be called in two ways: read-only and send transaction.
 
-```javascript
-(async () => {
-  // get the balance of an address, this would not send a transaction,
-  // or store any data on the chain, or required any transaction fee, only get the balance
-  // with `.call` method, `aelf-sdk` will only call read-only method
-  const result = await tokenContract.GetBalance.call({
-    symbol: "ELF",
-    owner: "7s4XoUHfPuqoZAwnTV7pHWZAaivMiL8aZrDSnY9brE1woa8vz"
-  });
-  console.log(result);
-  /**
-  {
-    "symbol": "ELF",
-    "owner": "2661mQaaPnzLCoqXPeys3Vzf2wtGM1kSrqVBgNY4JUaGBxEsX8",
-    "balance": "1000000000000"
-  }*/
-  // with no `.call`, `aelf-sdk` will sign and send a transaction to the chain, and return a transaction id.
-  // make sure you have enough transaction fee `ELF` in your wallet
-  const transactionId = await tokenContract.Transfer({
-    symbol: "ELF",
-    to: "7s4XoUHfPuqoZAwnTV7pHWZAaivMiL8aZrDSnY9brE1woa8vz",
-    amount: "1000000000",
-    memo: "transfer in demo"
-  });
-  console.log(transactionId);
-  /**
-    {
-      "TransactionId": "123123"
-    }
-  */
-})()
-```
+    ```javascript
+    (async () => {
+      // get the balance of an address, this would not send a transaction,
+      // or store any data on the chain, or required any transaction fee, only get the balance
+      // with `.call` method, `aelf-sdk` will only call read-only method
+      const result = await tokenContract.GetBalance.call({
+        symbol: "ELF",
+        owner: "7s4XoUHfPuqoZAwnTV7pHWZAaivMiL8aZrDSnY9brE1woa8vz"
+      });
+      console.log(result);
+      /**
+      {
+        "symbol": "ELF",
+        "owner": "2661mQaaPnzLCoqXPeys3Vzf2wtGM1kSrqVBgNY4JUaGBxEsX8",
+        "balance": "1000000000000"
+      }*/
+      // with no `.call`, `aelf-sdk` will sign and send a transaction to the chain, and return a transaction id.
+      // make sure you have enough transaction fee `ELF` in your wallet
+      const transactionId = await tokenContract.Transfer({
+        symbol: "ELF",
+        to: "7s4XoUHfPuqoZAwnTV7pHWZAaivMiL8aZrDSnY9brE1woa8vz",
+        amount: "1000000000",
+        memo: "transfer in demo"
+      });
+      console.log(transactionId);
+      /**
+        {
+          "TransactionId": "123123"
+        }
+      */
+    })()
+    ```
 
-6. Change node endpoint by using `aelf.setProvider`
+6. Change the node endpoint by using `aelf.setProvider`
 
-```js
-import AElf from 'aelf-sdk';
+    ```javascript
+    import AElf from 'aelf-sdk';
 
-const aelf = new AElf(new AElf.providers.HttpProvider('http://127.0.0.1:1235'));
-aelf.setProvider(new AElf.providers.HttpProvider('http://127.0.0.1:8000'));
-```
+    const aelf = new AElf(new AElf.providers.HttpProvider('http://127.0.0.1:1235'));
+    aelf.setProvider(new AElf.providers.HttpProvider('http://127.0.0.1:8000'));
+    ```
 
 ### Web API
 
-*You can see how Web Api of chain node works in `{chainAddress}/swagger/index.html`*
+*You can see how the Web Api of the node works in `{chainAddress}/swagger/index.html`*
 _tip: for an example, my local address: 'http://127.0.0.1:1235/swagger/index.html'_
 
-The usage of these methods is based on the AElf instance, If you don't have please Create an AElf instance:
+The usage of these methods is based on the AElf instance, so if you don't have one please create it:
 
 ```javascript
 import AElf from 'aelf-sdk';
@@ -254,15 +255,15 @@ Empty
 
 _Returns_
 
-`Object` - The chain status object with the following structure :
+`Object`
+
 - `ChainId - String`
-- `Branches - Object` : The Branches object with the following structure :
-- `'chainHash' - String : 'chainHeight' - Number`
+- `Branches - Object`
 - `NotLinkedBlocks - Object`
 - `LongestChainHeight - Number`
 - `LongestChainHash - String`
 - `GenesisBlockHash - String`
-- `GenesisContractAddress - String` :An instance of a genesis contract can be created through the GenesisContractAddress, and other contracts can be found on the instance.
+- `GenesisContractAddress - String`
 - `LastIrreversibleBlockHash - String`
 - `LastIrreversibleBlockHeight - Number`
 - `BestChainHash - String`
@@ -318,7 +319,7 @@ _Returns_
 `Number`
 
 _Example_
-```js
+```javascript
 aelf.chain.getBlockHeight()
   .then(res => {
     console.log(res);
@@ -342,9 +343,10 @@ _Parameters_
 
 _Returns_
 
-`Object` - The block information is with the following structure :
+`Object`
+
 - `BlockHash - String`
-- `Header - Object` : The Header object with the following structure :
+- `Header - Object`
   - `PreviousBlockHash - String`
   - `MerkleTreeRootOfTransactions - String`
   - `MerkleTreeRootOfWorldState - String`
@@ -354,13 +356,13 @@ _Returns_
   - `ChainId - String`
   - `Bloom - String`
   - `SignerPubkey - String`
-- `Body - Object` : The Body object with the following structure :
+- `Body - Object`
   - `TransactionsCount - Number`
-  - `Transactions - Array` : The array of method descriptions:
+  - `Transactions - Array`
     - `transactionId - String`
 
 _Example_
-```js
+```javascript
 aelf.chain.getBlock(blockHash, false)
   .then(res => {
     console.log(res);
@@ -384,9 +386,10 @@ _Parameters_
 
 _Returns_
 
-`Object` - The block information is with the following structure :
+`Object`
+
 - `BlockHash - String`
-- `Header - Object` : The Header object with the following structure :
+- `Header - Object`
   - `PreviousBlockHash - String`
   - `MerkleTreeRootOfTransactions - String`
   - `MerkleTreeRootOfWorldState - String`
@@ -396,13 +399,13 @@ _Returns_
   - `ChainId - String`
   - `Bloom - String`
   - `SignerPubkey - String`
-- `Body - Object` : The Body object with the following structure :
+- `Body - Object`
   - `TransactionsCount - Number`
-  - `Transactions - Array` : The array of method descriptions:
+  - `Transactions - Array`
     - `transactionId - String`
 
 _Example_
-```js
+```javascript
 aelf.chain.getBlockByHeight(12, false)
   .then(res => {
     console.log(res);
@@ -423,29 +426,30 @@ _Parameters_
 
 _Returns_
 
-`Object` - The result is with the following structure :
-  - `TransactionId - String`
-  - `Status - String`
-  - `Logs - Array` : The array of method descriptions:
-    - `Address - String`
-    - `Name - String`
-    - `Indexed - Array`
-    - `NonIndexed - String`
-  - `Bloom - String`
-  - `BlockNumber - Number`
-  - `Transaction - Object` : The transaction object with the following structure :
-    - `From - String` : address
-    - `To - String` : address
-    - `RefBlockNumber - Number`
-    - `RefBlockPrefix - String`
-    - `MethodName - String`
-    - `Params - Object`
-    - `Signature - String`
-  - `ReadableReturnValue - Object`
-  - `Error - String`
+`Object`
+
+- `TransactionId - String`
+- `Status - String`
+- `Logs - Array`
+  - `Address - String`
+  - `Name - String`
+  - `Indexed - Array`
+  - `NonIndexed - String`
+- `Bloom - String`
+- `BlockNumber - Number`
+- `Transaction - Object`
+  - `From - String`
+  - `To - String`
+  - `RefBlockNumber - Number`
+  - `RefBlockPrefix - String`
+  - `MethodName - String`
+  - `Params - Object`
+  - `Signature - String`
+- `ReadableReturnValue - Object`
+- `Error - String`
 
 _Example_
-```js
+```javascript
 aelf.chain.getTxResult(transactionId)
   .then(res => {
     console.log(res);
@@ -471,7 +475,7 @@ _Returns_
   - the transaction result object
 
 _Example_
-```js
+```javascript
 aelf.chain.getTxResults(blockHash, 0, 2)
   .then(res => {
     console.log(res);
@@ -551,7 +555,8 @@ _Use the api to see detailed results_
 
 _Returns_
 
-`Object` - The wallet is with the following structure :
+`Object`
+
 - `mnemonic - String`: mnemonic
 - `BIP44Path - String`: m/purpose'/coin_type'/account'/change/address_index
 - `childWallet - Object`: HD Wallet
@@ -560,7 +565,7 @@ _Returns_
 - `address - String`: address
 
 _Example_
-```js
+```javascript
 import AElf from 'aelf-sdk';
 const wallet = AElf.wallet.createNewWallet();
 ```
@@ -576,7 +581,7 @@ _Returns_
 `Object`: Complete wallet object.
 
 _Example_
-```js
+```javascript
 const wallet = AElf.wallet.getWalletByMnemonic(mnemonic);
 ```
 
@@ -591,7 +596,7 @@ _Returns_
 `Object`: Complete wallet object, with empty mnemonic
 
 _Example_
-```js
+```javascript
 const wallet = AElf.wallet.getWalletByPrivateKey(privateKey);
 ```
 
@@ -608,7 +613,7 @@ _Returns_
 `Object`: The object with the following structure :
 
 _Example_
-```js
+```javascript
 const result = aelf.wallet.signTransaction(rawTxn, keyPair);
 ```
 
@@ -651,7 +656,7 @@ For more information, please see the code in `src/utils/proto.js`. It is simple 
 
 ### AElf.version
 
-```js
+```javascript
 import AElf from 'aelf-sdk';
 AElf.version // eg. 3.2.23
 ```
