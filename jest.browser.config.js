@@ -1,8 +1,7 @@
 // For a detailed explanation regarding each configuration property, visit:
 // https://jestjs.io/docs/en/configuration.html
-const nodeCrypto = require('crypto');
-const browserCrypto = require('crypto-browserify');
 process.env.RUNTIME_ENV = 'browser';
+
 module.exports = {
   // All imported modules in your tests should be mocked automatically
   // automock: false,
@@ -70,12 +69,12 @@ module.exports = {
   // globalTeardown: null,
 
   // A set of global variables that need to be available in all test environments
-  globals: {
-    crypto: {
-      getRandomValues: function(buffer) { return nodeCrypto.randomFillSync(buffer);},
-      ...browserCrypto
-    }
-  },
+  // globals: {
+  //   crypto: {
+  //     getRandomValues: function(buffer) { return nodeCrypto.randomFillSync(buffer);},
+  //     ...browserCrypto
+  //   }
+  // },
 
   // An array of directory names to be searched recursively up from the requiring module's location
   moduleDirectories: [
@@ -93,7 +92,9 @@ module.exports = {
   // ],
 
   // A map from regular expressions to module names that allow to stub out resources with a single module
-  moduleNameMapper: {},
+  moduleNameMapper: {
+    '^randombytes$': '<rootDir>/node_modules/randombytes/index.js'
+  },
 
   // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader
   // modulePathIgnorePatterns: [],
