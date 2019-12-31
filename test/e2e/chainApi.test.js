@@ -1,19 +1,18 @@
 import AElf from '../../src/index';
 import HttpProvider from '../../src/util/httpProvider'
 
-const stageEndpoint1 = 'http://18.163.40.216:8000'; //香港节点
-const stageEndpoint2 = 'http://3.1.211.78:8000'; //新加坡节点
+const stageEndpoint = 'http://18.162.41.20:8000';
 const fakeEndpoint = 'http://127.0.0.1:9999';
 
 describe('test AElf-sdk', () => {
   let aelf = null;
-  aelf = new AElf(new AElf.providers.HttpProvider(stageEndpoint1));
+  aelf = new AElf(new AElf.providers.HttpProvider(stageEndpoint));
   expect(aelf.isConnected()).toBeTruthy();
 
   test('set provider for exist alef instance', () => {
     aelf.setProvider(new HttpProvider(fakeEndpoint))
     expect(aelf.isConnected()).not.toBeTruthy();
-    aelf.setProvider(new HttpProvider(stageEndpoint2))
+    aelf.setProvider(new HttpProvider(stageEndpoint))
     expect(aelf.isConnected()).toBeTruthy();
   });
 
