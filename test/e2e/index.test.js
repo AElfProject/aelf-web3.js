@@ -19,7 +19,7 @@ describe('test AElf-sdk', () => {
   });
 
   test('create an aelf instance and is connected', () => {
-    aelf = new AElf(new AElf.providers.HttpProvider('http://18.162.41.20:8000'));
+    aelf = new AElf(new AElf.providers.HttpProvider('http://18.163.40.216:8000'));
     expect(aelf).toBeDefined();
     expect(aelf.isConnected()).toBeTruthy();
     expect(aelf.chain).toBeTruthy();
@@ -28,7 +28,9 @@ describe('test AElf-sdk', () => {
   test('test chain methods get height and get block', async () => {
     const height = await aelf.chain.getBlockHeight();
     expect(height).not.toBeNaN();
-    expect(aelf.chain.getBlockHeight({ sync: true })).not.toBeNaN();
+    expect(aelf.chain.getBlockHeight({
+      sync: true
+    })).not.toBeNaN();
     const block = await aelf.chain.getBlockByHeight(height, true);
     const blockWithSync = aelf.chain.getBlockByHeight(height, true, {
       sync: true
