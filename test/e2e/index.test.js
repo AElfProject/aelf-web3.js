@@ -28,7 +28,9 @@ describe('test AElf-sdk', () => {
   test('test chain methods get height and get block', async () => {
     const height = await aelf.chain.getBlockHeight();
     expect(height).not.toBeNaN();
-    expect(aelf.chain.getBlockHeight({ sync: true })).not.toBeNaN();
+    expect(aelf.chain.getBlockHeight({
+      sync: true
+    })).not.toBeNaN();
     const block = await aelf.chain.getBlockByHeight(height, true);
     const blockWithSync = aelf.chain.getBlockByHeight(height, true, {
       sync: true

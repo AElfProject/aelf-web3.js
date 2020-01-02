@@ -19,8 +19,8 @@
     "release": "standard-version",
     "test": "npm run test:browser && npm run test:node",
     "test:browser": "jest --config=jest.browser.config.js",
-    "test:browser:watch": "jest --config=jest.node.config.js --watch",
-    "test:node": "jest --config=jest.browser.config.js",
+    "test:browser:watch": "jest --config=jest.browser.config.js --watch",
+    "test:node": "jest --config=jest.node.config.js",
     "test:node:watch": "jest --config=jest.node.config.js --watch"
   },
   "keywords": [
