@@ -1,6 +1,6 @@
 /*!
- * aelf-sdk.js v3.2.24 
- * (c) 2019-2019 AElf 
+ * aelf-sdk.js v3.2.25 
+ * (c) 2019-2020 AElf 
  * Released under MIT License
  */
 module.exports =
@@ -28971,12 +28971,6 @@ var CHAIN_METHODS = {
     method: 'GET',
     params: ['blockHash']
   },
-  currentRoundInfo: {
-    name: 'currentRoundInfo',
-    call: 'blockChain/currentRoundInformation',
-    method: 'GET',
-    params: []
-  },
   getContractFileDescriptorSet: {
     name: 'getContractFileDescriptorSet',
     call: 'blockChain/contractFileDescriptorSet',
@@ -29054,7 +29048,7 @@ var CHAIN_METHODS = {
     name: 'getPeers',
     call: 'net/peers',
     method: 'GET',
-    params: []
+    params: ['withMetrics']
   },
   addPeer: {
     name: 'addPeer',
@@ -29068,6 +29062,13 @@ var CHAIN_METHODS = {
     call: 'net/peers',
     method: 'DELETE',
     params: ['address'],
+    inputFormatter: []
+  },
+  networkInfo: {
+    name: 'networkInfo',
+    call: 'net/networkInfo',
+    method: 'GET',
+    params: [],
     inputFormatter: []
   }
 };
@@ -31942,7 +31943,7 @@ function () {
     defineProperty_default()(this, "settings", new settings_Settings());
 
     defineProperty_default()(this, "version", {
-      api: "3.2.24"
+      api: "3.2.25"
     });
 
     this._requestManager = new requestManage_RequestManager(provider);
@@ -31981,7 +31982,7 @@ function () {
 /* eslint-enable */
 
 
-defineProperty_default()(src_AElf, "version", "3.2.24");
+defineProperty_default()(src_AElf, "version", "3.2.25");
 
 defineProperty_default()(src_AElf, "providers", {
   HttpProvider: httpProvider_HttpProvider
