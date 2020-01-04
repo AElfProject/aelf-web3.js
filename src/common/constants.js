@@ -22,12 +22,6 @@ export const CHAIN_METHODS = {
     method: 'GET',
     params: ['blockHash']
   },
-  currentRoundInfo: {
-    name: 'currentRoundInfo',
-    call: 'blockChain/currentRoundInformation',
-    method: 'GET',
-    params: []
-  },
   getContractFileDescriptorSet: {
     name: 'getContractFileDescriptorSet',
     call: 'blockChain/contractFileDescriptorSet',
@@ -105,7 +99,7 @@ export const CHAIN_METHODS = {
     name: 'getPeers',
     call: 'net/peers',
     method: 'GET',
-    params: []
+    params: ['withMetrics']
   },
   addPeer: {
     name: 'addPeer',
@@ -119,6 +113,13 @@ export const CHAIN_METHODS = {
     call: 'net/peers',
     method: 'DELETE',
     params: ['address'],
+    inputFormatter: []
+  },
+  networkInfo: {
+    name: 'networkInfo',
+    call: 'net/networkInfo',
+    method: 'GET',
+    params: [],
     inputFormatter: []
   }
 };

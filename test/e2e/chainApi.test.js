@@ -10,9 +10,9 @@ describe('test AElf-sdk', () => {
   expect(aelf.isConnected()).toBeTruthy();
 
   test('set provider for exist alef instance', () => {
-    aelf.setProvider(new HttpProvider(fakeEndpoint))
+    aelf.setProvider(new HttpProvider(fakeEndpoint));
     expect(aelf.isConnected()).not.toBeTruthy();
-    aelf.setProvider(new HttpProvider(stageEndpoint))
+    aelf.setProvider(new HttpProvider(stageEndpoint));
     expect(aelf.isConnected()).toBeTruthy();
   });
 
@@ -20,7 +20,7 @@ describe('test AElf-sdk', () => {
     const chainStatus = aelf.chain.getChainStatus({
       sync: true
     });
-    expect(chainStatus).not.toBeNaN()
+    expect(chainStatus).not.toBeNaN();
     expect(chainStatus).toHaveProperty('ChainId', 'AELF');
     expect(chainStatus).toHaveProperty('Branches');
     expect(chainStatus).toHaveProperty('LongestChainHeight');
@@ -34,16 +34,16 @@ describe('test AElf-sdk', () => {
   });
 
   test('check get block by height and hash', async () => {
-    const height = await aelf.chain.getBlockHeight()
+    const height = await aelf.chain.getBlockHeight();
     const block = await aelf.chain.getBlockByHeight(height, true);
     expect(block).not.toBeNaN();
     expect(block).toHaveProperty('BlockHash');
     expect(block).toHaveProperty('Header.Height', height);
-    expect(block).toHaveProperty('Header')
+    expect(block).toHaveProperty('Header');
     expect(block).toHaveProperty('Body.TransactionsCount');
     expect(block).toHaveProperty('Body.Transactions');
 
-    const blockHash = block.BlockHash
+    const blockHash = block.BlockHash;
     const block1 = await aelf.chain.getBlock(blockHash, true);
     expect(block1).toEqual(block);
   });
@@ -73,7 +73,7 @@ describe('test AElf-sdk', () => {
     expect(transactions).not.toBeNaN();
     var txArray = [];
     for (var key in transactions) {
-      var txId = transactions[key].TransactionId
+      var txId = transactions[key].TransactionId;
       txArray.push(txId);
     }
 
@@ -101,7 +101,7 @@ describe('test AElf-sdk', () => {
   });
 
   test('check get peers info', async () => {
-    const peersInfo = await aelf.chain.getPeers();
+    const peersInfo = await aelf.chain.getPeers(false);
     expect(peersInfo).not.toBeNaN();
     expect(peersInfo.length).toBeGreaterThan(1);
 });
