@@ -541,6 +541,10 @@ Attempts to add a node to the connected network nodes
 
 Attempts to remove a node from the connected network nodes
 
+#### networkInfo
+
+Get information about the node’s connection to the network
+
 ### AElf.wallet
 
 `AElf.wallet` is a static property of `AElf`.
