@@ -11,8 +11,11 @@ import {
 
 export const inputAddressFormatter = address => {
   let realAddress = address;
-  if (address.indexOf('_') > 0) {
-    const parts = address.split('_');
+  if (address && address.value) {
+    realAddress = address.value;
+  }
+  if (realAddress.indexOf('_') > 0) {
+    const parts = realAddress.split('_');
     const list = parts.filter(v => {
       try {
         base58.decode(v);

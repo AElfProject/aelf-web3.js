@@ -49,6 +49,26 @@ function getFieldPaths(checker, resolvedType, path) {
   return paths;
 }
 
+
+// eslint-disable-next-line max-len
+const isValidPath = (paths = []) => paths.length > 0 && paths.filter(path => typeof path === 'string' && path.length > 0).length === paths.length;
+
+const getFieldKeys = (paths = []) => {
+  let result = [];
+  // eslint-disable-next-line no-restricted-syntax
+  for (const path of paths) {
+    if (Array.isArray(path) && isValidPath(path)) {
+      result.push(path);
+    } else {
+      const p = getFieldKeys(path);
+      if (p.length > 0) {
+        result = [...result, ...p];
+      }
+    }
+  }
+  return result;
+};
+
 // reformatter is executed when parents are not empty
 const reformat = (obj, forSelf, paths, reformatter) => {
   if (forSelf) {
@@ -57,8 +77,8 @@ const reformat = (obj, forSelf, paths, reformatter) => {
   if (!paths || paths.length === 0) {
     return obj;
   }
-
-  paths.forEach(path => {
+  const fieldKeys = getFieldKeys(paths);
+  fieldKeys.forEach(path => {
     let parent = obj;
     for (let i = 0; i < path.length - 1; i++) {
       parent = parent[path[i]];
