@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.2.26](https://github.com/AElfProject/aelf-sdk.js/compare/v3.2.25...v3.2.26) (2020-01-09)
+
+
+### Bug Fixes
+
+* 🐛 fix nested protobuf serialize and deserialize error ([c922f38](https://github.com/AElfProject/aelf-sdk.js/commit/c922f38))
+
+
+
 ### [3.2.25](https://github.com/AElfProject/aelf-sdk.js/compare/v3.2.24...v3.2.25) (2020-01-04)
 
 
