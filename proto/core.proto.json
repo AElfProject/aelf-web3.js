@@ -1,6 +1,6 @@
 {
   "options": {
-    "csharp_namespace": "AElf.Kernel"
+    "csharp_namespace": "AElf.Types"
   },
   "nested": {
     "Transaction": {
@@ -62,7 +62,8 @@
         "PENDING": 1,
         "FAILED": 2,
         "MINED": 3,
-        "UNEXECUTABLE": 4
+        "UNEXECUTABLE": 4,
+        "CONFLICT": 5
       }
     },
     "TransactionResult": {
@@ -104,13 +105,52 @@
           "type": "Hash",
           "id": 9
         },
-        "Error": {
+        "error": {
           "type": "string",
           "id": 10
         },
-        "ReadableReturnValue": {
+        "readableReturnValue": {
           "type": "string",
           "id": 11
+        },
+        "transactionFee": {
+          "type": "TransactionFee",
+          "id": 12
+        },
+        "consumedResourceTokens": {
+          "type": "ConsumedResourceTokens",
+          "id": 13
+        }
+      }
+    },
+    "TransactionFee": {
+      "fields": {
+        "value": {
+          "keyType": "string",
+          "type": "sint64",
+          "id": 1
+        },
+        "isFailedToCharge": {
+          "type": "bool",
+          "id": 2
+        }
+      }
+    },
+    "ConsumedResourceTokens": {
+      "fields": {
+        "value": {
+          "keyType": "string",
+          "type": "sint64",
+          "id": 1
+        },
+        "owning": {
+          "keyType": "string",
+          "type": "sint64",
+          "id": 2
+        },
+        "isFailedToCharge": {
+          "type": "bool",
+          "id": 3
         }
       }
     },
@@ -148,6 +188,14 @@
         "codeHash": {
           "type": "Hash",
           "id": 3
+        },
+        "isSystemContract": {
+          "type": "bool",
+          "id": 4
+        },
+        "version": {
+          "type": "int32",
+          "id": 5
         }
       }
     },
@@ -162,6 +210,11 @@
           "keyType": "string",
           "type": "bool",
           "id": 2
+        },
+        "deletes": {
+          "keyType": "string",
+          "type": "bool",
+          "id": 3
         }
       }
     },
@@ -194,6 +247,44 @@
         "value": {
           "type": "sint64",
           "id": 1
+        }
+      }
+    },
+    "MerklePath": {
+      "fields": {
+        "merklePathNodes": {
+          "rule": "repeated",
+          "type": "MerklePathNode",
+          "id": 1
+        }
+      }
+    },
+    "MerklePathNode": {
+      "fields": {
+        "hash": {
+          "type": "Hash",
+          "id": 1
+        },
+        "isLeftChildNode": {
+          "type": "bool",
+          "id": 2
+        }
+      }
+    },
+    "BinaryMerkleTree": {
+      "fields": {
+        "nodes": {
+          "rule": "repeated",
+          "type": "Hash",
+          "id": 1
+        },
+        "root": {
+          "type": "Hash",
+          "id": 2
+        },
+        "leafCount": {
+          "type": "int32",
+          "id": 3
         }
       }
     },

@@ -18,7 +18,7 @@ export const inputAddressFormatter = address => {
     const parts = realAddress.split('_');
     const list = parts.filter(v => {
       try {
-        base58.decode(v);
+        base58.decode(v, 'hex');
         return true;
       } catch (e) {
         return false;

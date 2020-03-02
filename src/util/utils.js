@@ -56,6 +56,22 @@ export const chainIdConvertor = {
   }
 };
 
+const arrayBufferToHex = arrayBuffer => Array.prototype.map.call(
+  new Uint8Array(arrayBuffer),
+  n => (`0${n.toString(16)}`).slice(-2)
+).join('');
+
+export const arrayToHex = value => {
+  let hex = '';
+  if (value instanceof Buffer) {
+    hex = value.toString('hex');
+  } else {
+    // Uint8Array
+    hex = arrayBufferToHex(value);
+  }
+  return hex;
+};
+
 /**
  * Should be called to pad string to expected length
  *

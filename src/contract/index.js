@@ -8,13 +8,11 @@ import ContractMethod from './contractMethod';
 import { noop } from '../util/utils';
 
 const getServicesFromFileDescriptors = descriptors => {
-  const root = protobuf.Root.fromDescriptor(descriptors);
+  const root = protobuf.Root.fromDescriptor(descriptors, 'proto3').resolveAll();
   return descriptors.file.filter(f => f.service.length > 0).map(f => {
     const sn = f.service[0].name;
     const fullName = f.package ? `${f.package}.${sn}` : sn;
     return root.lookupService(fullName);
-    // service.resolveAll();
-    // return service;
   });
 };
 
@@ -25,7 +23,6 @@ class Contract {
     this.services = services;
   }
 }
-
 
 export default class ContractFactory {
   constructor(chain, fileDescriptorSet, wallet) {

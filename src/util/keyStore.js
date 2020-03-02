@@ -61,7 +61,7 @@ export function getKeystore(
     mnemonicCipher.update(Buffer.from(mnemonic, 'utf8')),
     mnemonicCipher.final()
   ]);
-  const rawMac = Buffer.concat([derivedKey.slice(16, 32), privateKeyEncrypted]);
+  const rawMac = Buffer.concat([derivedKey.slice(16), privateKeyEncrypted]);
   const mac = keccak256(rawMac).replace('0x', '');
   return {
     version: 1,
@@ -124,7 +124,7 @@ export function unlockKeystore(
     kdfparams.p,
     kdfparams.dklen || kdfparams.dkLen
   );
-  const rawMac = Buffer.concat([derivedKey.slice(16, 32), Buffer.from(ciphertext, 'hex')]);
+  const rawMac = Buffer.concat([derivedKey.slice(16), Buffer.from(ciphertext, 'hex')]);
   const currentMac = keccak256(rawMac).replace('0x', '');
   if (currentMac === mac) {
     const privateKeyDeCipher = createDecipheriv(cipher, derivedKey.slice(0, sliceLength), iv);

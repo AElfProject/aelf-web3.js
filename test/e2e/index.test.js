@@ -1,7 +1,6 @@
 import AElf from '../../src/index';
 
 const defaultPrivateKey = 'bdb3b39ef4cd18c2697a920eb6d9e8c3cf1a930570beb37d04fb52400092c42b';
-// const defaultPrivateKey = 'cf2207002d1ab7c152a84da7df52632c42d9818206eb144aaff96f0d9caacaa0';
 
 describe('test AElf-sdk', () => {
   let aelf = null;

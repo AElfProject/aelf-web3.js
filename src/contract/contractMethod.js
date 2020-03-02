@@ -3,14 +3,14 @@
  * @author atom-yang
  */
 import {
-  getAddressObjectFromRep,
-  getRepForAddress,
-  getHashObjectFromHex,
-  getRepForHash,
   getTransaction,
   Transaction
 } from '../util/proto';
 import {
+  arrayToHex,
+  base58,
+  decodeAddressRep,
+  encodeAddressRep,
   isBoolean,
   isFunction,
   noop,
@@ -31,117 +31,9 @@ const isWrappedBytes = (resolvedType, name) => {
   return resolvedType.fieldsArray[0].type === 'bytes';
 };
 
-function getFieldPaths(checker, resolvedType, path) {
-  if (!resolvedType) {
-    return [];
-  }
-  if (checker(resolvedType)) {
-    return [path];
-  }
-  const paths = [];
-  resolvedType.resolve();
-  if (!resolvedType.fieldsArray) {
-    return paths;
-  }
-  resolvedType.fieldsArray.forEach(field => {
-    paths.push(getFieldPaths(checker, field.resolve().resolvedType, path.concat([field.name])));
-  });
-  return paths;
-}
-
-
-// eslint-disable-next-line max-len
-const isValidPath = (paths = []) => paths.length > 0 && paths.filter(path => typeof path === 'string' && path.length > 0).length === paths.length;
-
-const getFieldKeys = (paths = []) => {
-  let result = [];
-  // eslint-disable-next-line no-restricted-syntax
-  for (const path of paths) {
-    if (Array.isArray(path) && isValidPath(path)) {
-      result.push(path);
-    } else {
-      const p = getFieldKeys(path);
-      if (p.length > 0) {
-        result = [...result, ...p];
-      }
-    }
-  }
-  return result;
-};
-
-// reformatter is executed when parents are not empty
-const reformat = (obj, forSelf, paths, reformatter) => {
-  if (forSelf) {
-    return reformatter(obj);
-  }
-  if (!paths || paths.length === 0) {
-    return obj;
-  }
-  const fieldKeys = getFieldKeys(paths);
-  fieldKeys.forEach(path => {
-    let parent = obj;
-    for (let i = 0; i < path.length - 1; i++) {
-      parent = parent[path[i]];
-      if (!parent) break;
-    }
-    if (parent) {
-      const name = path[path.length - 1];
-      const target = parent[name];
-      if (target) {
-        parent[name] = reformatter(target);
-      }
-    }
-  });
-  return obj;
-};
-
 const isAddress = resolvedType => isWrappedBytes(resolvedType, 'Address');
 
-const getAddressFieldPaths = (resolvedType, path = []) => getFieldPaths(isAddress, resolvedType, path);
-
-const maybeUglifyAddress = (obj, forSelf, paths) => reformat(obj, forSelf, paths, target => {
-  if (typeof target === 'string') {
-    return getAddressObjectFromRep(inputAddressFormatter(target));
-  }
-  if (Array.isArray(target)) {
-    return target.map(h => getAddressObjectFromRep(inputAddressFormatter(h)));
-  }
-  return target;
-});
-
-export const maybePrettifyAddress = (obj, forSelf, paths) => reformat(obj, forSelf, paths, target => {
-  if (Array.isArray(target)) {
-    return target.map(h => getRepForAddress(h));
-  }
-  if (typeof target !== 'string') {
-    return getRepForAddress(target);
-  }
-  return target;
-});
-
 const isHash = resolvedType => isWrappedBytes(resolvedType, 'Hash');
-
-const getHashFieldPaths = (resolvedType, path = []) => getFieldPaths(isHash, resolvedType, path);
-
-const maybeUglifyHash = (obj, forSelf, paths) => reformat(obj, forSelf, paths, target => {
-  if (typeof target === 'string') {
-    return getHashObjectFromHex(target);
-  }
-  if (Array.isArray(target)) {
-    return target.map(h => getHashObjectFromHex(h));
-  }
-  return target;
-});
-
-const maybePrettifyHash = (obj, forSelf, paths) => reformat(obj, forSelf, paths, target => {
-  if (Array.isArray(target)) {
-    return target.map(h => getRepForHash(h));
-  }
-  if (typeof target !== 'string') {
-    return getRepForHash(target);
-  }
-  return target;
-});
 
 const unpackSpecifiedTypeData = ({
   data,
@@ -161,6 +53,269 @@ const unpackSpecifiedTypeData = ({
   return result;
 };
 
+function transform(inputType, origin, transformers = []) {
+  const fieldsLength = inputType.fieldsArray.length;
+  let result = origin;
+  if (fieldsLength === 0) {
+    return origin;
+  }
+  // eslint-disable-next-line no-restricted-syntax
+  for (const { filter, transformer } of transformers) {
+    if (filter(inputType) && origin) {
+      return transformer(origin);
+    }
+  }
+  // eslint-disable-next-line no-restricted-syntax
+  Object.keys(inputType.fields).forEach(field => {
+    const {
+      rule,
+      name,
+      resolvedType
+    } = inputType.fields[field];
+    if (resolvedType) {
+      if (rule && rule === 'repeated') {
+        let value = origin[name];
+        if (value && Array.isArray(value)) {
+          value = value.map(item => transform(resolvedType, item, transformers));
+        }
+        result = {
+          ...result,
+          [name]: value
+        };
+      } else {
+        result = {
+          ...result,
+          [name]: transform(resolvedType, origin[name], transformers)
+        };
+      }
+    }
+  });
+  return result;
+}
+
+
+function transformMapToArray(inputType, origin) {
+  const fieldsLength = inputType.fieldsArray.length;
+  let result = origin;
+  if (!origin) {
+    return origin;
+  }
+  if (fieldsLength === 0 || (fieldsLength === 1 && !inputType.fieldsArray[0].resolvedType)) {
+    return origin;
+  }
+  if (isAddress(inputType) || isHash(inputType)) {
+    return origin;
+  }
+  const {
+    fields,
+    options
+  } = inputType;
+  if (fieldsLength === 2 && fields.value && fields.key && options.map_entry === true) {
+    return Object.keys(origin || {}).map(key => ({ key, value: origin[key] }));
+  }
+  // eslint-disable-next-line no-restricted-syntax
+  Object.keys(inputType.fields).forEach(field => {
+    const {
+      name,
+      resolvedType
+    } = inputType.fields[field];
+    if (resolvedType) {
+      if (origin[name] && Array.isArray(origin[name])) {
+        let value = origin[name];
+        value = value.map(item => transformMapToArray(resolvedType, item));
+        result = {
+          ...result,
+          [name]: value
+        };
+      } else {
+        result = {
+          ...result,
+          [name]: transformMapToArray(resolvedType, origin[name])
+        };
+      }
+    }
+  });
+  return result;
+}
+
+function transformArrayToMap(inputType, origin) {
+  const fieldsLength = inputType.fieldsArray.length;
+  let result = origin;
+  if (fieldsLength === 0 || (fieldsLength === 1 && !inputType.fieldsArray[0].resolvedType)) {
+    return origin;
+  }
+  if (isAddress(inputType) || isHash(inputType)) {
+    return origin;
+  }
+  const {
+    fields,
+    options
+  } = inputType;
+  if (fieldsLength === 2 && fields.value && fields.key && options.map_entry === true) {
+    return origin.reduce((acc, v) => ({
+      ...acc,
+      [v.key]: v.value
+    }), {});
+  }
+  // eslint-disable-next-line no-restricted-syntax
+  Object.keys(fields).forEach(field => {
+    const {
+      name,
+      resolvedType
+    } = fields[field];
+    if (resolvedType) {
+      if (origin[name] && Array.isArray(origin[name])) {
+        const {
+          fieldsArray,
+          fields: resolvedFields,
+          options: resolvedOptions
+        } = resolvedType;
+        // eslint-disable-next-line max-len
+        if (fieldsArray.length === 2 && resolvedFields.value && resolvedFields.key && resolvedOptions.map_entry === true) {
+          result = {
+            ...result,
+            [name]: origin[name].reduce((acc, v) => ({
+              ...acc,
+              [v.key]: v.value
+            }), {})
+          };
+        } else {
+          let value = origin[name];
+          value = value.map(item => transformArrayToMap(resolvedType, item));
+          result = {
+            ...result,
+            [name]: value
+          };
+        }
+      } else {
+        result = {
+          ...result,
+          [name]: transformArrayToMap(resolvedType, origin[name])
+        };
+      }
+    }
+  });
+  return result;
+}
+
+const INPUT_TRANSFORMERS = [
+  {
+    filter: isAddress,
+    transformer: origin => {
+      let result = origin;
+      if (typeof origin === 'string') {
+        result = {
+          value: Buffer.from(decodeAddressRep(inputAddressFormatter(origin)), 'hex')
+        };
+      }
+      if (Array.isArray(origin)) {
+        result = origin.map(h => ({
+          value: Buffer.from(decodeAddressRep(inputAddressFormatter(h)), 'hex')
+        }));
+      }
+      return result;
+    }
+  },
+  {
+    filter: isHash,
+    transformer: origin => {
+      let result = origin;
+      if (typeof origin === 'string') {
+        result = {
+          value: Buffer.from(origin.replace('0x', ''), 'hex')
+        };
+      }
+      if (Array.isArray(origin)) {
+        result = origin.map(h => ({
+          value: Buffer.from(h.replace('0x', ''), 'hex')
+        }));
+      }
+      return result;
+    }
+  },
+];
+
+function messageToHex(message) {
+  return arrayToHex(message.value);
+}
+
+function encodeAddress(str) {
+  const buf = Buffer.from(str, 'base64');
+  return base58.encode(buf);
+}
+
+const OUTPUT_TRANSFORMERS = [
+  {
+    filter: isAddress,
+    transformer: origin => {
+      let result = origin;
+      if (Array.isArray(result)) {
+        result = result.map(h => encodeAddress(h.value));
+      }
+      if (typeof result !== 'string') {
+        result = encodeAddress(result.value);
+      }
+      return result;
+    }
+  },
+  {
+    filter: isHash,
+    transformer: origin => {
+      let result = origin;
+      if (Array.isArray(result)) {
+        result = result.map(h => Buffer.from(h.value, 'base64').toString('hex'));
+      }
+      if (typeof result !== 'string') {
+        result = Buffer.from(result.value, 'base64').toString('hex');
+      }
+      return result;
+    }
+  },
+];
+
+// eslint-disable-next-line no-unused-vars
+function polyfillAddress(inputType) {
+  const Address = inputType.lookupType('Address');
+  if (Address.fieldsArray.length === 1 && Address.fieldsArray[0].type === 'bytes') {
+    if (Address.originalFromObject && Address.originalToObject) {
+      return;
+    }
+    Address.originalFromObject = Address.fromObject;
+    Address.fromObject = (origin, ...args) => {
+      console.log('origin address', origin);
+      let result = origin;
+      if (typeof origin === 'string') {
+        result = {
+          value: Buffer.from(decodeAddressRep(inputAddressFormatter(origin)), 'hex')
+        };
+      }
+      // todo: 好像没有必要？
+      if (Array.isArray(origin)) {
+        console.log('array address');
+        result = origin.map(h => ({
+          value: Buffer.from(decodeAddressRep(inputAddressFormatter(h)), 'hex')
+        }));
+      }
+      return Address.originalFromObject(result, ...args);
+    };
+
+    Address.originalToObject = Address.toObject;
+    Address.toObject = (origin, ...args) => {
+      console.log('origin address', origin);
+      let result = Address.originalToObject(origin, ...args);
+      if (Array.isArray(result)) {
+        console.log('array address');
+        result = result.map(h => encodeAddressRep(messageToHex(h)));
+      }
+      if (typeof result !== 'string') {
+        result = encodeAddressRep(messageToHex(result));
+      }
+      return result;
+    };
+  }
+}
+
+
 export default class ContractMethod {
   constructor(chain, method, contractAddress, walletInstance) {
     this._chain = chain;
@@ -168,14 +323,6 @@ export default class ContractMethod {
     const { resolvedRequestType, resolvedResponseType } = method;
     this._inputType = resolvedRequestType;
     this._outputType = resolvedResponseType;
-    this._inputTypeAddressFieldPaths = getAddressFieldPaths(this._inputType);
-    this._outputTypeAddressFieldPaths = getAddressFieldPaths(this._outputType);
-    this._inputTypeHashFieldPaths = getHashFieldPaths(this._inputType);
-    this._outputTypeHashFieldPaths = getHashFieldPaths(this._outputType);
-    this._isInputTypeAddress = isAddress(this._inputType);
-    this._isInputTypeHash = isHash(this._inputType);
-    this._isOutputTypeAddress = isAddress(this._outputType);
-    this._isOutputTypeHash = isHash(this._outputType);
     this._name = method.name;
     this._contractAddress = contractAddress;
     this._wallet = walletInstance;
@@ -196,9 +343,9 @@ export default class ContractMethod {
     if (!input) {
       return null;
     }
-    let result = maybeUglifyAddress(input, this._isInputTypeAddress, this._inputTypeAddressFieldPaths);
-    result = maybeUglifyHash(result, this._isInputTypeHash, this._inputTypeHashFieldPaths);
-    const message = this._inputType.fromObject(result);
+    let params = transformMapToArray(this._inputType, input);
+    params = transform(this._inputType, params, INPUT_TRANSFORMERS);
+    const message = this._inputType.fromObject(params);
     return this._inputType.encode(message).finish();
   }
 
@@ -206,12 +353,13 @@ export default class ContractMethod {
     if (!inputPacked) {
       return null;
     }
-    let result = unpackSpecifiedTypeData({
+    const result = unpackSpecifiedTypeData({
       data: inputPacked,
       dataType: this._inputType
     });
-    result = maybePrettifyAddress(result, this._isInputTypeAddress, this._inputTypeAddressFieldPaths);
-    return maybePrettifyHash(result, this._isInputTypeHash, this._inputTypeHashFieldPaths);
+    let params = transform(this._inputType, result, OUTPUT_TRANSFORMERS);
+    params = transformArrayToMap(this._inputType, params);
+    return params;
   }
 
   unpackOutput(output) {
@@ -222,8 +370,9 @@ export default class ContractMethod {
       data: output,
       dataType: this._outputType
     });
-    result = maybePrettifyAddress(result, this._isOutputTypeAddress, this._outputTypeAddressFieldPaths);
-    return maybePrettifyHash(result, this._isOutputTypeHash, this._outputTypeHashFieldPaths);
+    result = transform(this._outputType, result, OUTPUT_TRANSFORMERS);
+    result = transformArrayToMap(this._outputType, result);
+    return result;
   }
 
   handleTransaction(height, hash, encoded) {
