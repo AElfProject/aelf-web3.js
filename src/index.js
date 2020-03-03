@@ -10,6 +10,7 @@ import HttpProvider from './util/httpProvider';
 import wallet from './wallet';
 import * as utils from './util/utils';
 import * as proto from './util/proto';
+import * as transform from './util/transform';
 import Settings from './util/settings';
 
 const { sha256 } = jsSha256;
@@ -38,7 +39,8 @@ export default class AElf {
 
   static utils = {
     ...utils,
-    sha256
+    sha256,
+    transform
   };
 
   providers = {
