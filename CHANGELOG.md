@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.2.28](https://github.com/AElfProject/aelf-sdk.js/compare/v3.2.27...v3.2.28) (2020-03-03)
+
+
+### Features
+
+* 🎸 add new contract method for deserialize logs ([c8757f4](https://github.com/AElfProject/aelf-sdk.js/commit/c8757f4))
+
+
+
 ### [3.2.27](https://github.com/AElfProject/aelf-sdk.js/compare/v3.2.26...v3.2.27) (2020-03-03)
 
 

@@ -1,5 +1,5 @@
 /*!
- * aelf-sdk.js v3.2.27 
+ * aelf-sdk.js v3.2.28 
  * (c) 2019-2020 AElf 
  * Released under MIT License
  */
@@ -87,7 +87,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 146);
+/******/ 	return __webpack_require__(__webpack_require__.s = 150);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -129,9 +129,9 @@ var roots = __webpack_require__(47);
 var Type, // cyclic
     Enum;
 
-util.codegen = __webpack_require__(83);
-util.fetch   = __webpack_require__(84);
-util.path    = __webpack_require__(85);
+util.codegen = __webpack_require__(84);
+util.fetch   = __webpack_require__(85);
+util.path    = __webpack_require__(86);
 
 /**
  * Node's fs module if available.
@@ -4076,7 +4076,7 @@ Enum.prototype.isReservedName = function isReservedName(name) {
   };
 })( false || module, this);
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(97)(module)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(101)(module)))
 
 /***/ }),
 /* 7 */
@@ -4375,25 +4375,25 @@ var util = exports;
 util.asPromise = __webpack_require__(44);
 
 // converts to / from base64 encoded strings
-util.base64 = __webpack_require__(74);
+util.base64 = __webpack_require__(75);
 
 // base class of rpc.Service
-util.EventEmitter = __webpack_require__(75);
+util.EventEmitter = __webpack_require__(76);
 
 // float handling accross browsers
-util.float = __webpack_require__(76);
+util.float = __webpack_require__(77);
 
 // requires modules optionally and hides the call from bundlers
 util.inquire = __webpack_require__(45);
 
 // converts to / from utf8 encoded strings
-util.utf8 = __webpack_require__(77);
+util.utf8 = __webpack_require__(78);
 
 // provides a node-like buffer pool in the browser
-util.pool = __webpack_require__(78);
+util.pool = __webpack_require__(79);
 
 // utility to work with the low and high bits of a 64 bit value
-util.LongBits = __webpack_require__(79);
+util.LongBits = __webpack_require__(80);
 
 // global object reference
 util.global = typeof window !== "undefined" && window
@@ -5583,7 +5583,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/**
     root = self;
   }
   var COMMON_JS = !root.JS_SHA256_NO_COMMON_JS && typeof module === 'object' && module.exports;
-  var AMD =  true && __webpack_require__(86);
+  var AMD =  true && __webpack_require__(87);
   var ARRAY_BUFFER = !root.JS_SHA256_NO_ARRAY_BUFFER && typeof ArrayBuffer !== 'undefined';
   var HEX_CHARS = '0123456789abcdef'.split('');
   var EXTRA = [-2147483648, 8388608, 32768, 128];
@@ -6967,7 +6967,7 @@ module.exports = __webpack_require__(43);
 /* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var basex = __webpack_require__(87)
+var basex = __webpack_require__(88)
 var ALPHABET = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
 
 module.exports = basex(ALPHABET)
@@ -6981,7 +6981,7 @@ module.exports = basex(ALPHABET)
 
 Object.defineProperty(exports, "__esModule", { value: true });
 const createHash = __webpack_require__(39);
-const pbkdf2_1 = __webpack_require__(117);
+const pbkdf2_1 = __webpack_require__(121);
 const randomBytes = __webpack_require__(26);
 const _wordlists_1 = __webpack_require__(62);
 let DEFAULT_WORDLIST = _wordlists_1._default;
@@ -8289,13 +8289,13 @@ BasePoint.prototype.dblp = function dblp(k) {
 /***/ (function(module, exports, __webpack_require__) {
 
 try {
-  var util = __webpack_require__(99);
+  var util = __webpack_require__(103);
   /* istanbul ignore next */
   if (typeof util.inherits !== 'function') throw '';
   module.exports = util.inherits;
 } catch (e) {
   /* istanbul ignore next */
-  module.exports = __webpack_require__(100);
+  module.exports = __webpack_require__(104);
 }
 
 
@@ -8310,11 +8310,11 @@ module.exports = __webpack_require__(9).randomBytes
 /* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var assert = __webpack_require__(121)
+var assert = __webpack_require__(125)
 var Buffer = __webpack_require__(13).Buffer
 var crypto = __webpack_require__(9)
-var cs = __webpack_require__(122)
-var secp256k1 = __webpack_require__(123)
+var cs = __webpack_require__(126)
+var secp256k1 = __webpack_require__(127)
 
 var MASTER_SECRET = Buffer.from('Bitcoin seed', 'utf8')
 var HARDENED_OFFSET = 0x80000000
@@ -11177,7 +11177,7 @@ defineCurve('ed25519', {
 
 var pre;
 try {
-  pre = __webpack_require__(109);
+  pre = __webpack_require__(113);
 } catch (e) {
   pre = undefined;
 }
@@ -11223,9 +11223,9 @@ var hash = exports;
 
 hash.utils = __webpack_require__(7);
 hash.common = __webpack_require__(21);
-hash.sha = __webpack_require__(103);
-hash.ripemd = __webpack_require__(107);
-hash.hmac = __webpack_require__(108);
+hash.sha = __webpack_require__(107);
+hash.ripemd = __webpack_require__(111);
+hash.hmac = __webpack_require__(112);
 
 // Proxy hash functions to the main object
 hash.sha1 = hash.sha.sha1;
@@ -11286,15 +11286,15 @@ module.exports = function (password, salt, iterations, keylen) {
 
 var elliptic = exports;
 
-elliptic.version = __webpack_require__(96).version;
+elliptic.version = __webpack_require__(100).version;
 elliptic.utils = __webpack_require__(4);
 elliptic.rand = __webpack_require__(55);
 elliptic.curve = __webpack_require__(56);
 elliptic.curves = __webpack_require__(37);
 
 // Protocols
-elliptic.ec = __webpack_require__(110);
-elliptic.eddsa = __webpack_require__(114);
+elliptic.ec = __webpack_require__(114);
+elliptic.eddsa = __webpack_require__(118);
 
 
 /***/ }),
@@ -11304,7 +11304,7 @@ elliptic.eddsa = __webpack_require__(114);
 ;(function (root, factory, undef) {
 	if (true) {
 		// CommonJS
-		module.exports = exports = factory(__webpack_require__(10), __webpack_require__(133), __webpack_require__(134), __webpack_require__(66), __webpack_require__(137));
+		module.exports = exports = factory(__webpack_require__(10), __webpack_require__(137), __webpack_require__(138), __webpack_require__(66), __webpack_require__(141));
 	}
 	else {}
 }(this, function (CryptoJS) {
@@ -11533,7 +11533,7 @@ elliptic.eddsa = __webpack_require__(114);
 
 "use strict";
 
-var protobuf = module.exports = __webpack_require__(73);
+var protobuf = module.exports = __webpack_require__(74);
 
 protobuf.build = "light";
 
@@ -11761,7 +11761,7 @@ var rpc = exports;
  * @returns {undefined}
  */
 
-rpc.Service = __webpack_require__(82);
+rpc.Service = __webpack_require__(83);
 
 
 /***/ }),
@@ -13131,9 +13131,9 @@ if (typeof self === 'object') {
 var curve = exports;
 
 curve.base = __webpack_require__(24);
-curve.short = __webpack_require__(98);
-curve.mont = __webpack_require__(101);
-curve.edwards = __webpack_require__(102);
+curve.short = __webpack_require__(102);
+curve.mont = __webpack_require__(105);
+curve.edwards = __webpack_require__(106);
 
 
 /***/ }),
@@ -13656,7 +13656,7 @@ var sizes = {
   ripemd160: 20
 }
 
-var createHmac = __webpack_require__(118)
+var createHmac = __webpack_require__(122)
 var checkParameters = __webpack_require__(40)
 var defaultEncoding = __webpack_require__(61)
 var Buffer = __webpack_require__(13).Buffer
@@ -13765,7 +13765,7 @@ try {
 }
 catch (err) { }
 try {
-    exports._default = _default = __webpack_require__(120);
+    exports._default = _default = __webpack_require__(124);
     wordlists.english = _default;
     wordlists.EN = _default;
 }
@@ -13797,7 +13797,7 @@ module.exports = JSON.parse("{\"COMPRESSED_TYPE_INVALID\":\"compressed should be
 ;(function (root, factory, undef) {
 	if (true) {
 		// CommonJS
-		module.exports = exports = factory(__webpack_require__(10), __webpack_require__(135), __webpack_require__(136));
+		module.exports = exports = factory(__webpack_require__(10), __webpack_require__(139), __webpack_require__(140));
 	}
 	else {}
 }(this, function (CryptoJS) {
@@ -13944,11 +13944,11 @@ module.exports = _typeof;
 /* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var arrayWithHoles = __webpack_require__(88);
+var arrayWithHoles = __webpack_require__(89);
 
-var iterableToArrayLimit = __webpack_require__(89);
+var iterableToArrayLimit = __webpack_require__(90);
 
-var nonIterableRest = __webpack_require__(90);
+var nonIterableRest = __webpack_require__(91);
 
 function _slicedToArray(arr, i) {
   return arrayWithHoles(arr) || iterableToArrayLimit(arr, i) || nonIterableRest();
@@ -13962,8 +13962,8 @@ module.exports = _slicedToArray;
 
 "use strict";
 
-var $protobuf = __webpack_require__(91);
-module.exports = exports = $protobuf.descriptor = $protobuf.Root.fromJSON(__webpack_require__(95)).lookup(".google.protobuf");
+var $protobuf = __webpack_require__(92);
+module.exports = exports = $protobuf.descriptor = $protobuf.Root.fromJSON(__webpack_require__(96)).lookup(".google.protobuf");
 
 var Namespace = $protobuf.Namespace,
     Root      = $protobuf.Root,
@@ -15017,12 +15017,28 @@ function underScore(str) {
 
 /***/ }),
 /* 70 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var arrayWithoutHoles = __webpack_require__(97);
+
+var iterableToArray = __webpack_require__(98);
+
+var nonIterableSpread = __webpack_require__(99);
+
+function _toConsumableArray(arr) {
+  return arrayWithoutHoles(arr) || iterableToArray(arr) || nonIterableSpread();
+}
+
+module.exports = _toConsumableArray;
+
+/***/ }),
+/* 71 */
 /***/ (function(module) {
 
 module.exports = JSON.parse("{\"options\":{\"csharp_namespace\":\"AElf.Types\"},\"nested\":{\"Transaction\":{\"fields\":{\"from\":{\"type\":\"Address\",\"id\":1},\"to\":{\"type\":\"Address\",\"id\":2},\"refBlockNumber\":{\"type\":\"int64\",\"id\":3},\"refBlockPrefix\":{\"type\":\"bytes\",\"id\":4},\"methodName\":{\"type\":\"string\",\"id\":5},\"params\":{\"type\":\"bytes\",\"id\":6},\"signature\":{\"type\":\"bytes\",\"id\":10000}}},\"StatePath\":{\"fields\":{\"parts\":{\"rule\":\"repeated\",\"type\":\"string\",\"id\":1}}},\"ScopedStatePath\":{\"fields\":{\"address\":{\"type\":\"Address\",\"id\":1},\"path\":{\"type\":\"StatePath\",\"id\":2}}},\"TransactionResultStatus\":{\"values\":{\"NOT_EXISTED\":0,\"PENDING\":1,\"FAILED\":2,\"MINED\":3,\"UNEXECUTABLE\":4,\"CONFLICT\":5}},\"TransactionResult\":{\"fields\":{\"transactionId\":{\"type\":\"Hash\",\"id\":1},\"status\":{\"type\":\"TransactionResultStatus\",\"id\":2},\"logs\":{\"rule\":\"repeated\",\"type\":\"LogEvent\",\"id\":3},\"bloom\":{\"type\":\"bytes\",\"id\":4},\"returnValue\":{\"type\":\"bytes\",\"id\":5},\"blockNumber\":{\"type\":\"int64\",\"id\":6},\"blockHash\":{\"type\":\"Hash\",\"id\":7},\"index\":{\"type\":\"int32\",\"id\":8},\"stateHash\":{\"type\":\"Hash\",\"id\":9},\"error\":{\"type\":\"string\",\"id\":10},\"readableReturnValue\":{\"type\":\"string\",\"id\":11},\"transactionFee\":{\"type\":\"TransactionFee\",\"id\":12},\"consumedResourceTokens\":{\"type\":\"ConsumedResourceTokens\",\"id\":13}}},\"TransactionFee\":{\"fields\":{\"value\":{\"keyType\":\"string\",\"type\":\"sint64\",\"id\":1},\"isFailedToCharge\":{\"type\":\"bool\",\"id\":2}}},\"ConsumedResourceTokens\":{\"fields\":{\"value\":{\"keyType\":\"string\",\"type\":\"sint64\",\"id\":1},\"owning\":{\"keyType\":\"string\",\"type\":\"sint64\",\"id\":2},\"isFailedToCharge\":{\"type\":\"bool\",\"id\":3}}},\"LogEvent\":{\"fields\":{\"address\":{\"type\":\"Address\",\"id\":1},\"name\":{\"type\":\"string\",\"id\":2},\"indexed\":{\"rule\":\"repeated\",\"type\":\"bytes\",\"id\":3},\"nonIndexed\":{\"type\":\"bytes\",\"id\":4}}},\"SmartContractRegistration\":{\"fields\":{\"category\":{\"type\":\"int32\",\"id\":1},\"code\":{\"type\":\"bytes\",\"id\":2},\"codeHash\":{\"type\":\"Hash\",\"id\":3},\"isSystemContract\":{\"type\":\"bool\",\"id\":4},\"version\":{\"type\":\"int32\",\"id\":5}}},\"TransactionExecutingStateSet\":{\"fields\":{\"writes\":{\"keyType\":\"string\",\"type\":\"bytes\",\"id\":1},\"reads\":{\"keyType\":\"string\",\"type\":\"bool\",\"id\":2},\"deletes\":{\"keyType\":\"string\",\"type\":\"bool\",\"id\":3}}},\"Address\":{\"fields\":{\"value\":{\"type\":\"bytes\",\"id\":1}}},\"Hash\":{\"fields\":{\"value\":{\"type\":\"bytes\",\"id\":1}}},\"SInt32Value\":{\"fields\":{\"value\":{\"type\":\"sint32\",\"id\":1}}},\"SInt64Value\":{\"fields\":{\"value\":{\"type\":\"sint64\",\"id\":1}}},\"MerklePath\":{\"fields\":{\"merklePathNodes\":{\"rule\":\"repeated\",\"type\":\"MerklePathNode\",\"id\":1}}},\"MerklePathNode\":{\"fields\":{\"hash\":{\"type\":\"Hash\",\"id\":1},\"isLeftChildNode\":{\"type\":\"bool\",\"id\":2}}},\"BinaryMerkleTree\":{\"fields\":{\"nodes\":{\"rule\":\"repeated\",\"type\":\"Hash\",\"id\":1},\"root\":{\"type\":\"Hash\",\"id\":2},\"leafCount\":{\"type\":\"int32\",\"id\":3}}},\"google\":{\"nested\":{\"protobuf\":{\"nested\":{\"Timestamp\":{\"fields\":{\"seconds\":{\"type\":\"int64\",\"id\":1},\"nanos\":{\"type\":\"int32\",\"id\":2}}}}}}}}}");
 
 /***/ }),
-/* 71 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory) {
@@ -15038,14 +15054,14 @@ module.exports = JSON.parse("{\"options\":{\"csharp_namespace\":\"AElf.Types\"},
 }));
 
 /***/ }),
-/* 72 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var strictUriEncode = __webpack_require__(138);
-var objectAssign = __webpack_require__(139);
-var decodeComponent = __webpack_require__(140);
+var strictUriEncode = __webpack_require__(142);
+var objectAssign = __webpack_require__(143);
+var decodeComponent = __webpack_require__(144);
 
 function encoderForArrayFormat(opts) {
 	switch (opts.arrayFormat) {
@@ -15269,7 +15285,7 @@ exports.parseUrl = function (str, opts) {
 
 
 /***/ }),
-/* 73 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15286,9 +15302,9 @@ protobuf.build = "minimal";
 
 // Serialization
 protobuf.Writer       = __webpack_require__(28);
-protobuf.BufferWriter = __webpack_require__(80);
+protobuf.BufferWriter = __webpack_require__(81);
 protobuf.Reader       = __webpack_require__(30);
-protobuf.BufferReader = __webpack_require__(81);
+protobuf.BufferReader = __webpack_require__(82);
 
 // Utility
 protobuf.util         = __webpack_require__(8);
@@ -15312,7 +15328,7 @@ configure();
 
 
 /***/ }),
-/* 74 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15458,7 +15474,7 @@ base64.test = function test(string) {
 
 
 /***/ }),
-/* 75 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15541,7 +15557,7 @@ EventEmitter.prototype.emit = function emit(evt) {
 
 
 /***/ }),
-/* 76 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15883,7 +15899,7 @@ function readUintBE(buf, pos) {
 
 
 /***/ }),
-/* 77 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15995,7 +16011,7 @@ utf8.write = function utf8_write(string, buffer, offset) {
 
 
 /***/ }),
-/* 78 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16050,7 +16066,7 @@ function pool(alloc, slice, size) {
 
 
 /***/ }),
-/* 79 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16257,7 +16273,7 @@ LongBits.prototype.length = function length() {
 
 
 /***/ }),
-/* 80 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16345,7 +16361,7 @@ BufferWriter.prototype.string = function write_string_buffer(value) {
 
 
 /***/ }),
-/* 81 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16396,7 +16412,7 @@ BufferReader.prototype.string = function read_string_buffer() {
 
 
 /***/ }),
-/* 82 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16545,7 +16561,7 @@ Service.prototype.end = function end(endedByRPC) {
 
 
 /***/ }),
-/* 83 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16651,7 +16667,7 @@ codegen.verbose = false;
 
 
 /***/ }),
-/* 84 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16773,7 +16789,7 @@ fetch.xhr = function fetch_xhr(filename, options, callback) {
 
 
 /***/ }),
-/* 85 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16845,7 +16861,7 @@ path.resolve = function resolve(originPath, includePath, alreadyNormalized) {
 
 
 /***/ }),
-/* 86 */
+/* 87 */
 /***/ (function(module, exports) {
 
 /* WEBPACK VAR INJECTION */(function(__webpack_amd_options__) {/* globals __webpack_amd_options__ */
@@ -16854,7 +16870,7 @@ module.exports = __webpack_amd_options__;
 /* WEBPACK VAR INJECTION */}.call(this, {}))
 
 /***/ }),
-/* 87 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16981,7 +16997,7 @@ module.exports = base
 
 
 /***/ }),
-/* 88 */
+/* 89 */
 /***/ (function(module, exports) {
 
 function _arrayWithHoles(arr) {
@@ -16991,7 +17007,7 @@ function _arrayWithHoles(arr) {
 module.exports = _arrayWithHoles;
 
 /***/ }),
-/* 89 */
+/* 90 */
 /***/ (function(module, exports) {
 
 function _iterableToArrayLimit(arr, i) {
@@ -17027,7 +17043,7 @@ function _iterableToArrayLimit(arr, i) {
 module.exports = _iterableToArrayLimit;
 
 /***/ }),
-/* 90 */
+/* 91 */
 /***/ (function(module, exports) {
 
 function _nonIterableRest() {
@@ -17037,18 +17053,18 @@ function _nonIterableRest() {
 module.exports = _nonIterableRest;
 
 /***/ }),
-/* 91 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 // full library entry point.
 
 
-module.exports = __webpack_require__(92);
+module.exports = __webpack_require__(93);
 
 
 /***/ }),
-/* 92 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17059,15 +17075,15 @@ protobuf.build = "full";
 
 // Parser
 protobuf.tokenize         = __webpack_require__(53);
-protobuf.parse            = __webpack_require__(93);
-protobuf.common           = __webpack_require__(94);
+protobuf.parse            = __webpack_require__(94);
+protobuf.common           = __webpack_require__(95);
 
 // Configure parser
 protobuf.Root._configure(protobuf.Type, protobuf.parse, protobuf.common);
 
 
 /***/ }),
-/* 93 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17832,7 +17848,7 @@ function parse(source, root, options) {
 
 
 /***/ }),
-/* 94 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18238,19 +18254,55 @@ common.get = function get(file) {
 
 
 /***/ }),
-/* 95 */
+/* 96 */
 /***/ (function(module) {
 
 module.exports = JSON.parse("{\"nested\":{\"google\":{\"nested\":{\"protobuf\":{\"nested\":{\"FileDescriptorSet\":{\"fields\":{\"file\":{\"rule\":\"repeated\",\"type\":\"FileDescriptorProto\",\"id\":1}}},\"FileDescriptorProto\":{\"fields\":{\"name\":{\"type\":\"string\",\"id\":1},\"package\":{\"type\":\"string\",\"id\":2},\"dependency\":{\"rule\":\"repeated\",\"type\":\"string\",\"id\":3},\"publicDependency\":{\"rule\":\"repeated\",\"type\":\"int32\",\"id\":10,\"options\":{\"packed\":false}},\"weakDependency\":{\"rule\":\"repeated\",\"type\":\"int32\",\"id\":11,\"options\":{\"packed\":false}},\"messageType\":{\"rule\":\"repeated\",\"type\":\"DescriptorProto\",\"id\":4},\"enumType\":{\"rule\":\"repeated\",\"type\":\"EnumDescriptorProto\",\"id\":5},\"service\":{\"rule\":\"repeated\",\"type\":\"ServiceDescriptorProto\",\"id\":6},\"extension\":{\"rule\":\"repeated\",\"type\":\"FieldDescriptorProto\",\"id\":7},\"options\":{\"type\":\"FileOptions\",\"id\":8},\"sourceCodeInfo\":{\"type\":\"SourceCodeInfo\",\"id\":9},\"syntax\":{\"type\":\"string\",\"id\":12}}},\"DescriptorProto\":{\"fields\":{\"name\":{\"type\":\"string\",\"id\":1},\"field\":{\"rule\":\"repeated\",\"type\":\"FieldDescriptorProto\",\"id\":2},\"extension\":{\"rule\":\"repeated\",\"type\":\"FieldDescriptorProto\",\"id\":6},\"nestedType\":{\"rule\":\"repeated\",\"type\":\"DescriptorProto\",\"id\":3},\"enumType\":{\"rule\":\"repeated\",\"type\":\"EnumDescriptorProto\",\"id\":4},\"extensionRange\":{\"rule\":\"repeated\",\"type\":\"ExtensionRange\",\"id\":5},\"oneofDecl\":{\"rule\":\"repeated\",\"type\":\"OneofDescriptorProto\",\"id\":8},\"options\":{\"type\":\"MessageOptions\",\"id\":7},\"reservedRange\":{\"rule\":\"repeated\",\"type\":\"ReservedRange\",\"id\":9},\"reservedName\":{\"rule\":\"repeated\",\"type\":\"string\",\"id\":10}},\"nested\":{\"ExtensionRange\":{\"fields\":{\"start\":{\"type\":\"int32\",\"id\":1},\"end\":{\"type\":\"int32\",\"id\":2}}},\"ReservedRange\":{\"fields\":{\"start\":{\"type\":\"int32\",\"id\":1},\"end\":{\"type\":\"int32\",\"id\":2}}}}},\"FieldDescriptorProto\":{\"fields\":{\"name\":{\"type\":\"string\",\"id\":1},\"number\":{\"type\":\"int32\",\"id\":3},\"label\":{\"type\":\"Label\",\"id\":4},\"type\":{\"type\":\"Type\",\"id\":5},\"typeName\":{\"type\":\"string\",\"id\":6},\"extendee\":{\"type\":\"string\",\"id\":2},\"defaultValue\":{\"type\":\"string\",\"id\":7},\"oneofIndex\":{\"type\":\"int32\",\"id\":9},\"jsonName\":{\"type\":\"string\",\"id\":10},\"options\":{\"type\":\"FieldOptions\",\"id\":8}},\"nested\":{\"Type\":{\"values\":{\"TYPE_DOUBLE\":1,\"TYPE_FLOAT\":2,\"TYPE_INT64\":3,\"TYPE_UINT64\":4,\"TYPE_INT32\":5,\"TYPE_FIXED64\":6,\"TYPE_FIXED32\":7,\"TYPE_BOOL\":8,\"TYPE_STRING\":9,\"TYPE_GROUP\":10,\"TYPE_MESSAGE\":11,\"TYPE_BYTES\":12,\"TYPE_UINT32\":13,\"TYPE_ENUM\":14,\"TYPE_SFIXED32\":15,\"TYPE_SFIXED64\":16,\"TYPE_SINT32\":17,\"TYPE_SINT64\":18}},\"Label\":{\"values\":{\"LABEL_OPTIONAL\":1,\"LABEL_REQUIRED\":2,\"LABEL_REPEATED\":3}}}},\"OneofDescriptorProto\":{\"fields\":{\"name\":{\"type\":\"string\",\"id\":1},\"options\":{\"type\":\"OneofOptions\",\"id\":2}}},\"EnumDescriptorProto\":{\"fields\":{\"name\":{\"type\":\"string\",\"id\":1},\"value\":{\"rule\":\"repeated\",\"type\":\"EnumValueDescriptorProto\",\"id\":2},\"options\":{\"type\":\"EnumOptions\",\"id\":3}}},\"EnumValueDescriptorProto\":{\"fields\":{\"name\":{\"type\":\"string\",\"id\":1},\"number\":{\"type\":\"int32\",\"id\":2},\"options\":{\"type\":\"EnumValueOptions\",\"id\":3}}},\"ServiceDescriptorProto\":{\"fields\":{\"name\":{\"type\":\"string\",\"id\":1},\"method\":{\"rule\":\"repeated\",\"type\":\"MethodDescriptorProto\",\"id\":2},\"options\":{\"type\":\"ServiceOptions\",\"id\":3}}},\"MethodDescriptorProto\":{\"fields\":{\"name\":{\"type\":\"string\",\"id\":1},\"inputType\":{\"type\":\"string\",\"id\":2},\"outputType\":{\"type\":\"string\",\"id\":3},\"options\":{\"type\":\"MethodOptions\",\"id\":4},\"clientStreaming\":{\"type\":\"bool\",\"id\":5},\"serverStreaming\":{\"type\":\"bool\",\"id\":6}}},\"FileOptions\":{\"fields\":{\"javaPackage\":{\"type\":\"string\",\"id\":1},\"javaOuterClassname\":{\"type\":\"string\",\"id\":8},\"javaMultipleFiles\":{\"type\":\"bool\",\"id\":10},\"javaGenerateEqualsAndHash\":{\"type\":\"bool\",\"id\":20,\"options\":{\"deprecated\":true}},\"javaStringCheckUtf8\":{\"type\":\"bool\",\"id\":27},\"optimizeFor\":{\"type\":\"OptimizeMode\",\"id\":9,\"options\":{\"default\":\"SPEED\"}},\"goPackage\":{\"type\":\"string\",\"id\":11},\"ccGenericServices\":{\"type\":\"bool\",\"id\":16},\"javaGenericServices\":{\"type\":\"bool\",\"id\":17},\"pyGenericServices\":{\"type\":\"bool\",\"id\":18},\"deprecated\":{\"type\":\"bool\",\"id\":23},\"ccEnableArenas\":{\"type\":\"bool\",\"id\":31},\"objcClassPrefix\":{\"type\":\"string\",\"id\":36},\"csharpNamespace\":{\"type\":\"string\",\"id\":37},\"uninterpretedOption\":{\"rule\":\"repeated\",\"type\":\"UninterpretedOption\",\"id\":999}},\"extensions\":[[1000,536870911]],\"reserved\":[[38,38]],\"nested\":{\"OptimizeMode\":{\"values\":{\"SPEED\":1,\"CODE_SIZE\":2,\"LITE_RUNTIME\":3}}}},\"MessageOptions\":{\"fields\":{\"messageSetWireFormat\":{\"type\":\"bool\",\"id\":1},\"noStandardDescriptorAccessor\":{\"type\":\"bool\",\"id\":2},\"deprecated\":{\"type\":\"bool\",\"id\":3},\"mapEntry\":{\"type\":\"bool\",\"id\":7},\"uninterpretedOption\":{\"rule\":\"repeated\",\"type\":\"UninterpretedOption\",\"id\":999}},\"extensions\":[[1000,536870911]],\"reserved\":[[8,8]]},\"FieldOptions\":{\"fields\":{\"ctype\":{\"type\":\"CType\",\"id\":1,\"options\":{\"default\":\"STRING\"}},\"packed\":{\"type\":\"bool\",\"id\":2},\"jstype\":{\"type\":\"JSType\",\"id\":6,\"options\":{\"default\":\"JS_NORMAL\"}},\"lazy\":{\"type\":\"bool\",\"id\":5},\"deprecated\":{\"type\":\"bool\",\"id\":3},\"weak\":{\"type\":\"bool\",\"id\":10},\"uninterpretedOption\":{\"rule\":\"repeated\",\"type\":\"UninterpretedOption\",\"id\":999}},\"extensions\":[[1000,536870911]],\"reserved\":[[4,4]],\"nested\":{\"CType\":{\"values\":{\"STRING\":0,\"CORD\":1,\"STRING_PIECE\":2}},\"JSType\":{\"values\":{\"JS_NORMAL\":0,\"JS_STRING\":1,\"JS_NUMBER\":2}}}},\"OneofOptions\":{\"fields\":{\"uninterpretedOption\":{\"rule\":\"repeated\",\"type\":\"UninterpretedOption\",\"id\":999}},\"extensions\":[[1000,536870911]]},\"EnumOptions\":{\"fields\":{\"allowAlias\":{\"type\":\"bool\",\"id\":2},\"deprecated\":{\"type\":\"bool\",\"id\":3},\"uninterpretedOption\":{\"rule\":\"repeated\",\"type\":\"UninterpretedOption\",\"id\":999}},\"extensions\":[[1000,536870911]]},\"EnumValueOptions\":{\"fields\":{\"deprecated\":{\"type\":\"bool\",\"id\":1},\"uninterpretedOption\":{\"rule\":\"repeated\",\"type\":\"UninterpretedOption\",\"id\":999}},\"extensions\":[[1000,536870911]]},\"ServiceOptions\":{\"fields\":{\"deprecated\":{\"type\":\"bool\",\"id\":33},\"uninterpretedOption\":{\"rule\":\"repeated\",\"type\":\"UninterpretedOption\",\"id\":999}},\"extensions\":[[1000,536870911]]},\"MethodOptions\":{\"fields\":{\"deprecated\":{\"type\":\"bool\",\"id\":33},\"uninterpretedOption\":{\"rule\":\"repeated\",\"type\":\"UninterpretedOption\",\"id\":999}},\"extensions\":[[1000,536870911]]},\"UninterpretedOption\":{\"fields\":{\"name\":{\"rule\":\"repeated\",\"type\":\"NamePart\",\"id\":2},\"identifierValue\":{\"type\":\"string\",\"id\":3},\"positiveIntValue\":{\"type\":\"uint64\",\"id\":4},\"negativeIntValue\":{\"type\":\"int64\",\"id\":5},\"doubleValue\":{\"type\":\"double\",\"id\":6},\"stringValue\":{\"type\":\"bytes\",\"id\":7},\"aggregateValue\":{\"type\":\"string\",\"id\":8}},\"nested\":{\"NamePart\":{\"fields\":{\"namePart\":{\"rule\":\"required\",\"type\":\"string\",\"id\":1},\"isExtension\":{\"rule\":\"required\",\"type\":\"bool\",\"id\":2}}}}},\"SourceCodeInfo\":{\"fields\":{\"location\":{\"rule\":\"repeated\",\"type\":\"Location\",\"id\":1}},\"nested\":{\"Location\":{\"fields\":{\"path\":{\"rule\":\"repeated\",\"type\":\"int32\",\"id\":1},\"span\":{\"rule\":\"repeated\",\"type\":\"int32\",\"id\":2},\"leadingComments\":{\"type\":\"string\",\"id\":3},\"trailingComments\":{\"type\":\"string\",\"id\":4},\"leadingDetachedComments\":{\"rule\":\"repeated\",\"type\":\"string\",\"id\":6}}}}},\"GeneratedCodeInfo\":{\"fields\":{\"annotation\":{\"rule\":\"repeated\",\"type\":\"Annotation\",\"id\":1}},\"nested\":{\"Annotation\":{\"fields\":{\"path\":{\"rule\":\"repeated\",\"type\":\"int32\",\"id\":1},\"sourceFile\":{\"type\":\"string\",\"id\":2},\"begin\":{\"type\":\"int32\",\"id\":3},\"end\":{\"type\":\"int32\",\"id\":4}}}}}}}}}}}");
 
 /***/ }),
-/* 96 */
+/* 97 */
+/***/ (function(module, exports) {
+
+function _arrayWithoutHoles(arr) {
+  if (Array.isArray(arr)) {
+    for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) {
+      arr2[i] = arr[i];
+    }
+
+    return arr2;
+  }
+}
+
+module.exports = _arrayWithoutHoles;
+
+/***/ }),
+/* 98 */
+/***/ (function(module, exports) {
+
+function _iterableToArray(iter) {
+  if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter);
+}
+
+module.exports = _iterableToArray;
+
+/***/ }),
+/* 99 */
+/***/ (function(module, exports) {
+
+function _nonIterableSpread() {
+  throw new TypeError("Invalid attempt to spread non-iterable instance");
+}
+
+module.exports = _nonIterableSpread;
+
+/***/ }),
+/* 100 */
 /***/ (function(module) {
 
 module.exports = JSON.parse("{\"name\":\"elliptic\",\"version\":\"6.5.2\",\"description\":\"EC cryptography\",\"main\":\"lib/elliptic.js\",\"files\":[\"lib\"],\"scripts\":{\"jscs\":\"jscs benchmarks/*.js lib/*.js lib/**/*.js lib/**/**/*.js test/index.js\",\"jshint\":\"jscs benchmarks/*.js lib/*.js lib/**/*.js lib/**/**/*.js test/index.js\",\"lint\":\"npm run jscs && npm run jshint\",\"unit\":\"istanbul test _mocha --reporter=spec test/index.js\",\"test\":\"npm run lint && npm run unit\",\"version\":\"grunt dist && git add dist/\"},\"repository\":{\"type\":\"git\",\"url\":\"git@github.com:indutny/elliptic\"},\"keywords\":[\"EC\",\"Elliptic\",\"curve\",\"Cryptography\"],\"author\":\"Fedor Indutny <fedor@indutny.com>\",\"license\":\"MIT\",\"bugs\":{\"url\":\"https://github.com/indutny/elliptic/issues\"},\"homepage\":\"https://github.com/indutny/elliptic\",\"devDependencies\":{\"brfs\":\"^1.4.3\",\"coveralls\":\"^3.0.8\",\"grunt\":\"^1.0.4\",\"grunt-browserify\":\"^5.0.0\",\"grunt-cli\":\"^1.2.0\",\"grunt-contrib-connect\":\"^1.0.0\",\"grunt-contrib-copy\":\"^1.0.0\",\"grunt-contrib-uglify\":\"^1.0.1\",\"grunt-mocha-istanbul\":\"^3.0.1\",\"grunt-saucelabs\":\"^9.0.1\",\"istanbul\":\"^0.4.2\",\"jscs\":\"^3.0.7\",\"jshint\":\"^2.10.3\",\"mocha\":\"^6.2.2\"},\"dependencies\":{\"bn.js\":\"^4.4.0\",\"brorand\":\"^1.0.1\",\"hash.js\":\"^1.0.0\",\"hmac-drbg\":\"^1.0.0\",\"inherits\":\"^2.0.1\",\"minimalistic-assert\":\"^1.0.0\",\"minimalistic-crypto-utils\":\"^1.0.0\"}}");
 
 /***/ }),
-/* 97 */
+/* 101 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -18278,7 +18330,7 @@ module.exports = function(module) {
 
 
 /***/ }),
-/* 98 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19222,13 +19274,13 @@ JPoint.prototype.isInfinity = function isInfinity() {
 
 
 /***/ }),
-/* 99 */
+/* 103 */
 /***/ (function(module, exports) {
 
 module.exports = require("util");
 
 /***/ }),
-/* 100 */
+/* 104 */
 /***/ (function(module, exports) {
 
 if (typeof Object.create === 'function') {
@@ -19261,7 +19313,7 @@ if (typeof Object.create === 'function') {
 
 
 /***/ }),
-/* 101 */
+/* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19446,7 +19498,7 @@ Point.prototype.getX = function getX() {
 
 
 /***/ }),
-/* 102 */
+/* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19885,21 +19937,21 @@ Point.prototype.mixedAdd = Point.prototype.add;
 
 
 /***/ }),
-/* 103 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-exports.sha1 = __webpack_require__(104);
-exports.sha224 = __webpack_require__(105);
+exports.sha1 = __webpack_require__(108);
+exports.sha224 = __webpack_require__(109);
 exports.sha256 = __webpack_require__(58);
-exports.sha384 = __webpack_require__(106);
+exports.sha384 = __webpack_require__(110);
 exports.sha512 = __webpack_require__(59);
 
 
 /***/ }),
-/* 104 */
+/* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19980,7 +20032,7 @@ SHA1.prototype._digest = function digest(enc) {
 
 
 /***/ }),
-/* 105 */
+/* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20017,7 +20069,7 @@ SHA224.prototype._digest = function digest(enc) {
 
 
 /***/ }),
-/* 106 */
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20059,7 +20111,7 @@ SHA384.prototype._digest = function digest(enc) {
 
 
 /***/ }),
-/* 107 */
+/* 111 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20212,7 +20264,7 @@ var sh = [
 
 
 /***/ }),
-/* 108 */
+/* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20266,7 +20318,7 @@ Hmac.prototype.digest = function digest(enc) {
 
 
 /***/ }),
-/* 109 */
+/* 113 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -21052,21 +21104,21 @@ module.exports = {
 
 
 /***/ }),
-/* 110 */
+/* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var BN = __webpack_require__(6);
-var HmacDRBG = __webpack_require__(111);
+var HmacDRBG = __webpack_require__(115);
 var utils = __webpack_require__(4);
 var curves = __webpack_require__(37);
 var rand = __webpack_require__(55);
 var assert = utils.assert;
 
-var KeyPair = __webpack_require__(112);
-var Signature = __webpack_require__(113);
+var KeyPair = __webpack_require__(116);
+var Signature = __webpack_require__(117);
 
 function EC(options) {
   if (!(this instanceof EC))
@@ -21300,7 +21352,7 @@ EC.prototype.getKeyRecoveryParam = function(e, signature, Q, enc) {
 
 
 /***/ }),
-/* 111 */
+/* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21420,7 +21472,7 @@ HmacDRBG.prototype.generate = function generate(len, enc, add, addEnc) {
 
 
 /***/ }),
-/* 112 */
+/* 116 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21545,7 +21597,7 @@ KeyPair.prototype.inspect = function inspect() {
 
 
 /***/ }),
-/* 113 */
+/* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21686,7 +21738,7 @@ Signature.prototype.toDER = function toDER(enc) {
 
 
 /***/ }),
-/* 114 */
+/* 118 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21697,8 +21749,8 @@ var curves = __webpack_require__(37);
 var utils = __webpack_require__(4);
 var assert = utils.assert;
 var parseBytes = utils.parseBytes;
-var KeyPair = __webpack_require__(115);
-var Signature = __webpack_require__(116);
+var KeyPair = __webpack_require__(119);
+var Signature = __webpack_require__(120);
 
 function EDDSA(curve) {
   assert(curve === 'ed25519', 'only tested with ed25519 so far');
@@ -21811,7 +21863,7 @@ EDDSA.prototype.isPoint = function isPoint(val) {
 
 
 /***/ }),
-/* 115 */
+/* 119 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21913,7 +21965,7 @@ module.exports = KeyPair;
 
 
 /***/ }),
-/* 116 */
+/* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21985,7 +22037,7 @@ module.exports = Signature;
 
 
 /***/ }),
-/* 117 */
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var checkParameters = __webpack_require__(40)
@@ -22012,7 +22064,7 @@ function nativePBKDF2Sync (password, salt, iterations, keylen, digest) {
 /* istanbul ignore next */
 if (!native.pbkdf2Sync || native.pbkdf2Sync.toString().indexOf('keylen, digest') === -1) {
   exports.pbkdf2Sync = __webpack_require__(60)
-  exports.pbkdf2 = __webpack_require__(119)
+  exports.pbkdf2 = __webpack_require__(123)
 
 // native
 } else {
@@ -22022,14 +22074,14 @@ if (!native.pbkdf2Sync || native.pbkdf2Sync.toString().indexOf('keylen, digest')
 
 
 /***/ }),
-/* 118 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(9).createHmac
 
 
 /***/ }),
-/* 119 */
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var checkParameters = __webpack_require__(40)
@@ -22135,19 +22187,19 @@ module.exports = function (password, salt, iterations, keylen, digest, callback)
 
 
 /***/ }),
-/* 120 */
+/* 124 */
 /***/ (function(module) {
 
 module.exports = JSON.parse("[\"abandon\",\"ability\",\"able\",\"about\",\"above\",\"absent\",\"absorb\",\"abstract\",\"absurd\",\"abuse\",\"access\",\"accident\",\"account\",\"accuse\",\"achieve\",\"acid\",\"acoustic\",\"acquire\",\"across\",\"act\",\"action\",\"actor\",\"actress\",\"actual\",\"adapt\",\"add\",\"addict\",\"address\",\"adjust\",\"admit\",\"adult\",\"advance\",\"advice\",\"aerobic\",\"affair\",\"afford\",\"afraid\",\"again\",\"age\",\"agent\",\"agree\",\"ahead\",\"aim\",\"air\",\"airport\",\"aisle\",\"alarm\",\"album\",\"alcohol\",\"alert\",\"alien\",\"all\",\"alley\",\"allow\",\"almost\",\"alone\",\"alpha\",\"already\",\"also\",\"alter\",\"always\",\"amateur\",\"amazing\",\"among\",\"amount\",\"amused\",\"analyst\",\"anchor\",\"ancient\",\"anger\",\"angle\",\"angry\",\"animal\",\"ankle\",\"announce\",\"annual\",\"another\",\"answer\",\"antenna\",\"antique\",\"anxiety\",\"any\",\"apart\",\"apology\",\"appear\",\"apple\",\"approve\",\"april\",\"arch\",\"arctic\",\"area\",\"arena\",\"argue\",\"arm\",\"armed\",\"armor\",\"army\",\"around\",\"arrange\",\"arrest\",\"arrive\",\"arrow\",\"art\",\"artefact\",\"artist\",\"artwork\",\"ask\",\"aspect\",\"assault\",\"asset\",\"assist\",\"assume\",\"asthma\",\"athlete\",\"atom\",\"attack\",\"attend\",\"attitude\",\"attract\",\"auction\",\"audit\",\"august\",\"aunt\",\"author\",\"auto\",\"autumn\",\"average\",\"avocado\",\"avoid\",\"awake\",\"aware\",\"away\",\"awesome\",\"awful\",\"awkward\",\"axis\",\"baby\",\"bachelor\",\"bacon\",\"badge\",\"bag\",\"balance\",\"balcony\",\"ball\",\"bamboo\",\"banana\",\"banner\",\"bar\",\"barely\",\"bargain\",\"barrel\",\"base\",\"basic\",\"basket\",\"battle\",\"beach\",\"bean\",\"beauty\",\"because\",\"become\",\"beef\",\"before\",\"begin\",\"behave\",\"behind\",\"believe\",\"below\",\"belt\",\"bench\",\"benefit\",\"best\",\"betray\",\"better\",\"between\",\"beyond\",\"bicycle\",\"bid\",\"bike\",\"bind\",\"biology\",\"bird\",\"birth\",\"bitter\",\"black\",\"blade\",\"blame\",\"blanket\",\"blast\",\"bleak\",\"bless\",\"blind\",\"blood\",\"blossom\",\"blouse\",\"blue\",\"blur\",\"blush\",\"board\",\"boat\",\"body\",\"boil\",\"bomb\",\"bone\",\"bonus\",\"book\",\"boost\",\"border\",\"boring\",\"borrow\",\"boss\",\"bottom\",\"bounce\",\"box\",\"boy\",\"bracket\",\"brain\",\"brand\",\"brass\",\"brave\",\"bread\",\"breeze\",\"brick\",\"bridge\",\"brief\",\"bright\",\"bring\",\"brisk\",\"broccoli\",\"broken\",\"bronze\",\"broom\",\"brother\",\"brown\",\"brush\",\"bubble\",\"buddy\",\"budget\",\"buffalo\",\"build\",\"bulb\",\"bulk\",\"bullet\",\"bundle\",\"bunker\",\"burden\",\"burger\",\"burst\",\"bus\",\"business\",\"busy\",\"butter\",\"buyer\",\"buzz\",\"cabbage\",\"cabin\",\"cable\",\"cactus\",\"cage\",\"cake\",\"call\",\"calm\",\"camera\",\"camp\",\"can\",\"canal\",\"cancel\",\"candy\",\"cannon\",\"canoe\",\"canvas\",\"canyon\",\"capable\",\"capital\",\"captain\",\"car\",\"carbon\",\"card\",\"cargo\",\"carpet\",\"carry\",\"cart\",\"case\",\"cash\",\"casino\",\"castle\",\"casual\",\"cat\",\"catalog\",\"catch\",\"category\",\"cattle\",\"caught\",\"cause\",\"caution\",\"cave\",\"ceiling\",\"celery\",\"cement\",\"census\",\"century\",\"cereal\",\"certain\",\"chair\",\"chalk\",\"champion\",\"change\",\"chaos\",\"chapter\",\"charge\",\"chase\",\"chat\",\"cheap\",\"check\",\"cheese\",\"chef\",\"cherry\",\"chest\",\"chicken\",\"chief\",\"child\",\"chimney\",\"choice\",\"choose\",\"chronic\",\"chuckle\",\"chunk\",\"churn\",\"cigar\",\"cinnamon\",\"circle\",\"citizen\",\"city\",\"civil\",\"claim\",\"clap\",\"clarify\",\"claw\",\"clay\",\"clean\",\"clerk\",\"clever\",\"click\",\"client\",\"cliff\",\"climb\",\"clinic\",\"clip\",\"clock\",\"clog\",\"close\",\"cloth\",\"cloud\",\"clown\",\"club\",\"clump\",\"cluster\",\"clutch\",\"coach\",\"coast\",\"coconut\",\"code\",\"coffee\",\"coil\",\"coin\",\"collect\",\"color\",\"column\",\"combine\",\"come\",\"comfort\",\"comic\",\"common\",\"company\",\"concert\",\"conduct\",\"confirm\",\"congress\",\"connect\",\"consider\",\"control\",\"convince\",\"cook\",\"cool\",\"copper\",\"copy\",\"coral\",\"core\",\"corn\",\"correct\",\"cost\",\"cotton\",\"couch\",\"country\",\"couple\",\"course\",\"cousin\",\"cover\",\"coyote\",\"crack\",\"cradle\",\"craft\",\"cram\",\"crane\",\"crash\",\"crater\",\"crawl\",\"crazy\",\"cream\",\"credit\",\"creek\",\"crew\",\"cricket\",\"crime\",\"crisp\",\"critic\",\"crop\",\"cross\",\"crouch\",\"crowd\",\"crucial\",\"cruel\",\"cruise\",\"crumble\",\"crunch\",\"crush\",\"cry\",\"crystal\",\"cube\",\"culture\",\"cup\",\"cupboard\",\"curious\",\"current\",\"curtain\",\"curve\",\"cushion\",\"custom\",\"cute\",\"cycle\",\"dad\",\"damage\",\"damp\",\"dance\",\"danger\",\"daring\",\"dash\",\"daughter\",\"dawn\",\"day\",\"deal\",\"debate\",\"debris\",\"decade\",\"december\",\"decide\",\"decline\",\"decorate\",\"decrease\",\"deer\",\"defense\",\"define\",\"defy\",\"degree\",\"delay\",\"deliver\",\"demand\",\"demise\",\"denial\",\"dentist\",\"deny\",\"depart\",\"depend\",\"deposit\",\"depth\",\"deputy\",\"derive\",\"describe\",\"desert\",\"design\",\"desk\",\"despair\",\"destroy\",\"detail\",\"detect\",\"develop\",\"device\",\"devote\",\"diagram\",\"dial\",\"diamond\",\"diary\",\"dice\",\"diesel\",\"diet\",\"differ\",\"digital\",\"dignity\",\"dilemma\",\"dinner\",\"dinosaur\",\"direct\",\"dirt\",\"disagree\",\"discover\",\"disease\",\"dish\",\"dismiss\",\"disorder\",\"display\",\"distance\",\"divert\",\"divide\",\"divorce\",\"dizzy\",\"doctor\",\"document\",\"dog\",\"doll\",\"dolphin\",\"domain\",\"donate\",\"donkey\",\"donor\",\"door\",\"dose\",\"double\",\"dove\",\"draft\",\"dragon\",\"drama\",\"drastic\",\"draw\",\"dream\",\"dress\",\"drift\",\"drill\",\"drink\",\"drip\",\"drive\",\"drop\",\"drum\",\"dry\",\"duck\",\"dumb\",\"dune\",\"during\",\"dust\",\"dutch\",\"duty\",\"dwarf\",\"dynamic\",\"eager\",\"eagle\",\"early\",\"earn\",\"earth\",\"easily\",\"east\",\"easy\",\"echo\",\"ecology\",\"economy\",\"edge\",\"edit\",\"educate\",\"effort\",\"egg\",\"eight\",\"either\",\"elbow\",\"elder\",\"electric\",\"elegant\",\"element\",\"elephant\",\"elevator\",\"elite\",\"else\",\"embark\",\"embody\",\"embrace\",\"emerge\",\"emotion\",\"employ\",\"empower\",\"empty\",\"enable\",\"enact\",\"end\",\"endless\",\"endorse\",\"enemy\",\"energy\",\"enforce\",\"engage\",\"engine\",\"enhance\",\"enjoy\",\"enlist\",\"enough\",\"enrich\",\"enroll\",\"ensure\",\"enter\",\"entire\",\"entry\",\"envelope\",\"episode\",\"equal\",\"equip\",\"era\",\"erase\",\"erode\",\"erosion\",\"error\",\"erupt\",\"escape\",\"essay\",\"essence\",\"estate\",\"eternal\",\"ethics\",\"evidence\",\"evil\",\"evoke\",\"evolve\",\"exact\",\"example\",\"excess\",\"exchange\",\"excite\",\"exclude\",\"excuse\",\"execute\",\"exercise\",\"exhaust\",\"exhibit\",\"exile\",\"exist\",\"exit\",\"exotic\",\"expand\",\"expect\",\"expire\",\"explain\",\"expose\",\"express\",\"extend\",\"extra\",\"eye\",\"eyebrow\",\"fabric\",\"face\",\"faculty\",\"fade\",\"faint\",\"faith\",\"fall\",\"false\",\"fame\",\"family\",\"famous\",\"fan\",\"fancy\",\"fantasy\",\"farm\",\"fashion\",\"fat\",\"fatal\",\"father\",\"fatigue\",\"fault\",\"favorite\",\"feature\",\"february\",\"federal\",\"fee\",\"feed\",\"feel\",\"female\",\"fence\",\"festival\",\"fetch\",\"fever\",\"few\",\"fiber\",\"fiction\",\"field\",\"figure\",\"file\",\"film\",\"filter\",\"final\",\"find\",\"fine\",\"finger\",\"finish\",\"fire\",\"firm\",\"first\",\"fiscal\",\"fish\",\"fit\",\"fitness\",\"fix\",\"flag\",\"flame\",\"flash\",\"flat\",\"flavor\",\"flee\",\"flight\",\"flip\",\"float\",\"flock\",\"floor\",\"flower\",\"fluid\",\"flush\",\"fly\",\"foam\",\"focus\",\"fog\",\"foil\",\"fold\",\"follow\",\"food\",\"foot\",\"force\",\"forest\",\"forget\",\"fork\",\"fortune\",\"forum\",\"forward\",\"fossil\",\"foster\",\"found\",\"fox\",\"fragile\",\"frame\",\"frequent\",\"fresh\",\"friend\",\"fringe\",\"frog\",\"front\",\"frost\",\"frown\",\"frozen\",\"fruit\",\"fuel\",\"fun\",\"funny\",\"furnace\",\"fury\",\"future\",\"gadget\",\"gain\",\"galaxy\",\"gallery\",\"game\",\"gap\",\"garage\",\"garbage\",\"garden\",\"garlic\",\"garment\",\"gas\",\"gasp\",\"gate\",\"gather\",\"gauge\",\"gaze\",\"general\",\"genius\",\"genre\",\"gentle\",\"genuine\",\"gesture\",\"ghost\",\"giant\",\"gift\",\"giggle\",\"ginger\",\"giraffe\",\"girl\",\"give\",\"glad\",\"glance\",\"glare\",\"glass\",\"glide\",\"glimpse\",\"globe\",\"gloom\",\"glory\",\"glove\",\"glow\",\"glue\",\"goat\",\"goddess\",\"gold\",\"good\",\"goose\",\"gorilla\",\"gospel\",\"gossip\",\"govern\",\"gown\",\"grab\",\"grace\",\"grain\",\"grant\",\"grape\",\"grass\",\"gravity\",\"great\",\"green\",\"grid\",\"grief\",\"grit\",\"grocery\",\"group\",\"grow\",\"grunt\",\"guard\",\"guess\",\"guide\",\"guilt\",\"guitar\",\"gun\",\"gym\",\"habit\",\"hair\",\"half\",\"hammer\",\"hamster\",\"hand\",\"happy\",\"harbor\",\"hard\",\"harsh\",\"harvest\",\"hat\",\"have\",\"hawk\",\"hazard\",\"head\",\"health\",\"heart\",\"heavy\",\"hedgehog\",\"height\",\"hello\",\"helmet\",\"help\",\"hen\",\"hero\",\"hidden\",\"high\",\"hill\",\"hint\",\"hip\",\"hire\",\"history\",\"hobby\",\"hockey\",\"hold\",\"hole\",\"holiday\",\"hollow\",\"home\",\"honey\",\"hood\",\"hope\",\"horn\",\"horror\",\"horse\",\"hospital\",\"host\",\"hotel\",\"hour\",\"hover\",\"hub\",\"huge\",\"human\",\"humble\",\"humor\",\"hundred\",\"hungry\",\"hunt\",\"hurdle\",\"hurry\",\"hurt\",\"husband\",\"hybrid\",\"ice\",\"icon\",\"idea\",\"identify\",\"idle\",\"ignore\",\"ill\",\"illegal\",\"illness\",\"image\",\"imitate\",\"immense\",\"immune\",\"impact\",\"impose\",\"improve\",\"impulse\",\"inch\",\"include\",\"income\",\"increase\",\"index\",\"indicate\",\"indoor\",\"industry\",\"infant\",\"inflict\",\"inform\",\"inhale\",\"inherit\",\"initial\",\"inject\",\"injury\",\"inmate\",\"inner\",\"innocent\",\"input\",\"inquiry\",\"insane\",\"insect\",\"inside\",\"inspire\",\"install\",\"intact\",\"interest\",\"into\",\"invest\",\"invite\",\"involve\",\"iron\",\"island\",\"isolate\",\"issue\",\"item\",\"ivory\",\"jacket\",\"jaguar\",\"jar\",\"jazz\",\"jealous\",\"jeans\",\"jelly\",\"jewel\",\"job\",\"join\",\"joke\",\"journey\",\"joy\",\"judge\",\"juice\",\"jump\",\"jungle\",\"junior\",\"junk\",\"just\",\"kangaroo\",\"keen\",\"keep\",\"ketchup\",\"key\",\"kick\",\"kid\",\"kidney\",\"kind\",\"kingdom\",\"kiss\",\"kit\",\"kitchen\",\"kite\",\"kitten\",\"kiwi\",\"knee\",\"knife\",\"knock\",\"know\",\"lab\",\"label\",\"labor\",\"ladder\",\"lady\",\"lake\",\"lamp\",\"language\",\"laptop\",\"large\",\"later\",\"latin\",\"laugh\",\"laundry\",\"lava\",\"law\",\"lawn\",\"lawsuit\",\"layer\",\"lazy\",\"leader\",\"leaf\",\"learn\",\"leave\",\"lecture\",\"left\",\"leg\",\"legal\",\"legend\",\"leisure\",\"lemon\",\"lend\",\"length\",\"lens\",\"leopard\",\"lesson\",\"letter\",\"level\",\"liar\",\"liberty\",\"library\",\"license\",\"life\",\"lift\",\"light\",\"like\",\"limb\",\"limit\",\"link\",\"lion\",\"liquid\",\"list\",\"little\",\"live\",\"lizard\",\"load\",\"loan\",\"lobster\",\"local\",\"lock\",\"logic\",\"lonely\",\"long\",\"loop\",\"lottery\",\"loud\",\"lounge\",\"love\",\"loyal\",\"lucky\",\"luggage\",\"lumber\",\"lunar\",\"lunch\",\"luxury\",\"lyrics\",\"machine\",\"mad\",\"magic\",\"magnet\",\"maid\",\"mail\",\"main\",\"major\",\"make\",\"mammal\",\"man\",\"manage\",\"mandate\",\"mango\",\"mansion\",\"manual\",\"maple\",\"marble\",\"march\",\"margin\",\"marine\",\"market\",\"marriage\",\"mask\",\"mass\",\"master\",\"match\",\"material\",\"math\",\"matrix\",\"matter\",\"maximum\",\"maze\",\"meadow\",\"mean\",\"measure\",\"meat\",\"mechanic\",\"medal\",\"media\",\"melody\",\"melt\",\"member\",\"memory\",\"mention\",\"menu\",\"mercy\",\"merge\",\"merit\",\"merry\",\"mesh\",\"message\",\"metal\",\"method\",\"middle\",\"midnight\",\"milk\",\"million\",\"mimic\",\"mind\",\"minimum\",\"minor\",\"minute\",\"miracle\",\"mirror\",\"misery\",\"miss\",\"mistake\",\"mix\",\"mixed\",\"mixture\",\"mobile\",\"model\",\"modify\",\"mom\",\"moment\",\"monitor\",\"monkey\",\"monster\",\"month\",\"moon\",\"moral\",\"more\",\"morning\",\"mosquito\",\"mother\",\"motion\",\"motor\",\"mountain\",\"mouse\",\"move\",\"movie\",\"much\",\"muffin\",\"mule\",\"multiply\",\"muscle\",\"museum\",\"mushroom\",\"music\",\"must\",\"mutual\",\"myself\",\"mystery\",\"myth\",\"naive\",\"name\",\"napkin\",\"narrow\",\"nasty\",\"nation\",\"nature\",\"near\",\"neck\",\"need\",\"negative\",\"neglect\",\"neither\",\"nephew\",\"nerve\",\"nest\",\"net\",\"network\",\"neutral\",\"never\",\"news\",\"next\",\"nice\",\"night\",\"noble\",\"noise\",\"nominee\",\"noodle\",\"normal\",\"north\",\"nose\",\"notable\",\"note\",\"nothing\",\"notice\",\"novel\",\"now\",\"nuclear\",\"number\",\"nurse\",\"nut\",\"oak\",\"obey\",\"object\",\"oblige\",\"obscure\",\"observe\",\"obtain\",\"obvious\",\"occur\",\"ocean\",\"october\",\"odor\",\"off\",\"offer\",\"office\",\"often\",\"oil\",\"okay\",\"old\",\"olive\",\"olympic\",\"omit\",\"once\",\"one\",\"onion\",\"online\",\"only\",\"open\",\"opera\",\"opinion\",\"oppose\",\"option\",\"orange\",\"orbit\",\"orchard\",\"order\",\"ordinary\",\"organ\",\"orient\",\"original\",\"orphan\",\"ostrich\",\"other\",\"outdoor\",\"outer\",\"output\",\"outside\",\"oval\",\"oven\",\"over\",\"own\",\"owner\",\"oxygen\",\"oyster\",\"ozone\",\"pact\",\"paddle\",\"page\",\"pair\",\"palace\",\"palm\",\"panda\",\"panel\",\"panic\",\"panther\",\"paper\",\"parade\",\"parent\",\"park\",\"parrot\",\"party\",\"pass\",\"patch\",\"path\",\"patient\",\"patrol\",\"pattern\",\"pause\",\"pave\",\"payment\",\"peace\",\"peanut\",\"pear\",\"peasant\",\"pelican\",\"pen\",\"penalty\",\"pencil\",\"people\",\"pepper\",\"perfect\",\"permit\",\"person\",\"pet\",\"phone\",\"photo\",\"phrase\",\"physical\",\"piano\",\"picnic\",\"picture\",\"piece\",\"pig\",\"pigeon\",\"pill\",\"pilot\",\"pink\",\"pioneer\",\"pipe\",\"pistol\",\"pitch\",\"pizza\",\"place\",\"planet\",\"plastic\",\"plate\",\"play\",\"please\",\"pledge\",\"pluck\",\"plug\",\"plunge\",\"poem\",\"poet\",\"point\",\"polar\",\"pole\",\"police\",\"pond\",\"pony\",\"pool\",\"popular\",\"portion\",\"position\",\"possible\",\"post\",\"potato\",\"pottery\",\"poverty\",\"powder\",\"power\",\"practice\",\"praise\",\"predict\",\"prefer\",\"prepare\",\"present\",\"pretty\",\"prevent\",\"price\",\"pride\",\"primary\",\"print\",\"priority\",\"prison\",\"private\",\"prize\",\"problem\",\"process\",\"produce\",\"profit\",\"program\",\"project\",\"promote\",\"proof\",\"property\",\"prosper\",\"protect\",\"proud\",\"provide\",\"public\",\"pudding\",\"pull\",\"pulp\",\"pulse\",\"pumpkin\",\"punch\",\"pupil\",\"puppy\",\"purchase\",\"purity\",\"purpose\",\"purse\",\"push\",\"put\",\"puzzle\",\"pyramid\",\"quality\",\"quantum\",\"quarter\",\"question\",\"quick\",\"quit\",\"quiz\",\"quote\",\"rabbit\",\"raccoon\",\"race\",\"rack\",\"radar\",\"radio\",\"rail\",\"rain\",\"raise\",\"rally\",\"ramp\",\"ranch\",\"random\",\"range\",\"rapid\",\"rare\",\"rate\",\"rather\",\"raven\",\"raw\",\"razor\",\"ready\",\"real\",\"reason\",\"rebel\",\"rebuild\",\"recall\",\"receive\",\"recipe\",\"record\",\"recycle\",\"reduce\",\"reflect\",\"reform\",\"refuse\",\"region\",\"regret\",\"regular\",\"reject\",\"relax\",\"release\",\"relief\",\"rely\",\"remain\",\"remember\",\"remind\",\"remove\",\"render\",\"renew\",\"rent\",\"reopen\",\"repair\",\"repeat\",\"replace\",\"report\",\"require\",\"rescue\",\"resemble\",\"resist\",\"resource\",\"response\",\"result\",\"retire\",\"retreat\",\"return\",\"reunion\",\"reveal\",\"review\",\"reward\",\"rhythm\",\"rib\",\"ribbon\",\"rice\",\"rich\",\"ride\",\"ridge\",\"rifle\",\"right\",\"rigid\",\"ring\",\"riot\",\"ripple\",\"risk\",\"ritual\",\"rival\",\"river\",\"road\",\"roast\",\"robot\",\"robust\",\"rocket\",\"romance\",\"roof\",\"rookie\",\"room\",\"rose\",\"rotate\",\"rough\",\"round\",\"route\",\"royal\",\"rubber\",\"rude\",\"rug\",\"rule\",\"run\",\"runway\",\"rural\",\"sad\",\"saddle\",\"sadness\",\"safe\",\"sail\",\"salad\",\"salmon\",\"salon\",\"salt\",\"salute\",\"same\",\"sample\",\"sand\",\"satisfy\",\"satoshi\",\"sauce\",\"sausage\",\"save\",\"say\",\"scale\",\"scan\",\"scare\",\"scatter\",\"scene\",\"scheme\",\"school\",\"science\",\"scissors\",\"scorpion\",\"scout\",\"scrap\",\"screen\",\"script\",\"scrub\",\"sea\",\"search\",\"season\",\"seat\",\"second\",\"secret\",\"section\",\"security\",\"seed\",\"seek\",\"segment\",\"select\",\"sell\",\"seminar\",\"senior\",\"sense\",\"sentence\",\"series\",\"service\",\"session\",\"settle\",\"setup\",\"seven\",\"shadow\",\"shaft\",\"shallow\",\"share\",\"shed\",\"shell\",\"sheriff\",\"shield\",\"shift\",\"shine\",\"ship\",\"shiver\",\"shock\",\"shoe\",\"shoot\",\"shop\",\"short\",\"shoulder\",\"shove\",\"shrimp\",\"shrug\",\"shuffle\",\"shy\",\"sibling\",\"sick\",\"side\",\"siege\",\"sight\",\"sign\",\"silent\",\"silk\",\"silly\",\"silver\",\"similar\",\"simple\",\"since\",\"sing\",\"siren\",\"sister\",\"situate\",\"six\",\"size\",\"skate\",\"sketch\",\"ski\",\"skill\",\"skin\",\"skirt\",\"skull\",\"slab\",\"slam\",\"sleep\",\"slender\",\"slice\",\"slide\",\"slight\",\"slim\",\"slogan\",\"slot\",\"slow\",\"slush\",\"small\",\"smart\",\"smile\",\"smoke\",\"smooth\",\"snack\",\"snake\",\"snap\",\"sniff\",\"snow\",\"soap\",\"soccer\",\"social\",\"sock\",\"soda\",\"soft\",\"solar\",\"soldier\",\"solid\",\"solution\",\"solve\",\"someone\",\"song\",\"soon\",\"sorry\",\"sort\",\"soul\",\"sound\",\"soup\",\"source\",\"south\",\"space\",\"spare\",\"spatial\",\"spawn\",\"speak\",\"special\",\"speed\",\"spell\",\"spend\",\"sphere\",\"spice\",\"spider\",\"spike\",\"spin\",\"spirit\",\"split\",\"spoil\",\"sponsor\",\"spoon\",\"sport\",\"spot\",\"spray\",\"spread\",\"spring\",\"spy\",\"square\",\"squeeze\",\"squirrel\",\"stable\",\"stadium\",\"staff\",\"stage\",\"stairs\",\"stamp\",\"stand\",\"start\",\"state\",\"stay\",\"steak\",\"steel\",\"stem\",\"step\",\"stereo\",\"stick\",\"still\",\"sting\",\"stock\",\"stomach\",\"stone\",\"stool\",\"story\",\"stove\",\"strategy\",\"street\",\"strike\",\"strong\",\"struggle\",\"student\",\"stuff\",\"stumble\",\"style\",\"subject\",\"submit\",\"subway\",\"success\",\"such\",\"sudden\",\"suffer\",\"sugar\",\"suggest\",\"suit\",\"summer\",\"sun\",\"sunny\",\"sunset\",\"super\",\"supply\",\"supreme\",\"sure\",\"surface\",\"surge\",\"surprise\",\"surround\",\"survey\",\"suspect\",\"sustain\",\"swallow\",\"swamp\",\"swap\",\"swarm\",\"swear\",\"sweet\",\"swift\",\"swim\",\"swing\",\"switch\",\"sword\",\"symbol\",\"symptom\",\"syrup\",\"system\",\"table\",\"tackle\",\"tag\",\"tail\",\"talent\",\"talk\",\"tank\",\"tape\",\"target\",\"task\",\"taste\",\"tattoo\",\"taxi\",\"teach\",\"team\",\"tell\",\"ten\",\"tenant\",\"tennis\",\"tent\",\"term\",\"test\",\"text\",\"thank\",\"that\",\"theme\",\"then\",\"theory\",\"there\",\"they\",\"thing\",\"this\",\"thought\",\"three\",\"thrive\",\"throw\",\"thumb\",\"thunder\",\"ticket\",\"tide\",\"tiger\",\"tilt\",\"timber\",\"time\",\"tiny\",\"tip\",\"tired\",\"tissue\",\"title\",\"toast\",\"tobacco\",\"today\",\"toddler\",\"toe\",\"together\",\"toilet\",\"token\",\"tomato\",\"tomorrow\",\"tone\",\"tongue\",\"tonight\",\"tool\",\"tooth\",\"top\",\"topic\",\"topple\",\"torch\",\"tornado\",\"tortoise\",\"toss\",\"total\",\"tourist\",\"toward\",\"tower\",\"town\",\"toy\",\"track\",\"trade\",\"traffic\",\"tragic\",\"train\",\"transfer\",\"trap\",\"trash\",\"travel\",\"tray\",\"treat\",\"tree\",\"trend\",\"trial\",\"tribe\",\"trick\",\"trigger\",\"trim\",\"trip\",\"trophy\",\"trouble\",\"truck\",\"true\",\"truly\",\"trumpet\",\"trust\",\"truth\",\"try\",\"tube\",\"tuition\",\"tumble\",\"tuna\",\"tunnel\",\"turkey\",\"turn\",\"turtle\",\"twelve\",\"twenty\",\"twice\",\"twin\",\"twist\",\"two\",\"type\",\"typical\",\"ugly\",\"umbrella\",\"unable\",\"unaware\",\"uncle\",\"uncover\",\"under\",\"undo\",\"unfair\",\"unfold\",\"unhappy\",\"uniform\",\"unique\",\"unit\",\"universe\",\"unknown\",\"unlock\",\"until\",\"unusual\",\"unveil\",\"update\",\"upgrade\",\"uphold\",\"upon\",\"upper\",\"upset\",\"urban\",\"urge\",\"usage\",\"use\",\"used\",\"useful\",\"useless\",\"usual\",\"utility\",\"vacant\",\"vacuum\",\"vague\",\"valid\",\"valley\",\"valve\",\"van\",\"vanish\",\"vapor\",\"various\",\"vast\",\"vault\",\"vehicle\",\"velvet\",\"vendor\",\"venture\",\"venue\",\"verb\",\"verify\",\"version\",\"very\",\"vessel\",\"veteran\",\"viable\",\"vibrant\",\"vicious\",\"victory\",\"video\",\"view\",\"village\",\"vintage\",\"violin\",\"virtual\",\"virus\",\"visa\",\"visit\",\"visual\",\"vital\",\"vivid\",\"vocal\",\"voice\",\"void\",\"volcano\",\"volume\",\"vote\",\"voyage\",\"wage\",\"wagon\",\"wait\",\"walk\",\"wall\",\"walnut\",\"want\",\"warfare\",\"warm\",\"warrior\",\"wash\",\"wasp\",\"waste\",\"water\",\"wave\",\"way\",\"wealth\",\"weapon\",\"wear\",\"weasel\",\"weather\",\"web\",\"wedding\",\"weekend\",\"weird\",\"welcome\",\"west\",\"wet\",\"whale\",\"what\",\"wheat\",\"wheel\",\"when\",\"where\",\"whip\",\"whisper\",\"wide\",\"width\",\"wife\",\"wild\",\"will\",\"win\",\"window\",\"wine\",\"wing\",\"wink\",\"winner\",\"winter\",\"wire\",\"wisdom\",\"wise\",\"wish\",\"witness\",\"wolf\",\"woman\",\"wonder\",\"wood\",\"wool\",\"word\",\"work\",\"world\",\"worry\",\"worth\",\"wrap\",\"wreck\",\"wrestle\",\"wrist\",\"write\",\"wrong\",\"yard\",\"year\",\"yellow\",\"you\",\"young\",\"youth\",\"zebra\",\"zero\",\"zone\",\"zoo\"]");
 
 /***/ }),
-/* 121 */
+/* 125 */
 /***/ (function(module, exports) {
 
 module.exports = require("assert");
 
 /***/ }),
-/* 122 */
+/* 126 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var base58 = __webpack_require__(18)
@@ -22246,33 +22298,33 @@ module.exports = {
 
 
 /***/ }),
-/* 123 */
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 try {
-  module.exports = __webpack_require__(124)
+  module.exports = __webpack_require__(128)
 } catch (err) {
   if (process.env.DEBUG) {
     console.error('Secp256k1 bindings are not compiled. Pure JS implementation will be used.')
   }
 
-  module.exports = __webpack_require__(127)
+  module.exports = __webpack_require__(131)
 }
 
 
 /***/ }),
-/* 124 */
+/* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-module.exports = __webpack_require__(125)('secp256k1')
+module.exports = __webpack_require__(129)('secp256k1')
 
 
 /***/ }),
-/* 125 */
+/* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(__filename) {/**
@@ -22281,7 +22333,7 @@ module.exports = __webpack_require__(125)('secp256k1')
 
 var fs = __webpack_require__(63),
   path = __webpack_require__(64),
-  fileURLToPath = __webpack_require__(126),
+  fileURLToPath = __webpack_require__(130),
   join = path.join,
   dirname = path.dirname,
   exists =
@@ -22500,7 +22552,7 @@ exports.getRoot = function getRoot(file) {
 /* WEBPACK VAR INJECTION */}.call(this, "/index.js"))
 
 /***/ }),
-/* 126 */
+/* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
@@ -22572,22 +22624,22 @@ function fileUriToPath (uri) {
 
 
 /***/ }),
-/* 127 */
+/* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-module.exports = __webpack_require__(128)(__webpack_require__(132))
+module.exports = __webpack_require__(132)(__webpack_require__(136))
 
 
 /***/ }),
-/* 128 */
+/* 132 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var assert = __webpack_require__(129)
-var der = __webpack_require__(130)
+var assert = __webpack_require__(133)
+var der = __webpack_require__(134)
 var messages = __webpack_require__(65)
 
 function initCompressedValue (value, defaultValue) {
@@ -22833,7 +22885,7 @@ module.exports = function (secp256k1) {
 
 
 /***/ }),
-/* 129 */
+/* 133 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22884,13 +22936,13 @@ exports.isNumberInInterval = function (number, x, y, message) {
 
 
 /***/ }),
-/* 130 */
+/* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 var Buffer = __webpack_require__(13).Buffer
-var bip66 = __webpack_require__(131)
+var bip66 = __webpack_require__(135)
 
 var EC_PRIVKEY_EXPORT_DER_COMPRESSED = Buffer.from([
   // begin
@@ -23084,7 +23136,7 @@ exports.signatureImportLax = function (sig) {
 
 
 /***/ }),
-/* 131 */
+/* 135 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Reference https://github.com/bitcoin/bips/blob/master/bip-0066.mediawiki
@@ -23203,7 +23255,7 @@ module.exports = {
 
 
 /***/ }),
-/* 132 */
+/* 136 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23473,7 +23525,7 @@ exports.ecdhUnsafe = function (publicKey, privateKey, compressed) {
 
 
 /***/ }),
-/* 133 */
+/* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory) {
@@ -23606,7 +23658,7 @@ exports.ecdhUnsafe = function (publicKey, privateKey, compressed) {
 }));
 
 /***/ }),
-/* 134 */
+/* 138 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory) {
@@ -23872,7 +23924,7 @@ exports.ecdhUnsafe = function (publicKey, privateKey, compressed) {
 }));
 
 /***/ }),
-/* 135 */
+/* 139 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory) {
@@ -24020,7 +24072,7 @@ exports.ecdhUnsafe = function (publicKey, privateKey, compressed) {
 }));
 
 /***/ }),
-/* 136 */
+/* 140 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory) {
@@ -24161,7 +24213,7 @@ exports.ecdhUnsafe = function (publicKey, privateKey, compressed) {
 }));
 
 /***/ }),
-/* 137 */
+/* 141 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory, undef) {
@@ -25039,7 +25091,7 @@ exports.ecdhUnsafe = function (publicKey, privateKey, compressed) {
 }));
 
 /***/ }),
-/* 138 */
+/* 142 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25052,7 +25104,7 @@ module.exports = function (str) {
 
 
 /***/ }),
-/* 139 */
+/* 143 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25149,7 +25201,7 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 
 
 /***/ }),
-/* 140 */
+/* 144 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25250,7 +25302,7 @@ module.exports = function (encodedURI) {
 
 
 /***/ }),
-/* 141 */
+/* 145 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -25266,8 +25318,8 @@ module.exports = function (encodedURI) {
  * @license MIT
  */
 
-var Url = __webpack_require__(142);
-var spawn = __webpack_require__(143).spawn;
+var Url = __webpack_require__(146);
+var spawn = __webpack_require__(147).spawn;
 var fs = __webpack_require__(63);
 
 exports.XMLHttpRequest = function() {
@@ -25277,8 +25329,8 @@ exports.XMLHttpRequest = function() {
    * Private variables
    */
   var self = this;
-  var http = __webpack_require__(144);
-  var https = __webpack_require__(145);
+  var http = __webpack_require__(148);
+  var https = __webpack_require__(149);
 
   // Holds http.js objects
   var request;
@@ -25876,31 +25928,31 @@ exports.XMLHttpRequest = function() {
 
 
 /***/ }),
-/* 142 */
+/* 146 */
 /***/ (function(module, exports) {
 
 module.exports = require("url");
 
 /***/ }),
-/* 143 */
+/* 147 */
 /***/ (function(module, exports) {
 
 module.exports = require("child_process");
 
 /***/ }),
-/* 144 */
+/* 148 */
 /***/ (function(module, exports) {
 
 module.exports = require("http");
 
 /***/ }),
-/* 145 */
+/* 149 */
 /***/ (function(module, exports) {
 
 module.exports = require("https");
 
 /***/ }),
-/* 146 */
+/* 150 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -25928,12 +25980,19 @@ __webpack_require__.d(utils_namespaceObject, "toTwosComplement", function() { re
 __webpack_require__.d(utils_namespaceObject, "uint8ArrayToHex", function() { return uint8ArrayToHex; });
 __webpack_require__.d(utils_namespaceObject, "noop", function() { return noop; });
 __webpack_require__.d(utils_namespaceObject, "setPath", function() { return setPath; });
+var transform_namespaceObject = {};
+__webpack_require__.r(transform_namespaceObject);
+__webpack_require__.d(transform_namespaceObject, "transform", function() { return transform; });
+__webpack_require__.d(transform_namespaceObject, "transformMapToArray", function() { return transformMapToArray; });
+__webpack_require__.d(transform_namespaceObject, "transformArrayToMap", function() { return transformArrayToMap; });
+__webpack_require__.d(transform_namespaceObject, "INPUT_TRANSFORMERS", function() { return INPUT_TRANSFORMERS; });
+__webpack_require__.d(transform_namespaceObject, "OUTPUT_TRANSFORMERS", function() { return OUTPUT_TRANSFORMERS; });
 var proto_namespaceObject = {};
 __webpack_require__.r(proto_namespaceObject);
 __webpack_require__.d(proto_namespaceObject, "coreRootProto", function() { return coreRootProto; });
 __webpack_require__.d(proto_namespaceObject, "Transaction", function() { return Transaction; });
 __webpack_require__.d(proto_namespaceObject, "Hash", function() { return Hash; });
-__webpack_require__.d(proto_namespaceObject, "Address", function() { return proto_Address; });
+__webpack_require__.d(proto_namespaceObject, "Address", function() { return Address; });
 __webpack_require__.d(proto_namespaceObject, "arrayBufferToHex", function() { return proto_arrayBufferToHex; });
 __webpack_require__.d(proto_namespaceObject, "getRepForAddress", function() { return proto_getRepForAddress; });
 __webpack_require__.d(proto_namespaceObject, "getAddressFromRep", function() { return proto_getAddressFromRep; });
@@ -29731,8 +29790,293 @@ var merkleTree_getMerklePath = function getMerklePath(index, data) {
 var node = function node(buffer) {
   return Buffer.from(merkleTree_sha256(buffer), 'hex');
 };
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/toConsumableArray.js
+var toConsumableArray = __webpack_require__(70);
+var toConsumableArray_default = /*#__PURE__*/__webpack_require__.n(toConsumableArray);
+
+// CONCATENATED MODULE: ./src/util/transform.js
+
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { defineProperty_default()(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+/**
+ * @file transform protobuf
+ * @author atom-yang
+ */
+
+
+
+var isWrappedBytes = function isWrappedBytes(resolvedType, name) {
+  if (!resolvedType.name || resolvedType.name !== name) {
+    return false;
+  }
+
+  if (!resolvedType.fieldsArray || resolvedType.fieldsArray.length !== 1) {
+    return false;
+  }
+
+  return resolvedType.fieldsArray[0].type === 'bytes';
+};
+
+var isAddress = function isAddress(resolvedType) {
+  return isWrappedBytes(resolvedType, 'Address');
+};
+
+var isHash = function isHash(resolvedType) {
+  return isWrappedBytes(resolvedType, 'Hash');
+};
+
+function transform(inputType, origin) {
+  var transformers = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
+  var fieldsLength = inputType.fieldsArray.length;
+  var result = origin;
+
+  if (fieldsLength === 0) {
+    return origin;
+  } // eslint-disable-next-line no-restricted-syntax
+
+
+  var _iteratorNormalCompletion = true;
+  var _didIteratorError = false;
+  var _iteratorError = undefined;
+
+  try {
+    for (var _iterator = transformers[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+      var _step$value = _step.value,
+          filter = _step$value.filter,
+          transformer = _step$value.transformer;
+
+      if (filter(inputType) && origin) {
+        return transformer(origin);
+      }
+    } // eslint-disable-next-line no-restricted-syntax
+
+  } catch (err) {
+    _didIteratorError = true;
+    _iteratorError = err;
+  } finally {
+    try {
+      if (!_iteratorNormalCompletion && _iterator.return != null) {
+        _iterator.return();
+      }
+    } finally {
+      if (_didIteratorError) {
+        throw _iteratorError;
+      }
+    }
+  }
+
+  Object.keys(inputType.fields).forEach(function (field) {
+    var _inputType$fields$fie = inputType.fields[field],
+        rule = _inputType$fields$fie.rule,
+        name = _inputType$fields$fie.name,
+        resolvedType = _inputType$fields$fie.resolvedType;
+
+    if (resolvedType) {
+      if (rule && rule === 'repeated') {
+        var value = origin[name];
+
+        if (value && Array.isArray(value)) {
+          value = value.map(function (item) {
+            return transform(resolvedType, item, transformers);
+          });
+        }
+
+        result = _objectSpread({}, result, defineProperty_default()({}, name, value));
+      } else {
+        result = _objectSpread({}, result, defineProperty_default()({}, name, transform(resolvedType, origin[name], transformers)));
+      }
+    }
+  });
+  return result;
+}
+function transformMapToArray(inputType, origin) {
+  var fieldsLength = inputType.fieldsArray.length;
+  var result = origin;
+
+  if (!origin) {
+    return origin;
+  }
+
+  if (fieldsLength === 0 || fieldsLength === 1 && !inputType.fieldsArray[0].resolvedType) {
+    return origin;
+  }
+
+  if (isAddress(inputType) || isHash(inputType)) {
+    return origin;
+  }
+
+  var fields = inputType.fields,
+      options = inputType.options;
+
+  if (fieldsLength === 2 && fields.value && fields.key && options.map_entry === true) {
+    return Object.keys(origin || {}).map(function (key) {
+      return {
+        key: key,
+        value: origin[key]
+      };
+    });
+  } // eslint-disable-next-line no-restricted-syntax
+
+
+  Object.keys(inputType.fields).forEach(function (field) {
+    var _inputType$fields$fie2 = inputType.fields[field],
+        name = _inputType$fields$fie2.name,
+        resolvedType = _inputType$fields$fie2.resolvedType;
+
+    if (resolvedType) {
+      if (origin[name] && Array.isArray(origin[name])) {
+        var value = origin[name];
+        value = value.map(function (item) {
+          return transformMapToArray(resolvedType, item);
+        });
+        result = _objectSpread({}, result, defineProperty_default()({}, name, value));
+      } else {
+        result = _objectSpread({}, result, defineProperty_default()({}, name, transformMapToArray(resolvedType, origin[name])));
+      }
+    }
+  });
+  return result;
+}
+function transformArrayToMap(inputType, origin) {
+  var fieldsLength = inputType.fieldsArray.length;
+  var result = origin;
+
+  if (fieldsLength === 0 || fieldsLength === 1 && !inputType.fieldsArray[0].resolvedType) {
+    return origin;
+  }
+
+  if (isAddress(inputType) || isHash(inputType)) {
+    return origin;
+  }
+
+  var fields = inputType.fields,
+      options = inputType.options;
+
+  if (fieldsLength === 2 && fields.value && fields.key && options.map_entry === true) {
+    return origin.reduce(function (acc, v) {
+      return _objectSpread({}, acc, defineProperty_default()({}, v.key, v.value));
+    }, {});
+  } // eslint-disable-next-line no-restricted-syntax
+
+
+  Object.keys(fields).forEach(function (field) {
+    var _fields$field = fields[field],
+        name = _fields$field.name,
+        resolvedType = _fields$field.resolvedType;
+
+    if (resolvedType) {
+      if (origin[name] && Array.isArray(origin[name])) {
+        var fieldsArray = resolvedType.fieldsArray,
+            resolvedFields = resolvedType.fields,
+            resolvedOptions = resolvedType.options; // eslint-disable-next-line max-len
+
+        if (fieldsArray.length === 2 && resolvedFields.value && resolvedFields.key && resolvedOptions.map_entry === true) {
+          result = _objectSpread({}, result, defineProperty_default()({}, name, origin[name].reduce(function (acc, v) {
+            return _objectSpread({}, acc, defineProperty_default()({}, v.key, v.value));
+          }, {})));
+        } else {
+          var value = origin[name];
+          value = value.map(function (item) {
+            return transformArrayToMap(resolvedType, item);
+          });
+          result = _objectSpread({}, result, defineProperty_default()({}, name, value));
+        }
+      } else {
+        result = _objectSpread({}, result, defineProperty_default()({}, name, transformArrayToMap(resolvedType, origin[name])));
+      }
+    }
+  });
+  return result;
+}
+var INPUT_TRANSFORMERS = [{
+  filter: isAddress,
+  transformer: function transformer(origin) {
+    var result = origin;
+
+    if (typeof origin === 'string') {
+      result = {
+        value: Buffer.from(decodeAddressRep(formatters_inputAddressFormatter(origin)), 'hex')
+      };
+    }
+
+    if (Array.isArray(origin)) {
+      result = origin.map(function (h) {
+        return {
+          value: Buffer.from(decodeAddressRep(formatters_inputAddressFormatter(h)), 'hex')
+        };
+      });
+    }
+
+    return result;
+  }
+}, {
+  filter: isHash,
+  transformer: function transformer(origin) {
+    var result = origin;
+
+    if (typeof origin === 'string') {
+      result = {
+        value: Buffer.from(origin.replace('0x', ''), 'hex')
+      };
+    }
+
+    if (Array.isArray(origin)) {
+      result = origin.map(function (h) {
+        return {
+          value: Buffer.from(h.replace('0x', ''), 'hex')
+        };
+      });
+    }
+
+    return result;
+  }
+}];
+
+function encodeAddress(str) {
+  var buf = Buffer.from(str, 'base64');
+  return base58.encode(buf);
+}
+
+var OUTPUT_TRANSFORMERS = [{
+  filter: isAddress,
+  transformer: function transformer(origin) {
+    var result = origin;
+
+    if (Array.isArray(result)) {
+      result = result.map(function (h) {
+        return encodeAddress(h.value);
+      });
+    }
+
+    if (typeof result !== 'string') {
+      result = encodeAddress(result.value);
+    }
+
+    return result;
+  }
+}, {
+  filter: isHash,
+  transformer: function transformer(origin) {
+    var result = origin;
+
+    if (Array.isArray(result)) {
+      result = result.map(function (h) {
+        return Buffer.from(h.value, 'base64').toString('hex');
+      });
+    }
+
+    if (typeof result !== 'string') {
+      result = Buffer.from(result.value, 'base64').toString('hex');
+    }
+
+    return result;
+  }
+}];
 // EXTERNAL MODULE: ./proto/core.proto.json
-var core_proto = __webpack_require__(70);
+var core_proto = __webpack_require__(71);
 
 // CONCATENATED MODULE: ./src/util/proto.js
 /**
@@ -29747,7 +30091,7 @@ var coreRootProto = light["Root"].fromJSON(core_proto);
 
 var Transaction = coreRootProto.Transaction,
     Hash = coreRootProto.Hash,
-    proto_Address = coreRootProto.Address;
+    Address = coreRootProto.Address;
 /**
  * arrayBuffer To Hex
  *
@@ -29771,7 +30115,7 @@ var proto_arrayBufferToHex = function arrayBufferToHex(arrayBuffer) {
  */
 
 var proto_getRepForAddress = function getRepForAddress(address) {
-  var message = proto_Address.fromObject(address);
+  var message = Address.fromObject(address);
   var hex = '';
 
   if (message.value instanceof Buffer) {
@@ -29793,7 +30137,7 @@ var proto_getRepForAddress = function getRepForAddress(address) {
 
 var proto_getAddressFromRep = function getAddressFromRep(rep) {
   var hex = decodeAddressRep(rep);
-  return proto_Address.create({
+  return Address.create({
     value: Buffer.from(hex.replace('0x', ''), 'hex')
   });
 };
@@ -29806,7 +30150,7 @@ var proto_getAddressFromRep = function getAddressFromRep(rep) {
  */
 
 var getAddressObjectFromRep = function getAddressObjectFromRep(rep) {
-  return proto_Address.toObject(proto_getAddressFromRep(rep));
+  return Address.toObject(proto_getAddressFromRep(rep));
 };
 /**
  * get hex rep From hash
@@ -29817,7 +30161,7 @@ var getAddressObjectFromRep = function getAddressObjectFromRep(rep) {
  */
 
 var getRepForHash = function getRepForHash(hash) {
-  var message = proto_Address.fromObject(hash);
+  var message = Address.fromObject(hash);
   var hex = '';
 
   if (message.value instanceof Buffer) {
@@ -29901,15 +30245,15 @@ var aes = __webpack_require__(42);
 var aes_default = /*#__PURE__*/__webpack_require__.n(aes);
 
 // EXTERNAL MODULE: ./node_modules/crypto-js/enc-utf8.js
-var enc_utf8 = __webpack_require__(71);
+var enc_utf8 = __webpack_require__(72);
 var enc_utf8_default = /*#__PURE__*/__webpack_require__.n(enc_utf8);
 
 // CONCATENATED MODULE: ./src/scrypt-polyfill.js
 
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+function scrypt_polyfill_ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { defineProperty_default()(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function scrypt_polyfill_objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { scrypt_polyfill_ownKeys(Object(source), true).forEach(function (key) { defineProperty_default()(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { scrypt_polyfill_ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 /**
  * @file scrypt.js for scrypt polyfill
@@ -29924,7 +30268,7 @@ var defaultOptions = {
 
 function scrypt(password, salt, N, r, p, dklen) {
   var options = arguments.length > 6 && arguments[6] !== undefined ? arguments[6] : defaultOptions;
-  return scrypt_polyfill_crypto.scryptSync(password, salt, dklen, _objectSpread({}, options, {
+  return scrypt_polyfill_crypto.scryptSync(password, salt, dklen, scrypt_polyfill_objectSpread({}, options, {
     N: N,
     r: r,
     p: p
@@ -30739,11 +31083,6 @@ var sign = function sign(hexString, keyPair) {
 
 
 
-
-function contractMethod_ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function contractMethod_objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { contractMethod_ownKeys(Object(source), true).forEach(function (key) { defineProperty_default()(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { contractMethod_ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
 /**
  * @file contract method
  * @author atom-yang
@@ -30752,26 +31091,6 @@ function contractMethod_objectSpread(target) { for (var i = 1; i < arguments.len
 
 
 
-
-var isWrappedBytes = function isWrappedBytes(resolvedType, name) {
-  if (!resolvedType.name || resolvedType.name !== name) {
-    return false;
-  }
-
-  if (!resolvedType.fieldsArray || resolvedType.fieldsArray.length !== 1) {
-    return false;
-  }
-
-  return resolvedType.fieldsArray[0].type === 'bytes';
-};
-
-var isAddress = function isAddress(resolvedType) {
-  return isWrappedBytes(resolvedType, 'Address');
-};
-
-var isHash = function isHash(resolvedType) {
-  return isWrappedBytes(resolvedType, 'Hash');
-};
 
 var unpackSpecifiedTypeData = function unpackSpecifiedTypeData(_ref) {
   var data = _ref.data,
@@ -30796,325 +31115,6 @@ var unpackSpecifiedTypeData = function unpackSpecifiedTypeData(_ref) {
   });
   return result;
 };
-
-function transform(inputType, origin) {
-  var transformers = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
-  var fieldsLength = inputType.fieldsArray.length;
-  var result = origin;
-
-  if (fieldsLength === 0) {
-    return origin;
-  } // eslint-disable-next-line no-restricted-syntax
-
-
-  var _iteratorNormalCompletion = true;
-  var _didIteratorError = false;
-  var _iteratorError = undefined;
-
-  try {
-    for (var _iterator = transformers[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-      var _step$value = _step.value,
-          filter = _step$value.filter,
-          transformer = _step$value.transformer;
-
-      if (filter(inputType) && origin) {
-        return transformer(origin);
-      }
-    } // eslint-disable-next-line no-restricted-syntax
-
-  } catch (err) {
-    _didIteratorError = true;
-    _iteratorError = err;
-  } finally {
-    try {
-      if (!_iteratorNormalCompletion && _iterator.return != null) {
-        _iterator.return();
-      }
-    } finally {
-      if (_didIteratorError) {
-        throw _iteratorError;
-      }
-    }
-  }
-
-  Object.keys(inputType.fields).forEach(function (field) {
-    var _inputType$fields$fie = inputType.fields[field],
-        rule = _inputType$fields$fie.rule,
-        name = _inputType$fields$fie.name,
-        resolvedType = _inputType$fields$fie.resolvedType;
-
-    if (resolvedType) {
-      if (rule && rule === 'repeated') {
-        var value = origin[name];
-
-        if (value && Array.isArray(value)) {
-          value = value.map(function (item) {
-            return transform(resolvedType, item, transformers);
-          });
-        }
-
-        result = contractMethod_objectSpread({}, result, defineProperty_default()({}, name, value));
-      } else {
-        result = contractMethod_objectSpread({}, result, defineProperty_default()({}, name, transform(resolvedType, origin[name], transformers)));
-      }
-    }
-  });
-  return result;
-}
-
-function transformMapToArray(inputType, origin) {
-  var fieldsLength = inputType.fieldsArray.length;
-  var result = origin;
-
-  if (!origin) {
-    return origin;
-  }
-
-  if (fieldsLength === 0 || fieldsLength === 1 && !inputType.fieldsArray[0].resolvedType) {
-    return origin;
-  }
-
-  if (isAddress(inputType) || isHash(inputType)) {
-    return origin;
-  }
-
-  var fields = inputType.fields,
-      options = inputType.options;
-
-  if (fieldsLength === 2 && fields.value && fields.key && options.map_entry === true) {
-    return Object.keys(origin || {}).map(function (key) {
-      return {
-        key: key,
-        value: origin[key]
-      };
-    });
-  } // eslint-disable-next-line no-restricted-syntax
-
-
-  Object.keys(inputType.fields).forEach(function (field) {
-    var _inputType$fields$fie2 = inputType.fields[field],
-        name = _inputType$fields$fie2.name,
-        resolvedType = _inputType$fields$fie2.resolvedType;
-
-    if (resolvedType) {
-      if (origin[name] && Array.isArray(origin[name])) {
-        var value = origin[name];
-        value = value.map(function (item) {
-          return transformMapToArray(resolvedType, item);
-        });
-        result = contractMethod_objectSpread({}, result, defineProperty_default()({}, name, value));
-      } else {
-        result = contractMethod_objectSpread({}, result, defineProperty_default()({}, name, transformMapToArray(resolvedType, origin[name])));
-      }
-    }
-  });
-  return result;
-}
-
-function transformArrayToMap(inputType, origin) {
-  var fieldsLength = inputType.fieldsArray.length;
-  var result = origin;
-
-  if (fieldsLength === 0 || fieldsLength === 1 && !inputType.fieldsArray[0].resolvedType) {
-    return origin;
-  }
-
-  if (isAddress(inputType) || isHash(inputType)) {
-    return origin;
-  }
-
-  var fields = inputType.fields,
-      options = inputType.options;
-
-  if (fieldsLength === 2 && fields.value && fields.key && options.map_entry === true) {
-    return origin.reduce(function (acc, v) {
-      return contractMethod_objectSpread({}, acc, defineProperty_default()({}, v.key, v.value));
-    }, {});
-  } // eslint-disable-next-line no-restricted-syntax
-
-
-  Object.keys(fields).forEach(function (field) {
-    var _fields$field = fields[field],
-        name = _fields$field.name,
-        resolvedType = _fields$field.resolvedType;
-
-    if (resolvedType) {
-      if (origin[name] && Array.isArray(origin[name])) {
-        var fieldsArray = resolvedType.fieldsArray,
-            resolvedFields = resolvedType.fields,
-            resolvedOptions = resolvedType.options; // eslint-disable-next-line max-len
-
-        if (fieldsArray.length === 2 && resolvedFields.value && resolvedFields.key && resolvedOptions.map_entry === true) {
-          result = contractMethod_objectSpread({}, result, defineProperty_default()({}, name, origin[name].reduce(function (acc, v) {
-            return contractMethod_objectSpread({}, acc, defineProperty_default()({}, v.key, v.value));
-          }, {})));
-        } else {
-          var value = origin[name];
-          value = value.map(function (item) {
-            return transformArrayToMap(resolvedType, item);
-          });
-          result = contractMethod_objectSpread({}, result, defineProperty_default()({}, name, value));
-        }
-      } else {
-        result = contractMethod_objectSpread({}, result, defineProperty_default()({}, name, transformArrayToMap(resolvedType, origin[name])));
-      }
-    }
-  });
-  return result;
-}
-
-var INPUT_TRANSFORMERS = [{
-  filter: isAddress,
-  transformer: function transformer(origin) {
-    var result = origin;
-
-    if (typeof origin === 'string') {
-      result = {
-        value: Buffer.from(decodeAddressRep(formatters_inputAddressFormatter(origin)), 'hex')
-      };
-    }
-
-    if (Array.isArray(origin)) {
-      result = origin.map(function (h) {
-        return {
-          value: Buffer.from(decodeAddressRep(formatters_inputAddressFormatter(h)), 'hex')
-        };
-      });
-    }
-
-    return result;
-  }
-}, {
-  filter: isHash,
-  transformer: function transformer(origin) {
-    var result = origin;
-
-    if (typeof origin === 'string') {
-      result = {
-        value: Buffer.from(origin.replace('0x', ''), 'hex')
-      };
-    }
-
-    if (Array.isArray(origin)) {
-      result = origin.map(function (h) {
-        return {
-          value: Buffer.from(h.replace('0x', ''), 'hex')
-        };
-      });
-    }
-
-    return result;
-  }
-}];
-
-function messageToHex(message) {
-  return arrayToHex(message.value);
-}
-
-function encodeAddress(str) {
-  var buf = Buffer.from(str, 'base64');
-  return base58.encode(buf);
-}
-
-var OUTPUT_TRANSFORMERS = [{
-  filter: isAddress,
-  transformer: function transformer(origin) {
-    var result = origin;
-
-    if (Array.isArray(result)) {
-      result = result.map(function (h) {
-        return encodeAddress(h.value);
-      });
-    }
-
-    if (typeof result !== 'string') {
-      result = encodeAddress(result.value);
-    }
-
-    return result;
-  }
-}, {
-  filter: isHash,
-  transformer: function transformer(origin) {
-    var result = origin;
-
-    if (Array.isArray(result)) {
-      result = result.map(function (h) {
-        return Buffer.from(h.value, 'base64').toString('hex');
-      });
-    }
-
-    if (typeof result !== 'string') {
-      result = Buffer.from(result.value, 'base64').toString('hex');
-    }
-
-    return result;
-  }
-}]; // eslint-disable-next-line no-unused-vars
-
-function polyfillAddress(inputType) {
-  var Address = inputType.lookupType('Address');
-
-  if (Address.fieldsArray.length === 1 && Address.fieldsArray[0].type === 'bytes') {
-    if (Address.originalFromObject && Address.originalToObject) {
-      return;
-    }
-
-    Address.originalFromObject = Address.fromObject;
-
-    Address.fromObject = function (origin) {
-      console.log('origin address', origin);
-      var result = origin;
-
-      if (typeof origin === 'string') {
-        result = {
-          value: Buffer.from(decodeAddressRep(formatters_inputAddressFormatter(origin)), 'hex')
-        };
-      } // todo: 好像没有必要？
-
-
-      if (Array.isArray(origin)) {
-        console.log('array address');
-        result = origin.map(function (h) {
-          return {
-            value: Buffer.from(decodeAddressRep(formatters_inputAddressFormatter(h)), 'hex')
-          };
-        });
-      }
-
-      for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-        args[_key - 1] = arguments[_key];
-      }
-
-      return Address.originalFromObject.apply(Address, [result].concat(args));
-    };
-
-    Address.originalToObject = Address.toObject;
-
-    Address.toObject = function (origin) {
-      console.log('origin address', origin);
-
-      for (var _len2 = arguments.length, args = new Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
-        args[_key2 - 1] = arguments[_key2];
-      }
-
-      var result = Address.originalToObject.apply(Address, [origin].concat(args));
-
-      if (Array.isArray(result)) {
-        console.log('array address');
-        result = result.map(function (h) {
-          return encodeAddressRep(messageToHex(h));
-        });
-      }
-
-      if (typeof result !== 'string') {
-        result = encodeAddressRep(messageToHex(result));
-      }
-
-      return result;
-    };
-  }
-}
 
 var contractMethod_ContractMethod =
 /*#__PURE__*/
@@ -31249,8 +31249,8 @@ function () {
     value: function sendTransaction() {
       var _this2 = this;
 
-      for (var _len3 = arguments.length, args = new Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
-        args[_key3] = arguments[_key3];
+      for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
       }
 
       var argsObject = this.extractArgumentsIntoObject(args);
@@ -31272,8 +31272,8 @@ function () {
     value: function callReadOnly() {
       var _this3 = this;
 
-      for (var _len4 = arguments.length, args = new Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
-        args[_key4] = arguments[_key4];
+      for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+        args[_key2] = arguments[_key2];
       }
 
       var argsObject = this.extractArgumentsIntoObject(args);
@@ -31320,8 +31320,8 @@ function () {
   }, {
     key: "getSignedTx",
     value: function getSignedTx() {
-      for (var _len5 = arguments.length, args = new Array(_len5), _key5 = 0; _key5 < _len5; _key5++) {
-        args[_key5] = arguments[_key5];
+      for (var _len3 = arguments.length, args = new Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+        args[_key3] = arguments[_key3];
       }
 
       var filterArgs = args.filter(function (arg) {
@@ -31354,8 +31354,8 @@ function () {
   }, {
     key: "request",
     value: function request() {
-      for (var _len6 = arguments.length, args = new Array(_len6), _key6 = 0; _key6 < _len6; _key6++) {
-        args[_key6] = arguments[_key6];
+      for (var _len4 = arguments.length, args = new Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
+        args[_key4] = arguments[_key4];
       }
 
       var _this$extractArgument = this.extractArgumentsIntoObject(args),
@@ -31402,11 +31402,18 @@ function () {
 
 
 
+
+
+function contract_ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function contract_objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { contract_ownKeys(Object(source), true).forEach(function (key) { defineProperty_default()(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { contract_ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
 /**
  * @file contract
  * @author atom-yang
  */
 // eslint-disable-next-line max-classes-per-file
+
 
 
 
@@ -31422,13 +31429,101 @@ var contract_getServicesFromFileDescriptors = function getServicesFromFileDescri
   });
 };
 
-var contract_Contract = function Contract(chain, services, address) {
-  classCallCheck_default()(this, Contract);
+var contract_Contract =
+/*#__PURE__*/
+function () {
+  function Contract(chain, services, address) {
+    classCallCheck_default()(this, Contract);
 
-  this._chain = chain;
-  this.address = address;
-  this.services = services;
-};
+    this._chain = chain;
+    this.address = address;
+    this.services = services;
+  }
+
+  createClass_default()(Contract, [{
+    key: "deserializeLog",
+    value: function deserializeLog() {
+      var _this = this;
+
+      var logs = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+      var logName = arguments.length > 1 ? arguments[1] : undefined;
+      var logInThisAddress = (logs || []).filter(function (v) {
+        return v.Address === _this.address && logName === v.Name;
+      });
+
+      if (logInThisAddress.length === 0) {
+        return [];
+      }
+
+      return logInThisAddress.map(function (item) {
+        var Name = item.Name,
+            NonIndexed = item.NonIndexed,
+            Indexed = item.Indexed;
+        var dataType; // eslint-disable-next-line no-restricted-syntax
+
+        var _iteratorNormalCompletion = true;
+        var _didIteratorError = false;
+        var _iteratorError = undefined;
+
+        try {
+          for (var _iterator = _this.services[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+            var service = _step.value;
+
+            try {
+              dataType = service.lookupType(Name);
+              break;
+            } catch (e) {}
+          }
+        } catch (err) {
+          _didIteratorError = true;
+          _iteratorError = err;
+        } finally {
+          try {
+            if (!_iteratorNormalCompletion && _iterator.return != null) {
+              _iterator.return();
+            }
+          } finally {
+            if (_didIteratorError) {
+              throw _iteratorError;
+            }
+          }
+        }
+
+        var serializedData = toConsumableArray_default()(Indexed || []);
+
+        if (NonIndexed) {
+          serializedData.push(NonIndexed);
+        }
+
+        var result = serializedData.reduce(function (acc, v) {
+          var deserialize = dataType.decode(Buffer.from(v, 'base64'));
+          deserialize = dataType.toObject(deserialize, {
+            enums: String,
+            // enums as string names
+            longs: String,
+            // longs as strings (requires long.js)
+            bytes: String,
+            // bytes as base64 encoded strings
+            defaults: false,
+            // includes default values
+            arrays: true,
+            // populates empty arrays (repeated fields) even if defaults=false
+            objects: true,
+            // populates empty objects (map fields) even if defaults=false
+            oneofs: true // includes virtual oneof fields set to the present field's name
+
+          });
+          return contract_objectSpread({}, acc, {}, deserialize);
+        }, {});
+        result = transform(dataType, result, OUTPUT_TRANSFORMERS);
+        result = transformArrayToMap(dataType, result);
+        return result;
+      });
+    }
+  }]);
+
+  return Contract;
+}();
 
 var contract_ContractFactory =
 /*#__PURE__*/
@@ -31696,7 +31791,7 @@ function () {
 
 
 // EXTERNAL MODULE: ./node_modules/query-string/index.js
-var query_string = __webpack_require__(72);
+var query_string = __webpack_require__(73);
 
 // CONCATENATED MODULE: ./src/util/httpProvider.js
 
@@ -31721,7 +31816,7 @@ var RequestLibrary = {};
 if (false) {} else {
   // For node use xmlhttprequest
   // eslint-disable-next-line global-require
-  RequestLibrary = __webpack_require__(141).XMLHttpRequest;
+  RequestLibrary = __webpack_require__(145).XMLHttpRequest;
 }
 
 var httpProvider_HttpProvider =
@@ -31902,6 +31997,7 @@ function src_objectSpread(target) { for (var i = 1; i < arguments.length; i++) {
 
 
 
+
 var src_sha256 = sha256_default.a.sha256;
 /* eslint-disable no-underscore-dangle */
 
@@ -31918,7 +32014,7 @@ function () {
     defineProperty_default()(this, "settings", new settings_Settings());
 
     defineProperty_default()(this, "version", {
-      api: "3.2.27"
+      api: "3.2.28"
     });
 
     this._requestManager = new requestManage_RequestManager(provider);
@@ -31957,7 +32053,7 @@ function () {
 /* eslint-enable */
 
 
-defineProperty_default()(src_AElf, "version", "3.2.27");
+defineProperty_default()(src_AElf, "version", "3.2.28");
 
 defineProperty_default()(src_AElf, "providers", {
   HttpProvider: httpProvider_HttpProvider
@@ -31970,7 +32066,8 @@ defineProperty_default()(src_AElf, "pbUtils", proto_namespaceObject);
 defineProperty_default()(src_AElf, "wallet", src_wallet);
 
 defineProperty_default()(src_AElf, "utils", src_objectSpread({}, utils_namespaceObject, {
-  sha256: src_sha256
+  sha256: src_sha256,
+  transform: transform_namespaceObject
 }));
 
 
