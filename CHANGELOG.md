@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.2.27](https://github.com/AElfProject/aelf-sdk.js/compare/v3.2.26...v3.2.27) (2020-03-03)
+
+
+### Bug Fixes
+
+* fix complicated protobuf Address/Hash/Map fields ([30d96c6](https://github.com/AElfProject/aelf-sdk.js/commit/30d96c6))
+
+
+
 ### [3.2.26](https://github.com/AElfProject/aelf-sdk.js/compare/v3.2.25...v3.2.26) (2020-01-09)
 
 
