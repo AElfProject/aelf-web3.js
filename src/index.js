@@ -4,6 +4,7 @@
  */
 import * as protobuf from '@aelfqueen/protobufjs/light';
 import jsSha256 from 'js-sha256';
+import * as bloom from './util/bloom';
 import Chain from './chain';
 import RequestManager from './util/requestManage';
 import HttpProvider from './util/httpProvider';
@@ -39,6 +40,7 @@ export default class AElf {
 
   static utils = {
     ...utils,
+    ...bloom,
     sha256,
     transform
   };
