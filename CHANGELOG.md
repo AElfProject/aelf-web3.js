@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.2.29](https://github.com/AElfProject/aelf-sdk.js/compare/v3.2.28...v3.2.29) (2020-03-05)
+
+
+### Features
+
+* 🎸 add bloom filter ([abda0be](https://github.com/AElfProject/aelf-sdk.js/commit/abda0be))
+
+
+
 ### [3.2.28](https://github.com/AElfProject/aelf-sdk.js/compare/v3.2.27...v3.2.28) (2020-03-03)
 
 
