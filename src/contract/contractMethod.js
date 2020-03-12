@@ -243,6 +243,7 @@ export default class ContractMethod {
     run.sendTransaction = this.sendTransaction;
     run.getSignedTx = this.getSignedTx;
     run.getRawTx = this.getRawTx;
+    run.unpackOutput = this.unpackOutput;
     // eslint-disable-next-line no-param-reassign
     contract[this._name] = run;
   }

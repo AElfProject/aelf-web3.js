@@ -35,189 +35,6 @@
         }
       }
     },
-    "StatePath": {
-      "fields": {
-        "parts": {
-          "rule": "repeated",
-          "type": "string",
-          "id": 1
-        }
-      }
-    },
-    "ScopedStatePath": {
-      "fields": {
-        "address": {
-          "type": "Address",
-          "id": 1
-        },
-        "path": {
-          "type": "StatePath",
-          "id": 2
-        }
-      }
-    },
-    "TransactionResultStatus": {
-      "values": {
-        "NOT_EXISTED": 0,
-        "PENDING": 1,
-        "FAILED": 2,
-        "MINED": 3,
-        "UNEXECUTABLE": 4,
-        "CONFLICT": 5
-      }
-    },
-    "TransactionResult": {
-      "fields": {
-        "transactionId": {
-          "type": "Hash",
-          "id": 1
-        },
-        "status": {
-          "type": "TransactionResultStatus",
-          "id": 2
-        },
-        "logs": {
-          "rule": "repeated",
-          "type": "LogEvent",
-          "id": 3
-        },
-        "bloom": {
-          "type": "bytes",
-          "id": 4
-        },
-        "returnValue": {
-          "type": "bytes",
-          "id": 5
-        },
-        "blockNumber": {
-          "type": "int64",
-          "id": 6
-        },
-        "blockHash": {
-          "type": "Hash",
-          "id": 7
-        },
-        "index": {
-          "type": "int32",
-          "id": 8
-        },
-        "stateHash": {
-          "type": "Hash",
-          "id": 9
-        },
-        "error": {
-          "type": "string",
-          "id": 10
-        },
-        "readableReturnValue": {
-          "type": "string",
-          "id": 11
-        },
-        "transactionFee": {
-          "type": "TransactionFee",
-          "id": 12
-        },
-        "consumedResourceTokens": {
-          "type": "ConsumedResourceTokens",
-          "id": 13
-        }
-      }
-    },
-    "TransactionFee": {
-      "fields": {
-        "value": {
-          "keyType": "string",
-          "type": "sint64",
-          "id": 1
-        },
-        "isFailedToCharge": {
-          "type": "bool",
-          "id": 2
-        }
-      }
-    },
-    "ConsumedResourceTokens": {
-      "fields": {
-        "value": {
-          "keyType": "string",
-          "type": "sint64",
-          "id": 1
-        },
-        "owning": {
-          "keyType": "string",
-          "type": "sint64",
-          "id": 2
-        },
-        "isFailedToCharge": {
-          "type": "bool",
-          "id": 3
-        }
-      }
-    },
-    "LogEvent": {
-      "fields": {
-        "address": {
-          "type": "Address",
-          "id": 1
-        },
-        "name": {
-          "type": "string",
-          "id": 2
-        },
-        "indexed": {
-          "rule": "repeated",
-          "type": "bytes",
-          "id": 3
-        },
-        "nonIndexed": {
-          "type": "bytes",
-          "id": 4
-        }
-      }
-    },
-    "SmartContractRegistration": {
-      "fields": {
-        "category": {
-          "type": "int32",
-          "id": 1
-        },
-        "code": {
-          "type": "bytes",
-          "id": 2
-        },
-        "codeHash": {
-          "type": "Hash",
-          "id": 3
-        },
-        "isSystemContract": {
-          "type": "bool",
-          "id": 4
-        },
-        "version": {
-          "type": "int32",
-          "id": 5
-        }
-      }
-    },
-    "TransactionExecutingStateSet": {
-      "fields": {
-        "writes": {
-          "keyType": "string",
-          "type": "bytes",
-          "id": 1
-        },
-        "reads": {
-          "keyType": "string",
-          "type": "bool",
-          "id": 2
-        },
-        "deletes": {
-          "keyType": "string",
-          "type": "bool",
-          "id": 3
-        }
-      }
-    },
     "Address": {
       "fields": {
         "value": {
@@ -285,6 +102,30 @@
         "leafCount": {
           "type": "int32",
           "id": 3
+        }
+      }
+    },
+    "TransactionFeeCharged": {
+      "fields": {
+        "symbol": {
+          "type": "string",
+          "id": 1
+        },
+        "amount": {
+          "type": "sint64",
+          "id": 2
+        }
+      }
+    },
+    "ResourceTokenCharged": {
+      "fields": {
+        "symbol": {
+          "type": "string",
+          "id": 1
+        },
+        "amount": {
+          "type": "sint64",
+          "id": 2
         }
       }
     },
