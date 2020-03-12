@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.2.30](https://github.com/AElfProject/aelf-sdk.js/compare/v3.2.29...v3.2.30) (2020-03-12)
+
+
+### Features
+
+* 🎸 add deserialize fee ([337d7f7](https://github.com/AElfProject/aelf-sdk.js/commit/337d7f7))
+* 🎸 add fee type and export unpackOutput ([780e8ff](https://github.com/AElfProject/aelf-sdk.js/commit/780e8ff))
+* 🎸 pbUtils add deserializeTransactionFee ([c355084](https://github.com/AElfProject/aelf-sdk.js/commit/c355084))
+
+
+
 ### [3.2.29](https://github.com/AElfProject/aelf-sdk.js/compare/v3.2.28...v3.2.29) (2020-03-05)
 
 
