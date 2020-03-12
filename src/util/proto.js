@@ -5,16 +5,11 @@
 import * as protobuf from '@aelfqueen/protobufjs/light';
 import coreDescriptor from '../../proto/core.proto.json';
 import * as utils from './utils';
-
 import {
-  transactionFeeProto,
-  deserializeTransactionFee
-} from './specialProto/deserializeTransactionFee';
-
-export {
-  transactionFeeProto,
-  deserializeTransactionFee
-};
+  transform,
+  OUTPUT_TRANSFORMERS,
+  transformArrayToMap
+} from './transform';
 
 export const coreRootProto = protobuf.Root.fromJSON(coreDescriptor);
 /* eslint-disable no-unused-vars */
@@ -22,8 +17,60 @@ export const coreRootProto = protobuf.Root.fromJSON(coreDescriptor);
 export const {
   Transaction,
   Hash,
-  Address
+  Address,
+  TransactionFeeCharged,
+  ResourceTokenCharged
 } = coreRootProto;
+
+
+export const getFee = (base64Str, type = 'TransactionFeeCharged') => {
+  if (['ResourceTokenCharged', 'TransactionFeeCharged'].indexOf(type) === -1) {
+    throw new Error('type needs to be one of ResourceTokenCharged and TransactionFeeCharged');
+  }
+  const dataType = coreRootProto[type];
+  let deserialize = dataType.decode(Buffer.from(base64Str, 'base64'));
+  deserialize = dataType.toObject(deserialize, {
+    enums: String, // enums as string names
+    longs: String, // longs as strings (requires long.js)
+    bytes: String, // bytes as base64 encoded strings
+    defaults: true, // includes default values
+    arrays: true, // populates empty arrays (repeated fields) even if defaults=false
+    objects: true, // populates empty objects (map fields) even if defaults=false
+    oneofs: true // includes virtual oneof fields set to the present field's name
+  });
+  // eslint-disable-next-line max-len
+  let deserializeLogResult = transform(dataType, deserialize, OUTPUT_TRANSFORMERS);
+  deserializeLogResult = transformArrayToMap(dataType, deserializeLogResult);
+  return deserializeLogResult;
+};
+
+export const getSerializedDataFromLog = log => {
+  const {
+    NonIndexed,
+    Indexed = []
+  } = log;
+  const serializedData = [...(Indexed || [])];
+  if (NonIndexed) {
+    serializedData.push(NonIndexed);
+  }
+  return serializedData.join('');
+};
+
+export const getResourceFee = (Logs = []) => {
+  if (!Array.isArray(Logs) || Logs.length === 0) {
+    return [];
+  }
+  return Logs.filter(log => log.Name === 'ResourceTokenCharged')
+    .map(v => getFee(getSerializedDataFromLog(v), 'ResourceTokenCharged'));
+};
+
+export const getTransactionFee = (Logs = []) => {
+  if (!Array.isArray(Logs) || Logs.length === 0) {
+    return [];
+  }
+  return Logs.filter(log => log.Name === 'TransactionFeeCharged')
+    .map(v => getFee(getSerializedDataFromLog(v), 'TransactionFeeCharged'));
+};
 
 /**
  * arrayBuffer To Hex
