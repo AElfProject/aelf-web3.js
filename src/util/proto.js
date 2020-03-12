@@ -6,6 +6,16 @@ import * as protobuf from '@aelfqueen/protobufjs/light';
 import coreDescriptor from '../../proto/core.proto.json';
 import * as utils from './utils';
 
+import {
+  transactionFeeProto,
+  deserializeTransactionFee
+} from './specialProto/deserializeTransactionFee';
+
+export {
+  transactionFeeProto,
+  deserializeTransactionFee
+};
+
 export const coreRootProto = protobuf.Root.fromJSON(coreDescriptor);
 /* eslint-disable no-unused-vars */
 
