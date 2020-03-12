@@ -14,6 +14,11 @@ describe('test proto', () => {
         NonIndexed: 'CgNFTEYQoI/hGQ=='
       }
     ];
+    expect(getTransactionFee(Logs)).toEqual([
+      {
+        symbol: 'ELF',
+        amount: '27010000'
+      }]);
     expect(getTransactionFee(Logs).length).toEqual(1);
     expect(getFee('CgNFTEYQoI/hGQ==', 'TransactionFeeCharged')).toEqual(getTransactionFee(Logs)[0]);
     expect(getResourceFee(Logs).length).toEqual(0);
