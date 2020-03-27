@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.2.31](https://github.com/AElfProject/aelf-sdk.js/compare/v3.2.30...v3.2.31) (2020-03-27)
+
+
+### Features
+
+* 🎸 change proto ([7f8cc91](https://github.com/AElfProject/aelf-sdk.js/commit/7f8cc91))
+
+
+
 ### [3.2.30](https://github.com/AElfProject/aelf-sdk.js/compare/v3.2.29...v3.2.30) (2020-03-12)
 
 
