@@ -17,7 +17,7 @@ describe('test proto', () => {
     expect(getTransactionFee(Logs)).toEqual([
       {
         symbol: 'ELF',
-        amount: '27010000'
+        amount: '54020000'
       }]);
     expect(getTransactionFee(Logs).length).toEqual(1);
     expect(getFee('CgNFTEYQoI/hGQ==', 'TransactionFeeCharged')).toEqual(getTransactionFee(Logs)[0]);

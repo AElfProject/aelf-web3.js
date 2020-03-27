@@ -1,7 +1,4 @@
 {
-  "options": {
-    "csharp_namespace": "AElf.Types"
-  },
   "nested": {
     "Transaction": {
       "fields": {
@@ -51,22 +48,6 @@
         }
       }
     },
-    "SInt32Value": {
-      "fields": {
-        "value": {
-          "type": "sint32",
-          "id": 1
-        }
-      }
-    },
-    "SInt64Value": {
-      "fields": {
-        "value": {
-          "type": "sint64",
-          "id": 1
-        }
-      }
-    },
     "MerklePath": {
       "fields": {
         "merklePathNodes": {
@@ -112,7 +93,7 @@
           "id": 1
         },
         "amount": {
-          "type": "sint64",
+          "type": "int64",
           "id": 2
         }
       }
@@ -124,7 +105,23 @@
           "id": 1
         },
         "amount": {
-          "type": "sint64",
+          "type": "int64",
+          "id": 2
+        },
+        "contractAddress": {
+          "type": "Address",
+          "id": 3
+        }
+      }
+    },
+    "ResourceTokenOwned": {
+      "fields": {
+        "symbol": {
+          "type": "string",
+          "id": 1
+        },
+        "amount": {
+          "type": "int64",
           "id": 2
         }
       }
