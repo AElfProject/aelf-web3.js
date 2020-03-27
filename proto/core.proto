@@ -1,8 +1,6 @@
 syntax = "proto3";
 
-import "google/protobuf/timestamp.proto";
-
-option csharp_namespace = "AElf.Types";
+package aelf;
 
 message Transaction {
   Address from = 1;
@@ -26,16 +24,6 @@ message Hash
   bytes value = 1;
 }
 
-message SInt32Value
-{
-  sint32 value = 1;
-}
-
-message SInt64Value
-{
-  sint64 value = 1;
-}
-
 message MerklePath {
   repeated MerklePathNode merkle_path_nodes = 1;
 }
@@ -53,10 +41,16 @@ message BinaryMerkleTree {
 
 message TransactionFeeCharged {
   string symbol = 1;
-  sint64 amount = 2;
+  int64 amount = 2;
 }
 
 message ResourceTokenCharged {
   string symbol = 1;
-  sint64 amount = 2;
+  int64 amount = 2;
+  aelf.Address contract_address = 3;
+}
+
+message ResourceTokenOwned {
+  string symbol = 1;
+  int64 amount = 2;
 }
