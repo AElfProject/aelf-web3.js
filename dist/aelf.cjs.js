@@ -1,5 +1,5 @@
 /*!
- * aelf-sdk.js v3.2.30 
+ * aelf-sdk.js v3.2.31 
  * (c) 2019-2020 AElf 
  * Released under MIT License
  */
@@ -13940,7 +13940,7 @@ module.exports = JSON.parse("{\"COMPRESSED_TYPE_INVALID\":\"compressed should be
 /* 68 */
 /***/ (function(module) {
 
-module.exports = JSON.parse("{\"options\":{\"csharp_namespace\":\"AElf.Types\"},\"nested\":{\"Transaction\":{\"fields\":{\"from\":{\"type\":\"Address\",\"id\":1},\"to\":{\"type\":\"Address\",\"id\":2},\"refBlockNumber\":{\"type\":\"int64\",\"id\":3},\"refBlockPrefix\":{\"type\":\"bytes\",\"id\":4},\"methodName\":{\"type\":\"string\",\"id\":5},\"params\":{\"type\":\"bytes\",\"id\":6},\"signature\":{\"type\":\"bytes\",\"id\":10000}}},\"Address\":{\"fields\":{\"value\":{\"type\":\"bytes\",\"id\":1}}},\"Hash\":{\"fields\":{\"value\":{\"type\":\"bytes\",\"id\":1}}},\"SInt32Value\":{\"fields\":{\"value\":{\"type\":\"sint32\",\"id\":1}}},\"SInt64Value\":{\"fields\":{\"value\":{\"type\":\"sint64\",\"id\":1}}},\"MerklePath\":{\"fields\":{\"merklePathNodes\":{\"rule\":\"repeated\",\"type\":\"MerklePathNode\",\"id\":1}}},\"MerklePathNode\":{\"fields\":{\"hash\":{\"type\":\"Hash\",\"id\":1},\"isLeftChildNode\":{\"type\":\"bool\",\"id\":2}}},\"BinaryMerkleTree\":{\"fields\":{\"nodes\":{\"rule\":\"repeated\",\"type\":\"Hash\",\"id\":1},\"root\":{\"type\":\"Hash\",\"id\":2},\"leafCount\":{\"type\":\"int32\",\"id\":3}}},\"TransactionFeeCharged\":{\"fields\":{\"symbol\":{\"type\":\"string\",\"id\":1},\"amount\":{\"type\":\"sint64\",\"id\":2}}},\"ResourceTokenCharged\":{\"fields\":{\"symbol\":{\"type\":\"string\",\"id\":1},\"amount\":{\"type\":\"sint64\",\"id\":2}}},\"google\":{\"nested\":{\"protobuf\":{\"nested\":{\"Timestamp\":{\"fields\":{\"seconds\":{\"type\":\"int64\",\"id\":1},\"nanos\":{\"type\":\"int32\",\"id\":2}}}}}}}}}");
+module.exports = JSON.parse("{\"nested\":{\"aelf\":{\"nested\":{\"Transaction\":{\"fields\":{\"from\":{\"type\":\"Address\",\"id\":1},\"to\":{\"type\":\"Address\",\"id\":2},\"refBlockNumber\":{\"type\":\"int64\",\"id\":3},\"refBlockPrefix\":{\"type\":\"bytes\",\"id\":4},\"methodName\":{\"type\":\"string\",\"id\":5},\"params\":{\"type\":\"bytes\",\"id\":6},\"signature\":{\"type\":\"bytes\",\"id\":10000}}},\"Address\":{\"fields\":{\"value\":{\"type\":\"bytes\",\"id\":1}}},\"Hash\":{\"fields\":{\"value\":{\"type\":\"bytes\",\"id\":1}}},\"MerklePath\":{\"fields\":{\"merklePathNodes\":{\"rule\":\"repeated\",\"type\":\"MerklePathNode\",\"id\":1}}},\"MerklePathNode\":{\"fields\":{\"hash\":{\"type\":\"Hash\",\"id\":1},\"isLeftChildNode\":{\"type\":\"bool\",\"id\":2}}},\"BinaryMerkleTree\":{\"fields\":{\"nodes\":{\"rule\":\"repeated\",\"type\":\"Hash\",\"id\":1},\"root\":{\"type\":\"Hash\",\"id\":2},\"leafCount\":{\"type\":\"int32\",\"id\":3}}},\"TransactionFeeCharged\":{\"fields\":{\"symbol\":{\"type\":\"string\",\"id\":1},\"amount\":{\"type\":\"int64\",\"id\":2}}},\"ResourceTokenCharged\":{\"fields\":{\"symbol\":{\"type\":\"string\",\"id\":1},\"amount\":{\"type\":\"int64\",\"id\":2},\"contractAddress\":{\"type\":\"aelf.Address\",\"id\":3}}},\"ResourceTokenOwned\":{\"fields\":{\"symbol\":{\"type\":\"string\",\"id\":1},\"amount\":{\"type\":\"int64\",\"id\":2}}}}}}}");
 
 /***/ }),
 /* 69 */
@@ -32192,7 +32192,7 @@ function () {
     defineProperty_default()(this, "settings", new settings_Settings());
 
     defineProperty_default()(this, "version", {
-      api: "3.2.30"
+      api: "3.2.31"
     });
 
     this._requestManager = new requestManage_RequestManager(provider);
@@ -32231,7 +32231,7 @@ function () {
 /* eslint-enable */
 
 
-defineProperty_default()(src_AElf, "version", "3.2.30");
+defineProperty_default()(src_AElf, "version", "3.2.31");
 
 defineProperty_default()(src_AElf, "providers", {
   HttpProvider: httpProvider_HttpProvider
