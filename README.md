@@ -5,34 +5,36 @@
 [1]: https://travis-ci.org/AElfProject/aelf-sdk.js.svg?branch=master
 [2]: https://travis-ci.org/AElfProject/aelf-sdk.js
 
-## Introduction
+## 1. Introduction
 
-For dApp developers we have a javascript sdk to help interact with the node's web API. Of course, you need to run an AELF node to use the sdk.
+aelf-sdk.js for aelf is like web.js for ethereum.
 
-Get the full examples in the `./examples` directory
+aelf-sdk.js is a collection of libraries which allow you to interact with a local or remote aelf node, using a HTTP connection.
 
-## Installation
+The following documentation will guide you through installing and running aelf-sdk.js, as well as providing a API reference documentation with examples.
 
-### Script
+You can get some codes in the `./examples` directory
 
-```html
-<!-- minified version with UMD module -->
-<script src="https://unpkg.com/aelf-sdk@lastest/dist/aelf.umd.js"></script>
+## 2. Getting Started
+
+### 2.1 Adding aelf-sdk.js
+
+First you need to get aelf-sdk.js into your project. This can be done using the following methods:
+
+npm: `npm install aelf-sdk`
+
+pure js: `link dist/aelf.umd.js`
+
+After that you need to create a aelf instance and set a provider.
+
+```js
+// in node.js use: const AElf = require('aelf-sdk');
+const aelf = new AElf(new AElf.providers.HttpProvider('http://127.0.0.1:8000'));
 ```
 
-### Npm
+### 2.2 Detail information for library files
 
-```bash
-npm install aelf-sdk
-```
-
-### Yarn
-
-```bash
-yarn add aelf-sdk
-```
-
-## Library files
+You can skip 2.2 as 2.1 is enough now.
 
 In our dist directory, we supply two kinds of packages for different platforms, such as Node and Browser.
 
@@ -112,9 +114,9 @@ rollup({
 })
 ```
 
-## Basic usage
+## 3. Basic usage
 
-### Examples
+### 3.1 Examples
 
 You can also see full examples in `./examples`;
 
@@ -223,7 +225,7 @@ You can also see full examples in `./examples`;
     aelf.setProvider(new AElf.providers.HttpProvider('http://127.0.0.1:8000'));
     ```
 
-### Web API
+### 3.2 Web API
 
 *You can see how the Web Api of the node works in `{chainAddress}/swagger/index.html`*
 _tip: for an example, my local address: 'http://127.0.0.1:1235/swagger/index.html'_
@@ -644,37 +646,37 @@ _Returns_
 `String`
 
 
-### AElf.pbjs
+### 3.3 AElf.pbjs
 
 The reference to protobuf.js, read the [documentation](https://github.com/protobufjs/protobuf.js) to see how to use.
 
-### AElf.pbUtils
+### 3.4 AElf.pbUtils
 
 Some basic format methods of aelf.
 
 For more information, please see the code in `src/utils/proto.js`. It is simple and easy to understand.
 
-### AElf.version
+### 3.5 AElf.version
 
 ```javascript
 import AElf from 'aelf-sdk';
 AElf.version // eg. 3.2.23
 ```
 
-### Requirements
+### 3.6 Requirements
 
 - [Node.js](https://nodejs.org)
 - [NPM](http://npmjs.com/)
 
-### Support
+### 3.7 Support
 
 ![browsers](https://img.shields.io/badge/browsers-latest%202%20versions-brightgreen.svg)
 ![node](https://img.shields.io/badge/node->=10-green.svg)
 
-## About contributing
+## 4. About contributing
 
 Read out [contributing guide](./.github/CONTRIBUTING.md)
 
-## About Version
+## 5. About Version
 
 https://semver.org/
