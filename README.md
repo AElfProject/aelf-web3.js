@@ -54,7 +54,7 @@ if you are new to FrontEnd, you can use `AElf-sdk` by add a script tag in your h
 
 if you want to use a bundle system such as webpack or rollup, and build your applications for Node.js and Browsers, just import the specified version of package files.
 
-### For browser usage and use UMD
+#### For browser usage and use UMD
 
 Webpack:
 
@@ -84,7 +84,7 @@ rollup({
 })
 ```
 
-### For Node.js usage and use commonjs module system
+#### For Node.js usage and use commonjs module system
 
 Webpack:
 
@@ -547,7 +547,7 @@ Attempts to remove a node from the connected network nodes
 
 Get information about the node’s connection to the network
 
-### AElf.wallet
+### 3.3 AElf.wallet
 
 `AElf.wallet` is a static property of `AElf`.
 
@@ -646,29 +646,29 @@ _Returns_
 `String`
 
 
-### 3.3 AElf.pbjs
+### 3.4 AElf.pbjs
 
 The reference to protobuf.js, read the [documentation](https://github.com/protobufjs/protobuf.js) to see how to use.
 
-### 3.4 AElf.pbUtils
+### 3.5 AElf.pbUtils
 
 Some basic format methods of aelf.
 
 For more information, please see the code in `src/utils/proto.js`. It is simple and easy to understand.
 
-### 3.5 AElf.version
+### 3.6 AElf.version
 
 ```javascript
 import AElf from 'aelf-sdk';
 AElf.version // eg. 3.2.23
 ```
 
-### 3.6 Requirements
+### 3.7 Requirements
 
 - [Node.js](https://nodejs.org)
 - [NPM](http://npmjs.com/)
 
-### 3.7 Support
+### 3.8 Support
 
 ![browsers](https://img.shields.io/badge/browsers-latest%202%20versions-brightgreen.svg)
 ![node](https://img.shields.io/badge/node->=10-green.svg)
