@@ -1,5 +1,5 @@
 /*!
- * aelf-sdk.js v3.2.31 
+ * aelf-sdk.js v3.2.32 
  * (c) 2019-2020 AElf 
  * Released under MIT License
  */
@@ -29716,7 +29716,8 @@ function transformMapToArray(inputType, origin) {
   }
 
   var fields = inputType.fields,
-      options = inputType.options;
+      _inputType$options = inputType.options,
+      options = _inputType$options === void 0 ? {} : _inputType$options;
 
   if (fieldsLength === 2 && fields.value && fields.key && options.map_entry === true) {
     return Object.keys(origin || {}).map(function (key) {
@@ -29760,7 +29761,8 @@ function transformArrayToMap(inputType, origin) {
   }
 
   var fields = inputType.fields,
-      options = inputType.options;
+      _inputType$options2 = inputType.options,
+      options = _inputType$options2 === void 0 ? {} : _inputType$options2;
 
   if (fieldsLength === 2 && fields.value && fields.key && options.map_entry === true) {
     return origin.reduce(function (acc, v) {
@@ -29778,7 +29780,8 @@ function transformArrayToMap(inputType, origin) {
       if (origin[name] && Array.isArray(origin[name])) {
         var fieldsArray = resolvedType.fieldsArray,
             resolvedFields = resolvedType.fields,
-            resolvedOptions = resolvedType.options; // eslint-disable-next-line max-len
+            _resolvedType$options = resolvedType.options,
+            resolvedOptions = _resolvedType$options === void 0 ? {} : _resolvedType$options; // eslint-disable-next-line max-len
 
         if (fieldsArray.length === 2 && resolvedFields.value && resolvedFields.key && resolvedOptions.map_entry === true) {
           result = _objectSpread({}, result, defineProperty_default()({}, name, origin[name].reduce(function (acc, v) {
@@ -32192,7 +32195,7 @@ function () {
     defineProperty_default()(this, "settings", new settings_Settings());
 
     defineProperty_default()(this, "version", {
-      api: "3.2.31"
+      api: "3.2.32"
     });
 
     this._requestManager = new requestManage_RequestManager(provider);
@@ -32231,7 +32234,7 @@ function () {
 /* eslint-enable */
 
 
-defineProperty_default()(src_AElf, "version", "3.2.31");
+defineProperty_default()(src_AElf, "version", "3.2.32");
 
 defineProperty_default()(src_AElf, "providers", {
   HttpProvider: httpProvider_HttpProvider
