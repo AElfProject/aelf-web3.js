@@ -73,7 +73,7 @@ export function transformMapToArray(inputType, origin) {
   }
   const {
     fields,
-    options
+    options = {}
   } = inputType;
   if (fieldsLength === 2 && fields.value && fields.key && options.map_entry === true) {
     return Object.keys(origin || {}).map(key => ({ key, value: origin[key] }));
@@ -114,7 +114,7 @@ export function transformArrayToMap(inputType, origin) {
   }
   const {
     fields,
-    options
+    options = {}
   } = inputType;
   if (fieldsLength === 2 && fields.value && fields.key && options.map_entry === true) {
     return origin.reduce((acc, v) => ({
@@ -133,7 +133,7 @@ export function transformArrayToMap(inputType, origin) {
         const {
           fieldsArray,
           fields: resolvedFields,
-          options: resolvedOptions
+          options: resolvedOptions = {}
         } = resolvedType;
         // eslint-disable-next-line max-len
         if (fieldsArray.length === 2 && resolvedFields.value && resolvedFields.key && resolvedOptions.map_entry === true) {
