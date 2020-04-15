@@ -10,7 +10,8 @@ import AES from 'crypto-js/aes';
 import encUTF8 from 'crypto-js/enc-utf8';
 import * as keyStore from '../util/keyStore';
 import {
-  encodeAddressRep
+  encodeAddressRep,
+  padLeft
 } from '../util/utils';
 import { Transaction } from '../util/proto';
 
@@ -94,7 +95,11 @@ const _getWallet = (type, value, BIP44Path = 'm/44\'/1616\'/0\'/0/0') => {
       keyPair = ellipticEc.keyFromPrivate(childWallet.privateKey);
       break;
     case 'getWalletByPrivateKey':
-      keyPair = ellipticEc.keyFromPrivate(value);
+      if (typeof value === 'string') {
+        keyPair = ellipticEc.keyFromPrivate(padLeft(value, 64, '0'));
+      } else {
+        keyPair = ellipticEc.keyFromPrivate(value);
+      }
       break;
     default:
       throw new Error('not a valid method');
@@ -105,7 +110,7 @@ const _getWallet = (type, value, BIP44Path = 'm/44\'/1616\'/0\'/0/0') => {
   // let keyPair = ec.keyFromPrivate(xPrivateKey);
   // TODO 1.将私钥加密保存,用密码解密才能使用。
   // TODO 2.将助记词机密保存,用密码解密才能获取。
-  const privateKey = keyPair.getPrivate('hex');
+  const privateKey = keyPair.getPrivate().toString(16, 64);
   const publicKey = keyPair.getPublic();
   const address = getAddressFromPubKey(publicKey);
   return {
@@ -189,12 +194,7 @@ const getWalletByMnemonic = (mnemonic, BIP44Path = 'm/44\'/1616\'/0\'/0/0') => {
  * const privateKeyWallet = aelf.wallet.getWalletByPrivateKey('123');
  *
  */
-const getWalletByPrivateKey = privateKey => {
-  if (privateKey.length === 64) {
-    return _getWallet('getWalletByPrivateKey', privateKey);
-  }
-  return false;
-};
+const getWalletByPrivateKey = privateKey => _getWallet('getWalletByPrivateKey', privateKey);
 
 /**
  * sign a transaction
