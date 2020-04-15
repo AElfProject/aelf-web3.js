@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.2.33](https://github.com/AElfProject/aelf-sdk.js/compare/v3.2.32...v3.2.33) (2020-04-15)
+
+
+### Bug Fixes
+
+* 🐛 fix private key length when first byte is 0 ([85ea98a](https://github.com/AElfProject/aelf-sdk.js/commit/85ea98a))
+
+
+
 ### [3.2.32](https://github.com/AElfProject/aelf-sdk.js/compare/v3.2.31...v3.2.32) (2020-03-30)
 
 

@@ -1,5 +1,5 @@
 /*!
- * aelf-sdk.js v3.2.32 
+ * aelf-sdk.js v3.2.33 
  * (c) 2019-2020 AElf 
  * Released under MIT License
  */
@@ -31073,7 +31073,12 @@ var wallet_getWallet = function _getWallet(type, value) {
       break;
 
     case 'getWalletByPrivateKey':
-      keyPair = ellipticEc.keyFromPrivate(value);
+      if (typeof value === 'string') {
+        keyPair = ellipticEc.keyFromPrivate(padLeft(value, 64, '0'));
+      } else {
+        keyPair = ellipticEc.keyFromPrivate(value);
+      }
+
       break;
 
     default:
@@ -31086,7 +31091,7 @@ var wallet_getWallet = function _getWallet(type, value) {
   // TODO 2.将助记词机密保存,用密码解密才能获取。
 
 
-  var privateKey = keyPair.getPrivate('hex');
+  var privateKey = keyPair.getPrivate().toString(16, 64);
   var publicKey = keyPair.getPublic();
   var address = wallet_getAddressFromPubKey(publicKey);
   return {
@@ -31177,11 +31182,7 @@ var wallet_getWalletByMnemonic = function getWalletByMnemonic(mnemonic) {
 
 
 var getWalletByPrivateKey = function getWalletByPrivateKey(privateKey) {
-  if (privateKey.length === 64) {
-    return wallet_getWallet('getWalletByPrivateKey', privateKey);
-  }
-
-  return false;
+  return wallet_getWallet('getWalletByPrivateKey', privateKey);
 };
 /**
  * sign a transaction
@@ -32195,7 +32196,7 @@ function () {
     defineProperty_default()(this, "settings", new settings_Settings());
 
     defineProperty_default()(this, "version", {
-      api: "3.2.32"
+      api: "3.2.33"
     });
 
     this._requestManager = new requestManage_RequestManager(provider);
@@ -32234,7 +32235,7 @@ function () {
 /* eslint-enable */
 
 
-defineProperty_default()(src_AElf, "version", "3.2.32");
+defineProperty_default()(src_AElf, "version", "3.2.33");
 
 defineProperty_default()(src_AElf, "providers", {
   HttpProvider: httpProvider_HttpProvider
