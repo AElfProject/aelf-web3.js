@@ -19,7 +19,7 @@ const  nodeConfig = {
   },
   resolve: {
     alias: {
-      'scryptsy$': '../scrypt-polyfill.js',
+      // 'scryptsy$': '../scrypt-polyfill.js',
     }
   },
   target: 'node',
