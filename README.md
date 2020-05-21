@@ -652,23 +652,37 @@ The reference to protobuf.js, read the [documentation](https://github.com/protob
 
 ### 3.5 AElf.pbUtils
 
-Some basic format methods of aelf.
+Some basic format methods about proto for aelf.
 
 For more information, please see the code in `src/utils/proto.js`. It is simple and easy to understand.
 
-### 3.6 AElf.version
+### 3.6 AElf.utils
+
+Some methods for aelf.
+
+For more information, please see the code in `src/utils/utils.js`. It is simple and easy to understand.
+
+#### 3.6.1 Check address
+
+```javascript
+const AElf = require('aelf-sdk');
+const {base58} = AElf.utils;
+base58.decode('$addresss'); // throw error if invalid
+```
+
+### 3.7 AElf.version
 
 ```javascript
 import AElf from 'aelf-sdk';
 AElf.version // eg. 3.2.23
 ```
 
-### 3.7 Requirements
+### 3.8 Requirements
 
 - [Node.js](https://nodejs.org)
 - [NPM](http://npmjs.com/)
 
-### 3.8 Support
+### 3.9 Support
 
 ![browsers](https://img.shields.io/badge/browsers-latest%202%20versions-brightgreen.svg)
 ![node](https://img.shields.io/badge/node->=10-green.svg)
