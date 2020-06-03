@@ -28,7 +28,9 @@ pure js: `link dist/aelf.umd.js`
 After that you need to create a aelf instance and set a provider.
 
 ```js
-// in node.js use: const AElf = require('aelf-sdk');
+// 1.In node.js use: const AElf = require('aelf-sdk');
+// 2.FrontEnd freshman, add folloing tag in html
+// <script src="https://unpkg.com/aelf-sdk@lastest/dist/aelf.umd.js"></script>
 const aelf = new AElf(new AElf.providers.HttpProvider('http://127.0.0.1:8000'));
 ```
 
