@@ -1,5 +1,5 @@
 /*!
- * aelf-sdk.js v3.2.34 
+ * aelf-sdk.js v3.2.35 
  * (c) 2019-2020 AElf 
  * Released under MIT License
  */
@@ -31101,6 +31101,197 @@ function keyStore_objectSpread(target) { for (var i = 1; i < arguments.length; i
 
 
 
+var AES_MODES = {
+  'aes-128-ecb': {
+    cipher: 'AES',
+    key: 128,
+    iv: 0,
+    mode: 'ECB',
+    type: 'block'
+  },
+  'aes-192-ecb': {
+    cipher: 'AES',
+    key: 192,
+    iv: 0,
+    mode: 'ECB',
+    type: 'block'
+  },
+  'aes-256-ecb': {
+    cipher: 'AES',
+    key: 256,
+    iv: 0,
+    mode: 'ECB',
+    type: 'block'
+  },
+  'aes-128-cbc': {
+    cipher: 'AES',
+    key: 128,
+    iv: 16,
+    mode: 'CBC',
+    type: 'block'
+  },
+  'aes-192-cbc': {
+    cipher: 'AES',
+    key: 192,
+    iv: 16,
+    mode: 'CBC',
+    type: 'block'
+  },
+  'aes-256-cbc': {
+    cipher: 'AES',
+    key: 256,
+    iv: 16,
+    mode: 'CBC',
+    type: 'block'
+  },
+  aes128: {
+    cipher: 'AES',
+    key: 128,
+    iv: 16,
+    mode: 'CBC',
+    type: 'block'
+  },
+  aes192: {
+    cipher: 'AES',
+    key: 192,
+    iv: 16,
+    mode: 'CBC',
+    type: 'block'
+  },
+  aes256: {
+    cipher: 'AES',
+    key: 256,
+    iv: 16,
+    mode: 'CBC',
+    type: 'block'
+  },
+  'aes-128-cfb': {
+    cipher: 'AES',
+    key: 128,
+    iv: 16,
+    mode: 'CFB',
+    type: 'stream'
+  },
+  'aes-192-cfb': {
+    cipher: 'AES',
+    key: 192,
+    iv: 16,
+    mode: 'CFB',
+    type: 'stream'
+  },
+  'aes-256-cfb': {
+    cipher: 'AES',
+    key: 256,
+    iv: 16,
+    mode: 'CFB',
+    type: 'stream'
+  },
+  'aes-128-cfb8': {
+    cipher: 'AES',
+    key: 128,
+    iv: 16,
+    mode: 'CFB8',
+    type: 'stream'
+  },
+  'aes-192-cfb8': {
+    cipher: 'AES',
+    key: 192,
+    iv: 16,
+    mode: 'CFB8',
+    type: 'stream'
+  },
+  'aes-256-cfb8': {
+    cipher: 'AES',
+    key: 256,
+    iv: 16,
+    mode: 'CFB8',
+    type: 'stream'
+  },
+  'aes-128-cfb1': {
+    cipher: 'AES',
+    key: 128,
+    iv: 16,
+    mode: 'CFB1',
+    type: 'stream'
+  },
+  'aes-192-cfb1': {
+    cipher: 'AES',
+    key: 192,
+    iv: 16,
+    mode: 'CFB1',
+    type: 'stream'
+  },
+  'aes-256-cfb1': {
+    cipher: 'AES',
+    key: 256,
+    iv: 16,
+    mode: 'CFB1',
+    type: 'stream'
+  },
+  'aes-128-ofb': {
+    cipher: 'AES',
+    key: 128,
+    iv: 16,
+    mode: 'OFB',
+    type: 'stream'
+  },
+  'aes-192-ofb': {
+    cipher: 'AES',
+    key: 192,
+    iv: 16,
+    mode: 'OFB',
+    type: 'stream'
+  },
+  'aes-256-ofb': {
+    cipher: 'AES',
+    key: 256,
+    iv: 16,
+    mode: 'OFB',
+    type: 'stream'
+  },
+  'aes-128-ctr': {
+    cipher: 'AES',
+    key: 128,
+    iv: 16,
+    mode: 'CTR',
+    type: 'stream'
+  },
+  'aes-192-ctr': {
+    cipher: 'AES',
+    key: 192,
+    iv: 16,
+    mode: 'CTR',
+    type: 'stream'
+  },
+  'aes-256-ctr': {
+    cipher: 'AES',
+    key: 256,
+    iv: 16,
+    mode: 'CTR',
+    type: 'stream'
+  },
+  'aes-128-gcm': {
+    cipher: 'AES',
+    key: 128,
+    iv: 12,
+    mode: 'GCM',
+    type: 'auth'
+  },
+  'aes-192-gcm': {
+    cipher: 'AES',
+    key: 192,
+    iv: 12,
+    mode: 'GCM',
+    type: 'auth'
+  },
+  'aes-256-gcm': {
+    cipher: 'AES',
+    key: 256,
+    iv: 12,
+    mode: 'GCM',
+    type: 'auth'
+  }
+};
 var defaultOptions = {
   dklen: 32,
   n: 8192,
@@ -31135,7 +31326,8 @@ function getKeystore(_ref, password) {
   var sliceLength = /128/.test(cipher) ? 16 : 32;
   var salt = randombytes_default()(32); // instance of Buffer
 
-  var iv = randombytes_default()(16); // instance of Buffer
+  var ivLength = (AES_MODES[cipher.toLowerCase()] || {}).iv;
+  var iv = randombytes_default()(ivLength === undefined ? 16 : ivLength); // instance of Buffer
 
   var derivedKey = lib_default()(Buffer.from(password, 'utf8'), salt, opt.n, opt.r, opt.p, opt.dklen); // instance of Buffer
 
@@ -32467,7 +32659,7 @@ function () {
     defineProperty_default()(this, "settings", new settings_Settings());
 
     defineProperty_default()(this, "version", {
-      api: "3.2.34"
+      api: "3.2.35"
     });
 
     this._requestManager = new requestManage_RequestManager(provider);
@@ -32506,7 +32698,7 @@ function () {
 /* eslint-enable */
 
 
-defineProperty_default()(src_AElf, "version", "3.2.34");
+defineProperty_default()(src_AElf, "version", "3.2.35");
 
 defineProperty_default()(src_AElf, "providers", {
   HttpProvider: httpProvider_HttpProvider

@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.2.35](https://github.com/AElfProject/aelf-sdk.js/compare/v3.2.34...v3.2.35) (2020-12-02)
+
+
+### Bug Fixes
+
+* 🐛 use browserify-aes MODES config ([75a8a75](https://github.com/AElfProject/aelf-sdk.js/commit/75a8a75))
+
+
+
 ### [3.2.34](https://github.com/AElfProject/aelf-sdk.js/compare/v3.2.33...v3.2.34) (2020-05-21)
 
 
