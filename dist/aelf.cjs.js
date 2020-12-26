@@ -1,5 +1,5 @@
 /*!
- * aelf-sdk.js v3.2.35 
+ * aelf-sdk.js v3.2.36 
  * (c) 2019-2020 AElf 
  * Released under MIT License
  */
@@ -29981,14 +29981,16 @@ function transform(inputType, origin) {
         var value = origin[name];
 
         if (value && Array.isArray(value)) {
-          value = value.map(function (item) {
+          value = value.filter(function (v) {
+            return v !== null && v !== undefined;
+          }).map(function (item) {
             return transform(resolvedType, item, transformers);
           });
         }
 
         result = _objectSpread({}, result, defineProperty_default()({}, name, value));
       } else {
-        result = _objectSpread({}, result, defineProperty_default()({}, name, transform(resolvedType, origin[name], transformers)));
+        result = _objectSpread({}, result, defineProperty_default()({}, name, origin[name] !== null && origin[name] !== undefined ? transform(resolvedType, origin[name] || {}, transformers) : origin[name]));
       }
     }
   });
@@ -30071,7 +30073,7 @@ function transformArrayToMap(inputType, origin) {
         name = _fields$field.name,
         resolvedType = _fields$field.resolvedType;
 
-    if (resolvedType) {
+    if (resolvedType && origin !== null && origin !== undefined) {
       if (origin[name] && Array.isArray(origin[name])) {
         var fieldsArray = resolvedType.fieldsArray,
             resolvedFields = resolvedType.fields,
@@ -31831,6 +31833,20 @@ function () {
       return result;
     }
   }, {
+    key: "packOutput",
+    value: function packOutput(result) {
+      if (!result) {
+        return null;
+      }
+
+      var params = transformMapToArray(this._outputType, result);
+      params = transform(this._outputType, params, INPUT_TRANSFORMERS);
+
+      var message = this._outputType.fromObject(params);
+
+      return this._outputType.encode(message).finish();
+    }
+  }, {
     key: "handleTransaction",
     value: function handleTransaction(height, hash, encoded) {
       var rawTx = this.getRawTx(height, hash, encoded);
@@ -32029,6 +32045,7 @@ function () {
       run.outputType = this._outputType;
       run.unpackPackedInput = this.unpackPackedInput;
       run.packInput = this.packInput;
+      run.packOutput = this.packOutput.bind(this);
       run.sendTransaction = this.sendTransaction;
       run.getSignedTx = this.getSignedTx;
       run.getRawTx = this.getRawTx;
@@ -32659,7 +32676,7 @@ function () {
     defineProperty_default()(this, "settings", new settings_Settings());
 
     defineProperty_default()(this, "version", {
-      api: "3.2.35"
+      api: "3.2.36"
     });
 
     this._requestManager = new requestManage_RequestManager(provider);
@@ -32698,7 +32715,7 @@ function () {
 /* eslint-enable */
 
 
-defineProperty_default()(src_AElf, "version", "3.2.35");
+defineProperty_default()(src_AElf, "version", "3.2.36");
 
 defineProperty_default()(src_AElf, "providers", {
   HttpProvider: httpProvider_HttpProvider

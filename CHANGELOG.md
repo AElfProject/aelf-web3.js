@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.2.36](https://github.com/AElfProject/aelf-sdk.js/compare/v3.2.35...v3.2.36) (2020-12-26)
+
+
+### Bug Fixes
+
+* 🐛 handle no-value decode and encode when occur complex obj ([43eab80](https://github.com/AElfProject/aelf-sdk.js/commit/43eab80))
+
+
+
 ### [3.2.35](https://github.com/AElfProject/aelf-sdk.js/compare/v3.2.34...v3.2.35) (2020-12-02)
 
 
