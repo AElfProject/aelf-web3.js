@@ -99,6 +99,16 @@ export default class ContractMethod {
     return result;
   }
 
+  packOutput(result) {
+    if (!result) {
+      return null;
+    }
+    let params = transformMapToArray(this._outputType, result);
+    params = transform(this._outputType, params, INPUT_TRANSFORMERS);
+    const message = this._outputType.fromObject(params);
+    return this._outputType.encode(message).finish();
+  }
+
   handleTransaction(height, hash, encoded) {
     const rawTx = this.getRawTx(height, hash, encoded);
 
@@ -240,6 +250,7 @@ export default class ContractMethod {
     run.outputType = this._outputType;
     run.unpackPackedInput = this.unpackPackedInput;
     run.packInput = this.packInput;
+    run.packOutput = this.packOutput.bind(this);
     run.sendTransaction = this.sendTransaction;
     run.getSignedTx = this.getSignedTx;
     run.getRawTx = this.getRawTx;

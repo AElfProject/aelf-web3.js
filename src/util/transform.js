@@ -42,7 +42,9 @@ export function transform(inputType, origin, transformers = []) {
       if (rule && rule === 'repeated') {
         let value = origin[name];
         if (value && Array.isArray(value)) {
-          value = value.map(item => transform(resolvedType, item, transformers));
+          value = value
+            .filter(v => v !== null && v !== undefined)
+            .map(item => transform(resolvedType, item, transformers));
         }
         result = {
           ...result,
@@ -51,7 +53,8 @@ export function transform(inputType, origin, transformers = []) {
       } else {
         result = {
           ...result,
-          [name]: transform(resolvedType, origin[name], transformers)
+          [name]: origin[name] !== null && origin[name] !== undefined
+            ? transform(resolvedType, origin[name] || {}, transformers) : origin[name]
         };
       }
     }
@@ -128,7 +131,7 @@ export function transformArrayToMap(inputType, origin) {
       name,
       resolvedType
     } = fields[field];
-    if (resolvedType) {
+    if (resolvedType && origin !== null && origin !== undefined) {
       if (origin[name] && Array.isArray(origin[name])) {
         const {
           fieldsArray,
