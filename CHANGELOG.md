@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.2.37](https://github.com/AElfProject/aelf-sdk.js/compare/v3.2.36...v3.2.37) (2020-12-28)
+
+
+### Bug Fixes
+
+* 🐛 fix enum type resolve ([d13d2ee](https://github.com/AElfProject/aelf-sdk.js/commit/d13d2ee))
+
+
+
 ### [3.2.36](https://github.com/AElfProject/aelf-sdk.js/compare/v3.2.35...v3.2.36) (2020-12-26)
 
 

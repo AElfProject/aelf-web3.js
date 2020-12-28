@@ -1,5 +1,5 @@
 /*!
- * aelf-sdk.js v3.2.36 
+ * aelf-sdk.js v3.2.37 
  * (c) 2019-2020 AElf 
  * Released under MIT License
  */
@@ -29932,7 +29932,7 @@ var isHash = function isHash(resolvedType) {
 
 function transform(inputType, origin) {
   var transformers = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
-  var fieldsLength = inputType.fieldsArray.length;
+  var fieldsLength = (inputType.fieldsArray || []).length;
   var result = origin;
 
   if (fieldsLength === 0) {
@@ -30046,7 +30046,7 @@ function transformMapToArray(inputType, origin) {
   return result;
 }
 function transformArrayToMap(inputType, origin) {
-  var fieldsLength = inputType.fieldsArray.length;
+  var fieldsLength = (inputType.fieldsArray || []).length;
   var result = origin;
 
   if (fieldsLength === 0 || fieldsLength === 1 && !inputType.fieldsArray[0].resolvedType) {
@@ -32676,7 +32676,7 @@ function () {
     defineProperty_default()(this, "settings", new settings_Settings());
 
     defineProperty_default()(this, "version", {
-      api: "3.2.36"
+      api: "3.2.37"
     });
 
     this._requestManager = new requestManage_RequestManager(provider);
@@ -32715,7 +32715,7 @@ function () {
 /* eslint-enable */
 
 
-defineProperty_default()(src_AElf, "version", "3.2.36");
+defineProperty_default()(src_AElf, "version", "3.2.37");
 
 defineProperty_default()(src_AElf, "providers", {
   HttpProvider: httpProvider_HttpProvider
