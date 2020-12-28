@@ -20,7 +20,7 @@ const isAddress = resolvedType => isWrappedBytes(resolvedType, 'Address');
 const isHash = resolvedType => isWrappedBytes(resolvedType, 'Hash');
 
 export function transform(inputType, origin, transformers = []) {
-  const fieldsLength = inputType.fieldsArray.length;
+  const fieldsLength = (inputType.fieldsArray || []).length;
   let result = origin;
   if (fieldsLength === 0) {
     return origin;
@@ -107,7 +107,7 @@ export function transformMapToArray(inputType, origin) {
 }
 
 export function transformArrayToMap(inputType, origin) {
-  const fieldsLength = inputType.fieldsArray.length;
+  const fieldsLength = (inputType.fieldsArray || []).length;
   let result = origin;
   if (fieldsLength === 0 || (fieldsLength === 1 && !inputType.fieldsArray[0].resolvedType)) {
     return origin;
