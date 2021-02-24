@@ -16,7 +16,7 @@
     "commit": "git-cz",
     "lint": "eslint src",
     "proto": "node scripts/compile-proto.js",
-    "release": "standard-version",
+    "release": "standard-version -a",
     "test": "npm run test:browser && npm run test:node",
     "test:browser": "jest --config=jest.browser.config.js",
     "test:browser:watch": "jest --config=jest.browser.config.js --watch",
@@ -84,7 +84,7 @@
     "jest-environment-jsdom-fifteen": "^1.0.0",
     "lint-staged": "^9.0.2",
     "rimraf": "^2.6.3",
-    "standard-version": "^6.0.1",
+    "standard-version": "^9.1.1",
     "unused-files-webpack-plugin": "^3.4.0",
     "webpack": "^4.35.2",
     "webpack-bundle-analyzer": "^3.3.2",
@@ -108,5 +108,10 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/AElfProject/aelf-sdk.js.git"
+  },
+  "standard-version": {
+    "scripts": {
+      "prerelease": "npm run build && git add ."
+    }
   }
 }
