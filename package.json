@@ -111,7 +111,7 @@
   },
   "standard-version": {
     "scripts": {
-      "prerelease": "npm run build && git add ."
+      "postbump": "npm run build && git add ."
     }
   }
 }
