@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.3.0](https://github.com/AElfProject/aelf-sdk.js/compare/v3.2.37...v3.3.0) (2021-03-09)
+
+
+### Features
+
+* 🎸 add signed transaction deserializing ([53d4724](https://github.com/AElfProject/aelf-sdk.js/commit/53d47241ee7311f63efea18274d20824d4e08c0f))
+
 ### [3.2.37](https://github.com/AElfProject/aelf-sdk.js/compare/v3.2.36...v3.2.37) (2020-12-28)
 
 
