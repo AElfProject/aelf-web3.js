@@ -203,7 +203,7 @@ export const INPUT_TRANSFORMERS = [
   },
 ];
 
-function encodeAddress(str) {
+export function encodeAddress(str) {
   const buf = Buffer.from(str, 'base64');
   return base58.encode(buf);
 }

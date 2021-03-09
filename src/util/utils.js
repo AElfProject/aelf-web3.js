@@ -7,6 +7,13 @@ import BigNumber from 'bignumber.js';
 import jsSha256 from 'js-sha256';
 import bs58 from 'bs58';
 import { UNIT_MAP, UNSIGNED_256_INT } from '../common/constants';
+import { Transaction } from './proto';
+import {
+  OUTPUT_TRANSFORMERS,
+  encodeAddress,
+  transform,
+  transformArrayToMap
+} from './transform';
 
 const { sha256 } = jsSha256;
 
@@ -347,6 +354,51 @@ export const setPath = (obj, path, value) => {
     return acc[p];
   }, obj);
 };
+
+export const unpackSpecifiedTypeData = ({ data, dataType, encoding = 'hex' }) => {
+  const buffer = Buffer.from(data, encoding || 'hex');
+  const decoded = dataType.decode(buffer);
+  const result = dataType.toObject(decoded, {
+    enums: String, // enums as string names
+    longs: String, // longs as strings (requires long.js)
+    bytes: String, // bytes as base64 encoded strings
+    defaults: true, // includes default values
+    arrays: true, // populates empty arrays (repeated fields) even if defaults=false
+    objects: true, // populates empty objects (map fields) even if defaults=false
+    oneofs: true // includes virtual oneof fields set to the present field's name
+  });
+  return result;
+};
+
+export function deserializeTransaction(rawTx, paramsDataType) {
+  const {
+    from,
+    to,
+    params,
+    refBlockPrefix,
+    signature,
+    ...rest
+  } = unpackSpecifiedTypeData({
+    data: rawTx,
+    dataType: Transaction
+  });
+  let methodParameters = unpackSpecifiedTypeData({
+    data: params,
+    encoding: 'base64',
+    dataType: paramsDataType
+  });
+  methodParameters = transform(paramsDataType, methodParameters, OUTPUT_TRANSFORMERS);
+  methodParameters = transformArrayToMap(paramsDataType, methodParameters);
+
+  return {
+    from: encodeAddress(from.value),
+    to: encodeAddress(to.value),
+    params: methodParameters,
+    refBlockPrefix: Buffer.from(refBlockPrefix, 'base64').toString('hex'),
+    signature: Buffer.from(signature, 'base64').toString('hex'),
+    ...rest
+  };
+}
 
 // /**
 //  * Converts value to it's hex representation
