@@ -127,9 +127,9 @@ export default class HttpProvider {
             } else {
               result = HttpProvider.formatResponseText(request);
               if (request.status === 200) {
-                reject(result);
-              } else {
                 resolve(result);
+              } else {
+                reject(result);
               }
             }
           } catch (e) {

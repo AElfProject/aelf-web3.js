@@ -1,5 +1,5 @@
 /*!
- * aelf-sdk.js v3.2.37 
+ * aelf-sdk.js v3.2.39 
  * (c) 2019-2021 AElf 
  * Released under MIT License
  */
@@ -26333,6 +26333,7 @@ __webpack_require__.d(utils_namespaceObject, "noop", function() { return noop; }
 __webpack_require__.d(utils_namespaceObject, "setPath", function() { return setPath; });
 __webpack_require__.d(utils_namespaceObject, "unpackSpecifiedTypeData", function() { return unpackSpecifiedTypeData; });
 __webpack_require__.d(utils_namespaceObject, "deserializeTransaction", function() { return deserializeTransaction; });
+__webpack_require__.d(utils_namespaceObject, "getAuthorization", function() { return getAuthorization; });
 var proto_namespaceObject = {};
 __webpack_require__.r(proto_namespaceObject);
 __webpack_require__.d(proto_namespaceObject, "coreRootProto", function() { return coreRootProto; });
@@ -29462,14 +29463,14 @@ var CHAIN_METHODS = {
   },
   addPeer: {
     name: 'addPeer',
-    call: 'net/peers',
+    call: 'net/peer',
     method: 'POST',
     params: ['address'],
     inputFormatter: []
   },
   removePeer: {
     name: 'removePeer',
-    call: 'net/peers',
+    call: 'net/peer',
     method: 'DELETE',
     params: ['address'],
     inputFormatter: []
@@ -30255,6 +30256,21 @@ function deserializeTransaction(rawTx, paramsDataType) {
     refBlockPrefix: Buffer.from(refBlockPrefix, 'base64').toString('hex'),
     signature: Buffer.from(signature, 'base64').toString('hex')
   }, rest);
+}
+/**
+ *
+ * @param {String} userName Username
+ * @param {String} password Password
+ * @return {any} Authorization information
+ *
+ * const authorization = getAuthorization('test','pass')
+ * console.log(authorization)
+ * // => Basic dGVzdDpwYXNz
+ */
+
+function getAuthorization(userName, password) {
+  var base = Buffer.from("".concat(userName, ":").concat(password)).toString('base64');
+  return "Basic ".concat(base);
 } // /**
 //  * Converts value to it's hex representation
 //  *
@@ -32611,7 +32627,7 @@ function () {
       var path = "/api/".concat(url).replace(/\/\//g, '\/');
       var uri = "".concat(this.host).concat(path).replace();
 
-      if (method.toUpperCase() === 'GET') {
+      if (method.toUpperCase() === 'GET' || method.toUpperCase() === 'DELETE') {
         uri = Object.keys(params).length > 0 ? "".concat(uri, "?").concat(Object(query_string["stringify"])(params)) : uri;
       }
 
@@ -32620,7 +32636,7 @@ function () {
         request.setRequestHeader(header, _this2.headers[header]);
       });
 
-      if (method.toUpperCase() === 'GET') {
+      if (method.toUpperCase() === 'GET' || method.toUpperCase() === 'DELETE') {
         request.send();
       } else {
         request.send(JSON.stringify(params));
@@ -32654,12 +32670,22 @@ function () {
             var result = request.responseText;
 
             try {
-              result = HttpProvider.formatResponse(result);
+              if (result) {
+                result = HttpProvider.formatResponse(result);
 
-              if (result.Error) {
-                reject(result);
+                if (result.Error) {
+                  reject(result);
+                } else {
+                  resolve(result);
+                }
               } else {
-                resolve(result);
+                result = HttpProvider.formatResponseText(request);
+
+                if (request.status === 200) {
+                  resolve(result);
+                } else {
+                  reject(result);
+                }
               }
             } catch (e) {
               // todo: error handle
@@ -32700,6 +32726,27 @@ function () {
         result = JSON.parse(response);
       } catch (e) {
         result = response;
+      }
+
+      return result;
+    }
+  }, {
+    key: "formatResponseText",
+    value: function formatResponseText(request) {
+      var result;
+
+      try {
+        var parseRequest = request;
+        result = {
+          status: parseRequest.status,
+          error: parseRequest.status === 200 ? 0 : parseRequest.status,
+          Error: {
+            message: request.statusText
+          },
+          statusText: request.statusText
+        };
+      } catch (e) {
+        result = request;
       }
 
       return result;
@@ -32765,7 +32812,7 @@ function () {
     defineProperty_default()(this, "settings", new settings_Settings());
 
     defineProperty_default()(this, "version", {
-      api: "3.2.37"
+      api: "3.2.39"
     });
 
     this._requestManager = new requestManage_RequestManager(provider);
@@ -32804,7 +32851,7 @@ function () {
 /* eslint-enable */
 
 
-defineProperty_default()(src_AElf, "version", "3.2.37");
+defineProperty_default()(src_AElf, "version", "3.2.39");
 
 defineProperty_default()(src_AElf, "providers", {
   HttpProvider: httpProvider_HttpProvider
