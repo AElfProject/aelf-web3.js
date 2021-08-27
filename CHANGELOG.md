@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file. See [standa
 ### [3.2.39](https://github.com/AElfProject/aelf-sdk.js/compare/v3.2.38...v3.2.39) (2021-08-27)
 
 
+### Features
+
+* 🎸 add authorization  ([b04c1db](https://github.com/AElfProject/aelf-sdk.js/commit/b04c1db9182df17c30d4bb37ae8971efcba6621b))
+
 ### [3.2.38](https://github.com/AElfProject/aelf-sdk.js/compare/v3.2.37...v3.2.38) (2021-03-09)
 
 
