@@ -541,10 +541,36 @@ Get peer info about the connected network nodes
 
 Attempts to add a node to the connected network nodes
 
+you need to create a aelf authorization instance and set a provider
+```javascript
+const aelf = new AElf(new AElf.providers.HttpProvider('http://127.0.0.1:8000', 8000, { "Authorization": AElf.utils.getAuthorization('UseName', 'Password') }));
+```
+
+_Example_
+```javascript
+const aelf = new AElf(new AElf.providers.HttpProvider('http://127.0.0.1:8000', 8000, { "Authorization": AElf.utils.getAuthorization('aelf', '12345678') }));
+
+aelf.chain.addPeer('192.168.11.140:6801').then(res => {
+    console.log(res);
+})
+```
 #### removePeer
 
 Attempts to remove a node from the connected network nodes
 
+you need to create a aelf authorization instance and set a provider
+```javascript
+const aelf = new AElf(new AElf.providers.HttpProvider('http://127.0.0.1:8000', 8000, { "Authorization": AElf.utils.getAuthorization('UseName', 'Password') }));
+```
+
+_Example_
+```javascript
+const aelf = new AElf(new AElf.providers.HttpProvider('http://127.0.0.1:8000', 8000, { "Authorization": AElf.utils.getAuthorization('aelf', '12345678') }));
+
+aelf.chain.removePeer('192.168.11.140:6801').then(res => {
+    console.log(res);
+})
+```
 #### networkInfo
 
 Get information about the node’s connection to the network

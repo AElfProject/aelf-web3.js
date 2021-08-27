@@ -103,14 +103,14 @@ export const CHAIN_METHODS = {
   },
   addPeer: {
     name: 'addPeer',
-    call: 'net/peers',
+    call: 'net/peer',
     method: 'POST',
     params: ['address'],
     inputFormatter: []
   },
   removePeer: {
     name: 'removePeer',
-    call: 'net/peers',
+    call: 'net/peer',
     method: 'DELETE',
     params: ['address'],
     inputFormatter: []

@@ -54,6 +54,24 @@ export default class HttpProvider {
     return result;
   }
 
+  static formatResponseText(request) {
+    let result;
+    try {
+      const parseRequest = request;
+      result = {
+        status: parseRequest.status,
+        error: parseRequest.status === 200 ? 0 : parseRequest.status,
+        Error: {
+          message: request.statusText,
+        },
+        statusText: request.statusText,
+      };
+    } catch (e) {
+      result = request;
+    }
+    return result;
+  }
+
   requestSend(requestConfig, request, isAsync = false) {
     const {
       url,
@@ -62,14 +80,14 @@ export default class HttpProvider {
     } = requestConfig;
     const path = `/api/${url}`.replace(/\/\//g, '\/');
     let uri = `${this.host}${path}`.replace();
-    if (method.toUpperCase() === 'GET') {
+    if (method.toUpperCase() === 'GET' || method.toUpperCase() === 'DELETE') {
       uri = Object.keys(params).length > 0 ? `${uri}?${stringify(params)}` : uri;
     }
     request.open(method.toUpperCase(), uri, isAsync);
     Object.keys(this.headers).forEach(header => {
       request.setRequestHeader(header, this.headers[header]);
     });
-    if (method.toUpperCase() === 'GET') {
+    if (method.toUpperCase() === 'GET' || method.toUpperCase() === 'DELETE') {
       request.send();
     } else {
       request.send(JSON.stringify(params));
@@ -99,11 +117,20 @@ export default class HttpProvider {
         if (request.readyState === 4 && request.timeout !== 1) {
           let result = request.responseText;
           try {
-            result = HttpProvider.formatResponse(result);
-            if (result.Error) {
-              reject(result);
+            if (result) {
+              result = HttpProvider.formatResponse(result);
+              if (result.Error) {
+                reject(result);
+              } else {
+                resolve(result);
+              }
             } else {
-              resolve(result);
+              result = HttpProvider.formatResponseText(request);
+              if (request.status === 200) {
+                reject(result);
+              } else {
+                resolve(result);
+              }
             }
           } catch (e) {
             // todo: error handle

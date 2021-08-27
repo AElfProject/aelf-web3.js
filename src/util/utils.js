@@ -399,6 +399,20 @@ export function deserializeTransaction(rawTx, paramsDataType) {
     ...rest
   };
 }
+/**
+ *
+ * @param {String} userName Username
+ * @param {String} password Password
+ * @return {any} Authorization information
+ *
+ * const authorization = getAuthorization('test','pass')
+ * console.log(authorization)
+ * // => Basic dGVzdDpwYXNz
+ */
+export function getAuthorization(userName, password) {
+  const base = Buffer.from(`${userName}:${password}`).toString('base64');
+  return `Basic ${base}`;
+}
 
 // /**
 //  * Converts value to it's hex representation
