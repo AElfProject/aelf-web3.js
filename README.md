@@ -644,7 +644,7 @@ _Returns_
 
 _Example_
 ```javascript
-const result = aelf.wallet.signTransaction(rawTxn, keyPair);
+const result = AElf.wallet.signTransaction(rawTxn, keyPair);
 ```
 
 #### AESEncrypt
