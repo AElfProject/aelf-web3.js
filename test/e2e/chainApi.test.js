@@ -1,12 +1,12 @@
 import AElf from '../../src/index';
 import HttpProvider from '../../src/util/httpProvider'
 
-const stageEndpoint = 'http://18.162.41.20:8000';
+const stageEndpoint = 'http://192.168.66.191:8000';
 const fakeEndpoint = 'http://127.0.0.1:9999';
 const realEndpoint = '192.168.11.140:6801';
 describe('test AElf-sdk', () => {
   let aelf = null;
-  aelf = new AElf(new AElf.providers.HttpProvider(stageEndpoint, 10000, { "Authorization": AElf.utils.getAuthorization('aelf', '12345678') }));
+  aelf = new AElf(new AElf.providers.HttpProvider(stageEndpoint));
   expect(aelf.isConnected()).toBeTruthy();
 
   test('set provider for exist alef instance', () => {
@@ -100,12 +100,15 @@ describe('test AElf-sdk', () => {
     expect(transactionPoolStatus).toHaveProperty('Validated');
   });
 
+  test('set provider authorization for exist alef instance', () => {
+    aelf.setProvider(new HttpProvider(stageEndpoint, 10000, { "Authorization": AElf.utils.getAuthorization('aelf', '12345678') }));
+    expect(aelf.isConnected()).not.toBeTruthy();
+  });
   test('check get peers info', async () => {
     const peersInfo = await aelf.chain.getPeers(false);
     expect(peersInfo).not.toBeNaN();
     expect(peersInfo.length).toBeGreaterThan(1);
-});
-
+  });
   test('check add not existed peer info', async () => {
     const result = await aelf.chain.addPeer(fakeEndpoint);
     expect(result).not.toBeTruthy();
