@@ -117,20 +117,11 @@ export default class HttpProvider {
         if (request.readyState === 4 && request.timeout !== 1) {
           let result = request.responseText;
           try {
-            if (result) {
-              result = HttpProvider.formatResponse(result);
-              if (result.Error) {
-                reject(result);
-              } else {
-                resolve(result);
-              }
+            result = HttpProvider.formatResponse(result);
+            if (request.status !== 200 || result.Error) {
+              reject(result);
             } else {
-              result = HttpProvider.formatResponseText(request);
-              if (request.status === 200) {
-                resolve(result);
-              } else {
-                reject(result);
-              }
+              resolve(result);
             }
           } catch (e) {
             // todo: error handle
