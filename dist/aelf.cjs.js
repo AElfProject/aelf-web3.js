@@ -1,6 +1,6 @@
 /*!
- * aelf-sdk.js v3.2.39 
- * (c) 2019-2021 AElf 
+ * aelf-sdk.js v3.2.40 
+ * (c) 2019-2022 AElf 
  * Released under MIT License
  */
 module.exports =
@@ -32670,22 +32670,12 @@ function () {
             var result = request.responseText;
 
             try {
-              if (result) {
-                result = HttpProvider.formatResponse(result);
+              result = HttpProvider.formatResponse(result);
 
-                if (result.Error) {
-                  reject(result);
-                } else {
-                  resolve(result);
-                }
+              if (request.status !== 200 || result.Error) {
+                reject(result);
               } else {
-                result = HttpProvider.formatResponseText(request);
-
-                if (request.status === 200) {
-                  resolve(result);
-                } else {
-                  reject(result);
-                }
+                resolve(result);
               }
             } catch (e) {
               // todo: error handle
@@ -32812,7 +32802,7 @@ function () {
     defineProperty_default()(this, "settings", new settings_Settings());
 
     defineProperty_default()(this, "version", {
-      api: "3.2.39"
+      api: "3.2.40"
     });
 
     this._requestManager = new requestManage_RequestManager(provider);
@@ -32851,7 +32841,7 @@ function () {
 /* eslint-enable */
 
 
-defineProperty_default()(src_AElf, "version", "3.2.39");
+defineProperty_default()(src_AElf, "version", "3.2.40");
 
 defineProperty_default()(src_AElf, "providers", {
   HttpProvider: httpProvider_HttpProvider
