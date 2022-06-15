@@ -13,7 +13,7 @@ aelf-sdk.js is a collection of libraries which allow you to interact with a loca
 
 The following documentation will guide you through installing and running aelf-sdk.js, as well as providing a API reference documentation with examples.
 
-You can get some codes in the `./examples` directory
+You can get some codes in the [./examples](./examples) directory
 
 ## 2. Getting Started
 
@@ -40,10 +40,10 @@ You can skip 2.2 as 2.1 is enough now.
 
 In our dist directory, we supply two kinds of packages for different platforms, such as Node and Browser.
 
-packages | usage
----|---
-dist/aelf.cjs.js | built for node, remove node built-in modules such as crypto.
-dist/aelf.umd.js | built for browser, add some node built-in modules by webpack
+| packages         | usage                                                        |
+|------------------|--------------------------------------------------------------|
+| dist/aelf.cjs.js | built for node, remove node built-in modules such as crypto. |
+| dist/aelf.umd.js | built for browser, add some node built-in modules by webpack |
 
 You can choose any packages based on your need, for examples:
 
@@ -120,7 +120,7 @@ rollup({
 
 ### 3.1 Examples
 
-You can also see full examples in `./examples`;
+You can also see full examples in [./examples](./examples);
 
 1. Create a new instance of AElf, connect to an AELF chain node.
 
@@ -673,8 +673,9 @@ _Returns_
 
 `String`
 
-
 ### 3.4 AElf.pbjs
+
+Simple example in [how to use aelf.pbjs](./examples/aelf-pbjs/how-to-use-aelf-pbjs.js);
 
 The reference to protobuf.js, read the [documentation](https://github.com/protobufjs/protobuf.js) to see how to use.
 
@@ -682,13 +683,13 @@ The reference to protobuf.js, read the [documentation](https://github.com/protob
 
 Some basic format methods about proto for aelf.
 
-For more information, please see the code in `src/utils/proto.js`. It is simple and easy to understand.
+For more information, please see the code in [src/util/proto.js](./src/util/proto.js). It is simple and easy to understand.
 
 ### 3.6 AElf.utils
 
 Some methods for aelf.
 
-For more information, please see the code in `src/utils/utils.js`. It is simple and easy to understand.
+For more information, please see the code in [src/util/utils.js](./src/util/utils.js). It is simple and easy to understand.
 
 #### 3.6.1 Check address
 
