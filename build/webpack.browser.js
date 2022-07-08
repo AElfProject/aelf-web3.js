@@ -16,6 +16,7 @@ const browserConfig = {
     library: 'AElf',
     libraryTarget: 'umd',
     libraryExport: 'default',
+    globalObject: "globalThis",
     umdNamedDefine: true
   },
   resolve: {

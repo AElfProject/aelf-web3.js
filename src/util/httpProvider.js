@@ -10,9 +10,19 @@ const defaultHeaders = {
 };
 
 let RequestLibrary = {};
+let isFetch = false;
 if (process.env.RUNTIME_ENV === 'browser') {
   // For browsers use DOM Api XMLHttpRequest
-  RequestLibrary = window.XMLHttpRequest;
+  // eslint-disable-next-line no-restricted-globals
+  const _self = typeof self === 'object' ? self : {};
+  const _window = typeof window === 'object' ? window : _self;
+  if (typeof _window.XMLHttpRequest !== 'undefined') {
+    RequestLibrary = _window.XMLHttpRequest;
+    isFetch = false;
+  } else if (typeof _window.fetch !== 'undefined') {
+    RequestLibrary = _window.fetch;
+    isFetch = true;
+  }
 } else {
   // For node use xmlhttprequest
   // eslint-disable-next-line global-require
@@ -72,6 +82,73 @@ export default class HttpProvider {
     return result;
   }
 
+  static timeoutPromise(timer) {
+    return new Promise(_resolve => {
+      const ids = setTimeout(() => {
+        clearTimeout(ids);
+        // eslint-disable-next-line prefer-promise-reject-errors
+        _resolve({ type: 'timeout' });
+      }, timer);
+    });
+  }
+
+  requestSendByFetch(requestConfig, request) {
+    const {
+      url,
+      method = 'POST',
+      params = {},
+      signal
+    } = requestConfig;
+    const path = `/api/${url}`.replace(/\/\//g, '\/');
+    let uri = `${this.host}${path}`.replace();
+    const myHeaders = new Headers();
+    let body = JSON.stringify(params);
+    if (method.toUpperCase() === 'GET' || method.toUpperCase() === 'DELETE') {
+      uri = Object.keys(params).length > 0 ? `${uri}?${stringify(params)}` : uri;
+      body = undefined;
+    }
+    Object.keys(this.headers).forEach(header => {
+      myHeaders.append(header, this.headers[header]);
+    });
+    return request(uri, {
+      method: method.toUpperCase(),
+      headers: myHeaders,
+      body,
+      signal
+    });
+  }
+
+  sendAsyncByFetch(requestConfig) {
+    const request = RequestLibrary;
+    const { timeout } = this;
+    const control = typeof AbortController === 'function' ? new AbortController() : {};
+    const config = { ...requestConfig, signal: control.signal, credentials: 'omit' };
+    // Simulation timeout
+    return Promise.race([
+      this.requestSendByFetch(config, request),
+      HttpProvider.timeoutPromise(timeout)
+    ]).then(result => new Promise((resolve, reject) => {
+      if (timeout !== 1) {
+        try {
+          if (result.type === 'timeout') {
+            // Cancel timeout request
+            if (control.abort) control.abort();
+            reject(result);
+          } else if (result.status !== 200 || !result.ok) {
+            reject(result);
+          } else {
+            result.text().then(v => {
+              const r = HttpProvider.formatResponse(v);
+              resolve(r);
+            }).catch(err => reject(err));
+          }
+        } catch (e) {
+          reject(e);
+        }
+      }
+    }));
+  }
+
   requestSend(requestConfig, request, isAsync = false) {
     const {
       url,
@@ -95,6 +172,7 @@ export default class HttpProvider {
   }
 
   send(requestConfig) {
+    if (isFetch) throw new Error("Can not get XMLHttpRequest, invalid parameter: 'sync'");
     const request = new RequestLibrary();
     request.withCredentials = false;
     this.requestSend(requestConfig, request);
@@ -108,6 +186,11 @@ export default class HttpProvider {
   }
 
   sendAsync(requestConfig) {
+    if (isFetch) return this.sendAsyncByFetch(requestConfig);
+    return this.sendAsyncByXMLHttp(requestConfig);
+  }
+
+  sendAsyncByXMLHttp(requestConfig) {
     const request = new RequestLibrary();
     request.withCredentials = false;
     request.timeout = this.timeout;
@@ -147,6 +230,17 @@ export default class HttpProvider {
         url: 'blockChain/chainStatus'
       });
       return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  async isConnectedAsync() {
+    try {
+      return await this.sendAsyncByFetch({
+        method: 'GET',
+        url: 'blockChain/chainStatus'
+      });
     } catch (e) {
       return false;
     }
