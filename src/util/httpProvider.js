@@ -82,13 +82,13 @@ export default class HttpProvider {
     return result;
   }
 
-  static timeoutPromise(timer) {
+  static timeoutPromise(delay) {
     return new Promise(_resolve => {
       const ids = setTimeout(() => {
         clearTimeout(ids);
         // eslint-disable-next-line prefer-promise-reject-errors
         _resolve({ type: 'timeout' });
-      }, timer);
+      }, delay);
     });
   }
 
@@ -137,9 +137,9 @@ export default class HttpProvider {
           } else if (result.status !== 200 || !result.ok) {
             reject(result);
           } else {
-            result.text().then(v => {
-              const r = HttpProvider.formatResponse(v);
-              resolve(r);
+            result.text().then(text => {
+              const res = HttpProvider.formatResponse(text);
+              resolve(res);
             }).catch(err => reject(err));
           }
         } catch (e) {
