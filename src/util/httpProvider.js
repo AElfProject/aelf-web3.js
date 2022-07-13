@@ -35,7 +35,7 @@ export default class HttpProvider {
     timeout = 8000,
     headers = defaultHeaders
   ) {
-    this.host = host;
+    this.host = host.replace(/\/$/, '');
     this.timeout = timeout;
     this.headers = {};
     if (Array.isArray(headers)) {
@@ -134,11 +134,13 @@ export default class HttpProvider {
             // Cancel timeout request
             if (control.abort) control.abort();
             reject(result);
-          } else if (result.status !== 200 || !result.ok) {
-            reject(result);
           } else {
             result.text().then(text => {
               const res = HttpProvider.formatResponse(text);
+              if (result.status !== 200 || !result.ok) {
+                reject(res);
+                return;
+              }
               resolve(res);
             }).catch(err => reject(err));
           }
