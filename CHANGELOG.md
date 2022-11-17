@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.2.41](https://github.com/AElfProject/aelf-sdk.js/compare/v3.2.40...v3.2.41) (2022-11-17)
+
+
+### Features
+
+* 🎸 change XHR to Fetch on browser ([3fdc189](https://github.com/AElfProject/aelf-sdk.js/commit/3fdc1890eabe05c1f98fa16dc3dde97d0c2c4b06))
+
+
+### Bug Fixes
+
+* 🐛 fix fetch error result and host url ([4463499](https://github.com/AElfProject/aelf-sdk.js/commit/44634999bef929fb1f358d9a76692bf9ff6ef1e3))
+* 🐛 format variable names ([0595ca6](https://github.com/AElfProject/aelf-sdk.js/commit/0595ca68eb2f5932f1f54956dd9ad565efde7ba0))
+
 ### [3.2.40](https://github.com/AElfProject/aelf-sdk.js/compare/v3.2.39...v3.2.40) (2022-02-09)
 
 
