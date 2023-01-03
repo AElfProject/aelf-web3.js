@@ -1,5 +1,5 @@
 {
-  "name": "aelf-sdk",
+  "name": "aelf-web3",
   "version": "3.2.41",
   "description": "aelf-sdk js library",
   "main": "dist/aelf.cjs.js",
@@ -24,7 +24,7 @@
     "test:node:watch": "jest --config=jest.node.config.js --watch"
   },
   "keywords": [
-    "aelf-sdk"
+    "aelf-web3"
   ],
   "files": [
     "src",
@@ -41,10 +41,12 @@
   "engines": {
     "node": ">=10.5.0"
   },
+  "types": "./typing",
   "engineStrict": true,
   "dependencies": {
     "@aelfqueen/protobufjs": "^6.8.9",
     "@babel/runtime": "^7.4.5",
+    "@typescript-eslint/parser": "^5.47.1",
     "assert": "^2.0.0",
     "bignumber.js": "^9.0.0",
     "bip39": "^3.0.2",
@@ -65,6 +67,8 @@
     "@babel/plugin-proposal-class-properties": "^7.4.4",
     "@babel/plugin-transform-runtime": "^7.4.4",
     "@babel/preset-env": "^7.4.5",
+    "@types/elliptic": "^6.4.14",
+    "@types/hdkey": "^2.0.1",
     "babel-eslint": "^10.0.2",
     "babel-loader": "^8.0.6",
     "bundle-analyzer": "^0.0.6",
