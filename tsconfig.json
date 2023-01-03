@@ -18,7 +18,7 @@
     "allowSyntheticDefaultImports": false,
     "baseUrl": ".",
     "paths": {
-      "aelf-web3": ["./typing"]
+      "aelf-web3": ["types"]
     },
     "esModuleInterop": true,
     "declaration": true

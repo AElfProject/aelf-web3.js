@@ -41,7 +41,7 @@
   "engines": {
     "node": ">=10.5.0"
   },
-  "types": "./typing",
+  "types": "types",
   "engineStrict": true,
   "dependencies": {
     "@aelfqueen/protobufjs": "^6.8.9",
