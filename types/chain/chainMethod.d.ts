@@ -30,12 +30,14 @@ declare class ChainMethod {
     inputFormatter,
     outputFormatter,
   }: IChainMethodParams);
-  public formatInput(args: Array<any>): any;
+  public formatInput(args: Array<any>): Array<any>;
   public setRequestManager(manager: RequestManager): void;
   public formatOutput(result: any): any;
   public extractArgumentsIntoObject(
     args: TExtractArg[]
   ): IExtractArgumentsIntoObjectResult;
-  public run(args: TExtractArg[]): any;
+  public run(
+    args: TExtractArg[]
+  ): { [k: string]: any } | Promise<{ [k: string]: any }>;
 }
 export default ChainMethod;
