@@ -8,52 +8,61 @@ export interface chainIdConvertor {
   chainIdToBase58(chainId: string): string;
   base58ToChainId(base58String: string): Buffer;
 }
-export function arrayToHex(value: Buffer): string;
-export function padLeft(string: string, charLen: number, sign?: string): string;
-export function padRight(
+export declare function arrayToHex(value: Buffer): string;
+export declare function padLeft(
   string: string,
   charLen: number,
   sign?: string
 ): string;
-export function decodeAddressRep(address: string): string;
-export function encodeAddressRep(hex: string): string;
-export function isBigNumber(object: any): boolean;
-export function isString(object: any): boolean;
-export function isFunction(object: any): boolean;
-export function isObject(object: any): boolean;
-export function isBoolean(object: any): boolean;
-export function isJson(str: string): boolean;
+export declare function padRight(
+  string: string,
+  charLen: number,
+  sign?: string
+): string;
+export declare function decodeAddressRep(address: string): string;
+export declare function encodeAddressRep(hex: string): string;
+export declare function isBigNumber(object: any): boolean;
+export declare function isString(object: any): boolean;
+export declare function isFunction(object: any): boolean;
+export declare function isObject(object: any): boolean;
+export declare function isBoolean(object: any): boolean;
+export declare function isJson(str: string): boolean;
 
-export function toBigNumber(number: number | string | BigNumber): BigNumber;
-export function getValueOfUnit(unit: string): BigNumber;
+export declare function toBigNumber(
+  number: number | string | BigNumber
+): BigNumber;
+export declare function getValueOfUnit(unit: string): BigNumber;
 
-export function fromWei(
+export declare function fromWei(
   number: number | string,
   unit: string
 ): string | BigNumber;
-export function toWei(
+export declare function toWei(
   number: number | string | BigNumber,
   unit: string
 ): string | BigNumber;
-export function toTwosComplement(
+export declare function toTwosComplement(
   number: number | string | BigNumber
 ): BigNumber;
-export function uint8ArrayToHex(uint8Array: Uint8Array): string;
+export declare function uint8ArrayToHex(uint8Array: Uint8Array): string;
 
-export function noop(): void;
-export function setPath(obj: any, path: string, value: any): void;
+export declare function noop(): void;
+export declare function setPath(obj: any, path: string, value: any): void;
 interface IUnpackSpecifiedParams {
   data: ArrayBuffer | SharedArrayBuffer;
   dataType: protobuf.Type;
   encoding?: string;
 }
-export function unpackSpecifiedTypeData({
+export declare function unpackSpecifiedTypeData({
   data,
   dataType,
   encoding,
 }: IUnpackSpecifiedParams): { [k: string]: any };
-export function deserializeTransaction(
+export declare function deserializeTransaction(
   rawTx: ArrayBuffer | SharedArrayBuffer,
   paramsDataType: protobuf.Type
 ): { [k: string]: any };
-export function getAuthorization(userName: string, password: string): string;
+export declare function getAuthorization(
+  userName: string,
+  password: string
+): string;
