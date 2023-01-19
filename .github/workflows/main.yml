@@ -22,9 +22,9 @@ jobs:
           yarn install
           yarn run build
 
-     - name: Publish to npm
-        run: |
-          npm config set registry https://registry.npmjs.org
-          npm publish
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Publish to npm
+          run: |
+            npm config set registry https://registry.npmjs.org
+            npm publish
+          env:
+            NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
