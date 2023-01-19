@@ -86,7 +86,11 @@ rollup({
 })
 ```
 
+<<<<<<< HEAD
 #### For Node.js usage and use commonjs module system
+=======
+### For Node.js usage and use commonjs module system
+>>>>>>> release/v3.2.55
 
 Webpack:
 
@@ -237,6 +241,7 @@ The usage of these methods is based on the AElf instance, so if you don't have o
 ```javascript
 import AElf from 'aelf-sdk';
 
+<<<<<<< HEAD
 // create a new instance of AElf, change the URL if needed
 const aelf = new AElf(new AElf.providers.HttpProvider('http://127.0.0.1:1235'));
 ```
@@ -282,6 +287,42 @@ aelf.chain.getChainStatus()
 #### getContractFileDescriptorSet
 
 Get the protobuf definitions related to a contract
+=======
+// only pass a host parameter
+const aelfInstance = new AElf(new AElf.providers.HttpProvider('http://127.0.0.1:8000'));
+
+// host, timeout, user, password, headers
+const aelf = new AElf(
+    new AElf.providers.HttpProvider(
+        host, // https://127.0.0.1:8000
+        timeout, // 300
+        user, // username
+        password, // passowrd
+        // header
+        [{
+            name: 'x-csrf-token',
+            value: document.cookie.match(/csrfToken=[^;]*/)[0].replace('csrfToken=', '')
+        }]
+    )
+);
+```
+
+init contract and call contract methods
+
+```js
+// contractAddress = xxx; wallet = xxx;
+// We use token contract for example.
+aelf.chain.contractAt(contractAddress, wallet, (err, result) => {
+    const contractoktMethods = result;
+    // contractMethods.methodName(param01, ..., paramN, callback);
+    // contractMethods.methodName.call(param01, ..., paramN, callback);
+    contractoktMethods.Transfer({
+        symbol: 'ELF',
+        to: '58h3RwTfaE8RDpRNMAMiMv8jUjanCeYHBzKuQfHbrfSFTCn',
+        amount: '1000'
+    }, (err, result) => {
+    });
+>>>>>>> release/v3.2.55
 
 _Web API path_
 
@@ -597,13 +638,20 @@ _Returns_
 _Example_
 ```javascript
 import AElf from 'aelf-sdk';
+<<<<<<< HEAD
 const wallet = AElf.wallet.createNewWallet();
+=======
+
+const aelf = new AElf(new AElf.providers.HttpProvider('https://127.0.0.1:8000'));
+aelf.setProvider(new AElf.providers.HttpProvider('https://127.0.0.1:8010'));
+>>>>>>> release/v3.2.55
 ```
 
 #### getWalletByMnemonic
 
 _Parameters_
 
+<<<<<<< HEAD
 1. `mnemonic - String` : wallet's mnemonic
 
 _Returns_
@@ -613,6 +661,15 @@ _Returns_
 _Example_
 ```javascript
 const wallet = AElf.wallet.getWalletByMnemonic(mnemonic);
+=======
+```js
+import AElf from 'aelf-sdk';
+
+AElf.wallet.createNewWallet();
+// wallet.AESDecrypto            wallet.AESEncrypto            wallet.bip39
+// wallet.createNewWallet        wallet.getWalletByMnemonic    wallet.getWalletByPrivateKey
+// wallet.sign                   wallet.signTransaction
+>>>>>>> release/v3.2.55
 ```
 
 #### getWalletByPrivateKey
@@ -703,10 +760,23 @@ base58.decode('$addresss'); // throw error if invalid
 
 ```javascript
 import AElf from 'aelf-sdk';
+<<<<<<< HEAD
 AElf.version // eg. 3.2.23
 ```
 
 ### 3.8 Requirements
+=======
+AElf.version // eg. 3.2.13
+```
+
+## Contributing
+
+- All contributions have to go into the dev branch
+
+- Please follow the code style of `eslint-config-airbnb-base`
+
+### Requirements
+>>>>>>> release/v3.2.55
 
 - [Node.js](https://nodejs.org)
 - [NPM](http://npmjs.com/)
@@ -714,7 +784,11 @@ AElf.version // eg. 3.2.23
 ### 3.9 Support
 
 ![browsers](https://img.shields.io/badge/browsers-latest%202%20versions-brightgreen.svg)
+<<<<<<< HEAD
 ![node](https://img.shields.io/badge/node->=10-green.svg)
+=======
+![node](https://img.shields.io/badge/node->=10.9.0-green.svg)
+>>>>>>> release/v3.2.55
 
 ## 4. About contributing
 
