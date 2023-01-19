@@ -22,9 +22,8 @@ jobs:
           yarn run build
 
       - name: Publish to npm
-        run: |
-          npm config set registry https://registry.npmjs.org
+          npm config set //registry.npmjs.org/:_authToken=$NPM_TOKEN
           npm publish
         env:
+          NPM_TOKEN: ${{secrets.NPM_TOKEN}}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
