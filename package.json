@@ -1,6 +1,6 @@
 {
   "name": "aelf-web3-test",
-  "version": "3.2.42",
+  "version": "3.2.44",
   "description": "aelf-sdk js library",
   "main": "dist/aelf.cjs.js",
   "browser": "dist/aelf.umd.js",
