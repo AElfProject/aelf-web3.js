@@ -18,7 +18,7 @@ jobs:
         run: |
           npm install
 
-      - uses: Wuerike/standard-version-release-branch@v1.2.0
+      - uses: Wuerike/standard-version-release-branch@v1.2.1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           release_version: ${{ github.event.inputs.version }}
