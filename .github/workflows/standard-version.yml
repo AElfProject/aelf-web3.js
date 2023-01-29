@@ -18,7 +18,6 @@ jobs:
       - name: Install
         run: |
           yarn install
-          npm run build
 
       - uses: Wuerike/standard-version-release-branch@v1.2.1
         with:
