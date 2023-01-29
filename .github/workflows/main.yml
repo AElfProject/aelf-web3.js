@@ -1,9 +1,10 @@
 name: Publish Package to npmjs
 
 on:
-  push:
-    tags:
-      - "v*"
+  workflow_run:
+    workflows: [create-release-branch]
+    types:
+      - completed
 
 jobs:
   build:
