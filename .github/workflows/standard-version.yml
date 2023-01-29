@@ -5,22 +5,26 @@ on:
     inputs:
       version:
         description: "The version you want to release."
-        required: false
+        required: true
 
 jobs:
   create-release-branch:
+    permissions: write-all
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
+      - name: Install
+        run: |
+          yarn install
 
-      - uses: Wuerike/standard-version-release-branch@1.2.0
+      - uses: Wuerike/standard-version-release-branch@v1.2.1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           release_version: ${{ github.event.inputs.version }}
-          origin_branch: develop
+          origin_branch: feature/standard-version
           target_branch: master
-          as_draft: true
+          as_draft: false
           push_tag: true
           pr_template: "PR opened by [standard-version-release-branch](https://github.com/Wuerike/standard-version-release-branch)"
