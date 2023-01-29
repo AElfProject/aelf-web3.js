@@ -2,36 +2,47 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-## [3.4.0](https://github.com/AbigailDeng/aelf-web3.js/compare/v3.2.59...v3.4.0) (2023-01-29)
-
-### [3.3.2](https://github.com/AElfProject/aelf-sdk.js/compare/v3.2.43...v3.3.2) (2023-01-29)
+### [3.3.5](https://github.com/AbigailDeng/aelf-web3.js/compare/v3.3.2...v3.3.5) (2023-01-29)
 
 ### Features
 
-- Create Release Branch ([c8140a4](https://github.com/AbigailDeng/aelf-web3.js/commit/c8140a4bb8972fd02b44b9af81b7dafd4c9b78cf))
-- Create Release Branch ([5d67cd9](https://github.com/AbigailDeng/aelf-web3.js/commit/5d67cd96092373ddc27e8cb2a4079cc8d02da9b4))
-- Create Release Branch ([46d731e](https://github.com/AbigailDeng/aelf-web3.js/commit/46d731ea56bdd487e1c33e9915ada304fa78e8ad))
-- Create Release Branch ([57fa837](https://github.com/AbigailDeng/aelf-web3.js/commit/57fa837e59ef27a469907db45f92d08561cbc229))
-- Create Release Branch ([e387bb9](https://github.com/AbigailDeng/aelf-web3.js/commit/e387bb99c3beeec5f1bc7269900d3f41141d613a))
+- change name ([68963a6](https://github.com/AbigailDeng/aelf-web3.js/commit/68963a6aae0bc2c3bcdb35b1ece2625136ce3322))
+- Create Release Branch ([b86a004](https://github.com/AbigailDeng/aelf-web3.js/commit/b86a00428da0da2591937e3ae7e724ab640adfc0))
 - Create Release Branch ([3d56b3a](https://github.com/AbigailDeng/aelf-web3.js/commit/3d56b3a3e388662dc1322d5865cdcd79de9ebc13))
+- deal conflict ([267200d](https://github.com/AbigailDeng/aelf-web3.js/commit/267200d22de1118bd4efa90eb8e9e2cb4175af9c))
 
-### [3.3.1](https://github.com/AbigailDeng/aelf-web3.js/compare/v3.2.59...v3.3.1) (2023-01-28)
+### [3.2.59](https://github.com/AbigailDeng/aelf-web3.js/compare/v3.2.57...v3.2.59) (2023-01-20)
 
 ### Features
 
-- Create Release Branch ([46d731e](https://github.com/AbigailDeng/aelf-web3.js/commit/46d731ea56bdd487e1c33e9915ada304fa78e8ad))
-- Create Release Branch ([57fa837](https://github.com/AbigailDeng/aelf-web3.js/commit/57fa837e59ef27a469907db45f92d08561cbc229))
-- Create Release Branch ([e387bb9](https://github.com/AbigailDeng/aelf-web3.js/commit/e387bb99c3beeec5f1bc7269900d3f41141d613a))
-- Create Release Branch ([3d56b3a](https://github.com/AbigailDeng/aelf-web3.js/commit/3d56b3a3e388662dc1322d5865cdcd79de9ebc13))
+- delete .npmrc ([748440a](https://github.com/AbigailDeng/aelf-web3.js/commit/748440a5c713a03f0d0dcb3da34d485f36711339))
 
-## [3.3.0](https://github.com/AbigailDeng/aelf-web3.js/compare/v3.2.59...v3.3.0) (2023-01-28)
+### [3.2.57](https://github.com/AbigailDeng/aelf-web3.js/compare/v3.2.56...v3.2.57) (2023-01-19)
 
 ### Features
 
-- Create Release Branch ([46d731e](https://github.com/AbigailDeng/aelf-web3.js/commit/46d731ea56bdd487e1c33e9915ada304fa78e8ad))
-- Create Release Branch ([57fa837](https://github.com/AbigailDeng/aelf-web3.js/commit/57fa837e59ef27a469907db45f92d08561cbc229))
-- Create Release Branch ([e387bb9](https://github.com/AbigailDeng/aelf-web3.js/commit/e387bb99c3beeec5f1bc7269900d3f41141d613a))
-- Create Release Branch ([3d56b3a](https://github.com/AbigailDeng/aelf-web3.js/commit/3d56b3a3e388662dc1322d5865cdcd79de9ebc13))
+- test tag ([ed61e56](https://github.com/AbigailDeng/aelf-web3.js/commit/ed61e560c45b45c6580b91a3d36b57122a749c88))
+- test tag ([56bef37](https://github.com/AbigailDeng/aelf-web3.js/commit/56bef37a8a78cf596547333602bbec239edaf141))
+- test tags ([d853929](https://github.com/AbigailDeng/aelf-web3.js/commit/d85392932dead61d7b6470a4dce14f364cdfa8a8))
+- test tags ([e649291](https://github.com/AbigailDeng/aelf-web3.js/commit/e6492911cd9a1881df84f3f4e50143b78ead7ad8))
+- test yml ([0c05c50](https://github.com/AbigailDeng/aelf-web3.js/commit/0c05c507e36627b7d7e53ccc9aa54c8d41bd3a62))
+- test yml ([bba395b](https://github.com/AbigailDeng/aelf-web3.js/commit/bba395b19ce2a2b7b17d3eb055d5ae01a955e746))
+
+### [3.2.56](https://github.com/AbigailDeng/aelf-web3.js/compare/v3.2.43...v3.2.56) (2023-01-19)
+
+### Features
+
+- test tags ([d819ca1](https://github.com/AbigailDeng/aelf-web3.js/commit/d819ca106dad9020172313e5688d96fd7eb70bdc))
+- test tags ([a2be18f](https://github.com/AbigailDeng/aelf-web3.js/commit/a2be18f5d417556b5c47d1706387114ce6ccb8b9))
+- test tags ([73c1ef1](https://github.com/AbigailDeng/aelf-web3.js/commit/73c1ef12d66dbaaf0d9af75b49a6d0c2698296e3))
+- test tags ([bd3138b](https://github.com/AbigailDeng/aelf-web3.js/commit/bd3138b484411198a6670c007da47b7224a7f5b7))
+- **yml:** yml ([fc1f49d](https://github.com/AbigailDeng/aelf-web3.js/commit/fc1f49dbac97634d9ed31640c486e571f24a5944))
+
+### [3.3.3](https://github.com/AElfProject/aelf-sdk.js/compare/v3.2.43...v3.3.3) (2023-01-29)
+
+### Features
+
+- change name ([68963a6](https://github.com/AElfProject/aelf-sdk.js/commit/68963a6aae0bc2c3bcdb35b1ece2625136ce3322))
 - **commit:** console ([100272b](https://github.com/AElfProject/aelf-sdk.js/commit/100272b2702c250f4b7a430acbc0c637c9ab18b6))
 - **pck:** version ([13cc07e](https://github.com/AElfProject/aelf-sdk.js/commit/13cc07e742d10cc75e7b910ad81f0f7261e50e09))
 - test ([356bc62](https://github.com/AElfProject/aelf-sdk.js/commit/356bc6265d3cdba5a1ad879d89ff38956a8d2229))
