@@ -23,7 +23,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           release_version: ${{ github.event.inputs.version }}
-          origin_branch: feature/standard-version
+          origin_branch: develop
           target_branch: master
           as_draft: false
           push_tag: true
