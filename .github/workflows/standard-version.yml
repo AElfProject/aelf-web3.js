@@ -26,5 +26,5 @@ jobs:
           origin_branch: develop
           target_branch: master
           as_draft: false
-          push_tag: false
+          push_tag: true
           pr_template: "PR opened by [standard-version-release-branch](https://github.com/Wuerike/standard-version-release-branch)"
