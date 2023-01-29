@@ -25,6 +25,6 @@ jobs:
           release_version: ${{ github.event.inputs.version }}
           origin_branch: develop
           target_branch: master
-          as_draft: true
-          push_tag: true
+          as_draft: false
+          push_tag: false
           pr_template: "PR opened by [standard-version-release-branch](https://github.com/Wuerike/standard-version-release-branch)"
