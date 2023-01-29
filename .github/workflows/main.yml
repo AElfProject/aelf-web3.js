@@ -2,7 +2,7 @@ name: Publish Package to npmjs
 
 on:
   workflow_run:
-    workflows: [create-release-branch]
+    workflows: [Create Release Branch]
     types:
       - completed
 
