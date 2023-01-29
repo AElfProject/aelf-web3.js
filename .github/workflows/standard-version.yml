@@ -16,7 +16,7 @@ jobs:
           fetch-depth: 0
       - name: Install
         run: |
-          npm install
+          yarn install
           npm run build
 
       - uses: Wuerike/standard-version-release-branch@v1.2.1
