@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.4.0](https://github.com/AbigailDeng/aelf-web3.js/compare/v3.2.59...v3.4.0) (2023-01-29)
+
+
+### Features
+
+* Create Release Branch ([c8140a4](https://github.com/AbigailDeng/aelf-web3.js/commit/c8140a4bb8972fd02b44b9af81b7dafd4c9b78cf))
+* Create Release Branch ([5d67cd9](https://github.com/AbigailDeng/aelf-web3.js/commit/5d67cd96092373ddc27e8cb2a4079cc8d02da9b4))
+* Create Release Branch ([46d731e](https://github.com/AbigailDeng/aelf-web3.js/commit/46d731ea56bdd487e1c33e9915ada304fa78e8ad))
+* Create Release Branch ([57fa837](https://github.com/AbigailDeng/aelf-web3.js/commit/57fa837e59ef27a469907db45f92d08561cbc229))
+* Create Release Branch ([e387bb9](https://github.com/AbigailDeng/aelf-web3.js/commit/e387bb99c3beeec5f1bc7269900d3f41141d613a))
+* Create Release Branch ([3d56b3a](https://github.com/AbigailDeng/aelf-web3.js/commit/3d56b3a3e388662dc1322d5865cdcd79de9ebc13))
+
 ### [3.3.1](https://github.com/AbigailDeng/aelf-web3.js/compare/v3.2.59...v3.3.1) (2023-01-28)
 
 
