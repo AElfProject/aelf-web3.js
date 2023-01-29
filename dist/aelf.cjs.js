@@ -1,6 +1,6 @@
 /*!
  * aelf-sdk.js v3.2.41 
- * (c) 2019-2022 AElf 
+ * (c) 2019-2023 AElf 
  * Released under MIT License
  */
 module.exports =
@@ -30468,7 +30468,7 @@ function transform(inputType, origin) {
   return result;
 }
 function transformMapToArray(inputType, origin) {
-  var fieldsLength = inputType.fieldsArray.length;
+  var fieldsLength = inputType.fieldsArray ? inputType.fieldsArray.length : 0;
   var result = origin;
 
   if (!origin) {

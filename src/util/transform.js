@@ -63,7 +63,7 @@ export function transform(inputType, origin, transformers = []) {
 }
 
 export function transformMapToArray(inputType, origin) {
-  const fieldsLength = inputType.fieldsArray.length;
+  const fieldsLength = inputType.fieldsArray ? inputType.fieldsArray.length : 0;
   let result = origin;
   if (!origin) {
     return origin;
