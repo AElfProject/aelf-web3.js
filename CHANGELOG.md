@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.3.7](https://github.com/AbigailDeng/aelf-web3.js/compare/v3.3.6...v3.3.7) (2023-01-29)
+
+
+### Features
+
+* Create Release Branch ([0f61b56](https://github.com/AbigailDeng/aelf-web3.js/commit/0f61b56aa1cd101b5b2c407e7459671eed4d39ae))
+* Create Release Branch ([c42b7ac](https://github.com/AbigailDeng/aelf-web3.js/commit/c42b7ac44596b6b56dbde75df6ce95cb5b1ede7e))
+* Create Release Branch ([4cebc57](https://github.com/AbigailDeng/aelf-web3.js/commit/4cebc57eecba6f52804da48b6ad2233c8b4323f0))
+* Create Release Branch ([4bb8ca2](https://github.com/AbigailDeng/aelf-web3.js/commit/4bb8ca2b75f1606fb15a0de625f0b21f44dd239c))
+* Create Release Branch ([bd04a6c](https://github.com/AbigailDeng/aelf-web3.js/commit/bd04a6cc10e4a0ef15c1ea3a01d9f85d5185c179))
+* Create Release Branch ([a2ccd6c](https://github.com/AbigailDeng/aelf-web3.js/commit/a2ccd6c109d1f6ecc062bee24c55d06430d85a69))
+* Create Release Branch ([c8140a4](https://github.com/AbigailDeng/aelf-web3.js/commit/c8140a4bb8972fd02b44b9af81b7dafd4c9b78cf))
+* Create Release Branch ([5d67cd9](https://github.com/AbigailDeng/aelf-web3.js/commit/5d67cd96092373ddc27e8cb2a4079cc8d02da9b4))
+* Create Release Branch ([46d731e](https://github.com/AbigailDeng/aelf-web3.js/commit/46d731ea56bdd487e1c33e9915ada304fa78e8ad))
+* Create Release Branch ([57fa837](https://github.com/AbigailDeng/aelf-web3.js/commit/57fa837e59ef27a469907db45f92d08561cbc229))
+* Create Release Branch ([e387bb9](https://github.com/AbigailDeng/aelf-web3.js/commit/e387bb99c3beeec5f1bc7269900d3f41141d613a))
+* Create Release Branch & npm publish ([c571faa](https://github.com/AbigailDeng/aelf-web3.js/commit/c571faa7064aea221fb884e3a0e1aacd60613ff4))
+* Create Release Branch & npm publish ([ef2791f](https://github.com/AbigailDeng/aelf-web3.js/commit/ef2791f4e37f1abc2ba2193b55d48387ae340f98))
+* master ([c2de211](https://github.com/AbigailDeng/aelf-web3.js/commit/c2de211aa5a68007025d501e1ac8cb507e07a331))
+* master ([6f35a99](https://github.com/AbigailDeng/aelf-web3.js/commit/6f35a9966593323cef8cd112825c3d74308523cc))
+* master ([7b1f525](https://github.com/AbigailDeng/aelf-web3.js/commit/7b1f52595db80b35963e9cfd8d94cc3b265f8e3e))
+
 ### [3.3.6](https://github.com/AbigailDeng/aelf-web3.js/compare/v3.3.5...v3.3.6) (2023-01-29)
 
 
