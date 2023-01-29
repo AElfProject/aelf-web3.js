@@ -2,11 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-### [3.3.2](https://github.com/AElfProject/aelf-sdk.js/compare/v3.2.43...v3.3.2) (2023-01-29)
+### [3.3.3](https://github.com/AElfProject/aelf-sdk.js/compare/v3.2.43...v3.3.3) (2023-01-29)
 
 
 ### Features
 
+* change name ([68963a6](https://github.com/AElfProject/aelf-sdk.js/commit/68963a6aae0bc2c3bcdb35b1ece2625136ce3322))
 * **commit:** console ([100272b](https://github.com/AElfProject/aelf-sdk.js/commit/100272b2702c250f4b7a430acbc0c637c9ab18b6))
 * **pck:** version ([13cc07e](https://github.com/AElfProject/aelf-sdk.js/commit/13cc07e742d10cc75e7b910ad81f0f7261e50e09))
 * test ([356bc62](https://github.com/AElfProject/aelf-sdk.js/commit/356bc6265d3cdba5a1ad879d89ff38956a8d2229))
