@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.3.6](https://github.com/AbigailDeng/aelf-web3.js/compare/v3.3.5...v3.3.6) (2023-01-29)
+
+
+### Features
+
+* resolve conflict ([7ddfdde](https://github.com/AbigailDeng/aelf-web3.js/commit/7ddfdde9cb31d8891ae710d81a03ea4a82510a26))
+
+### [3.3.4](https://github.com/AbigailDeng/aelf-web3.js/compare/v3.3.2...v3.3.4) (2023-01-29)
+
 ### [3.3.5](https://github.com/AbigailDeng/aelf-web3.js/compare/v3.3.2...v3.3.5) (2023-01-29)
 
 
