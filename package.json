@@ -115,5 +115,13 @@
     "scripts": {
       "postbump": "npm run build && git add ."
     }
-  }
+  },
+  "size-limit": [
+    {
+      "path": "dist/aelf.cjs.js"
+    },
+    {
+      "path": "dist/aelf.umd.js"
+    }
+  ]
 }
