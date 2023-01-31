@@ -1,4 +1,4 @@
-import {deserializeTransaction} from '../../../src/util/utils';
+import { deserializeTransaction } from '../../../src/util/utils';
 import AElf from '../../../src/index';
 import tokenProto from './token.proto.json';
 
@@ -17,22 +17,27 @@ describe('test deserializing transaction', () => {
     // console.log(signed);
     const dataType = AElf.pbjs.Root.fromJSON(tokenProto);
     const transferInput = dataType.lookupType('TransferInput');
-    const encodedTransaction = '0a220a2005c3b3959caeee55b5db4004f6f9d76860aae818ce7b33d210a446ecb275468212220a200e9a238616169860ba4fb502f8e87ce62db9ef321f29fd76d6e1ce30a0e0cdba18a8a19e022204fa60011c2a085472616e73666572322e0a220a200e9a238616169860ba4fb502f8e87ce62db9ef321f29fd76d6e1ce30a0e0cdba1203454c461880c2d72f82f10441ad1647aa462a8859c7a699f22d6124c82a5239c90746ac67ebfd8e1a7b4a25f343733351162d205fc881ea62072e9fe0fad5f6113734309b6666f6812d6b7a6400';
-    const decodedTransaction = deserializeTransaction(encodedTransaction, transferInput);
+    const encodedTransaction =
+      '0a220a2005c3b3959caeee55b5db4004f6f9d76860aae818ce7b33d210a446ecb275468212220a200e9a238616169860ba4fb502f8e87ce62db9ef321f29fd76d6e1ce30a0e0cdba18a8a19e022204fa60011c2a085472616e73666572322e0a220a200e9a238616169860ba4fb502f8e87ce62db9ef321f29fd76d6e1ce30a0e0cdba1203454c461880c2d72f82f10441ad1647aa462a8859c7a699f22d6124c82a5239c90746ac67ebfd8e1a7b4a25f343733351162d205fc881ea62072e9fe0fad5f6113734309b6666f6812d6b7a6400';
+    const decodedTransaction = deserializeTransaction(
+      encodedTransaction,
+      transferInput
+    );
     console.log(decodedTransaction);
     expect(decodedTransaction).toEqual({
       from: '3YFERHEVq1vBWiAQ5RiyDrFHdpFRfQiaNy5njERcw2RGubJ7f',
       to: '7RzVGiuVWkvL4VfVHdZfQF2Tri3sgLe9U991bohHFfSRZXuGX',
       methodName: 'Transfer',
       refBlockNumber: '4690088',
-      signature: 'ad1647aa462a8859c7a699f22d6124c82a5239c90746ac67ebfd8e1a7b4a25f343733351162d205fc881ea62072e9fe0fad5f6113734309b6666f6812d6b7a6400',
+      signature:
+        'ad1647aa462a8859c7a699f22d6124c82a5239c90746ac67ebfd8e1a7b4a25f343733351162d205fc881ea62072e9fe0fad5f6113734309b6666f6812d6b7a6400',
       refBlockPrefix: 'fa60011c',
       params: {
         to: '7RzVGiuVWkvL4VfVHdZfQF2Tri3sgLe9U991bohHFfSRZXuGX',
         amount: '100000000',
         memo: '',
-        symbol: 'ELF'
-      }
+        symbol: 'ELF',
+      },
     });
-  })
+  });
 });
