@@ -1,5 +1,5 @@
 /*!
- * aelf-sdk.js v3.2.43 
+ * aelf-sdk.js v3.2.44 
  * (c) 2019-2023 AElf 
  * Released under MIT License
  */
@@ -30271,6 +30271,13 @@ var CHAIN_METHODS = {
     params: ['rawTransaction'],
     inputFormatter: []
   },
+  calculateTransactionFee: {
+    name: 'calculateTransactionFee',
+    call: 'blockChain/calculateTransactionFee',
+    method: 'POST',
+    params: ['rawTransaction'],
+    inputFormatter: []
+  },
   callReadOnly: {
     name: 'callReadOnly',
     call: 'blockChain/executeTransaction',
@@ -33769,7 +33776,7 @@ function () {
     defineProperty_default()(this, "settings", new settings_Settings());
 
     defineProperty_default()(this, "version", {
-      api: "3.2.43"
+      api: "3.2.44"
     });
 
     this._requestManager = new requestManage_RequestManager(provider);
@@ -33808,7 +33815,7 @@ function () {
 /* eslint-enable */
 
 
-defineProperty_default()(src_AElf, "version", "3.2.43");
+defineProperty_default()(src_AElf, "version", "3.2.44");
 
 defineProperty_default()(src_AElf, "providers", {
   HttpProvider: httpProvider_HttpProvider

@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.2.44](https://github.com/AElfProject/aelf-sdk.js/compare/v3.2.43...v3.2.44) (2023-02-01)
+
+
+### Features
+
+* add calculateTransactionFee ([04331b2](https://github.com/AElfProject/aelf-sdk.js/commit/04331b20d33e195eaafb3fb67a9cab96cec9198d))
+* add limit ([1f20b26](https://github.com/AElfProject/aelf-sdk.js/commit/1f20b26dea2b19c61fa998ccd3a96e482bd11bc0))
+
 ### [3.2.43](https://github.com/AElfProject/aelf-sdk.js/compare/v3.2.41...v3.2.43) (2023-01-29)
 
 
