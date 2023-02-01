@@ -88,6 +88,13 @@ export const CHAIN_METHODS = {
     params: ['rawTransaction'],
     inputFormatter: []
   },
+  calculateTransactionFee: {
+    name: 'calculateTransactionFee',
+    call: 'blockChain/calculateTransactionFee',
+    method: 'POST',
+    params: ['rawTransaction'],
+    inputFormatter: []
+  },
   callReadOnly: {
     name: 'callReadOnly',
     call: 'blockChain/executeTransaction',
