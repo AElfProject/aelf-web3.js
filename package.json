@@ -1,5 +1,5 @@
 {
-  "name": "aelf-sdk-test",
+  "name": "aelf-web3-test",
   "version": "3.3.7",
   "description": "aelf-sdk js library",
   "main": "dist/aelf.cjs.js",
