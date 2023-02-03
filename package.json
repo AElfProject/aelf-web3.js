@@ -1,6 +1,6 @@
 {
   "name": "aelf-sdk",
-  "version": "3.2.43",
+  "version": "3.2.44",
   "description": "aelf-sdk js library",
   "main": "dist/aelf.cjs.js",
   "browser": "dist/aelf.umd.js",
@@ -60,6 +60,7 @@
     "query-string": "5.1.1",
     "randombytes": "^2.1.0",
     "scryptsy": "^2.1.0",
+    "typescript": "^4.9.5",
     "xmlhttprequest": "^1.8.0"
   },
   "devDependencies": {
@@ -88,6 +89,7 @@
     "jest-environment-jsdom-fifteen": "^1.0.0",
     "lint-staged": "^9.0.2",
     "rimraf": "^2.6.3",
+    "size-limit": "^8.1.2",
     "standard-version": "^9.1.1",
     "unused-files-webpack-plugin": "^3.4.0",
     "webpack": "^4.35.2",
