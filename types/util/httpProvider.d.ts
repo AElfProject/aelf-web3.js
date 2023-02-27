@@ -20,14 +20,14 @@ declare class HttpProvider {
   public static timeoutPromise(delay: number): Promise<ITimeoutResolve>;
   public requestSendByFetch(
     requestConfig: TRequestConfig,
-    request: Request
-  ): Request;
+    request: typeof XMLHttpRequest
+  ): any;
   public sendAsyncByFetch(
     requestConfig: TRequestConfig
   ): Promise<{ [k: string]: any }>;
   public requestSend(
     requestConfig: TRequestConfig,
-    request: Request,
+    request: typeof XMLHttpRequest,
     isAsync?: boolean
   ): void;
   public send(requestConfig: TRequestConfig): { [k: string]: any };

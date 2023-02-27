@@ -1,7 +1,7 @@
-import { Contract } from "types/contract";
-import { RequestManager } from "types/util/requestManage";
-import { IWallet } from "types/wallet";
-import { IExtractArgumentsIntoObjectResult, TExtractArg } from "./chainMethod";
+import { Contract } from 'types/contract';
+import { RequestManager } from 'types/util/requestManage';
+import { IWallet } from 'types/wallet';
+import { IExtractArgumentsIntoObjectResult, TExtractArg } from './chainMethod';
 
 declare class Chain {
   constructor(requestManager: RequestManager);
@@ -12,11 +12,11 @@ declare class Chain {
     address: string,
     wallet: IWallet,
     args: { [k in string]: any }
-  ): Promise<Contract>;
+  ): Contract | Promise<Contract>;
   public getMerklePath(
     txId: string,
     height: number,
     args: { [k in string]: any }
-  ): any[] | null;
+  ): any[] | null | Promise<any[] | null>;
 }
 export default Chain;

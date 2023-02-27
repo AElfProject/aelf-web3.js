@@ -29,12 +29,12 @@ module.exports = {
   coverageDirectory: 'coverage',
 
   collectCoverageFrom: [
-    "**/*.js",
-    "!**/node_modules/**",
-    "!**/examples/**",
-    "!**/dist/**",
-    "!**/script/**",
-    "!**/build/**"
+    '**/*.js',
+    '!**/node_modules/**',
+    '!**/examples/**',
+    '!**/dist/**',
+    '!**/script/**',
+    '!**/build/**',
   ],
 
   // An array of regexp pattern strings used to skip coverage collection
@@ -77,9 +77,7 @@ module.exports = {
   // },
 
   // An array of directory names to be searched recursively up from the requiring module's location
-  moduleDirectories: [
-    "node_modules"
-  ],
+  moduleDirectories: ['node_modules'],
 
   // An array of file extensions your modules use
   // moduleFileExtensions: [
@@ -93,7 +91,7 @@ module.exports = {
 
   // A map from regular expressions to module names that allow to stub out resources with a single module
   moduleNameMapper: {
-    '^randombytes$': '<rootDir>/node_modules/randombytes/index.js'
+    '^randombytes$': '<rootDir>/node_modules/randombytes/index.js',
   },
 
   // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader
@@ -147,7 +145,7 @@ module.exports = {
   // snapshotSerializers: [],
 
   // The test environment that will be used for testing
-  testEnvironment: 'jest-environment-jsdom-fifteen',
+  testEnvironment: 'jest-environment-jsdom',
 
   // Options that will be passed to the testEnvironment
   // testEnvironmentOptions: {},
@@ -183,8 +181,8 @@ module.exports = {
 
   // A map from regular expressions to paths to transformers
   transform: {
-    '^.+\\.js?$': 'babel-jest'
-  }
+    '^.+\\.js?$': 'babel-jest',
+  },
 
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
   // transformIgnorePatterns: [

@@ -23,7 +23,7 @@ describe('test deserializing transaction', () => {
       encodedTransaction,
       transferInput
     );
-    console.log(decodedTransaction);
+    // console.log(decodedTransaction);
     expect(decodedTransaction).toEqual({
       from: '3YFERHEVq1vBWiAQ5RiyDrFHdpFRfQiaNy5njERcw2RGubJ7f',
       to: '7RzVGiuVWkvL4VfVHdZfQF2Tri3sgLe9U991bohHFfSRZXuGX',

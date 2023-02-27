@@ -1,4 +1,4 @@
-import * as protobuf from "@aelfqueen/protobufjs/light";
+import * as protobuf from '@aelfqueen/protobufjs/light';
 export interface IAddress {
   value: Uint8Array;
 }
@@ -36,15 +36,26 @@ export function getTransactionFee(
 
 export function arrayBufferToHex(arrayBuffer: Buffer): string;
 export function getRepForAddress(address: { [k: string]: any }): string;
-export function getAddressFromRep(rep: string): protobuf.Message<{}>;
+export function getAddressFromRep(
+  rep: string
+): protobuf.Message<{ value: string }>;
 export function getAddressObjectFromRep(rep: string): { [k: string]: any };
-export function getRepForHash(hash: protobuf.Message<{}>): string;
-export function getHashFromHex(hex: string): protobuf.Message<{}>;
+export function getRepForHash(
+  hash: protobuf.Message<{ value: string }>
+): string;
+export function getHashFromHex(
+  hex: string
+): protobuf.Message<{ value: string }>;
 export function getHashObjectFromHex(hex: string): { [k: string]: any };
 export function encodeTransaction(tx: { [k: string]: any }): Uint8Array;
 export function getTransaction(
   from: string,
   to: string,
   methodName: string,
-  params: Uint8Array
-): protobuf.Message<{}>;
+  params: any
+): protobuf.Message<{
+  from: protobuf.Message<{ value: string }>;
+  to: protobuf.Message<{ value: string }>;
+  methodName: string;
+  params: any;
+}>;

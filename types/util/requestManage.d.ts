@@ -1,4 +1,4 @@
-import HttpProvider from "./httpProvider";
+import HttpProvider from './httpProvider';
 interface IRequestBody {
   requestMethod: string;
   method: Function;
@@ -9,7 +9,7 @@ interface IPrepareResult {
   url: Function;
   params: { [k in string]: any };
 }
-declare class RequestManager {
+export declare class RequestManager {
   constructor(provider: HttpProvider);
   public static prepareRequest({
     requestMethod,

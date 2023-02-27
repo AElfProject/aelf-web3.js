@@ -53,9 +53,11 @@ describe('test AElf-sdk', () => {
     expect(chainStatus).not.toBeNaN();
 
     const genesisAddress = chainStatus.GenesisContractAddress;
+
     const descriptorSet = await aelf.chain.getContractFileDescriptorSet(
       genesisAddress
     );
+
     expect(descriptorSet).not.toBeNaN();
 
     const jsonInfo = JSON.stringify(descriptorSet);
@@ -118,7 +120,6 @@ describe('test AElf-sdk', () => {
   });
   test('check get peers info', async () => {
     const peersInfo = await aelf.chain.getPeers(false);
-    console.log(peersInfo, 'peersInfo');
     expect(peersInfo).not.toBeNaN();
     expect(peersInfo.length).toBeGreaterThan(1);
   });
