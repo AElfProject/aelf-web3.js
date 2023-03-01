@@ -89,6 +89,32 @@
         }
       }
     },
+    "MerklePathMapEntry": {
+      "options": {
+        "map_entry": true
+      },
+      "fields": {
+        "merklePathNodeMapEntry": {
+          "type": "MerklePathNodeMapEntry",
+          "id": 1
+        }
+      }
+    },
+    "MerklePathNodeMapEntry": {
+      "options": {
+        "map_entry": true
+      },
+      "fields": {
+        "key": {
+          "type": "Hash",
+          "id": 1
+        },
+        "value": {
+          "type": "bool",
+          "id": 2
+        }
+      }
+    },
     "BinaryMerkleTree": {
       "fields": {
         "nodes": {

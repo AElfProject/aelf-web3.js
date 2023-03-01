@@ -203,6 +203,13 @@ describe('test proto', () => {
       'DonateResourceToken',
       '{ "blockHash": "21cbeb3ac049d5a91c66c87f7ae48923fa469c11794f7eecdc721d4e26be48f9", "blockHeight": "136624547" }'
     );
-    console.log(result);
+    expect(result.from.value).toBeInstanceOf(Buffer);
+    expect(result.from.value.toString('hex')).toEqual(
+      'f9609c60db810203811cd99a9714b45be196c313348063a82d35faafd037480c'
+    );
+    expect(result.to.value).toBeInstanceOf(Buffer);
+    expect(result.to.value.toString('hex')).toEqual(
+      '2791e992a57f28e75a11f13af2c0aec8b0eb35d2f048d42eba8901c92e0378dc'
+    );
   });
 });

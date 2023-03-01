@@ -17,6 +17,6 @@ export declare class RequestManager {
     params,
   }: IRequestBody): IPrepareResult;
   public setProvider(provider: HttpProvider): void;
-  public send(requestBody: IRequestBody): Response;
+  public send(requestBody: IRequestBody): any;
   public sendAsync(requestBody: IRequestBody): Promise<any>;
 }
