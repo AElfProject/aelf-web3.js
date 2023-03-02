@@ -4,6 +4,7 @@ import {
   transformArrayToMap,
   encodeAddress,
   INPUT_TRANSFORMERS,
+  OUTPUT_TRANSFORMERS,
 } from '../../../src/util/transform';
 import AElf from '../../../src/index';
 import tokenProto from './token.proto.json';
@@ -126,5 +127,18 @@ describe('test httpProvider', () => {
     expect(result).toEqual(
       '4rgQm9utVaWDGc8pAexoktzeMDPumVQPZd54geUMDLovuYqZfYXpWdwn8dVa8m5a7DvgA1KLF'
     );
+  });
+  test('test input address transformer with string origin', () => {
+    const address = [
+      '0x967f2a2c7f3d22f9278175c1e6aa39cf9171db91dceacd5ee0f37c2e507b5abe',
+    ];
+    const result = INPUT_TRANSFORMERS[1].transformer(address);
+  });
+  test('test output address transformer with string origin', () => {
+    const address = {
+      value: 'ELF_UFRnXNHnVNiWfKZ9c5hSSt9Vt97zYf6xHF7nTNkq7WoiLL4BU_AELF',
+    };
+    const result = OUTPUT_TRANSFORMERS[0].transformer(address);
+    console.log(result);
   });
 });

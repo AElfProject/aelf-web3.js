@@ -89,28 +89,17 @@
         }
       }
     },
-    "MerklePathMapEntry": {
-      "options": {
-        "map_entry": true
-      },
-      "fields": {
-        "merklePathNodeMapEntry": {
-          "type": "MerklePathNodeMapEntry",
-          "id": 1
-        }
-      }
-    },
     "MerklePathNodeMapEntry": {
       "options": {
         "map_entry": true
       },
       "fields": {
         "key": {
-          "type": "Hash",
+          "type": "bytes",
           "id": 1
         },
         "value": {
-          "type": "bool",
+          "type": "bytes",
           "id": 2
         }
       }

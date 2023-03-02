@@ -1,4 +1,4 @@
 {
   "jest.rootPath": "/Users/xiezixin/Documents/work/boilerplate/aelf-web3.js",
-  "jest.jestCommandLine": "/Users/xiezixin/Documents/work/boilerplate/aelf-web3.js/node_modules/.bin/jest ./test/unit/util/proto.test.js --config=jest.browser.config.js --watch"
+  "jest.jestCommandLine": "/Users/xiezixin/Documents/work/boilerplate/aelf-web3.js/node_modules/.bin/jest ./test/unit/chain/index.test.js --config=jest.browser.config.js --watch"
 }
