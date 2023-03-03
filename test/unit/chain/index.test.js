@@ -5,7 +5,7 @@ import AElf from '../../../src';
 const stageEndpoint = 'https://explorer-test-tdvw.aelf.io/chain';
 let httpProvider, requestManager, chain;
 
-describe('should work', () => {
+describe('chain should work', () => {
   beforeEach(() => {
     httpProvider = new HttpProvider(stageEndpoint);
     requestManager = new RequestManager(httpProvider);
