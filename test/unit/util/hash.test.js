@@ -10,7 +10,7 @@ describe('test hash', () => {
       '0x967f2a2c7f3d22f9278175c1e6aa39cf9171db91dceacd5ee0f37c2e507b5abe'
     );
   });
-  test('test keccak256', () => {
+  test('test keccak512', () => {
     expect(keccak512('123')).toBe(
       '0x8ca32d950873fd2b5b34a7d79c4a294b2fd805abe3261beb04fab61a3b4b75609afd6478aa8d34e03f262d68bb09a2ba9d655e228c96723b2854838a6e613b9d'
     );
