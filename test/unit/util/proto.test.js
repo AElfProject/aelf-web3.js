@@ -37,9 +37,13 @@ describe('test proto', () => {
     expect(getResourceFee(Logs).length).toEqual(0);
     expect(() => getFee('CgNFTEYQoI/hGQ==', 'ResourceToken')).toThrow();
   });
-  test('test fee with ResourceTokenCharged type', () => {
+  test('test fee with TransactionFeeCharged type', () => {
     const result = getFee('CgNFTEYQoI/hGQ==', 'TransactionFeeCharged');
     expect(result).toEqual({
+      symbol: 'ELF',
+      amount: '54020000',
+    });
+    expect(getFee('CgNFTEYQoI/hGQ==')).toEqual({
       symbol: 'ELF',
       amount: '54020000',
     });
@@ -70,6 +74,19 @@ describe('test proto', () => {
     expect(result).toEqual(
       'CiIKILEmXenHStaFyei2ijKTSRTSXFwtYJZtuzCVOHs3KWEpEiIKIIw9aDQ+0IsgauW4z2rbA/hDk944n5QN6KI2S6s3Bb3hGgNFTEY=IIDIr6Al'
     );
+    expect(
+      getSerializedDataFromLog({
+        Indexed: [
+          'CiIKILEmXenHStaFyei2ijKTSRTSXFwtYJZtuzCVOHs3KWEp',
+          'EiIKIIw9aDQ+0IsgauW4z2rbA/hDk944n5QN6KI2S6s3Bb3h',
+          'GgNFTEY=',
+        ],
+        Name: 'Transferred',
+        Address: 'ELF_JRmBduh4nXWi1aXgdUsj5gJrzeZb2LxmrAbf7W99faZSvoAaE_AELF',
+      })
+    ).toEqual(
+      'CiIKILEmXenHStaFyei2ijKTSRTSXFwtYJZtuzCVOHs3KWEpEiIKIIw9aDQ+0IsgauW4z2rbA/hDk944n5QN6KI2S6s3Bb3hGgNFTEY='
+    );
   });
   test('test get serialized data from log when Indexed is null', () => {
     const log = {
@@ -80,6 +97,13 @@ describe('test proto', () => {
     };
     const result = getSerializedDataFromLog(log);
     expect(result).toEqual('IIDIr6Al');
+    expect(
+      getSerializedDataFromLog({
+        NonIndexed: 'IIDIr6Al',
+        Name: 'Transferred',
+        Address: 'ELF_JRmBduh4nXWi1aXgdUsj5gJrzeZb2LxmrAbf7W99faZSvoAaE_AELF',
+      })
+    ).toEqual('IIDIr6Al');
   });
   test('test get resource fee', () => {
     const logs = [
@@ -100,11 +124,41 @@ describe('test proto', () => {
       {
         Address: '25CecrU94dmMdbhC3LWMKxtoaL4Wv8PChGvVJM6PxkHAyvXEhB',
         Name: 'TransactionFeeCharged',
-        Indexed: null,
         NonIndexed: 'CgNFTEYQoI/hGQ==',
       },
     ];
     const result = getResourceFee(logs);
+    expect(result.length).toEqual(0);
+  });
+  test('test get resource fee with empty input', () => {
+    const result = getResourceFee();
+    expect(result.length).toEqual(0);
+  });
+  test('test get transaction fee', () => {
+    const logs = [
+      {
+        Address: '25CecrU94dmMdbhC3LWMKxtoaL4Wv8PChGvVJM6PxkHAyvXEhB',
+        Name: 'TransactionFeeCharged',
+        NonIndexed: 'CgNFTEYQoI/hGQ==',
+      },
+    ];
+    const result = getTransactionFee(logs);
+    expect(result).toEqual([{ symbol: 'ELF', amount: '54020000' }]);
+  });
+  test('test get transaction fee without TransactionFeeCharged type', () => {
+    const logs = [
+      {
+        Address: '25CecrU94dmMdbhC3LWMKxtoaL4Wv8PChGvVJM6PxkHAyvXEhB',
+        Name: 'ResourceTokenCharged',
+        Indexed: null,
+        NonIndexed: 'CgNFTEYQoI/hGQ==',
+      },
+    ];
+    const result = getTransactionFee(logs);
+    expect(result.length).toEqual(0);
+  });
+  test('test get transaction fee with empty input', () => {
+    const result = getTransactionFee();
     expect(result.length).toEqual(0);
   });
   test('test arrayBuffer to Hex', () => {
@@ -124,10 +178,11 @@ describe('test proto', () => {
       'q9sA88YfqXJEQrKx8vmECZzMJytpw7GySFRnyYSJoBGqfsgFZpdf1SwQ'
     );
   });
-  test('test get rep from address', () => {
+  test('test get rep from address with invalid params', () => {
     const result = getRepForAddress({});
     expect(result).toEqual('3QJmnh');
   });
+
   test('test get address from rep', () => {
     const buffer = getAddressFromRep(
       'q9sA88YfqXJEQrKx8vmECZzMJytpw7GySFRnyYSJoBGqfsgFZpdf1SwQ'
@@ -138,7 +193,7 @@ describe('test proto', () => {
       'db909e72b53de1d98c75b842dcb58c2b1b6868be16bfc3c2846bd524ce8fc641c0caf5c484'
     );
   });
-  test('test get address from rep', () => {
+  test('test get address object from rep', () => {
     const buffer = getAddressObjectFromRep(
       'q9sA88YfqXJEQrKx8vmECZzMJytpw7GySFRnyYSJoBGqfsgFZpdf1SwQ'
     ).value;
@@ -156,11 +211,11 @@ describe('test proto', () => {
       'db909e72b53de1d98c75b842dcb58c2b1b6868be16bfc3c2846bd524ce8fc641c0caf5c484'
     );
   });
-  test('test get rep from hash', () => {
+  test('test get rep from hash with invalid params', () => {
     const result = getRepForHash({});
     expect(result).toEqual('');
   });
-  test('test get rep from hash', () => {
+  test('test get hash from hex', () => {
     const result = getHashFromHex(
       'db909e72b53de1d98c75b842dcb58c2b1b6868be16bfc3c2846bd524ce8fc641c0caf5c484'
     );

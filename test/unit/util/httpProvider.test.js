@@ -89,6 +89,10 @@ describe('test httpProvider', () => {
       statusText: undefined,
     });
   });
+  test('test format response text when error', () => {
+    const response = HttpProvider.formatResponseText(null);
+    expect(response).toEqual(null);
+  });
   test('test timeout', async () => {
     const p = HttpProvider.timeoutPromise(3000);
     expect(setTimeout).toHaveBeenCalledTimes(1);
@@ -184,7 +188,7 @@ describe('test httpProvider', () => {
     const NewHttpProvider = require('../../../src/util/httpProvider').default;
     const httpProvider = new NewHttpProvider(stageEndpoint);
     window.XMLHttpRequest = xhr;
-    expect(
+    await expect(
       httpProvider.sendAsyncByFetch({
         url: 'nodes/info',
         method: 'POST',
@@ -317,13 +321,23 @@ describe('test httpProvider', () => {
     expect(result).toEqual(blockByHeightRes);
   });
   test('test send async by xhr when error', async () => {
-    const httpProvider = new HttpProvider(stageEndpoint);
-    expect(
+    const httpProvider = new HttpProvider(
+      'https://explorer-test.aelf.io/chain'
+    );
+    await expect(
       httpProvider.sendAsyncByXMLHttp({
-        url: 'nodes/info',
+        url: 'blockChain/executeTransaction',
         method: 'POST',
       })
-    ).rejects.toEqual('<h2>403 Forbidden</h2>');
+    ).rejects.toEqual({
+      Error: {
+        Code: '20012',
+        Data: {},
+        Details: null,
+        Message: 'Invalid params',
+        ValidationErrors: null,
+      },
+    });
   });
   test('test is connected', () => {
     const httpProvider = new HttpProvider('https://aelf-public-node.aelf.io');

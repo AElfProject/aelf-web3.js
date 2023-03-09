@@ -20,6 +20,12 @@ describe('test formatter', () => {
         'ELF_rkws1GibTwWQnLyLvpRtnDQiZYf51tEqQDwpGaou5s4ZQvi1v'
       )
     ).toBe('rkws1GibTwWQnLyLvpRtnDQiZYf51tEqQDwpGaou5s4ZQvi1v');
+    expect(
+      inputAddressFormatter({
+        value: 'rkws1GibTwWQnLyLvpRtnDQiZYf51tEqQDwpGaou5s4ZQvi1v',
+      })
+    ).toBe('rkws1GibTwWQnLyLvpRtnDQiZYf51tEqQDwpGaou5s4ZQvi1v');
+    expect(() => inputAddressFormatter('test')).toThrow('Invalid address');
   });
   test('test output file descriptor set formatter', () => {
     const name = outputFileDescriptorSetFormatter(
