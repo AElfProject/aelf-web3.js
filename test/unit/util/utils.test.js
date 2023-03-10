@@ -3,6 +3,7 @@ import BigNumber from 'bignumber.js';
 import {
   padLeft,
   base58,
+  chainIdConvertor,
   decodeAddressRep,
   encodeAddressRep,
   isBigNumber,
@@ -13,7 +14,7 @@ import {
   isJson,
   toBigNumber,
   uint8ArrayToHex,
-  setPath
+  setPath,
 } from '../../../src/util/utils';
 
 describe('test utils', () => {
@@ -25,16 +26,35 @@ describe('test utils', () => {
   test('test base58 decode and encode', () => {
     expect(base58.encode('18138372fad4', 'hex')).toBe('2MTJUAViVu6ctF');
     expect(base58.decode('2MTJUAViVu6ctF', 'hex')).toBe('18138372fad4');
-
+    expect(() => base58.encode(null, 'hex')).toThrow(
+      '"data" argument must be an Array of Buffers'
+    );
     expect(base58.encode('qwe123', 'utf8')).toBe('7NjemqtmHiYjxe');
     expect(base58.decode('7NjemqtmHiYjxe', 'utf8')).toBe('qwe123');
   });
 
+  test('test chainId convertor chainIdToBase58 and base58ToChainId', () => {
+    expect(chainIdConvertor.chainIdToBase58('123456')).toBe('VxNu');
+    expect(chainIdConvertor.base58ToChainId('VxNu').toString(16)).toBe(
+      '123456'
+    );
+  });
+
   test('decode and encode address hex represent', () => {
     /* eslint-disable max-len */
-    expect(decodeAddressRep('rkws1GibTwWQnLyLvpRtnDQiZYf51tEqQDwpGaou5s4ZQvi1v')).toBe('70fb1d6779d84f718966eb0558619bd70a2b56fe8f74d60737d1efabb701c119');
-    expect(encodeAddressRep('70fb1d6779d84f718966eb0558619bd70a2b56fe8f74d60737d1efabb701c119')).toBe('rkws1GibTwWQnLyLvpRtnDQiZYf51tEqQDwpGaou5s4ZQvi1v');
-    expect(encodeAddressRep('0x70fb1d6779d84f718966eb0558619bd70a2b56fe8f74d60737d1efabb701c119')).toBe('rkws1GibTwWQnLyLvpRtnDQiZYf51tEqQDwpGaou5s4ZQvi1v');
+    expect(
+      decodeAddressRep('rkws1GibTwWQnLyLvpRtnDQiZYf51tEqQDwpGaou5s4ZQvi1v')
+    ).toBe('70fb1d6779d84f718966eb0558619bd70a2b56fe8f74d60737d1efabb701c119');
+    expect(
+      encodeAddressRep(
+        '70fb1d6779d84f718966eb0558619bd70a2b56fe8f74d60737d1efabb701c119'
+      )
+    ).toBe('rkws1GibTwWQnLyLvpRtnDQiZYf51tEqQDwpGaou5s4ZQvi1v');
+    expect(
+      encodeAddressRep(
+        '0x70fb1d6779d84f718966eb0558619bd70a2b56fe8f74d60737d1efabb701c119'
+      )
+    ).toBe('rkws1GibTwWQnLyLvpRtnDQiZYf51tEqQDwpGaou5s4ZQvi1v');
   });
 
   test('is bigNumBer', () => {
@@ -87,7 +107,7 @@ describe('test utils', () => {
 
   test('transform into bigNumber', () => {
     expect(toBigNumber(1)).toStrictEqual(new BigNumber(1));
-    expect(toBigNumber(('0x1'))).toStrictEqual(new BigNumber(1));
+    expect(toBigNumber('0x1')).toStrictEqual(new BigNumber(1));
     expect(toBigNumber(new BigNumber(1213))).toStrictEqual(new BigNumber(1213));
     expect(toBigNumber(undefined)).toStrictEqual(new BigNumber(0));
   });
@@ -102,26 +122,26 @@ describe('test utils', () => {
     expect(testSetPath).toEqual({
       aa: {
         bb: {
-          cc: 'test'
-        }
-      }
+          cc: 'test',
+        },
+      },
     });
     setPath(testSetPath, 'test.est.aaaa', {
-      inner: {}
+      inner: {},
     });
     expect(testSetPath).toEqual({
       aa: {
         bb: {
-          cc: 'test'
-        }
+          cc: 'test',
+        },
       },
       test: {
         est: {
           aaaa: {
-            inner: {}
-          }
-        }
-      }
+            inner: {},
+          },
+        },
+      },
     });
   });
 });

@@ -27,6 +27,27 @@ describe('test httpProvider', () => {
     expect(result.amount).toEqual('100000000');
     expect(result.symbol).toEqual('ELF');
   });
+  test('test transform with empty inputType fieldsArray', async () => {
+    const params = {
+      amount: '100000000',
+      symbol: 'ELF',
+    };
+    const result = transform({}, params, INPUT_TRANSFORMERS);
+    expect(result).toEqual(params);
+  });
+  test('test transform without field params', async () => {
+    const dataType = AElf.pbjs.Root.fromJSON(tokenProto);
+    dataType.resolveAll();
+    const transferInput = dataType.lookupType('TransferInput');
+    const params = {
+      amount: '100000000',
+      symbol: 'ELF',
+    };
+    const result = transform(transferInput, params, INPUT_TRANSFORMERS);
+    expect(result.to).toEqual(undefined);
+    expect(result.amount).toEqual('100000000');
+    expect(result.symbol).toEqual('ELF');
+  });
   test('test transform with fieldsArray which has repeated rule ', async () => {
     const dataType = AElf.pbjs.Root.fromJSON(tokenProto);
     dataType.resolveAll();
@@ -44,6 +65,26 @@ describe('test httpProvider', () => {
       '967f2a2c7f3d22f9278175c1e6aa39cf9171db91dceacd5ee0f37c2e507b5abe'
     );
   });
+  test('test transform with empty fieldsArray', async () => {
+    const dataType = AElf.pbjs.Root.fromJSON(tokenProto);
+    dataType.resolveAll();
+    const transferInput = dataType.lookupType('TestEmptyFieldsArray');
+    const params = {
+      merklePathNodes: [
+        {
+          hash: '0x967f2a2c7f3d22f9278175c1e6aa39cf9171db91dceacd5ee0f37c2e507b5abe',
+          isLeftChildNode: true,
+        },
+      ],
+    };
+    const result = transform(transferInput, params);
+    expect(result).toEqual(params);
+  });
+  test('test transformMapToArray without inputType fieldsArray', async () => {
+    const params = '7RzVGiuVWkvL4VfVHdZfQF2Tri3sgLe9U991bohHFfSRZXuGX';
+    const result = transformMapToArray({}, params);
+    expect(result).toEqual(params);
+  });
   test('test transformMapToArray without origin', async () => {
     const dataType = AElf.pbjs.Root.fromJSON(tokenProto);
     const transferInput = dataType.lookupType('MerklePath');
@@ -56,6 +97,23 @@ describe('test httpProvider', () => {
     const params = '7RzVGiuVWkvL4VfVHdZfQF2Tri3sgLe9U991bohHFfSRZXuGX';
     const result = transformMapToArray(transferInput, params);
     expect(result).toEqual('7RzVGiuVWkvL4VfVHdZfQF2Tri3sgLe9U991bohHFfSRZXuGX');
+  });
+  test('test transformMapToArray with resolvedType', () => {
+    const dataType = AElf.pbjs.Root.fromJSON(tokenProto);
+    dataType.resolveAll();
+    const transferInput = dataType.lookupType('TransferInput');
+    const params = {
+      address: '7RzVGiuVWkvL4VfVHdZfQF2Tri3sgLe9U991bohHFfSRZXuGX',
+      amount: '100000000',
+      symbol: 'ELF',
+    };
+    const result = transformMapToArray(transferInput, params);
+    expect(result).toEqual({
+      address: '7RzVGiuVWkvL4VfVHdZfQF2Tri3sgLe9U991bohHFfSRZXuGX',
+      amount: '100000000',
+      symbol: 'ELF',
+      to: undefined,
+    });
   });
   test('test transformMapToArray with fieldsArray which has resolvedType', async () => {
     const dataType = AElf.pbjs.Root.fromJSON(tokenProto);
@@ -70,6 +128,15 @@ describe('test httpProvider', () => {
       ],
     };
     const result = transformMapToArray(transferInput, params);
+    expect(result).toEqual({
+      merklePathNodes: [
+        {
+          to: '0x967f2a2c7f3d22f9278175c1e6aa39cf9171db91dceacd5ee0f37c2e507b5abe',
+          isLeftChildNode: true,
+          hash: undefined,
+        },
+      ],
+    });
   });
   test('test transformMapToArray with map_entry option', () => {
     const dataType = AElf.pbjs.Root.fromJSON(tokenProto);
@@ -80,17 +147,49 @@ describe('test httpProvider', () => {
       isLeftChildNode: true,
     };
     const result = transformMapToArray(transferInput, params);
+    expect(result).toEqual([
+      {
+        key: 'hash',
+        value:
+          '0x967f2a2c7f3d22f9278175c1e6aa39cf9171db91dceacd5ee0f37c2e507b5abe',
+      },
+      { key: 'isLeftChildNode', value: true },
+    ]);
+  });
+  test('test transformMapToArray without inputType fieldsArray', async () => {
+    const params = '7RzVGiuVWkvL4VfVHdZfQF2Tri3sgLe9U991bohHFfSRZXuGX';
+    const result = transformArrayToMap({}, params);
+    expect(result).toEqual(params);
+  });
+  test('test transformArrayToMap without origin', async () => {
+    const dataType = AElf.pbjs.Root.fromJSON(tokenProto);
+    const transferInput = dataType.lookupType('MerklePath');
+    const result = transformArrayToMap(transferInput);
+    expect(result).toEqual(undefined);
+  });
+  test('test transformArrayToMap with only one field and has not been resolved', async () => {
+    const dataType = AElf.pbjs.Root.fromJSON(tokenProto);
+    const transferInput = dataType.lookupType('Address');
+    const params = '7RzVGiuVWkvL4VfVHdZfQF2Tri3sgLe9U991bohHFfSRZXuGX';
+    const result = transformArrayToMap(transferInput, params);
+    expect(result).toEqual('7RzVGiuVWkvL4VfVHdZfQF2Tri3sgLe9U991bohHFfSRZXuGX');
   });
   test('test transformArrayToMap with resolvedType', async () => {
     const dataType = AElf.pbjs.Root.fromJSON(tokenProto);
     dataType.resolveAll();
     const transferInput = dataType.lookupType('TransferInput');
     const params = {
-      to: '7RzVGiuVWkvL4VfVHdZfQF2Tri3sgLe9U991bohHFfSRZXuGX',
+      address: '7RzVGiuVWkvL4VfVHdZfQF2Tri3sgLe9U991bohHFfSRZXuGX',
       amount: '100000000',
       symbol: 'ELF',
     };
     const result = transformArrayToMap(transferInput, params);
+    expect(result).toEqual({
+      address: '7RzVGiuVWkvL4VfVHdZfQF2Tri3sgLe9U991bohHFfSRZXuGX',
+      amount: '100000000',
+      symbol: 'ELF',
+      to: undefined,
+    });
   });
   test('test transformArrayToMap with fieldsArray which has resolvedType', async () => {
     const dataType = AElf.pbjs.Root.fromJSON(tokenProto);
@@ -105,6 +204,15 @@ describe('test httpProvider', () => {
       ],
     };
     const result = transformArrayToMap(transferInput, params);
+    expect(result).toEqual({
+      merklePathNodes: [
+        {
+          to: '0x967f2a2c7f3d22f9278175c1e6aa39cf9171db91dceacd5ee0f37c2e507b5abe',
+          isLeftChildNode: true,
+          hash: undefined,
+        },
+      ],
+    });
   });
   test('test transformArrayToMap with map_entry option', async () => {
     const dataType = AElf.pbjs.Root.fromJSON(tokenProto);
@@ -119,6 +227,32 @@ describe('test httpProvider', () => {
       { key: 'isLeftChildNode', value: true },
     ];
     const result = transformArrayToMap(transferInput, params);
+    expect(result).toEqual({
+      hash: '0x967f2a2c7f3d22f9278175c1e6aa39cf9171db91dceacd5ee0f37c2e507b5abe',
+      isLeftChildNode: true,
+    });
+  });
+  test('test transformArrayToMap with map_entry and repeated options', async () => {
+    const dataType = AElf.pbjs.Root.fromJSON(tokenProto);
+    const transferInput = dataType.lookupType('MerklePathMapEntry');
+    dataType.resolveAll();
+    const params = {
+      merklePathNodes: [
+        {
+          key: 'hash',
+          value:
+            '0x967f2a2c7f3d22f9278175c1e6aa39cf9171db91dceacd5ee0f37c2e507b5abe',
+        },
+        { key: 'isLeftChildNode', value: true },
+      ],
+    };
+    const result = transformArrayToMap(transferInput, params);
+    expect(result).toEqual({
+      merklePathNodes: {
+        hash: '0x967f2a2c7f3d22f9278175c1e6aa39cf9171db91dceacd5ee0f37c2e507b5abe',
+        isLeftChildNode: true,
+      },
+    });
   });
   test('test encode address', async () => {
     const address =
@@ -130,15 +264,55 @@ describe('test httpProvider', () => {
   });
   test('test input address transformer with string origin', () => {
     const address = [
+      'ELF_UFRnXNHnVNiWfKZ9c5hSSt9Vt97zYf6xHF7nTNkq7WoiLL4BU_AELF',
+    ];
+    const result = INPUT_TRANSFORMERS[0].transformer(address);
+    expect(result[0].value.toString('hex')).toEqual(
+      '3ddf220f80720e28a5d21229adc212acfe89d88b89728a573e25f87e730f51a6'
+    );
+  });
+  test('test input address transformer with string origin', () => {
+    const address = [
       '0x967f2a2c7f3d22f9278175c1e6aa39cf9171db91dceacd5ee0f37c2e507b5abe',
     ];
     const result = INPUT_TRANSFORMERS[1].transformer(address);
+    expect(result[0].value.toString('hex')).toEqual(
+      '967f2a2c7f3d22f9278175c1e6aa39cf9171db91dceacd5ee0f37c2e507b5abe'
+    );
   });
   test('test output address transformer with string origin', () => {
+    const address =
+      'ELF_UFRnXNHnVNiWfKZ9c5hSSt9Vt97zYf6xHF7nTNkq7WoiLL4BU_AELF';
+    const result = OUTPUT_TRANSFORMERS[0].transformer(address);
+    expect(result).toEqual(
+      'ELF_UFRnXNHnVNiWfKZ9c5hSSt9Vt97zYf6xHF7nTNkq7WoiLL4BU_AELF'
+    );
+  });
+  test('test output address transformer with object origin', () => {
     const address = {
       value: 'ELF_UFRnXNHnVNiWfKZ9c5hSSt9Vt97zYf6xHF7nTNkq7WoiLL4BU_AELF',
     };
     const result = OUTPUT_TRANSFORMERS[0].transformer(address);
-    console.log(result);
+    expect(result).toEqual(
+      '93i8Rz5MTnfLURQ7drVMoFoMJGV1axnMQqJL3TpS65aRpMqb4XD8THJvcMFFxeVv'
+    );
+  });
+  test('test output hash transformer with string origin', () => {
+    const address =
+      '0x967f2a2c7f3d22f9278175c1e6aa39cf9171db91dceacd5ee0f37c2e507b5abe';
+    const result = OUTPUT_TRANSFORMERS[1].transformer(address);
+    expect(result).toEqual(
+      '0x967f2a2c7f3d22f9278175c1e6aa39cf9171db91dceacd5ee0f37c2e507b5abe'
+    );
+  });
+  test('test output address transformer with object origin', () => {
+    const address = {
+      value:
+        '0x967f2a2c7f3d22f9278175c1e6aa39cf9171db91dceacd5ee0f37c2e507b5abe',
+    };
+    const result = OUTPUT_TRANSFORMERS[1].transformer(address);
+    expect(result).toEqual(
+      'd31f7aedfd9ad9cedfddddb67fddbbf35ef97357ba69adfd71ff75ef575bf7575c79a71de5e7b47f7edcd9ee74edbe5a6d'
+    );
   });
 });

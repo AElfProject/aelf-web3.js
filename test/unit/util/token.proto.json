@@ -89,6 +89,18 @@
         }
       }
     },
+    "MerklePathMapEntry": {
+      "options": {
+        "map_entry": true
+      },
+      "fields": {
+        "merklePathNodes": {
+          "rule": "repeated",
+          "type": "MerklePathNodeMapEntry",
+          "id": 1
+        }
+      }
+    },
     "MerklePathNodeMapEntry": {
       "options": {
         "map_entry": true
@@ -178,6 +190,21 @@
               }
             }
           }
+        }
+      }
+    },
+    "TestEmptyFieldsArray": {
+      "fields": {}
+    },
+    "TestHashAddress": {
+      "fields": {
+        "to": {
+          "type": "Address",
+          "id": 1
+        },
+        "from": {
+          "type": "Hash",
+          "id": 2
         }
       }
     }

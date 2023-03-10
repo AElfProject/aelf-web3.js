@@ -31,6 +31,55 @@ describe('test merkleTree', () => {
       '945f096eeb56a1a6bee38b6a663407d9c890cd8be28c286c29bcc7d29198f90e'
     );
   });
+  test('test get merkle path with reverse sequence', () => {
+    const whitelistAddresses = ['D', 'C', 'B', 'A'];
+    const leafNodes = whitelistAddresses.map((addr) => {
+      addr = keccak256(addr);
+      return Buffer.from(addr.replace('0x', ''), 'hex');
+    });
+
+    const result = getMerklePath(2, leafNodes);
+    expect(result.length).toEqual(2);
+    expect(result[0]).toBeInstanceOf(Buffer);
+    expect(result[0].toString('hex')).toEqual(
+      '03783fac2efed8fbc9ad443e592ee30e61d65f471140c10ca155e937b435b760'
+    );
+    expect(result[1]).toBeInstanceOf(Buffer);
+    expect(result[1].toString('hex')).toEqual(
+      'bf5568097309810e5d362532a3c5c4fc633144597ad943a38f938d2ca70796ef'
+    );
+  });
+  test('test get merkle path with long sequence', () => {
+    const whitelistAddresses = ['A', 'B', 'C', 'D', 'E', 'F'];
+    const leafNodes = whitelistAddresses.map((addr) => {
+      addr = keccak256(addr);
+      return Buffer.from(addr.replace('0x', ''), 'hex');
+    });
+
+    const result = getMerklePath(2, leafNodes);
+    expect(result.length).toEqual(3);
+    expect(result[0]).toBeInstanceOf(Buffer);
+    expect(result[0].toString('hex')).toEqual(
+      '6c3fd336b49dcb1c57dd4fbeaf5f898320b0da06a5ef64e798c6497600bb79f2'
+    );
+    expect(result[1]).toBeInstanceOf(Buffer);
+    expect(result[1].toString('hex')).toEqual(
+      '945f096eeb56a1a6bee38b6a663407d9c890cd8be28c286c29bcc7d29198f90e'
+    );
+  });
+  test('test get merkle path with empty tree', () => {
+    expect(() => getMerklePath(2, [])).toThrow();
+  });
+  test('test get merkle path', () => {
+    const whitelistAddresses = ['A', 'B', 'C'];
+    const leafNodes = whitelistAddresses.map((addr) => {
+      addr = keccak256(addr);
+      return Buffer.from(addr.replace('0x', ''), 'hex');
+    });
+
+    const result = getMerklePath(4, leafNodes);
+    expect(result).toEqual(null);
+  });
   test('test node', () => {
     const buffer = Buffer.from('A');
     const resultStr = node('A');
