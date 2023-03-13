@@ -2,8 +2,10 @@ import BigNumber from 'bignumber.js';
 
 import {
   padLeft,
+  padRight,
   base58,
   chainIdConvertor,
+  arrayToHex,
   decodeAddressRep,
   encodeAddressRep,
   isBigNumber,
@@ -13,6 +15,10 @@ import {
   isBoolean,
   isJson,
   toBigNumber,
+  getValueOfUnit,
+  fromWei,
+  toWei,
+  toTwosComplement,
   uint8ArrayToHex,
   setPath,
 } from '../../../src/util/utils';
@@ -21,6 +27,12 @@ describe('test utils', () => {
   test('test padLeft', () => {
     expect(padLeft('123', 2, '0')).toBe('123');
     expect(padLeft('123', 5, '1')).toBe('11123');
+    expect(padLeft('123', -1)).toBe('123');
+  });
+  test('test padRight', () => {
+    expect(padRight('123', 2, '0')).toBe('123');
+    expect(padRight('123', 5, '1')).toBe('12311');
+    expect(padRight('123', -1)).toBe('123');
   });
 
   test('test base58 decode and encode', () => {
@@ -40,8 +52,23 @@ describe('test utils', () => {
     );
   });
 
+  test('test array to hex', () => {
+    let str = 'hello world';
+    let buffer = Buffer.from(str);
+    expect(arrayToHex(buffer)).toBe('68656c6c6f20776f726c64');
+    let arrayBuffer = new ArrayBuffer(4);
+    let view = new Uint32Array(arrayBuffer);
+    view[0] = 12;
+    expect(arrayToHex(arrayBuffer)).toBe('0c000000');
+  });
+
   test('decode and encode address hex represent', () => {
     /* eslint-disable max-len */
+    expect(
+      decodeAddressRep(
+        'ELF_rkws1GibTwWQnLyLvpRtnDQiZYf51tEqQDwpGaou5s4ZQvi1v_AELF'
+      )
+    ).toBe('70fb1d6779d84f718966eb0558619bd70a2b56fe8f74d60737d1efabb701c119');
     expect(
       decodeAddressRep('rkws1GibTwWQnLyLvpRtnDQiZYf51tEqQDwpGaou5s4ZQvi1v')
     ).toBe('70fb1d6779d84f718966eb0558619bd70a2b56fe8f74d60737d1efabb701c119');
@@ -108,8 +135,25 @@ describe('test utils', () => {
   test('transform into bigNumber', () => {
     expect(toBigNumber(1)).toStrictEqual(new BigNumber(1));
     expect(toBigNumber('0x1')).toStrictEqual(new BigNumber(1));
+    expect(toBigNumber('-0x1')).toStrictEqual(new BigNumber(-1));
     expect(toBigNumber(new BigNumber(1213))).toStrictEqual(new BigNumber(1213));
     expect(toBigNumber(undefined)).toStrictEqual(new BigNumber(0));
+  });
+
+  test('convert to the unit', () => {
+    expect(getValueOfUnit('wei')).toStrictEqual(new BigNumber(1));
+    expect(getValueOfUnit()).toStrictEqual(new BigNumber(1000000000000000000));
+    expect(() => getValueOfUnit('test')).toThrow();
+  });
+  test('takes a number of wei and converts it to any other ether unit, takes a number of a unit and converts it to wei', () => {
+    expect(fromWei(100000, 'Kwei')).toBe('100');
+    expect(toWei(100, 'Kwei')).toBe('100000');
+    expect(fromWei(new BigNumber(1000000000000000000), 'Kwei')).toEqual(
+      new BigNumber(1000000000000000)
+    );
+    expect(toWei(new BigNumber(1000000000000000), 'Kwei')).toEqual(
+      new BigNumber(1000000000000000000)
+    );
   });
 
   test('uint array into hex string', () => {

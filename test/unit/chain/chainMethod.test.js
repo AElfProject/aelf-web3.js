@@ -142,8 +142,6 @@ describe('chainMethod should work', () => {
     const chainMethod = new ChainMethod({
       name: 'getChainStatus',
       call: 'blockChain/chainStatus',
-      method: 'GET',
-      params: [],
     });
     const httpProvider = new HttpProvider('https://aelf-public-node.aelf.io');
     const manager = new RequestManager(httpProvider);
@@ -163,7 +161,6 @@ describe('chainMethod should work', () => {
     chainMethod.setRequestManager(manager);
     const fn = jest.fn();
     const result = await chainMethod.run(fn);
-    console.log(result);
     expect(result.ChainId).toEqual('AELF');
     expect(fn).toHaveBeenCalled();
     expect(fn).toHaveBeenCalledWith(null, result);

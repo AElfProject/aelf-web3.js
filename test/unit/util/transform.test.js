@@ -47,6 +47,15 @@ describe('test httpProvider', () => {
     expect(result.to).toEqual(undefined);
     expect(result.amount).toEqual('100000000');
     expect(result.symbol).toEqual('ELF');
+    const params1 = {
+      to: '',
+      amount: '100000000',
+      symbol: 'ELF',
+    };
+    const result1 = transform(transferInput, params1, INPUT_TRANSFORMERS);
+    expect(result1.to).toEqual({});
+    expect(result1.amount).toEqual('100000000');
+    expect(result1.symbol).toEqual('ELF');
   });
   test('test transform with fieldsArray which has repeated rule ', async () => {
     const dataType = AElf.pbjs.Root.fromJSON(tokenProto);

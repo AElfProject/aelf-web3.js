@@ -1,5 +1,5 @@
-import BigNumber from "bignumber.js";
-import * as protobuf from "@aelfqueen/protobufjs/light";
+import BigNumber from 'bignumber.js';
+import * as protobuf from '@aelfqueen/protobufjs/light';
 export interface base58 {
   encode(data: ArrayBuffer | SharedArrayBuffer, encoding?: number): string;
   decode(str: string, encoding?: string): Buffer;
@@ -8,7 +8,7 @@ export interface chainIdConvertor {
   chainIdToBase58(chainId: string): string;
   base58ToChainId(base58String: string): Buffer;
 }
-export declare function arrayToHex(value: Buffer): string;
+export declare function arrayToHex(value: any): string;
 export declare function padLeft(
   string: string,
   charLen: number,
