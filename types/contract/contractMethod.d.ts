@@ -1,8 +1,8 @@
-import Chain from "types/chain";
-import { IWallet } from "types/wallet";
-import * as protobuf from "@aelfqueen/protobufjs";
-import { ITransaction } from "types/util/proto";
-import { Contract } from ".";
+import Chain from 'types/chain';
+import { IWallet } from 'types/wallet';
+import * as protobuf from '@aelfqueen/protobufjs';
+import { ITransaction } from 'types/util/proto';
+import { Contract } from '.';
 type TRawTx = ITransaction & {
   refBlockNumber: string;
   refBlockPrefix: string;
@@ -25,7 +25,7 @@ declare class ContractMethod {
     contractAddress: string,
     walletInstance: IWallet
   );
-  public packInput(input: { [k: string]: any }): Uint8Array;
+  public packInput(input?: any): Uint8Array | null;
   public unpackPackedInput(
     inputPacked?: ArrayBuffer | SharedArrayBuffer | null
   ): { [k: string]: any } | undefined | null;

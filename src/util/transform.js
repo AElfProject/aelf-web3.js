@@ -54,7 +54,7 @@ export function transform(inputType, origin, transformers = []) {
         result = {
           ...result,
           [name]: origin[name] !== null && origin[name] !== undefined
-            ? transform(resolvedType, origin[name] || {}, transformers) : origin[name]
+            ? transform(resolvedType, origin[name], transformers) : origin[name]
         };
       }
     }
@@ -71,15 +71,16 @@ export function transformMapToArray(inputType, origin) {
   if (fieldsLength === 0 || (fieldsLength === 1 && !inputType.fieldsArray[0].resolvedType)) {
     return origin;
   }
-  if (isAddress(inputType) || isHash(inputType)) {
-    return origin;
-  }
+  // Params which satisfy address or hash format satisfy above first.
+  // if (isAddress(inputType) || isHash(inputType)) {
+  //   return origin;
+  // }
   const {
     fields,
     options = {}
   } = inputType;
   if (fieldsLength === 2 && fields.value && fields.key && options.map_entry === true) {
-    return Object.keys(origin || {}).map(key => ({ key, value: origin[key] }));
+    return Object.keys(origin).map(key => ({ key, value: origin[key] }));
   }
   // eslint-disable-next-line no-restricted-syntax
   Object.keys(inputType.fields).forEach(field => {
@@ -109,56 +110,70 @@ export function transformMapToArray(inputType, origin) {
 export function transformArrayToMap(inputType, origin) {
   const fieldsLength = (inputType.fieldsArray || []).length;
   let result = origin;
-  if (fieldsLength === 0 || (fieldsLength === 1 && !inputType.fieldsArray[0].resolvedType)) {
+  if (
+    fieldsLength === 0
+    || (fieldsLength === 1 && !inputType.fieldsArray[0].resolvedType)
+  ) {
     return origin;
   }
-  if (isAddress(inputType) || isHash(inputType)) {
-    return origin;
-  }
-  const {
-    fields,
-    options = {}
-  } = inputType;
-  if (fieldsLength === 2 && fields.value && fields.key && options.map_entry === true) {
-    return origin.reduce((acc, v) => ({
-      ...acc,
-      [v.key]: v.value
-    }), {});
+  // Params which satisfy address or hash format satisfy above first.
+  // if (isAddress(inputType) || isHash(inputType)) {
+  //   return origin;
+  // }
+  const { fields, options = {} } = inputType;
+  if (
+    fieldsLength === 2
+    && fields.value
+    && fields.key
+    && options.map_entry === true
+  ) {
+    return origin.reduce(
+      (acc, v) => ({
+        ...acc,
+        [v.key]: v.value,
+      }),
+      {}
+    );
   }
   // eslint-disable-next-line no-restricted-syntax
   Object.keys(fields).forEach(field => {
-    const {
-      name,
-      resolvedType
-    } = fields[field];
+    const { name, resolvedType } = fields[field];
     if (resolvedType && origin !== null && origin !== undefined) {
       if (origin[name] && Array.isArray(origin[name])) {
         const {
           fieldsArray,
           fields: resolvedFields,
-          options: resolvedOptions = {}
+          options: resolvedOptions = {},
         } = resolvedType;
         // eslint-disable-next-line max-len
-        if (fieldsArray.length === 2 && resolvedFields.value && resolvedFields.key && resolvedOptions.map_entry === true) {
+        if (
+          fieldsArray.length === 2
+          && resolvedFields.value
+          && resolvedFields.key
+          && resolvedOptions.map_entry === true
+        ) {
           result = {
             ...result,
-            [name]: origin[name].reduce((acc, v) => ({
-              ...acc,
-              [v.key]: v.value
-            }), {})
+            [name]: origin[name].reduce(
+              (acc, v) => ({
+                ...acc,
+                [v.key]: v.value,
+              }),
+              {}
+            ),
           };
         } else {
           let value = origin[name];
           value = value.map(item => transformArrayToMap(resolvedType, item));
           result = {
             ...result,
-            [name]: value
+            [name]: value,
           };
         }
       } else {
         result = {
           ...result,
-          [name]: transformArrayToMap(resolvedType, origin[name])
+          [name]: transformArrayToMap(resolvedType, origin[name]),
         };
       }
     }
@@ -215,8 +230,7 @@ export const OUTPUT_TRANSFORMERS = [
       let result = origin;
       if (Array.isArray(result)) {
         result = result.map(h => encodeAddress(h.value));
-      }
-      if (typeof result !== 'string') {
+      } else if (typeof result !== 'string') {
         result = encodeAddress(result.value);
       }
       return result;
@@ -228,8 +242,7 @@ export const OUTPUT_TRANSFORMERS = [
       let result = origin;
       if (Array.isArray(result)) {
         result = result.map(h => Buffer.from(h.value, 'base64').toString('hex'));
-      }
-      if (typeof result !== 'string') {
+      } else if (typeof result !== 'string') {
         result = Buffer.from(result.value, 'base64').toString('hex');
       }
       return result;

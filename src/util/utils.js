@@ -356,7 +356,7 @@ export const setPath = (obj, path, value) => {
 };
 
 export const unpackSpecifiedTypeData = ({ data, dataType, encoding = 'hex' }) => {
-  const buffer = Buffer.from(data, encoding || 'hex');
+  const buffer = Buffer.from(data, encoding);
   const decoded = dataType.decode(buffer);
   const result = dataType.toObject(decoded, {
     enums: String, // enums as string names
