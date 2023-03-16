@@ -10,7 +10,8 @@
   ],
   "plugins": [
     "@babel/plugin-proposal-class-properties",
-    "@babel/plugin-transform-runtime"
+    "@babel/plugin-transform-runtime",
+    "rewire"
   ],
   "ignore": [
     "dist/*.js"
@@ -27,7 +28,8 @@
       ],
       "plugins": [
         "@babel/plugin-proposal-class-properties",
-        "@babel/plugin-transform-runtime"
+        "@babel/plugin-transform-runtime",
+        "rewire"
       ],
       "ignore": [
         "dist/*.js"

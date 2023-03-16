@@ -14,9 +14,9 @@ function isBloom(bloom) {
     return bloom.length === 256;
   }
 
-  if (!/^(0x)?[0-9a-f]{512}$/i.test(bloom)) {
-    return false;
-  }
+  // if (!/^(0x)?[0-9a-f]{512}$/i.test(bloom)) {
+  //   return false;
+  // }
 
   if (
     /^(0x)?[0-9a-f]{512}$/.test(bloom)
@@ -24,7 +24,6 @@ function isBloom(bloom) {
   ) {
     return true;
   }
-
   return false;
 }
 
