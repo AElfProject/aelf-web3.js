@@ -1,4 +1,4 @@
-import { keccak256, keccak512 } from '../../../src/util/hash';
+import { keccak256, keccak512 } from '../../../src/util/keccak';
 
 describe('test hash', () => {
   test('test keccak256', () => {
@@ -13,6 +13,9 @@ describe('test hash', () => {
     );
     expect(keccak256('עִבְרִית')).toBe(
       '0x06dc92b80132d6481c4acafbcb3b42c9146c62ae26a7a58bac94ed69c2337aa7'
+    );
+    expect(keccak256('𠜎')).toBe(
+      '0x16a7cc7a58444cbf7e939611910ddc82e7cba65a99d3e8e08cfcda53180a2180'
     );
     expect(
       keccak256(
@@ -34,6 +37,9 @@ describe('test hash', () => {
     );
     expect(keccak512('עִבְרִית')).toBe(
       '0x2688b4373bf42117872da97c9081a5d4c40e5c8ceb945ee880ecd6ffa10f4b0f699ef38f1414397f60e5be2f10b8eb35bc191ff0cca97785330ecb8502d4b2a9'
+    );
+    expect(keccak512('𠜎')).toBe(
+      '0x8a2d72022ce19d989dbe6a0017faccbf5dc2e22c162d1c5eb168864d32dd1a71e1b4782652c148cf6ca47b77a72c96fff682e72bdfef0566d4b7cca3c9ccc59d'
     );
     expect(
       keccak512(

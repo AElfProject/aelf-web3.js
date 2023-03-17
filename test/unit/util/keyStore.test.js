@@ -24,6 +24,20 @@ describe('test keyStore', () => {
     expect(privateKey).toEqual(PrivateKey);
     expect(ksMn).toEqual(mnemonic);
   });
+  test('test get keyStore without kdfparams dklen', () => {
+    const keyStoreWithoutParams = getKeystore(walletInstance, defaultPassword, {
+      cipher: 'aes-256-cbc',
+    });
+    keyStoreWithoutParams.crypto.kdfparams.dkLen =
+      keyStoreWithoutParams.crypto.kdfparams.dklen;
+    delete keyStoreWithoutParams.crypto.kdfparams.dklen;
+    const { mnemonic: ksMn, privateKey } = unlockKeystore(
+      keyStoreWithoutParams,
+      defaultPassword
+    );
+    expect(privateKey).toEqual(PrivateKey);
+    expect(ksMn).toEqual(mnemonic);
+  });
   test('test get keyStore with default cipher', () => {
     const wallet = Object.assign({}, walletInstance);
     delete wallet.nickName;
@@ -46,6 +60,13 @@ describe('test keyStore', () => {
         cipher: 'test',
       })
     ).toThrow('Unknown cipher');
+  });
+  test('test get keyStore with undefined cipher', () => {
+    expect(
+      getKeystore(walletInstance, defaultPassword, {
+        cipher: undefined,
+      }).crypto.cipher
+    ).toEqual('aes-128-ctr');
   });
   test('test check password', () => {
     expect(checkPassword(keyStore, defaultPassword)).toBeTruthy();

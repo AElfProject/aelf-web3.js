@@ -59,7 +59,6 @@ describe('test bloom',() => {
     const codePointToInt =
       BloomModuleRewireAPI.__GetDependency__('codePointToInt');
     expect(() => codePointToInt(0)).toThrow('invalid bloom');
-    console.log(BloomModuleRewireAPI.__get__('codePointToInt'));
   })
   test('test is event in', () => {
     expect(isEventInBloom(bloom, 'Burned')).toBeTruthy();

@@ -37,7 +37,9 @@ describe('test utils', () => {
 
   test('test base58 decode and encode', () => {
     expect(base58.encode('18138372fad4', 'hex')).toBe('2MTJUAViVu6ctF');
-    expect(base58.decode('2MTJUAViVu6ctF', 'hex')).toBe('18138372fad4');
+    expect(base58.decode('2MTJUAViVu6ctF','hex')).toBe('18138372fad4');
+    expect(base58.decode('2MTJUAViVu6ctF')).toBeInstanceOf(Buffer);
+    expect(base58.decode('2MTJUAViVu6ctF').toString('hex')).toBe('18138372fad4');
     expect(() => base58.encode(null, 'hex')).toThrow(
       '"data" argument must be an Array of Buffers'
     );
@@ -157,7 +159,8 @@ describe('test utils', () => {
   });
 
   test('uint array into hex string', () => {
-    expect(uint8ArrayToHex(new Uint8Array([1, 2, 3]))).toBe('010203');
+    expect(uint8ArrayToHex(new Uint8Array([1,2,3]))).toBe('010203');
+    expect(uint8ArrayToHex(new Uint8Array([17, 27, 37]))).toBe('111b25');
   });
 
   test('set path in dot way', () => {
@@ -187,5 +190,27 @@ describe('test utils', () => {
         },
       },
     });
+  });
+  test('converts a negative numer into a two’s complement.',() => {
+    expect(toTwosComplement('-1')).toEqual(
+      new BigNumber(
+        '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'
+      )
+    );
+    expect(toTwosComplement(-1)).toEqual(
+      new BigNumber(
+        '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'
+      )
+    );
+    expect(toTwosComplement('0x1')).toEqual(
+      new BigNumber(
+        '0x0000000000000000000000000000000000000000000000000000000000000001'
+      )
+    );
+    expect(toTwosComplement(new BigNumber(-15))).toEqual(
+      new BigNumber(
+        '0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff1'
+      )
+    );
   });
 });

@@ -1,4 +1,9 @@
-import { computeRoot, getMerklePath, node } from '../../../src/util/merkleTree';
+import {
+  computeRoot,
+  getMerklePath,
+  node,
+  __RewireAPI__ as MerkleTreeModuleRewireAPI,
+} from '../../../src/util/merkleTree';
 import { keccak256 } from '../../../src/util/hash';
 import { arrayBufferToHex } from '../../../src/util/proto';
 describe('test merkleTree', () => {
@@ -12,6 +17,11 @@ describe('test merkleTree', () => {
     expect(arrayBufferToHex(result)).toEqual(
       'd13ef7efe1589de6f776eb88e0e596ad2ec71a869c5b04258ce66c361df908b0'
     );
+  });
+  test('generate merkle tree with no data',() => {
+    const generateMerkleTree =
+      MerkleTreeModuleRewireAPI.__get__('generateMerkleTree');
+    expect(generateMerkleTree([])).toEqual(null);
   });
   test('test get merkle path', () => {
     const whitelistAddresses = ['A', 'B', 'C', 'D'];
@@ -67,9 +77,6 @@ describe('test merkleTree', () => {
       '945f096eeb56a1a6bee38b6a663407d9c890cd8be28c286c29bcc7d29198f90e'
     );
   });
-  test('test get merkle path with empty tree', () => {
-    expect(() => getMerklePath(2, [])).toThrow();
-  });
   test('test get merkle path', () => {
     const whitelistAddresses = ['A', 'B', 'C'];
     const leafNodes = whitelistAddresses.map((addr) => {
@@ -90,5 +97,10 @@ describe('test merkleTree', () => {
     expect(resultBuffer.toString('hex')).toEqual(
       '559aead08264d5795d3909718cdd05abd49572e84fe55590eef31a88a08fdffd'
     );
+  });
+  test('should throw error if get more than two params',() => {
+    const fromTwoBuffers = MerkleTreeModuleRewireAPI.__get__('fromTwoBuffers');
+    const params = [Buffer.from('1'),Buffer.from('2'),Buffer.from('3')];
+    expect(() => fromTwoBuffers(params)).toThrow('Wrong data size.');
   });
 });

@@ -291,16 +291,16 @@ export const toWei = (number, unit) => {
 
 /**
  * Takes and input transforms it into bignumber and if it is negative value, into two's complement
- *
+ * bignumber.js get rid of round + floor in 6.0 https://github.com/MikeMcl/bignumber.js/issues/139
+ * the method lessThan was named isLessThan after 6.0 https://github.com/MikeMcl/bignumber.js/issues/152
  * @method toTwosComplement
  * @param {Number|String|BigNumber} number
  * @return {BigNumber}
  */
 export const toTwosComplement = number => {
-  const bigNumber = toBigNumber(number).round();
-  if (bigNumber.lessThan(0)) {
-    return new BigNumber(UNSIGNED_256_INT, 16)
-      .plus(bigNumber).plus(1);
+  const bigNumber = toBigNumber(number).integerValue();
+  if (bigNumber.isLessThan(0)) {
+    return new BigNumber(UNSIGNED_256_INT, 16).plus(bigNumber).plus(1);
   }
   return bigNumber;
 };
