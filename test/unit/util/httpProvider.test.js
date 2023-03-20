@@ -35,6 +35,10 @@ describe('test httpProvider', () => {
   beforeEach(() => {
     jest.resetModules();
   });
+  test('test host default', () => {
+    const httpProvider = new HttpProvider();
+    expect(httpProvider.host).toBe('http://localhost:8545');
+  });
   test('test headers are Array', () => {
     const httpProvider = new HttpProvider(stageEndpoint, 8000, [
       {
@@ -181,6 +185,31 @@ describe('test httpProvider', () => {
       ],
     });
   });
+  test('test send async by fetch when no AbortController', async () => {
+    const xhr = window.XMLHttpRequest;
+    delete window.XMLHttpRequest;
+    const abortController = global.AbortController;
+    delete global.AbortController;
+    const originFetch = fetch;
+    window.fetch = jest.fn(() =>
+      Promise.resolve({
+        type: 'timeout',
+      })
+    );
+    const NewHttpProvider = require('../../../src/util/httpProvider').default;
+    const httpProvider = new NewHttpProvider(stageEndpoint);
+    window.XMLHttpRequest = xhr;
+    window.fetch = originFetch;
+    await expect(
+      httpProvider.sendAsyncByFetch({
+        url: 'nodes/info',
+        method: 'GET',
+      })
+    ).rejects.toEqual({
+      type: 'timeout',
+    });
+    global.AbortController = abortController;
+  });
   test('test send async by fetch when error', async () => {
     const xhr = window.XMLHttpRequest;
     delete window.XMLHttpRequest;
@@ -194,6 +223,111 @@ describe('test httpProvider', () => {
         method: 'POST',
       })
     ).rejects.toEqual('<h2>403 Forbidden</h2>');
+  });
+  test('test send async by fetch without result.text', async () => {
+    const xhr = window.XMLHttpRequest;
+    delete window.XMLHttpRequest;
+    const originFetch = fetch;
+    window.fetch = jest.fn(() =>
+      Promise.resolve({
+        ok: false,
+      })
+    );
+    const NewHttpProvider = require('../../../src/util/httpProvider').default;
+    const httpProvider = new NewHttpProvider(stageEndpoint);
+    window.XMLHttpRequest = xhr;
+    window.fetch = originFetch;
+    await expect(
+      httpProvider.sendAsyncByFetch({
+        url: 'nodes/info',
+        method: 'GET',
+      })
+    ).rejects.toEqual(TypeError('result.text is not a function'));
+  });
+  test('test send async by fetch when reject', async () => {
+    const xhr = window.XMLHttpRequest;
+    delete window.XMLHttpRequest;
+    const originFetch = fetch;
+    window.fetch = jest.fn(() =>
+      Promise.resolve({
+        ok: false,
+        text: () => Promise.reject('failed when reject'),
+      })
+    );
+    const NewHttpProvider = require('../../../src/util/httpProvider').default;
+    const httpProvider = new NewHttpProvider(stageEndpoint);
+    window.XMLHttpRequest = xhr;
+    window.fetch = originFetch;
+    await expect(
+      httpProvider.sendAsyncByFetch({
+        url: 'nodes/info',
+        method: 'GET',
+      })
+    ).rejects.toEqual('failed when reject');
+  });
+  test('test send async by fetch when timeout', async () => {
+    const xhr = window.XMLHttpRequest;
+    delete window.XMLHttpRequest;
+    const originFetch = fetch;
+    window.fetch = jest.fn(() =>
+      Promise.resolve({
+        type: 'timeout',
+      })
+    );
+    const NewHttpProvider = require('../../../src/util/httpProvider').default;
+    const httpProvider = new NewHttpProvider(stageEndpoint);
+    window.XMLHttpRequest = xhr;
+    window.fetch = originFetch;
+    await expect(
+      httpProvider.sendAsyncByFetch({
+        url: 'nodes/info',
+        method: 'GET',
+      })
+    ).rejects.toEqual({
+      type: 'timeout',
+    });
+  });
+  test('test send async by fetch when status is not 200', async () => {
+    const xhr = window.XMLHttpRequest;
+    delete window.XMLHttpRequest;
+    const originFetch = fetch;
+    window.fetch = jest.fn(() =>
+      Promise.resolve({
+        status: 400,
+        text: () => Promise.resolve('failed when status is not 200'),
+      })
+    );
+    const NewHttpProvider = require('../../../src/util/httpProvider').default;
+    const httpProvider = new NewHttpProvider(stageEndpoint);
+    window.XMLHttpRequest = xhr;
+    window.fetch = originFetch;
+    await expect(
+      httpProvider.sendAsyncByFetch({
+        url: 'nodes/info',
+        method: 'GET',
+      })
+    ).rejects.toEqual('failed when status is not 200');
+  });
+  test('test send async by fetch when result is not ok', async () => {
+    const xhr = window.XMLHttpRequest;
+    delete window.XMLHttpRequest;
+    const originFetch = fetch;
+    window.fetch = jest.fn(() =>
+      Promise.resolve({
+        ok: false,
+        text: () => Promise.resolve('failed when result is not ok'),
+      })
+    );
+    const NewHttpProvider = require('../../../src/util/httpProvider').default;
+    const httpProvider = new NewHttpProvider(stageEndpoint);
+    window.XMLHttpRequest = xhr;
+    window.fetch = originFetch;
+    await expect(
+      httpProvider.sendAsyncByFetch({
+        url: 'nodes/info',
+        method: 'GET',
+      })
+    ).rejects.toEqual('failed when result is not ok');
   });
   test('test get request send by xhr', () => {
     const httpProvider = new HttpProvider('https://aelf-public-node.aelf.io');
@@ -268,6 +402,34 @@ describe('test httpProvider', () => {
       },
     });
     expect(result).toEqual(blockByHeightRes);
+  });
+  test('test send by xhr when error', async () => {
+    const xhrMockClass = () => ({
+      open: jest.fn(),
+      send: jest.fn(),
+      setRequestHeader: jest.fn(),
+      responseText: {
+        Error: 'error xhr',
+      },
+    });
+    const xhr = window.XMLHttpRequest;
+    window.XMLHttpRequest = jest.fn().mockImplementation(xhrMockClass);
+    const NewHttpProvider = require('../../../src/util/httpProvider').default;
+    const httpProvider = new NewHttpProvider(
+      'https://aelf-public-node.aelf.io'
+    );
+    window.XMLHttpRequest = xhr;
+    try {
+      httpProvider.send({
+        url: 'blockChain/blockByHeight',
+        method: 'GET',
+        params: {
+          blockHeight: 136240697,
+        },
+      });
+    } catch (e) {
+      expect(e).toEqual({ Error: 'error xhr' });
+    }
   });
   test('test send async by fetch method', async () => {
     const xhr = window.XMLHttpRequest;
