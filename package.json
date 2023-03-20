@@ -22,7 +22,7 @@
     "test:browser:watch": "jest --config=jest.browser.config.js --watch",
     "test:node": "jest --config=jest.node.config.js",
     "test:node:watch": "jest --config=jest.node.config.js --watch",
-    "test:coverage": "jest --config=jest.browser.config.js ./test/unit/util/bloom.test.js --coverage"
+    "test:coverage": "jest --config=jest.browser.config.js --coverage"
   },
   "keywords": [
     "aelf-web3"
@@ -63,6 +63,7 @@
     "js-sha256": "^0.9.0",
     "query-string": "5.1.1",
     "randombytes": "^2.1.0",
+    "readable-stream": "^3.6.0",
     "scryptsy": "^2.1.0",
     "typescript": "^4.9.5",
     "xmlhttprequest": "^1.8.0"
