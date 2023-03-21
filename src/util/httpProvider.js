@@ -13,6 +13,7 @@ let RequestLibrary = {};
 let isFetch = false;
 if (process.env.RUNTIME_ENV === 'browser') {
   // For browsers use DOM Api XMLHttpRequest
+  // serviceworker without window and document, only with self
   // eslint-disable-next-line no-restricted-globals
   const _self = typeof self === 'object' ? self : {};
   const _window = typeof window === 'object' ? window : _self;

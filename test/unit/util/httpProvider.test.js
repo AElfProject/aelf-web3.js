@@ -1,6 +1,7 @@
 require('isomorphic-fetch');
 import HttpProvider from '../../../src/util/httpProvider';
 const stageEndpoint = 'https://explorer-test-tdvw.aelf.io/';
+// for test timeout
 jest.useFakeTimers();
 jest.spyOn(global, 'setTimeout');
 

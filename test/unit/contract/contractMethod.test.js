@@ -2,6 +2,8 @@ import ContractMethod from '../../../src/contract/ContractMethod';
 import ContractFactory from '../../../src/contract/index';
 const stageEndpoint = 'https://explorer-test-tdvw.aelf.io/chain';
 import AElf from '../../../src/index';
+import { Transaction } from '../../../src/util/proto';
+
 describe('contract method', () => {
   let aelf = new AElf(new AElf.providers.HttpProvider(stageEndpoint));
   const chain = aelf.chain;
@@ -11,6 +13,7 @@ describe('contract method', () => {
   });
   const factory = new ContractFactory(chain, fds, AElf.wallet);
   test('constructor', () => {
+    console.log(factory.services, 'xxx');
     const method = factory.services[0].methods['Register'].resolve();
     const contractMethod = new ContractMethod(
       chain,
@@ -35,7 +38,7 @@ describe('contract method', () => {
     expect(contractMethod).toHaveProperty('getSignedTx');
     expect(contractMethod).toHaveProperty('getRawTx');
   });
-  test('pack input', () => {
+  test('test pack input', () => {
     const method = factory.services[0].methods['GetAward'].resolve();
     const contractMethod = new ContractMethod(
       chain,
@@ -44,34 +47,74 @@ describe('contract method', () => {
       AElf.wallet
     );
     const result = contractMethod.packInput(
-      '4046e35079e2f2285347fbc70c3b1d2a6eacd069c521e3704f8cc6faa6fef989'
+      '0a2005c3b3959caeee55b5db4004f6f9d76860aae818ce7b33d210a446ecb2754682'
     );
     expect(result).toBeInstanceOf(Buffer);
     expect(result.toString('hex')).toBe(
-      '0a204046e35079e2f2285347fbc70c3b1d2a6eacd069c521e3704f8cc6faa6fef989'
+      '0a220a2005c3b3959caeee55b5db4004f6f9d76860aae818ce7b33d210a446ecb2754682'
     );
     expect(contractMethod.packInput()).toEqual(null);
   });
-  test('contract method', async () => {
-    // aelf = new AElf(
-    //   new AElf.providers.HttpProvider('https://explorer-test.aelf.io/chain')
-    // );
-    const wallet = AElf.wallet.createNewWallet();
-    const { GenesisContractAddress } = await aelf.chain.getChainStatus();
-    const genesisContract = await aelf.chain.contractAt(
-      GenesisContractAddress,
-      wallet
+  test('test unpack packed input', () => {
+    const method = factory.services[0].methods['GetAward'].resolve();
+    const contractMethod = new ContractMethod(
+      chain,
+      method,
+      address,
+      AElf.wallet
     );
-    const tokenContractAddress =
-      await genesisContract.GetContractAddressByName.call(
-        AElf.utils.sha256('AElf.ContractNames.Token')
-      );
-
-    // const tokenContract = await aelf.chain.contractAt(
-    //   tokenContractAddress,
-    //   wallet
-    // );
-
-    console.log(tokenContractAddress);
+    const hash =
+      '0a220a2005c3b3959caeee55b5db4004f6f9d76860aae818ce7b33d210a446ecb2754682';
+    expect(contractMethod.unpackPackedInput(hash)).toEqual(
+      '0a2005c3b3959caeee55b5db4004f6f9d76860aae818ce7b33d210a446ecb2754682'
+    );
+    expect(contractMethod.unpackPackedInput()).toEqual(null);
   });
+  test('test unpack output', () => {
+    const method = factory.services[0].methods['GetAward'].resolve();
+    const contractMethod = new ContractMethod(
+      chain,
+      method,
+      address,
+      AElf.wallet
+    );
+    const hash = '088088deee9d92b4888a01';
+    const result = contractMethod.unpackOutput(hash);
+    expect(result).toEqual({ value: '-8498063171937401856' });
+    expect(contractMethod.unpackOutput()).toEqual(null);
+  });
+  test('test output', () => {
+    const method = factory.services[0].methods['GetAward'].resolve();
+    const contractMethod = new ContractMethod(
+      chain,
+      method,
+      address,
+      AElf.wallet
+    );
+    const hash = {
+      value: '4046e35079e2f2285347fbc70c3b1d2a6eacd069c521e3704f8cc6faa6fef989',
+    };
+    const result = contractMethod.packOutput(hash);
+    expect(result).toBeInstanceOf(Buffer);
+    expect(result.toString('hex')).toBe('088088deee9d92b4888a01');
+    expect(contractMethod.packOutput()).toEqual(null);
+  });
+
+  // test('contract method', async () => {
+  //   // aelf = new AElf(
+  //   //   new AElf.providers.HttpProvider('https://explorer-test.aelf.io/chain')
+  //   // );
+  //   const wallet = AElf.wallet.createNewWallet();
+  //   const { GenesisContractAddress } = await aelf.chain.getChainStatus();
+  //   const genesisContract = await aelf.chain.contractAt(
+  //     GenesisContractAddress,
+  //     wallet
+  //   );
+  //   const tokenContractAddress =
+  //     await genesisContract.GetContractAddressByName.call(
+  //       AElf.utils.sha256('AElf.ContractNames.Token')
+  //     );
+
+  //   console.log(tokenContractAddress);
+  // });
 });

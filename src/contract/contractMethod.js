@@ -2,23 +2,20 @@
  * @file contract method
  * @author atom-yang
  */
-import {
-  getTransaction,
-  Transaction
-} from '../util/proto';
+import { getTransaction, Transaction } from '../util/proto';
 import {
   transformArrayToMap,
   transformMapToArray,
   transform,
   INPUT_TRANSFORMERS,
-  OUTPUT_TRANSFORMERS
+  OUTPUT_TRANSFORMERS,
 } from '../util/transform';
 import {
   isBoolean,
   isFunction,
   noop,
   uint8ArrayToHex,
-  unpackSpecifiedTypeData
+  unpackSpecifiedTypeData,
 } from '../util/utils';
 import wallet from '../wallet';
 
@@ -61,7 +58,7 @@ export default class ContractMethod {
     }
     const result = unpackSpecifiedTypeData({
       data: inputPacked,
-      dataType: this._inputType
+      dataType: this._inputType,
     });
     let params = transform(this._inputType, result, OUTPUT_TRANSFORMERS);
     params = transformArrayToMap(this._inputType, params);
@@ -74,7 +71,7 @@ export default class ContractMethod {
     }
     let result = unpackSpecifiedTypeData({
       data: output,
-      dataType: this._outputType
+      dataType: this._outputType,
     });
     result = transform(this._outputType, result, OUTPUT_TRANSFORMERS);
     result = transformArrayToMap(this._outputType, result);
@@ -86,7 +83,9 @@ export default class ContractMethod {
       return null;
     }
     let params = transformMapToArray(this._outputType, result);
+
     params = transform(this._outputType, params, INPUT_TRANSFORMERS);
+
     const message = this._outputType.fromObject(params);
     return this._outputType.encode(message).finish();
   }
@@ -104,7 +103,9 @@ export default class ContractMethod {
   }
 
   prepareParametersAsync(args) {
-    const filterArgs = args.filter(arg => !isFunction(arg) && !isBoolean(arg.sync));
+    const filterArgs = args.filter(
+      arg => !isFunction(arg) && !isBoolean(arg.sync)
+    );
     const encoded = this.packInput(filterArgs[0]);
 
     return this._chain.getChainStatus().then(status => {
@@ -114,18 +115,22 @@ export default class ContractMethod {
   }
 
   prepareParameters(args) {
-    const filterArgs = args.filter(arg => !isFunction(arg) && !isBoolean(arg.sync));
+    const filterArgs = args.filter(
+      arg => !isFunction(arg) && !isBoolean(arg.sync)
+    );
     const encoded = this.packInput(filterArgs[0]);
 
     const { BestChainHeight, BestChainHash } = this._chain.getChainStatus({
-      sync: true
+      sync: true,
     });
 
     return this.handleTransaction(BestChainHeight, BestChainHash, encoded);
   }
 
   prepareParametersWithBlockInfo(args) {
-    const filterArgs = args.filter(arg => !isFunction(arg) && !isBoolean(arg.sync));
+    const filterArgs = args.filter(
+      arg => !isFunction(arg) && !isBoolean(arg.sync)
+    );
     const encoded = this.packInput(filterArgs[0]);
 
     const { height, hash } = filterArgs[1]; // blockInfo
@@ -138,7 +143,7 @@ export default class ContractMethod {
     if (argsObject.isSync) {
       const parameters = this.prepareParameters(args);
       return this._chain.sendTransaction(parameters, {
-        sync: true
+        sync: true,
       });
     }
     // eslint-disable-next-line arrow-body-style
@@ -151,22 +156,26 @@ export default class ContractMethod {
     const argsObject = this.extractArgumentsIntoObject(args);
     if (argsObject.isSync) {
       const parameters = this.prepareParameters(args);
-      return this.unpackOutput(this._chain.callReadOnly(parameters, {
-        sync: true
-      }));
+      return this.unpackOutput(
+        this._chain.callReadOnly(parameters, {
+          sync: true,
+        })
+      );
     }
     // eslint-disable-next-line arrow-body-style
     return this.prepareParametersAsync(args).then(parameters => {
-      return this._chain.callReadOnly(parameters, (error, result) => {
-        argsObject.callback(error, this.unpackOutput(result));
-      }).then(this.unpackOutput);
+      return this._chain
+        .callReadOnly(parameters, (error, result) => {
+          argsObject.callback(error, this.unpackOutput(result));
+        })
+        .then(this.unpackOutput);
     });
   }
 
   extractArgumentsIntoObject(args) {
     const result = {
       callback: noop,
-      isSync: false
+      isSync: false,
     };
     if (args.length === 0) {
       // has no callback, default to be async mode
@@ -176,7 +185,7 @@ export default class ContractMethod {
       result.callback = args[args.length - 1];
     }
     args.forEach(arg => {
-      if (isBoolean((arg.sync))) {
+      if (isBoolean(arg.sync)) {
         result.isSync = arg.sync;
       }
     });
@@ -185,7 +194,9 @@ export default class ContractMethod {
 
   // getData(...args) {
   getSignedTx(...args) {
-    const filterArgs = args.filter(arg => !isFunction(arg) && !isBoolean(arg.sync));
+    const filterArgs = args.filter(
+      arg => !isFunction(arg) && !isBoolean(arg.sync)
+    );
 
     if (filterArgs[1]) {
       const { height, hash } = filterArgs[1]; // blockInfo
@@ -199,11 +210,18 @@ export default class ContractMethod {
   }
 
   getRawTx(blockHeightInput, blockHashInput, packedInput) {
-    const rawTx = getTransaction(this._wallet.address, this._contractAddress, this._name, packedInput);
+    const rawTx = getTransaction(
+      this._wallet.address,
+      this._contractAddress,
+      this._name,
+      packedInput
+    );
 
     rawTx.refBlockNumber = blockHeightInput;
-    const blockHash = blockHashInput.match(/^0x/) ? blockHashInput.substring(2) : blockHashInput;
-    rawTx.refBlockPrefix = (Buffer.from(blockHash, 'hex')).slice(0, 4);
+    const blockHash = blockHashInput.match(/^0x/)
+      ? blockHashInput.substring(2)
+      : blockHashInput;
+    rawTx.refBlockPrefix = Buffer.from(blockHash, 'hex').slice(0, 4);
     return rawTx;
   }
 
@@ -214,7 +232,7 @@ export default class ContractMethod {
       method: 'broadcast_tx',
       callback,
       params,
-      format: this.unpackOutput
+      format: this.unpackOutput,
     };
   }
 
