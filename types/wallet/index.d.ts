@@ -3,13 +3,14 @@ import * as Bip39 from "bip39";
 import { ec, curve } from "elliptic";
 import { ITransaction } from "../util/proto";
 import * as KeyStore from "../util/keyStore";
+import { TRawTx } from 'types/contract/contractMethod';
 
 export default Wallet;
 
 interface ISignature {
   signature: Uint8Array;
 }
-type TSignTransaction = ISignature & ITransaction;
+type TSignTransaction = ISignature & TRawTx;
 
 export interface IWallet {
   BIP44Path: string;

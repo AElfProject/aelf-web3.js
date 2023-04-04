@@ -1,6 +1,6 @@
 import * as protobuf from '@aelfqueen/protobufjs/light';
 export interface IAddress {
-  value: Uint8Array;
+  value: Buffer;
 }
 export interface ITransaction {
   from: IAddress;

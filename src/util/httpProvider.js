@@ -129,26 +129,30 @@ export default class HttpProvider {
       this.requestSendByFetch(config, request),
       HttpProvider.timeoutPromise(timeout)
     ]).then(result => new Promise((resolve, reject) => {
-      if (timeout !== 1) {
-        try {
-          if (result.type === 'timeout') {
-            // Cancel timeout request
-            if (control.abort) control.abort();
-            reject(result);
-          } else {
-            result.text().then(text => {
+      // @deprecated unuse timeout=1
+      // if (timeout !== 1) {
+      try {
+        if (result.type === 'timeout') {
+          // Cancel timeout request
+          if (control.abort) control.abort();
+          reject(result);
+        } else {
+          result
+            .text()
+            .then(text => {
               const res = HttpProvider.formatResponse(text);
               if (result.status !== 200 || !result.ok) {
                 reject(res);
                 return;
               }
               resolve(res);
-            }).catch(err => reject(err));
-          }
-        } catch (e) {
-          reject(e);
+            })
+            .catch(err => reject(err));
         }
+      } catch (e) {
+        reject(e);
       }
+      // }
     }));
   }
 
