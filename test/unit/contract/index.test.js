@@ -42,4 +42,26 @@ describe('contract factory', () => {
     expect(result).toEqual(['454c46']);
     expect(contractInstance.deserializeLog()).toEqual([]);
   });
+  test('test deserialize log with empty logs', () => {
+    const contractInstance = factory.at(address);
+    const result = contractInstance.deserializeLog();
+    expect(result).toEqual([]);
+  });
+  test('test deserialize log with empty NonIndexed', () => {
+    const Logs = [
+      {
+        Indexed: [
+          'CiIKIPoq3y6L7T71F5BynCBXISeMFKrCt4QayljkLE4U8St4',
+          'EiIKIKt0P1P3+jKuU4Y5rSGOfzleHFw0YXn5eNM88jWfUWYR',
+        ],
+        Name: '.aelf.Hash',
+        Address: 'ELF_2sGZFRtqQ57F55Z2KvhmoozKrf7ik2htNVQawEAo3Vyvcx9Qwr_tDVW',
+      },
+    ];
+    const contractInstance = factory.at(address);
+    const result = contractInstance.deserializeLog(Logs, '.aelf.Hash');
+    expect(result).toEqual([
+      '0a20fa2adf2e8bed3ef51790729c205721278c14aac2b7841aca58e42c4e14f12b78',
+    ]);
+  });
 });
