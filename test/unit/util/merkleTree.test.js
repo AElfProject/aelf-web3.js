@@ -4,7 +4,7 @@ import {
   node,
   __RewireAPI__ as MerkleTreeModuleRewireAPI,
 } from '../../../src/util/merkleTree';
-import { keccak256 } from '../../../src/util/hash';
+import { keccak256 } from '../../../src/util/keccak';
 import { arrayBufferToHex } from '../../../src/util/proto';
 describe('test merkleTree', () => {
   test('test compute root', () => {

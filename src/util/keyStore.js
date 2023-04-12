@@ -5,7 +5,7 @@
 import scrypt from 'scryptsy';
 import { createCipheriv, createDecipheriv } from 'browserify-cipher';
 import randomBytes from 'randombytes';
-import { keccak256 } from './hash';
+import { keccak256 } from './keccak';
 import { KEY_STORE_ERRORS } from '../common/constants';
 
 const AES_MODES = {
