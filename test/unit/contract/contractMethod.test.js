@@ -1,4 +1,4 @@
-import ContractMethod from '../../../src/contract/ContractMethod';
+import ContractMethod from '../../../src/contract/contractMethod';
 import ContractFactory from '../../../src/contract/index';
 import AElf from '../../../src/index';
 import { noop } from '../../../src/util/utils';
