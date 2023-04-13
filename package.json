@@ -17,10 +17,10 @@
     "lint": "eslint src",
     "proto": "node scripts/compile-proto.js",
     "release": "standard-version -a",
-    "test": "jest --config=jest.browser.config.js --testLocationInResults",
-    "test:browser": "jest --config=jest.browser.config.js --testLocationInResults",
+    "test": "jest --config=jest.browser.config.js --ci --reporters=default --reporters=jest-junit",
+    "test:browser": "jest --config=jest.browser.config.js",
     "test:browser:watch": "jest --config=jest.browser.config.js --watch",
-    "test:node": "jest --config=jest.node.config.js --testLocationInResults",
+    "test:node": "jest --config=jest.node.config.js",
     "test:node:watch": "jest --config=jest.node.config.js --watch",
     "test:coverage": "jest --config=jest.browser.config.js --coverage",
     "test:coverageNode": "jest --config=jest.node.config.js --coverage"
@@ -96,6 +96,7 @@
     "jest-environment-jsdom": "^29.4.3",
     "jest-environment-jsdom-fifteen": "^1.0.2",
     "jest-github-reporter": "^1.1.1",
+    "jest-junit": "^15.0.0",
     "lint-staged": "^9.0.2",
     "rimraf": "^2.6.3",
     "size-limit": "^8.1.2",
@@ -128,5 +129,15 @@
     "scripts": {
       "postbump": "npm run build && git add ."
     }
+  },
+  "jest-junit": {
+    "suiteName": "jest tests",
+    "outputDirectory": "reporter",
+    "outputName": "jest-junit.xml",
+    "ancestorSeparator": " › ",
+    "uniqueOutputName": "false",
+    "suiteNameTemplate": "{filepath}",
+    "classNameTemplate": "{classname}",
+    "titleTemplate": "{title}"
   }
 }
