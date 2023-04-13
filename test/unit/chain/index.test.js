@@ -44,9 +44,11 @@ describe('chain should work', () => {
     chain.getContractFileDescriptorSet = jest.fn(() => {
       return {
         file: [],
-      }
+      };
     });
-    expect(() => chain.contractAt(address, null, ...args)).toThrow('no such contract');
+    expect(() => chain.contractAt(address, null, ...args)).toThrow(
+      'no such contract'
+    );
   });
   test('test is concrete contract when async', async () => {
     const aelf = new AElf(new AElf.providers.HttpProvider(stageEndpoint));
@@ -71,9 +73,9 @@ describe('chain should work', () => {
         isSync: false,
       };
     });
-    await chain.contractAt(address,null);
+    await chain.contractAt(address, null);
     expect(error).toEqual(new Error('no such contract'));
-  },5000);
+  }, 5000);
   test('test is invalid contract with noop callback', async () => {
     const address =
       'ELF_iUY5CLwzU8L8vjVgH95vx3ZRuvD5d9hVK3EdPMVD8v9EaQT75_AELF';
@@ -82,13 +84,17 @@ describe('chain should work', () => {
         file: [],
       });
     });
-    await expect(chain.contractAt(address, null)).rejects.toEqual(new Error('no such contract'));
+    await expect(chain.contractAt(address, null)).rejects.toEqual(
+      new Error('no such contract')
+    );
   }, 5000);
   test('test txId has corresponding transaction in the block with height when sync', async () => {
     const aelf = new AElf(new AElf.providers.HttpProvider(stageEndpoint));
     const blockInfo = await aelf.chain.getBlockByHeight(1, true);
     const txId = blockInfo.Body.Transactions[0];
-    const result = Array.isArray(aelf.chain.getMerklePath(txId,1,{ sync: true }));
+    const result = Array.isArray(
+      aelf.chain.getMerklePath(txId, 1, { sync: true })
+    );
     expect(result).toBe(true);
   }, 5000);
   test('test txId has no corresponding transaction in the block with height when sync', async () => {
@@ -108,7 +114,7 @@ describe('chain should work', () => {
     const txId = blockInfo.Body.Transactions[0];
     const result = await aelf.chain.getMerklePath(txId, 1);
     expect(Array.isArray(result)).toBe(true);
-  }, 5000);
+  }, 10000);
   test('test txId has no corresponding transaction in the block with height when async', async () => {
     const aelf = new AElf(new AElf.providers.HttpProvider(stageEndpoint));
     const blockInfo = await aelf.chain.getBlockByHeight(1, true);

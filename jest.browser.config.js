@@ -31,6 +31,7 @@ module.exports = {
   collectCoverageFrom: [
     '**/src/**/*.js',
     '!**/src/types/*.js',
+    '!**/src/scrpt-polyfill.js',
     '!**/node_modules/**',
     '!**/examples/**',
     '!**/dist/**',
@@ -111,7 +112,7 @@ module.exports = {
   // projects: null,
 
   // Use this configuration option to add custom reporters to Jest
-  // reporters: undefined,
+  reporters: ['default', 'jest-github-reporter'],
 
   // Automatically reset mock state between every test
   // resetMocks: false,
@@ -156,7 +157,7 @@ module.exports = {
 
   // The glob patterns Jest uses to detect test files
   testMatch: [
-    "**/test/unit/**/?(*.)+(test).[jt]s?(x)",
+    '**/test/unit/**/?(*.)+(test).[jt]s?(x)',
     // "**/?(*.)+(spec|test).[tj]s?(x)"
   ],
 
