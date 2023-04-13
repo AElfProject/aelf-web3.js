@@ -17,10 +17,10 @@
     "lint": "eslint src",
     "proto": "node scripts/compile-proto.js",
     "release": "standard-version -a",
-    "test": "npm run test:browser && npm run test:node",
-    "test:browser": "jest --config=jest.browser.config.js",
+    "test": "jest --config=jest.browser.config.js --testLocationInResults",
+    "test:browser": "jest --config=jest.browser.config.js --testLocationInResults",
     "test:browser:watch": "jest --config=jest.browser.config.js --watch",
-    "test:node": "jest --config=jest.node.config.js",
+    "test:node": "jest --config=jest.node.config.js --testLocationInResults",
     "test:node:watch": "jest --config=jest.node.config.js --watch",
     "test:coverage": "jest --config=jest.browser.config.js --coverage",
     "test:coverageNode": "jest --config=jest.node.config.js --coverage"
