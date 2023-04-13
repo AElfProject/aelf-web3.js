@@ -153,7 +153,7 @@ describe('test AElf-sdk', () => {
   test('check add peer', async () => {
     const result = await aelf.chain.addPeer(realEndpoint);
     expect(result).toBeTruthy();
-  });
+  }, 5000);
   test('check get peers info', async () => {
     const peersInfo = await aelf.chain.getPeers(false);
     expect(peersInfo).not.toBeNaN();

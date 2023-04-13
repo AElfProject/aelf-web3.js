@@ -66,7 +66,8 @@ export default class Chain {
         return result;
       }
       callback(new Error('no such contract'));
-      if (callback.length > 0) {
+      // if callback is noop, throw error
+      if (callback.length === 0) {
         throw new Error('no such contract');
       }
     });

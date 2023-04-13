@@ -29,7 +29,8 @@ module.exports = {
   coverageDirectory: 'coverage',
 
   collectCoverageFrom: [
-    '**/*.js',
+    '**/src/**/*.js',
+    '!**/src/types/*.js',
     '!**/node_modules/**',
     '!**/examples/**',
     '!**/dist/**',
@@ -154,10 +155,10 @@ module.exports = {
   // testLocationInResults: false,
 
   // The glob patterns Jest uses to detect test files
-  // testMatch: [
-  //   "**/__tests__/**/*.[jt]s?(x)",
-  //   "**/?(*.)+(spec|test).[tj]s?(x)"
-  // ],
+  testMatch: [
+    "**/test/unit/**/?(*.)+(test).[jt]s?(x)",
+    // "**/?(*.)+(spec|test).[tj]s?(x)"
+  ],
 
   // An array of regexp pattern strings that are matched against all test paths, matched tests are skipped
   // testPathIgnorePatterns: [
@@ -172,9 +173,6 @@ module.exports = {
 
   // This option allows use of a custom test runner
   // testRunner: "jasmine2",
-
-  // This option sets the URL for the jsdom environment. It is reflected in properties such as location.href
-  // testURL: "http://localhost",
 
   // Setting this value to "fake" allows the use of fake timers for functions such as "setTimeout"
   // timers: "real",

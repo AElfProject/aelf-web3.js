@@ -96,6 +96,8 @@ export default class ContractMethod {
     let tx = wallet.signTransaction(rawTx, this._wallet.keyPair);
 
     tx = Transaction.encode(tx).finish();
+    // jest environment just go into Buffer branch
+    // we have test in browser example handly
     if (tx instanceof Buffer) {
       return tx.toString('hex');
     }

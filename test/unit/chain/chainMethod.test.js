@@ -6,7 +6,7 @@ import {
 } from '../../../src/util/formatters';
 import HttpProvider from '../../../src/util/httpProvider';
 import RequestManager from '../../../src/util/requestManage';
-const stageEndpoint = 'https://aelf-public-node.aelf.io';
+
 describe('chainMethod should work', () => {
   test('test format input params with no inputFormatter', () => {
     const chainMethod = new ChainMethod({
@@ -164,5 +164,21 @@ describe('chainMethod should work', () => {
     expect(result.ChainId).toEqual('AELF');
     expect(fn).toHaveBeenCalled();
     expect(fn).toHaveBeenCalledWith(null, result);
+  });
+  test('test run error when async', async () => {
+    const chainMethod = new ChainMethod({
+      name: 'getTxResult',
+      call: 'blockChain/transactionResult',
+      method: 'GET',
+      params: ['transactionId'],
+    });
+    const httpProvider = new HttpProvider('https://aelf-public-node.aelf.io');
+    const manager = new RequestManager(httpProvider);
+    chainMethod.setRequestManager(manager);
+    // mock
+    chainMethod.requestManager.sendAsync = jest.fn(() => {
+      return Promise.reject('error');
+    });
+    await expect(chainMethod.run('1')).rejects.toEqual('error');
   });
 });
