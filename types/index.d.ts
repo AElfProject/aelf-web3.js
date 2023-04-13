@@ -1,10 +1,10 @@
-import * as protobuf from "@aelfqueen/protobufjs/light";
-import HttpProvider from "./util/httpProvider";
-import Wallet from "./wallet/index";
-import * as proto from "./util/proto";
-import * as utils from "./util/utils";
-import { sha256 } from "js-sha256";
-import * as transform from "./util/transform";
+import * as protobuf from '@aelfqueen/protobufjs/light';
+import HttpProvider from './util/httpProvider';
+import Wallet from './wallet/index';
+import * as proto from './util/proto';
+import * as utils from './util/utils';
+import { sha256 } from 'js-sha256';
+import * as transform from './util/transform';
 import {
   arrayToHex,
   padLeft,
@@ -28,13 +28,13 @@ import {
   unpackSpecifiedTypeData,
   deserializeTransaction,
   getAuthorization,
-} from "./util/utils";
+} from './util/utils';
 import {
   isInBloom,
   isEventInBloom,
   isIndexedInBloom,
   isAddressInBloom,
-} from "./util/bloom";
+} from './util/bloom';
 interface IUtils {
   base58: utils.base58;
   chainIdConvertor: utils.chainIdConvertor;
@@ -61,7 +61,7 @@ interface IUtils {
   deserializeTransaction: typeof deserializeTransaction;
   getAuthorization: typeof getAuthorization;
 }
-import Settings from "./util/settings";
+import Settings from './util/settings';
 interface IBloom {
   isInBloom: typeof isInBloom;
   isEventInBloom: typeof isEventInBloom;
@@ -94,8 +94,6 @@ export declare class AElf {
   settings: Settings;
   version: IVersion;
   isConnected(): boolean;
-  // TODO:
-  // reset 方法不存在
   setProvider(provider: HttpProvider): void;
 }
 export default AElf;

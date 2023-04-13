@@ -27,11 +27,14 @@ module.exports = {
 
   // The directory where Jest should output its coverage files
   coverageDirectory: 'coverage',
-
+  // exclude scrypt-polyfill
   collectCoverageFrom: [
-    '**/src/**/*.js',
+    '**/src/chain/*.js',
+    '**/src/contract/*.js',
+    '**/src/util/*.js',
+    '**/src/wallet/*.js',
+    '**/src/index.js',
     '!**/src/types/*.js',
-    '!**/src/scrpt-polyfill.js',
     '!**/node_modules/**',
     '!**/examples/**',
     '!**/dist/**',
