@@ -15,3 +15,4 @@ jobs:
         with:
           github_token: '${{ secrets.GITHUB_TOKEN }}'
           test_command: 'yarn run test:coverage'
+          reporter: 'json-summary'
