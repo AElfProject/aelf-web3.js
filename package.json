@@ -92,6 +92,7 @@
     "git-cz": "^3.0.1",
     "glob": "^7.1.4",
     "husky": "^3.0.0",
+    "istanbul-badges-readme": "^1.8.5",
     "jest": "^29.4.1",
     "jest-environment-jsdom": "^29.4.3",
     "jest-environment-jsdom-fifteen": "^1.0.2",
@@ -109,7 +110,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged",
+      "pre-commit": "lint-staged && istanbul-badges-readme && git add 'README.md'",
       "commit-msg": "node scripts/verify-commit-msg.js"
     }
   },

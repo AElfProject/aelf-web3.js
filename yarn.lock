@@ -6308,6 +6308,11 @@ isstream@~0.1.2:
   resolved "https://registry.npmjs.org/isstream/-/isstream-0.1.2.tgz#47e63f7af55afa6f92e1500e690eb8b8529c099a"
   integrity sha512-Yljz7ffyPbrLpLngrMtZ7NduUgVvi6wG9RJ9IUcyCd59YQ911PBJphODUcbOVbqYfxe1wuYf/LJ8PauMRwsM/g==
 
+istanbul-badges-readme@^1.8.5:
+  version "1.8.5"
+  resolved "https://registry.npmmirror.com/istanbul-badges-readme/-/istanbul-badges-readme-1.8.5.tgz#60ad443a5bf71493bd4a6088a65d1a3739058510"
+  integrity sha512-VEh90ofuufPZIbLeDF2g14wpe0sebhirG0xHooYKpNPYOkGXm6y+HJFotQqIzCg0NmbCnlKnOPL1B2oxG7/piA==
+
 istanbul-lib-coverage@^2.0.5:
   version "2.0.5"
   resolved "https://registry.npmjs.org/istanbul-lib-coverage/-/istanbul-lib-coverage-2.0.5.tgz#675f0ab69503fad4b1d849f736baaca803344f49"
