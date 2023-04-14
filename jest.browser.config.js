@@ -115,7 +115,7 @@ module.exports = {
   // projects: null,
 
   // Use this configuration option to add custom reporters to Jest
-  reporters: ['default', 'jest-github-reporter'],
+  // reporters: [],
 
   // Automatically reset mock state between every test
   // resetMocks: false,
@@ -161,6 +161,7 @@ module.exports = {
   // The glob patterns Jest uses to detect test files
   testMatch: [
     '**/test/unit/**/?(*.)+(test).[jt]s?(x)',
+    '**/test/unit/util/httpProvider.browser-test.js',
     // "**/?(*.)+(spec|test).[tj]s?(x)"
   ],
 
