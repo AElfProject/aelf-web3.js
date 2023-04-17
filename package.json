@@ -109,7 +109,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged && istanbul-badges-readme && git add 'README.md'",
+      "pre-commit": "lint-staged && yarn run test:coverage && istanbul-badges-readme && git add 'README.md'",
       "commit-msg": "node scripts/verify-commit-msg.js"
     }
   },
