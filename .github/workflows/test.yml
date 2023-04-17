@@ -1,25 +1,21 @@
-name: Node.js CI
+name: Coverage Diff
 
-on: pull_request
+on: [push, pull_request]
 
 jobs:
-  build:
-    strategy:
-      matrix:
-        node-version: [14.x]
-        platform: [ubuntu-latest]
-    runs-on: ${{ matrix.platform }}
+  test:
+    name: Coverage Diff
+    runs-on: ubuntu-latest
+
     steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - run: yarn
-    - name: TestCoverage
-      id: testCoverage
-      uses: anuraag016/Jest-Coverage-Diff@master
-      with:
-        fullCoverageDiff: false
-        runCommand: "yarn run test:coverage"
-        delta: 0.5
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 16
+          cache: yarn
+      - run: yarn install
+      - run: yarn run test:coverage
+      - name: Coverage Diff
+        uses: greatwizard/coverage-diff-action@v1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
