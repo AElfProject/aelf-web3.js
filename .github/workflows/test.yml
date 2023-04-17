@@ -15,7 +15,7 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: yarn run test:coverage
+    - run: yarn
     - name: TestCoverage
       id: testCoverage
       uses: anuraag016/Jest-Coverage-Diff@master
