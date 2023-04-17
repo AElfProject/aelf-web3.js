@@ -15,10 +15,11 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
+    - run: yarn run test:coverage
     - name: TestCoverage
       id: testCoverage
       uses: anuraag016/Jest-Coverage-Diff@master
       with:
-        fullCoverageDiff: false // defaults to false, if made true whole coverage report is commented with the diff
+        fullCoverageDiff: false
         runCommand: "yarn run test:coverage"
         delta: 0.5
