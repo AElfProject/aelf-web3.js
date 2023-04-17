@@ -14,7 +14,7 @@ jobs:
           node-version: 16
           cache: yarn
       - run: yarn install
-      - run: yarn run test:coverage
+      - run: yarn run test:coverageNode
       - name: Coverage Diff
         uses: greatwizard/coverage-diff-action@v1
         with:
