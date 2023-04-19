@@ -776,7 +776,32 @@ AElf.version; // eg. 3.2.23
 ![browsers](https://img.shields.io/badge/browsers-latest%202%20versions-brightgreen.svg)
 ![node](https://img.shields.io/badge/node->=10-green.svg)
 
-## 4. About contributing
+## 4. Building
+-   [Node.js](https://nodejs.org)
+-   [npm](https://www.npmjs.com/)
+
+```bash
+sudo apt-get update
+sudo apt-get install nodejs
+sudo apt-get install npm
+```
+
+### 4.1 Building (webpack)
+
+Build the web3.js package:
+
+```bash
+yarn run build
+```
+
+### 4.2 Testing (jest)
+
+```bash
+yarn run test
+```
+
+Commit code will run test and lint automatically, and show the test result in readme.md, please make sure all test cases passed.
+### 4.3 About contributing
 
 Read out [contributing guide](./.github/CONTRIBUTING.md)
 
