@@ -17,7 +17,7 @@ const baseConfig = {
   resolve: {
     modules: [
       path.resolve(ROOT, 'src'),
-      path.resolve(ROOT, 'node_modules')
+      'node_modules'
     ],
     extensions: ['.ts', '.js']
   },

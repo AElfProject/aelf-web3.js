@@ -107,7 +107,6 @@ export const padRight = (string, charLen, sign) => {
   return string + (new Array(length < 0 ? 0 : length).join(sign || '0'));
 };
 
-
 /**
  * Returns a hex rep from the encoded address
  *
@@ -304,7 +303,6 @@ export const toTwosComplement = number => {
   }
   return bigNumber;
 };
-
 
 /**
  * Returns hex
