@@ -40,7 +40,10 @@ const baseConfig = {
       'process.env.SDK_VERSION': JSON.stringify(version)
     }),
     new webpack.BannerPlugin(banner)
-  ]
+  ],
+  stats: {
+    chunkRelations: true
+  }
 };
 
 module.exports = baseConfig;
