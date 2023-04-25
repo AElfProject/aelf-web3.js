@@ -40,7 +40,7 @@
   "author": "hzz780",
   "license": "MIT",
   "devEngines": {
-    "node": "14.x || 16.x || 18.x"
+    "node": "14.x || 16.x"
   },
   "engines": {
     "node": ">=14.17.0"
