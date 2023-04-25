@@ -1,0 +1,44 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "name": "example node",
+      "request": "launch",
+      "program": "${workspaceFolder}/examples/node/crossChain.js",
+      "outFiles": ["${workspaceFolder}/dist/*.js"]
+    },
+    {
+      "type": "node",
+      "name": "jest browser",
+      "request": "launch",
+      "program": "${workspaceFolder}/node_modules/jest/bin/jest",
+      "args": [
+        "--runInBand",
+        "-c",
+        "${workspaceFolder}/jest.browser.config.js",
+        "--watchAll"
+      ],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "disableOptimisticBPs": true
+    },
+    {
+      "type": "node",
+      "name": "jest node",
+      "request": "launch",
+      "args": [
+        "--runInBand",
+        "-c",
+        "${workspaceFolder}/jest.node.config.js",
+        "--watchAll"
+      ],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "disableOptimisticBPs": true,
+      "program": "${workspaceFolder}/node_modules/jest/bin/jest"
+    }
+  ]
+}
