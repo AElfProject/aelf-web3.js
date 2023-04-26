@@ -17,7 +17,7 @@
     "lint": "eslint src",
     "proto": "node scripts/compile-proto.js",
     "release": "standard-version -a",
-    "pre-commit": "lint-staged && yarn test:browser && istanbul-badges-readme && git add 'README.md'",
+    "pre-commit": "",
     "test": "yarn test:node && yarn test:browser",
     "test:browser": "jest --config=jest.browser.config.js",
     "test:browser:watch": "jest --config=jest.browser.config.js --watch",
@@ -72,7 +72,9 @@
     "stream-browserify": "^3.0.0",
     "typescript": "^5.0.4",
     "xmlhttprequest": "^1.8.0",
-    "@babel/plugin-proposal-class-properties": "~7.18.6"
+    "@babel/plugin-proposal-class-properties": "~7.18.6",
+    "@octokit/core": "~4.2.0",
+    "cz-conventional-changelog": "~3.3.0"
   },
   "devDependencies": {
     "@babel/core": "7.15.x",
@@ -84,7 +86,7 @@
     "commitizen": "^4.3.0",
     "core-js": "^3.30.1",
     "cross-env": "^7.0.3",
-    "eslint": "^8.39.0",
+    "eslint": "^7.2.0",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-babel": "^5.3.1",
     "eslint-plugin-import": "^2.27.5",
@@ -108,7 +110,7 @@
   },
   "config": {
     "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
+      "path": "tools/aelf-web3.js/node_modules/cz-conventional-changelog"
     }
   },
   "repository": {

@@ -170,8 +170,9 @@
      * RegExp escapes need two backslashes, and ordinary periods should be "\\.".
      */
     "allowedEmailRegExps": [
-      "[^@]+@users\\.noreply\\.github\\.com",
-      "rush-bot@example\\.org"
+      // Require GitHub scrubbed e-mails
+      "[^@]+@ienyan\\.com",
+      "[^@]+@hoopox\\.com"
     ],
 
     /**
@@ -179,7 +180,7 @@
      * of a recommended email.  Make sure it conforms to one of the allowedEmailRegExps
      * expressions.
      */
-    // "sampleEmail": "example@users.noreply.github.com",
+    "sampleEmail": "xxx@hoopox.com",
 
     /**
      * The commit message to use when committing changes during 'rush publish'.
