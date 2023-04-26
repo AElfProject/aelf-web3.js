@@ -6,12 +6,13 @@
         "useBuiltIns": "usage",
         "corejs": 3,
         "modules": false,
-        "targets": "> 0.5%, last 2 versions, Firefox ESR, not dead"
+        "targets": "defaults"
       }
     ]
   ],
   "plugins": [
-    "rewire"
+    "rewire",
+    //  "@babel/plugin-proposal-class-properties"
   ],
   "ignore": [
     "dist/*.js"
@@ -29,7 +30,8 @@
         ]
       ],
       "plugins": [
-        "rewire"
+        "rewire",
+        // "@babel/plugin-proposal-class-properties"
       ],
       "ignore": [
         "dist/*.js"

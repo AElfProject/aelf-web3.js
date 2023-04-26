@@ -76,7 +76,7 @@
    * version. In those cases, you will need to add an entry to the "allowedAlternativeVersions"
    * section of the common-versions.json.
    */
-  // "ensureConsistentVersions": true,
+  "ensureConsistentVersions": true,
 
   /**
    * Large monorepos can become intimidating for newcomers if project folder paths don't follow
@@ -169,10 +169,10 @@
      * IMPORTANT: Because these are regular expressions encoded as JSON string literals,
      * RegExp escapes need two backslashes, and ordinary periods should be "\\.".
      */
-    // "allowedEmailRegExps": [
-    //   "[^@]+@users\\.noreply\\.github\\.com",
-    //   "rush-bot@example\\.org"
-    // ],
+    "allowedEmailRegExps": [
+      "[^@]+@users\\.noreply\\.github\\.com",
+      "rush-bot@example\\.org"
+    ],
 
     /**
      * When Rush reports that the address is malformed, the notice can include an example
@@ -333,8 +333,8 @@
    */
   "projects": [
     {
-      "packageName": "my-toolchain",
-      "projectFolder": "tools/my-toolchain"
+      "packageName": "aelf-web3.js",
+      "projectFolder": "tools/aelf-web3.js"
     }
     // {
     //   /**
