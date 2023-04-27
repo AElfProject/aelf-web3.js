@@ -17,7 +17,7 @@
     "lint": "eslint src",
     "proto": "node scripts/compile-proto.js",
     "release": "standard-version -a",
-    "pre-commit": "lint-staged && yarn test:browser && istanbul-badges-readme && git add 'README.md'",
+    "pre-commit": "lint-staged && yarn test && istanbul-badges-readme && git add 'README.md'",
     "test": "yarn test:node && yarn test:browser",
     "test:browser": "jest --config=jest.browser.config.js",
     "test:browser:watch": "jest --config=jest.browser.config.js --watch",
