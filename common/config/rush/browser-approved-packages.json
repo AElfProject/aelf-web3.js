@@ -1,0 +1,226 @@
+// DO NOT ADD COMMENTS IN THIS FILE.  They will be lost when the Rush tool resaves it.
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/rush/v5/approved-packages.schema.json",
+  "packages": [
+    {
+      "name": "@aelfqueen/protobufjs",
+      "allowedCategories": [ "internal", "published" ]
+    },
+    {
+      "name": "@babel/core",
+      "allowedCategories": [ "internal", "published" ]
+    },
+    {
+      "name": "@babel/plugin-proposal-class-properties",
+      "allowedCategories": [ "internal", "published" ]
+    },
+    {
+      "name": "@babel/preset-env",
+      "allowedCategories": [ "internal", "published" ]
+    },
+    {
+      "name": "@babel/runtime",
+      "allowedCategories": [ "internal", "published" ]
+    },
+    {
+      "name": "@octokit/core",
+      "allowedCategories": [ "internal", "published" ]
+    },
+    {
+      "name": "@types/elliptic",
+      "allowedCategories": [ "internal", "published" ]
+    },
+    {
+      "name": "@types/hdkey",
+      "allowedCategories": [ "internal", "published" ]
+    },
+    {
+      "name": "@typescript-eslint/parser",
+      "allowedCategories": [ "internal", "published" ]
+    },
+    {
+      "name": "assert",
+      "allowedCategories": [ "internal", "published" ]
+    },
+    {
+      "name": "babel-loader",
+      "allowedCategories": [ "internal", "published" ]
+    },
+    {
+      "name": "babel-plugin-rewire",
+      "allowedCategories": [ "internal", "published" ]
+    },
+    {
+      "name": "bignumber.js",
+      "allowedCategories": [ "internal", "published" ]
+    },
+    {
+      "name": "bip39",
+      "allowedCategories": [ "internal", "published" ]
+    },
+    {
+      "name": "browserify-cipher",
+      "allowedCategories": [ "internal", "published" ]
+    },
+    {
+      "name": "bs58",
+      "allowedCategories": [ "internal", "published" ]
+    },
+    {
+      "name": "buffer",
+      "allowedCategories": [ "internal", "published" ]
+    },
+    {
+      "name": "chalk",
+      "allowedCategories": [ "internal", "published" ]
+    },
+    {
+      "name": "commitizen",
+      "allowedCategories": [ "internal", "published" ]
+    },
+    {
+      "name": "core-js",
+      "allowedCategories": [ "internal", "published" ]
+    },
+    {
+      "name": "cross-env",
+      "allowedCategories": [ "internal", "published" ]
+    },
+    {
+      "name": "crypto-browserify",
+      "allowedCategories": [ "internal", "published" ]
+    },
+    {
+      "name": "crypto-js",
+      "allowedCategories": [ "internal", "published" ]
+    },
+    {
+      "name": "cz-conventional-changelog",
+      "allowedCategories": [ "internal", "published" ]
+    },
+    {
+      "name": "elliptic",
+      "allowedCategories": [ "internal", "published" ]
+    },
+    {
+      "name": "eslint",
+      "allowedCategories": [ "internal", "published" ]
+    },
+    {
+      "name": "eslint-config-airbnb-base",
+      "allowedCategories": [ "internal", "published" ]
+    },
+    {
+      "name": "eslint-plugin-babel",
+      "allowedCategories": [ "internal", "published" ]
+    },
+    {
+      "name": "eslint-plugin-import",
+      "allowedCategories": [ "internal", "published" ]
+    },
+    {
+      "name": "gbk-string",
+      "allowedCategories": [ "internal", "published" ]
+    },
+    {
+      "name": "git-cz",
+      "allowedCategories": [ "internal", "published" ]
+    },
+    {
+      "name": "glob",
+      "allowedCategories": [ "internal", "published" ]
+    },
+    {
+      "name": "hdkey",
+      "allowedCategories": [ "internal", "published" ]
+    },
+    {
+      "name": "isomorphic-fetch",
+      "allowedCategories": [ "internal", "published" ]
+    },
+    {
+      "name": "istanbul-badges-readme",
+      "allowedCategories": [ "internal", "published" ]
+    },
+    {
+      "name": "jest",
+      "allowedCategories": [ "internal", "published" ]
+    },
+    {
+      "name": "jest-environment-jsdom",
+      "allowedCategories": [ "internal", "published" ]
+    },
+    {
+      "name": "jest-github-reporter",
+      "allowedCategories": [ "internal", "published" ]
+    },
+    {
+      "name": "js-sha256",
+      "allowedCategories": [ "internal", "published" ]
+    },
+    {
+      "name": "keccak",
+      "allowedCategories": [ "internal", "published" ]
+    },
+    {
+      "name": "lint-staged",
+      "allowedCategories": [ "internal", "published" ]
+    },
+    {
+      "name": "query-string",
+      "allowedCategories": [ "internal", "published" ]
+    },
+    {
+      "name": "randombytes",
+      "allowedCategories": [ "internal", "published" ]
+    },
+    {
+      "name": "readable-stream",
+      "allowedCategories": [ "internal", "published" ]
+    },
+    {
+      "name": "rimraf",
+      "allowedCategories": [ "internal", "published" ]
+    },
+    {
+      "name": "scryptsy",
+      "allowedCategories": [ "internal", "published" ]
+    },
+    {
+      "name": "standard-version",
+      "allowedCategories": [ "internal", "published" ]
+    },
+    {
+      "name": "stream-browserify",
+      "allowedCategories": [ "internal", "published" ]
+    },
+    {
+      "name": "typescript",
+      "allowedCategories": [ "internal", "published" ]
+    },
+    {
+      "name": "webpack",
+      "allowedCategories": [ "internal", "published" ]
+    },
+    {
+      "name": "webpack-bundle-analyzer",
+      "allowedCategories": [ "internal", "published" ]
+    },
+    {
+      "name": "webpack-cli",
+      "allowedCategories": [ "internal", "published" ]
+    },
+    {
+      "name": "webpack-deadcode-plugin",
+      "allowedCategories": [ "internal", "published" ]
+    },
+    {
+      "name": "webpack-merge",
+      "allowedCategories": [ "internal", "published" ]
+    },
+    {
+      "name": "xmlhttprequest",
+      "allowedCategories": [ "internal", "published" ]
+    }
+  ]
+}

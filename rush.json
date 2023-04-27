@@ -124,6 +124,10 @@
    * The approvals are tracked in two config files "browser-approved-packages.json"
    * and "nonbrowser-approved-packages.json".  See the Rush documentation for details.
    */
+   "approvedPackagesPolicy": {
+      "reviewCategories": [ "published", "internal" ],
+      "ignoredNpmScopes": [ "@types" ]
+   },
   // "approvedPackagesPolicy": {
   //   /**
   //    * The review categories allow you to say for example "This library is approved for usage
@@ -335,7 +339,8 @@
   "projects": [
     {
       "packageName": "aelf-web3.js",
-      "projectFolder": "tools/aelf-web3.js"
+      "projectFolder": "tools/aelf-web3.js",
+      "reviewCategory": "published"
     }
     // {
     //   /**
