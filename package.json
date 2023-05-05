@@ -54,7 +54,7 @@
     "assert": "^2.0.0",
     "babel-plugin-rewire": "^1.2.0",
     "bignumber.js": "^9.0.0",
-    "bip39": "^3.0.2",
+    "bip39": "3.0.4",
     "browserify-cipher": "^1.0.1",
     "bs58": "^5.0.0",
     "buffer": "^6.0.3",

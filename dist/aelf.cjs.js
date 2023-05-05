@@ -22,9 +22,9 @@ var roots = __webpack_require__(41);
 var Type, // cyclic
     Enum;
 
-util.codegen = __webpack_require__(90);
-util.fetch   = __webpack_require__(91);
-util.path    = __webpack_require__(92);
+util.codegen = __webpack_require__(89);
+util.fetch   = __webpack_require__(90);
+util.path    = __webpack_require__(91);
 
 /**
  * Node's fs module if available.
@@ -198,7 +198,7 @@ Object.defineProperty(util, "decorateRoot", {
 
 var utils = exports;
 var BN = __webpack_require__(2);
-var minAssert = __webpack_require__(12);
+var minAssert = __webpack_require__(11);
 var minUtils = __webpack_require__(49);
 
 utils.assert = minAssert;
@@ -375,7 +375,7 @@ utils.intFromLE = intFromLE;
     if (typeof window !== 'undefined' && typeof window.Buffer !== 'undefined') {
       Buffer = window.Buffer;
     } else {
-      Buffer = (__webpack_require__(10).Buffer);
+      Buffer = (__webpack_require__(12).Buffer);
     }
   } catch (e) {
   }
@@ -3975,25 +3975,25 @@ var util = exports;
 util.asPromise = __webpack_require__(38);
 
 // converts to / from base64 encoded strings
-util.base64 = __webpack_require__(81);
+util.base64 = __webpack_require__(80);
 
 // base class of rpc.Service
-util.EventEmitter = __webpack_require__(82);
+util.EventEmitter = __webpack_require__(81);
 
 // float handling accross browsers
-util.float = __webpack_require__(83);
+util.float = __webpack_require__(82);
 
 // requires modules optionally and hides the call from bundlers
 util.inquire = __webpack_require__(39);
 
 // converts to / from utf8 encoded strings
-util.utf8 = __webpack_require__(84);
+util.utf8 = __webpack_require__(83);
 
 // provides a node-like buffer pool in the browser
-util.pool = __webpack_require__(85);
+util.pool = __webpack_require__(84);
 
 // utility to work with the low and high bits of a 64 bit value
-util.LongBits = __webpack_require__(86);
+util.LongBits = __webpack_require__(85);
 
 // global object reference
 util.global = typeof window !== "undefined" && window
@@ -4082,7 +4082,7 @@ util.isSet = function isSet(obj, prop) {
  * @extends Uint8Array
  */
 // 纯粹为了解决问题做的
-util.BufferTemp = (__webpack_require__(10).Buffer);
+util.BufferTemp = (__webpack_require__(12).Buffer);
 /**
  * Node's Buffer class if available.
  * @type {Constructor<Buffer>}
@@ -4391,6 +4391,77 @@ util._configure = function() {
 
 /***/ }),
 /* 6 */
+/***/ ((module, exports, __webpack_require__) => {
+
+/*! safe-buffer. MIT License. Feross Aboukhadijeh <https://feross.org/opensource> */
+/* eslint-disable node/no-deprecated-api */
+var buffer = __webpack_require__(12)
+var Buffer = buffer.Buffer
+
+// alternative to using Object.keys for old browsers
+function copyProps (src, dst) {
+  for (var key in src) {
+    dst[key] = src[key]
+  }
+}
+if (Buffer.from && Buffer.alloc && Buffer.allocUnsafe && Buffer.allocUnsafeSlow) {
+  module.exports = buffer
+} else {
+  // Copy properties from require('buffer')
+  copyProps(buffer, exports)
+  exports.Buffer = SafeBuffer
+}
+
+function SafeBuffer (arg, encodingOrOffset, length) {
+  return Buffer(arg, encodingOrOffset, length)
+}
+
+SafeBuffer.prototype = Object.create(Buffer.prototype)
+
+// Copy static methods from Buffer
+copyProps(Buffer, SafeBuffer)
+
+SafeBuffer.from = function (arg, encodingOrOffset, length) {
+  if (typeof arg === 'number') {
+    throw new TypeError('Argument must not be a number')
+  }
+  return Buffer(arg, encodingOrOffset, length)
+}
+
+SafeBuffer.alloc = function (size, fill, encoding) {
+  if (typeof size !== 'number') {
+    throw new TypeError('Argument must be a number')
+  }
+  var buf = Buffer(size)
+  if (fill !== undefined) {
+    if (typeof encoding === 'string') {
+      buf.fill(fill, encoding)
+    } else {
+      buf.fill(fill)
+    }
+  } else {
+    buf.fill(0)
+  }
+  return buf
+}
+
+SafeBuffer.allocUnsafe = function (size) {
+  if (typeof size !== 'number') {
+    throw new TypeError('Argument must be a number')
+  }
+  return Buffer(size)
+}
+
+SafeBuffer.allocUnsafeSlow = function (size) {
+  if (typeof size !== 'number') {
+    throw new TypeError('Argument must be a number')
+  }
+  return buffer.SlowBuffer(size)
+}
+
+
+/***/ }),
+/* 7 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 try {
@@ -4405,14 +4476,14 @@ try {
 
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
 
 
-var assert = __webpack_require__(12);
-var inherits = __webpack_require__(6);
+var assert = __webpack_require__(11);
+var inherits = __webpack_require__(7);
 
 exports.inherits = inherits;
 
@@ -4690,7 +4761,7 @@ exports.shr64_lo = shr64_lo;
 
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ;(function (root, factory) {
@@ -5495,85 +5566,7 @@ exports.shr64_lo = shr64_lo;
 }));
 
 /***/ }),
-/* 9 */
-/***/ ((module, exports, __webpack_require__) => {
-
-/*! safe-buffer. MIT License. Feross Aboukhadijeh <https://feross.org/opensource> */
-/* eslint-disable node/no-deprecated-api */
-var buffer = __webpack_require__(10)
-var Buffer = buffer.Buffer
-
-// alternative to using Object.keys for old browsers
-function copyProps (src, dst) {
-  for (var key in src) {
-    dst[key] = src[key]
-  }
-}
-if (Buffer.from && Buffer.alloc && Buffer.allocUnsafe && Buffer.allocUnsafeSlow) {
-  module.exports = buffer
-} else {
-  // Copy properties from require('buffer')
-  copyProps(buffer, exports)
-  exports.Buffer = SafeBuffer
-}
-
-function SafeBuffer (arg, encodingOrOffset, length) {
-  return Buffer(arg, encodingOrOffset, length)
-}
-
-SafeBuffer.prototype = Object.create(Buffer.prototype)
-
-// Copy static methods from Buffer
-copyProps(Buffer, SafeBuffer)
-
-SafeBuffer.from = function (arg, encodingOrOffset, length) {
-  if (typeof arg === 'number') {
-    throw new TypeError('Argument must not be a number')
-  }
-  return Buffer(arg, encodingOrOffset, length)
-}
-
-SafeBuffer.alloc = function (size, fill, encoding) {
-  if (typeof size !== 'number') {
-    throw new TypeError('Argument must be a number')
-  }
-  var buf = Buffer(size)
-  if (fill !== undefined) {
-    if (typeof encoding === 'string') {
-      buf.fill(fill, encoding)
-    } else {
-      buf.fill(fill)
-    }
-  } else {
-    buf.fill(0)
-  }
-  return buf
-}
-
-SafeBuffer.allocUnsafe = function (size) {
-  if (typeof size !== 'number') {
-    throw new TypeError('Argument must be a number')
-  }
-  return Buffer(size)
-}
-
-SafeBuffer.allocUnsafeSlow = function (size) {
-  if (typeof size !== 'number') {
-    throw new TypeError('Argument must be a number')
-  }
-  return buffer.SlowBuffer(size)
-}
-
-
-/***/ }),
 /* 10 */
-/***/ ((module) => {
-
-"use strict";
-module.exports = require("buffer");
-
-/***/ }),
-/* 11 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
@@ -5951,7 +5944,7 @@ Field._configure = function configure(Type_) {
 
 
 /***/ }),
-/* 12 */
+/* 11 */
 /***/ ((module) => {
 
 module.exports = assert;
@@ -5966,6 +5959,13 @@ assert.equal = function assertEqual(l, r, msg) {
     throw new Error(msg || ('Assertion failed: ' + l + ' != ' + r));
 };
 
+
+/***/ }),
+/* 12 */
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("buffer");
 
 /***/ }),
 /* 13 */
@@ -6512,7 +6512,7 @@ module.exports = Namespace;
 var ReflectionObject = __webpack_require__(13);
 ((Namespace.prototype = Object.create(ReflectionObject.prototype)).constructor = Namespace).className = "Namespace";
 
-var Field    = __webpack_require__(11),
+var Field    = __webpack_require__(10),
     util     = __webpack_require__(0);
 
 var Type,    // cyclic
@@ -6984,7 +6984,7 @@ var objectKeys = Object.keys || function (obj) {
 module.exports = Duplex;
 var Readable = __webpack_require__(60);
 var Writable = __webpack_require__(63);
-__webpack_require__(6)(Duplex, Readable);
+__webpack_require__(7)(Duplex, Readable);
 {
   // Allow the keys array to be GC'ed.
   var keys = objectKeys(Writable.prototype);
@@ -7084,7 +7084,7 @@ module.exports = OneOf;
 var ReflectionObject = __webpack_require__(13);
 ((OneOf.prototype = Object.create(ReflectionObject.prototype)).constructor = OneOf).className = "OneOf";
 
-var Field = __webpack_require__(11),
+var Field = __webpack_require__(10),
     util  = __webpack_require__(0);
 
 /**
@@ -7677,8 +7677,8 @@ BasePoint.prototype.dblp = function dblp(k) {
 "use strict";
 
 
-var utils = __webpack_require__(7);
-var assert = __webpack_require__(12);
+var utils = __webpack_require__(8);
+var assert = __webpack_require__(11);
 
 function BlockHash() {
   this.pending = null;
@@ -8661,7 +8661,7 @@ var Namespace = __webpack_require__(16);
 
 var Enum      = __webpack_require__(3),
     OneOf     = __webpack_require__(18),
-    Field     = __webpack_require__(11),
+    Field     = __webpack_require__(10),
     MapField  = __webpack_require__(24),
     Service   = __webpack_require__(25),
     Message   = __webpack_require__(27),
@@ -9252,7 +9252,7 @@ Type.d = function decorateType(typeName) {
 module.exports = MapField;
 
 // extends Field
-var Field = __webpack_require__(11);
+var Field = __webpack_require__(10);
 ((MapField.prototype = Object.create(Field.prototype)).constructor = MapField).className = "MapField";
 
 var types   = __webpack_require__(14),
@@ -9865,7 +9865,7 @@ module.exports = Root;
 var Namespace = __webpack_require__(16);
 ((Root.prototype = Object.create(Namespace.prototype)).constructor = Root).className = "Root";
 
-var Field   = __webpack_require__(11),
+var Field   = __webpack_require__(10),
     Enum    = __webpack_require__(3),
     OneOf   = __webpack_require__(18),
     util    = __webpack_require__(0);
@@ -10393,7 +10393,7 @@ defineCurve('ed25519', {
 
 var pre;
 try {
-  pre = __webpack_require__(105);
+  pre = __webpack_require__(104);
 } catch (e) {
   pre = undefined;
 }
@@ -10437,11 +10437,11 @@ defineCurve('secp256k1', {
 
 var hash = exports;
 
-hash.utils = __webpack_require__(7);
+hash.utils = __webpack_require__(8);
 hash.common = __webpack_require__(20);
-hash.sha = __webpack_require__(156);
-hash.ripemd = __webpack_require__(157);
-hash.hmac = __webpack_require__(104);
+hash.sha = __webpack_require__(155);
+hash.ripemd = __webpack_require__(156);
+hash.hmac = __webpack_require__(103);
 
 // Proxy hash functions to the main object
 hash.sha1 = hash.sha.sha1;
@@ -10499,7 +10499,7 @@ module.exports = defaultEncoding
 /* 34 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-var Buffer = (__webpack_require__(9).Buffer)
+var Buffer = (__webpack_require__(6).Buffer)
 
 module.exports = function (thing, encoding, name) {
   if (Buffer.isBuffer(thing)) {
@@ -10610,7 +10610,7 @@ module.exports = eos;
 /* 36 */
 /***/ ((module, exports, __webpack_require__) => {
 
-var Stream = __webpack_require__(132);
+var Stream = __webpack_require__(131);
 if (process.env.READABLE_STREAM === 'disable' && Stream) {
   module.exports = Stream.Readable;
   Object.assign(module.exports, Stream);
@@ -10622,9 +10622,9 @@ if (process.env.READABLE_STREAM === 'disable' && Stream) {
   exports.Writable = __webpack_require__(63);
   exports.Duplex = __webpack_require__(17);
   exports.Transform = __webpack_require__(64);
-  exports.PassThrough = __webpack_require__(137);
+  exports.PassThrough = __webpack_require__(136);
   exports.finished = __webpack_require__(35);
-  exports.pipeline = __webpack_require__(138);
+  exports.pipeline = __webpack_require__(137);
 }
 
 
@@ -10635,7 +10635,7 @@ if (process.env.READABLE_STREAM === 'disable' && Stream) {
 ;(function (root, factory, undef) {
 	if (true) {
 		// CommonJS
-		module.exports = exports = factory(__webpack_require__(8), __webpack_require__(72), __webpack_require__(73));
+		module.exports = exports = factory(__webpack_require__(9), __webpack_require__(72), __webpack_require__(73));
 	}
 	else {}
 }(this, function (CryptoJS) {
@@ -10883,7 +10883,7 @@ var rpc = exports;
  * @returns {undefined}
  */
 
-rpc.Service = __webpack_require__(89);
+rpc.Service = __webpack_require__(88);
 
 
 /***/ }),
@@ -12116,15 +12116,15 @@ function tokenize(source, alternateCommentMode) {
 
 var elliptic = exports;
 
-elliptic.version = (__webpack_require__(155)/* .version */ .i8);
+elliptic.version = (__webpack_require__(154)/* .version */ .i8);
 elliptic.utils = __webpack_require__(1);
 elliptic.rand = __webpack_require__(50);
 elliptic.curve = __webpack_require__(51);
 elliptic.curves = __webpack_require__(30);
 
 // Protocols
-elliptic.ec = __webpack_require__(106);
-elliptic.eddsa = __webpack_require__(110);
+elliptic.ec = __webpack_require__(105);
+elliptic.eddsa = __webpack_require__(109);
 
 
 /***/ }),
@@ -12273,9 +12273,9 @@ if (typeof self === 'object') {
 var curve = exports;
 
 curve.base = __webpack_require__(19);
-curve.short = __webpack_require__(97);
-curve.mont = __webpack_require__(98);
-curve.edwards = __webpack_require__(99);
+curve.short = __webpack_require__(96);
+curve.mont = __webpack_require__(97);
+curve.edwards = __webpack_require__(98);
 
 
 /***/ }),
@@ -12285,10 +12285,10 @@ curve.edwards = __webpack_require__(99);
 "use strict";
 
 
-var utils = __webpack_require__(7);
+var utils = __webpack_require__(8);
 var common = __webpack_require__(20);
-var shaCommon = __webpack_require__(101);
-var assert = __webpack_require__(12);
+var shaCommon = __webpack_require__(100);
+var assert = __webpack_require__(11);
 
 var sum32 = utils.sum32;
 var sum32_4 = utils.sum32_4;
@@ -12397,9 +12397,9 @@ SHA256.prototype._digest = function digest(enc) {
 "use strict";
 
 
-var utils = __webpack_require__(7);
+var utils = __webpack_require__(8);
 var common = __webpack_require__(20);
-var assert = __webpack_require__(12);
+var assert = __webpack_require__(11);
 
 var rotr64_hi = utils.rotr64_hi;
 var rotr64_lo = utils.rotr64_lo;
@@ -12749,8 +12749,8 @@ var sizes = {
   ripemd160: 20
 }
 
-var createHmac = __webpack_require__(160)
-var Buffer = (__webpack_require__(9).Buffer)
+var createHmac = __webpack_require__(159)
+var Buffer = (__webpack_require__(6).Buffer)
 
 var checkParameters = __webpack_require__(32)
 var defaultEncoding = __webpack_require__(33)
@@ -13032,8 +13032,8 @@ module.exports = {
 /* 59 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const createKeccak = __webpack_require__(131)
-const createShake = __webpack_require__(139)
+const createKeccak = __webpack_require__(130)
+const createShake = __webpack_require__(138)
 
 module.exports = function (KeccakState) {
   const Keccak = createKeccak(KeccakState)
@@ -13098,17 +13098,17 @@ var Duplex;
 Readable.ReadableState = ReadableState;
 
 /*<replacement>*/
-var EE = (__webpack_require__(168).EventEmitter);
+var EE = (__webpack_require__(167).EventEmitter);
 var EElistenerCount = function EElistenerCount(emitter, type) {
   return emitter.listeners(type).length;
 };
 /*</replacement>*/
 
 /*<replacement>*/
-var Stream = __webpack_require__(133);
+var Stream = __webpack_require__(132);
 /*</replacement>*/
 
-var Buffer = (__webpack_require__(10).Buffer);
+var Buffer = (__webpack_require__(12).Buffer);
 var OurUint8Array = (typeof global !== 'undefined' ? global : typeof window !== 'undefined' ? window : typeof self !== 'undefined' ? self : {}).Uint8Array || function () {};
 function _uint8ArrayToBuffer(chunk) {
   return Buffer.from(chunk);
@@ -13127,7 +13127,7 @@ if (debugUtil && debugUtil.debuglog) {
 }
 /*</replacement>*/
 
-var BufferList = __webpack_require__(134);
+var BufferList = __webpack_require__(133);
 var destroyImpl = __webpack_require__(61);
 var _require = __webpack_require__(62),
   getHighWaterMark = _require.getHighWaterMark;
@@ -13141,7 +13141,7 @@ var _require$codes = (__webpack_require__(15)/* .codes */ .q),
 var StringDecoder;
 var createReadableStreamAsyncIterator;
 var from;
-__webpack_require__(6)(Readable, Stream);
+__webpack_require__(7)(Readable, Stream);
 var errorOrDestroy = destroyImpl.errorOrDestroy;
 var kProxyEvents = ['error', 'close', 'destroy', 'pause', 'resume'];
 function prependListener(emitter, event, fn) {
@@ -13223,7 +13223,7 @@ function ReadableState(options, stream, isDuplex) {
   this.decoder = null;
   this.encoding = null;
   if (options.encoding) {
-    if (!StringDecoder) StringDecoder = (__webpack_require__(150)/* .StringDecoder */ .s);
+    if (!StringDecoder) StringDecoder = (__webpack_require__(149)/* .StringDecoder */ .s);
     this.decoder = new StringDecoder(options.encoding);
     this.encoding = options.encoding;
   }
@@ -13366,7 +13366,7 @@ Readable.prototype.isPaused = function () {
 
 // backwards compatibility.
 Readable.prototype.setEncoding = function (enc) {
-  if (!StringDecoder) StringDecoder = (__webpack_require__(150)/* .StringDecoder */ .s);
+  if (!StringDecoder) StringDecoder = (__webpack_require__(149)/* .StringDecoder */ .s);
   var decoder = new StringDecoder(enc);
   this._readableState.decoder = decoder;
   // If setEncoding(null), decoder.encoding equals utf8
@@ -13985,7 +13985,7 @@ Readable.prototype.wrap = function (stream) {
 if (typeof Symbol === 'function') {
   Readable.prototype[Symbol.asyncIterator] = function () {
     if (createReadableStreamAsyncIterator === undefined) {
-      createReadableStreamAsyncIterator = __webpack_require__(135);
+      createReadableStreamAsyncIterator = __webpack_require__(134);
     }
     return createReadableStreamAsyncIterator(this);
   };
@@ -14082,7 +14082,7 @@ function endReadableNT(state, stream) {
 if (typeof Symbol === 'function') {
   Readable.from = function (iterable, opts) {
     if (from === undefined) {
-      from = __webpack_require__(136);
+      from = __webpack_require__(135);
     }
     return from(Readable, iterable, opts);
   };
@@ -14286,15 +14286,15 @@ Writable.WritableState = WritableState;
 
 /*<replacement>*/
 var internalUtil = {
-  deprecate: __webpack_require__(169)
+  deprecate: __webpack_require__(168)
 };
 /*</replacement>*/
 
 /*<replacement>*/
-var Stream = __webpack_require__(133);
+var Stream = __webpack_require__(132);
 /*</replacement>*/
 
-var Buffer = (__webpack_require__(10).Buffer);
+var Buffer = (__webpack_require__(12).Buffer);
 var OurUint8Array = (typeof global !== 'undefined' ? global : typeof window !== 'undefined' ? window : typeof self !== 'undefined' ? self : {}).Uint8Array || function () {};
 function _uint8ArrayToBuffer(chunk) {
   return Buffer.from(chunk);
@@ -14315,7 +14315,7 @@ var _require$codes = (__webpack_require__(15)/* .codes */ .q),
   ERR_STREAM_WRITE_AFTER_END = _require$codes.ERR_STREAM_WRITE_AFTER_END,
   ERR_UNKNOWN_ENCODING = _require$codes.ERR_UNKNOWN_ENCODING;
 var errorOrDestroy = destroyImpl.errorOrDestroy;
-__webpack_require__(6)(Writable, Stream);
+__webpack_require__(7)(Writable, Stream);
 function nop() {}
 function WritableState(options, stream, isDuplex) {
   Duplex = Duplex || __webpack_require__(17);
@@ -14948,7 +14948,7 @@ var _require$codes = (__webpack_require__(15)/* .codes */ .q),
   ERR_TRANSFORM_ALREADY_TRANSFORMING = _require$codes.ERR_TRANSFORM_ALREADY_TRANSFORMING,
   ERR_TRANSFORM_WITH_LENGTH_0 = _require$codes.ERR_TRANSFORM_WITH_LENGTH_0;
 var Duplex = __webpack_require__(17);
-__webpack_require__(6)(Transform, Duplex);
+__webpack_require__(7)(Transform, Duplex);
 function afterTransform(er, data) {
   var ts = this._transformState;
   ts.transforming = false;
@@ -15073,8 +15073,8 @@ function done(stream, er, data) {
 
 "use strict";
 
-var $protobuf = __webpack_require__(152);
-module.exports = exports = $protobuf.descriptor = $protobuf.Root.fromJSON(__webpack_require__(154)).lookup(".google.protobuf");
+var $protobuf = __webpack_require__(151);
+module.exports = exports = $protobuf.descriptor = $protobuf.Root.fromJSON(__webpack_require__(153)).lookup(".google.protobuf");
 
 var Namespace = $protobuf.Namespace,
     Root      = $protobuf.Root,
@@ -16657,10 +16657,10 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/**
 
 "use strict";
 
-const strictUriEncode = __webpack_require__(144);
-const decodeComponent = __webpack_require__(145);
-const splitOnFirst = __webpack_require__(146);
-const filterObject = __webpack_require__(147);
+const strictUriEncode = __webpack_require__(143);
+const decodeComponent = __webpack_require__(144);
+const splitOnFirst = __webpack_require__(145);
+const filterObject = __webpack_require__(146);
 
 const isNullOrUndefined = value => value === null || value === undefined;
 
@@ -17150,7 +17150,7 @@ exports.exclude = (input, filter, options) => {
 
 var fs = __webpack_require__(56),
   path = __webpack_require__(57),
-  fileURLToPath = __webpack_require__(121),
+  fileURLToPath = __webpack_require__(120),
   join = path.join,
   dirname = path.dirname,
   exists =
@@ -17374,7 +17374,7 @@ exports.getRoot = function getRoot(file) {
 ;(function (root, factory, undef) {
 	if (true) {
 		// CommonJS
-		module.exports = exports = factory(__webpack_require__(8), __webpack_require__(70), __webpack_require__(71), __webpack_require__(37), __webpack_require__(74));
+		module.exports = exports = factory(__webpack_require__(9), __webpack_require__(70), __webpack_require__(71), __webpack_require__(37), __webpack_require__(74));
 	}
 	else {}
 }(this, function (CryptoJS) {
@@ -17606,7 +17606,7 @@ exports.getRoot = function getRoot(file) {
 ;(function (root, factory) {
 	if (true) {
 		// CommonJS
-		module.exports = exports = factory(__webpack_require__(8));
+		module.exports = exports = factory(__webpack_require__(9));
 	}
 	else {}
 }(this, function (CryptoJS) {
@@ -17740,7 +17740,7 @@ exports.getRoot = function getRoot(file) {
 ;(function (root, factory) {
 	if (true) {
 		// CommonJS
-		module.exports = exports = factory(__webpack_require__(8));
+		module.exports = exports = factory(__webpack_require__(9));
 	}
 	else {}
 }(this, function (CryptoJS) {
@@ -18006,7 +18006,7 @@ exports.getRoot = function getRoot(file) {
 ;(function (root, factory) {
 	if (true) {
 		// CommonJS
-		module.exports = exports = factory(__webpack_require__(8));
+		module.exports = exports = factory(__webpack_require__(9));
 	}
 	else {}
 }(this, function (CryptoJS) {
@@ -18154,7 +18154,7 @@ exports.getRoot = function getRoot(file) {
 ;(function (root, factory) {
 	if (true) {
 		// CommonJS
-		module.exports = exports = factory(__webpack_require__(8));
+		module.exports = exports = factory(__webpack_require__(9));
 	}
 	else {}
 }(this, function (CryptoJS) {
@@ -18295,7 +18295,7 @@ exports.getRoot = function getRoot(file) {
 ;(function (root, factory, undef) {
 	if (true) {
 		// CommonJS
-		module.exports = exports = factory(__webpack_require__(8), __webpack_require__(37));
+		module.exports = exports = factory(__webpack_require__(9), __webpack_require__(37));
 	}
 	else {}
 }(this, function (CryptoJS) {
@@ -19183,7 +19183,7 @@ exports.getRoot = function getRoot(file) {
 ;(function (root, factory) {
 	if (true) {
 		// CommonJS
-		module.exports = exports = factory(__webpack_require__(8));
+		module.exports = exports = factory(__webpack_require__(9));
 	}
 	else {}
 }(this, function (CryptoJS) {
@@ -19230,7 +19230,7 @@ if (typeof Object.create === 'function') {
 /***/ ((module, exports, __webpack_require__) => {
 
 /* eslint-disable node/no-deprecated-api */
-var buffer = __webpack_require__(10)
+var buffer = __webpack_require__(12)
 var Buffer = buffer.Buffer
 
 // alternative to using Object.keys for old browsers
@@ -19297,81 +19297,11 @@ SafeBuffer.allocUnsafeSlow = function (size) {
 
 /***/ }),
 /* 78 */
-/***/ ((module, exports, __webpack_require__) => {
-
-/* eslint-disable node/no-deprecated-api */
-var buffer = __webpack_require__(10)
-var Buffer = buffer.Buffer
-
-// alternative to using Object.keys for old browsers
-function copyProps (src, dst) {
-  for (var key in src) {
-    dst[key] = src[key]
-  }
-}
-if (Buffer.from && Buffer.alloc && Buffer.allocUnsafe && Buffer.allocUnsafeSlow) {
-  module.exports = buffer
-} else {
-  // Copy properties from require('buffer')
-  copyProps(buffer, exports)
-  exports.Buffer = SafeBuffer
-}
-
-function SafeBuffer (arg, encodingOrOffset, length) {
-  return Buffer(arg, encodingOrOffset, length)
-}
-
-SafeBuffer.prototype = Object.create(Buffer.prototype)
-
-// Copy static methods from Buffer
-copyProps(Buffer, SafeBuffer)
-
-SafeBuffer.from = function (arg, encodingOrOffset, length) {
-  if (typeof arg === 'number') {
-    throw new TypeError('Argument must not be a number')
-  }
-  return Buffer(arg, encodingOrOffset, length)
-}
-
-SafeBuffer.alloc = function (size, fill, encoding) {
-  if (typeof size !== 'number') {
-    throw new TypeError('Argument must be a number')
-  }
-  var buf = Buffer(size)
-  if (fill !== undefined) {
-    if (typeof encoding === 'string') {
-      buf.fill(fill, encoding)
-    } else {
-      buf.fill(fill)
-    }
-  } else {
-    buf.fill(0)
-  }
-  return buf
-}
-
-SafeBuffer.allocUnsafe = function (size) {
-  if (typeof size !== 'number') {
-    throw new TypeError('Argument must be a number')
-  }
-  return Buffer(size)
-}
-
-SafeBuffer.allocUnsafeSlow = function (size) {
-  if (typeof size !== 'number') {
-    throw new TypeError('Argument must be a number')
-  }
-  return buffer.SlowBuffer(size)
-}
-
-
-/***/ }),
-/* 79 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
-var protobuf = module.exports = __webpack_require__(80);
+var protobuf = module.exports = __webpack_require__(79);
 
 protobuf.build = "light";
 
@@ -19455,7 +19385,7 @@ protobuf.Namespace        = __webpack_require__(16);
 protobuf.Root             = __webpack_require__(28);
 protobuf.Enum             = __webpack_require__(3);
 protobuf.Type             = __webpack_require__(23);
-protobuf.Field            = __webpack_require__(11);
+protobuf.Field            = __webpack_require__(10);
 protobuf.OneOf            = __webpack_require__(18);
 protobuf.MapField         = __webpack_require__(24);
 protobuf.Service          = __webpack_require__(25);
@@ -19477,7 +19407,7 @@ protobuf.Field._configure(protobuf.Type);
 
 
 /***/ }),
-/* 80 */
+/* 79 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -19494,9 +19424,9 @@ protobuf.build = "minimal";
 
 // Serialization
 protobuf.Writer       = __webpack_require__(21);
-protobuf.BufferWriter = __webpack_require__(87);
+protobuf.BufferWriter = __webpack_require__(86);
 protobuf.Reader       = __webpack_require__(22);
-protobuf.BufferReader = __webpack_require__(88);
+protobuf.BufferReader = __webpack_require__(87);
 
 // Utility
 protobuf.util         = __webpack_require__(5);
@@ -19520,7 +19450,7 @@ configure();
 
 
 /***/ }),
-/* 81 */
+/* 80 */
 /***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
@@ -19666,7 +19596,7 @@ base64.test = function test(string) {
 
 
 /***/ }),
-/* 82 */
+/* 81 */
 /***/ ((module) => {
 
 "use strict";
@@ -19749,7 +19679,7 @@ EventEmitter.prototype.emit = function emit(evt) {
 
 
 /***/ }),
-/* 83 */
+/* 82 */
 /***/ ((module) => {
 
 "use strict";
@@ -20091,7 +20021,7 @@ function readUintBE(buf, pos) {
 
 
 /***/ }),
-/* 84 */
+/* 83 */
 /***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
@@ -20203,7 +20133,7 @@ utf8.write = function utf8_write(string, buffer, offset) {
 
 
 /***/ }),
-/* 85 */
+/* 84 */
 /***/ ((module) => {
 
 "use strict";
@@ -20258,7 +20188,7 @@ function pool(alloc, slice, size) {
 
 
 /***/ }),
-/* 86 */
+/* 85 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
@@ -20465,7 +20395,7 @@ LongBits.prototype.length = function length() {
 
 
 /***/ }),
-/* 87 */
+/* 86 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
@@ -20553,7 +20483,7 @@ BufferWriter.prototype.string = function write_string_buffer(value) {
 
 
 /***/ }),
-/* 88 */
+/* 87 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
@@ -20604,7 +20534,7 @@ BufferReader.prototype.string = function read_string_buffer() {
 
 
 /***/ }),
-/* 89 */
+/* 88 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
@@ -20753,7 +20683,7 @@ Service.prototype.end = function end(endedByRPC) {
 
 
 /***/ }),
-/* 90 */
+/* 89 */
 /***/ ((module) => {
 
 "use strict";
@@ -20859,7 +20789,7 @@ codegen.verbose = false;
 
 
 /***/ }),
-/* 91 */
+/* 90 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
@@ -20981,7 +20911,7 @@ fetch.xhr = function fetch_xhr(filename, options, callback) {
 
 
 /***/ }),
-/* 92 */
+/* 91 */
 /***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
@@ -21053,17 +20983,17 @@ path.resolve = function resolve(originPath, includePath, alreadyNormalized) {
 
 
 /***/ }),
-/* 93 */
+/* 92 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const basex = __webpack_require__(94)
+const basex = __webpack_require__(93)
 const ALPHABET = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
 
 module.exports = basex(ALPHABET)
 
 
 /***/ }),
-/* 94 */
+/* 93 */
 /***/ ((module) => {
 
 "use strict";
@@ -21191,7 +21121,7 @@ module.exports = base
 
 
 /***/ }),
-/* 95 */
+/* 94 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
@@ -21204,7 +21134,7 @@ parse.defaults = { keepCase: false };
 var tokenize  = __webpack_require__(47),
     Root      = __webpack_require__(28),
     Type      = __webpack_require__(23),
-    Field     = __webpack_require__(11),
+    Field     = __webpack_require__(10),
     MapField  = __webpack_require__(24),
     OneOf     = __webpack_require__(18),
     Enum      = __webpack_require__(3),
@@ -21956,7 +21886,7 @@ function parse(source, root, options) {
 
 
 /***/ }),
-/* 96 */
+/* 95 */
 /***/ ((module) => {
 
 "use strict";
@@ -22362,7 +22292,7 @@ common.get = function get(file) {
 
 
 /***/ }),
-/* 97 */
+/* 96 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
@@ -22370,7 +22300,7 @@ common.get = function get(file) {
 
 var utils = __webpack_require__(1);
 var BN = __webpack_require__(2);
-var inherits = __webpack_require__(6);
+var inherits = __webpack_require__(7);
 var Base = __webpack_require__(19);
 
 var assert = utils.assert;
@@ -23307,14 +23237,14 @@ JPoint.prototype.isInfinity = function isInfinity() {
 
 
 /***/ }),
-/* 98 */
+/* 97 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
 
 var BN = __webpack_require__(2);
-var inherits = __webpack_require__(6);
+var inherits = __webpack_require__(7);
 var Base = __webpack_require__(19);
 
 var utils = __webpack_require__(1);
@@ -23492,7 +23422,7 @@ Point.prototype.getX = function getX() {
 
 
 /***/ }),
-/* 99 */
+/* 98 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
@@ -23500,7 +23430,7 @@ Point.prototype.getX = function getX() {
 
 var utils = __webpack_require__(1);
 var BN = __webpack_require__(2);
-var inherits = __webpack_require__(6);
+var inherits = __webpack_require__(7);
 var Base = __webpack_require__(19);
 
 var assert = utils.assert;
@@ -23934,15 +23864,15 @@ Point.prototype.mixedAdd = Point.prototype.add;
 
 
 /***/ }),
-/* 100 */
+/* 99 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
 
-var utils = __webpack_require__(7);
+var utils = __webpack_require__(8);
 var common = __webpack_require__(20);
-var shaCommon = __webpack_require__(101);
+var shaCommon = __webpack_require__(100);
 
 var rotl32 = utils.rotl32;
 var sum32 = utils.sum32;
@@ -24015,13 +23945,13 @@ SHA1.prototype._digest = function digest(enc) {
 
 
 /***/ }),
-/* 101 */
+/* 100 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
 
 
-var utils = __webpack_require__(7);
+var utils = __webpack_require__(8);
 var rotr32 = utils.rotr32;
 
 function ft_1(s, x, y, z) {
@@ -24071,13 +24001,13 @@ exports.g1_256 = g1_256;
 
 
 /***/ }),
-/* 102 */
+/* 101 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
 
-var utils = __webpack_require__(7);
+var utils = __webpack_require__(8);
 var SHA256 = __webpack_require__(52);
 
 function SHA224() {
@@ -24108,13 +24038,13 @@ SHA224.prototype._digest = function digest(enc) {
 
 
 /***/ }),
-/* 103 */
+/* 102 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
 
-var utils = __webpack_require__(7);
+var utils = __webpack_require__(8);
 
 var SHA512 = __webpack_require__(53);
 
@@ -24150,14 +24080,14 @@ SHA384.prototype._digest = function digest(enc) {
 
 
 /***/ }),
-/* 104 */
+/* 103 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
 
-var utils = __webpack_require__(7);
-var assert = __webpack_require__(12);
+var utils = __webpack_require__(8);
+var assert = __webpack_require__(11);
 
 function Hmac(hash, key, enc) {
   if (!(this instanceof Hmac))
@@ -24204,7 +24134,7 @@ Hmac.prototype.digest = function digest(enc) {
 
 
 /***/ }),
-/* 105 */
+/* 104 */
 /***/ ((module) => {
 
 module.exports = {
@@ -24990,21 +24920,21 @@ module.exports = {
 
 
 /***/ }),
-/* 106 */
+/* 105 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
 
 var BN = __webpack_require__(2);
-var HmacDRBG = __webpack_require__(107);
+var HmacDRBG = __webpack_require__(106);
 var utils = __webpack_require__(1);
 var curves = __webpack_require__(30);
 var rand = __webpack_require__(50);
 var assert = utils.assert;
 
-var KeyPair = __webpack_require__(108);
-var Signature = __webpack_require__(109);
+var KeyPair = __webpack_require__(107);
+var Signature = __webpack_require__(108);
 
 function EC(options) {
   if (!(this instanceof EC))
@@ -25240,7 +25170,7 @@ EC.prototype.getKeyRecoveryParam = function(e, signature, Q, enc) {
 
 
 /***/ }),
-/* 107 */
+/* 106 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
@@ -25248,7 +25178,7 @@ EC.prototype.getKeyRecoveryParam = function(e, signature, Q, enc) {
 
 var hash = __webpack_require__(31);
 var utils = __webpack_require__(49);
-var assert = __webpack_require__(12);
+var assert = __webpack_require__(11);
 
 function HmacDRBG(options) {
   if (!(this instanceof HmacDRBG))
@@ -25360,7 +25290,7 @@ HmacDRBG.prototype.generate = function generate(len, enc, add, addEnc) {
 
 
 /***/ }),
-/* 108 */
+/* 107 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
@@ -25488,7 +25418,7 @@ KeyPair.prototype.inspect = function inspect() {
 
 
 /***/ }),
-/* 109 */
+/* 108 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
@@ -25661,7 +25591,7 @@ Signature.prototype.toDER = function toDER(enc) {
 
 
 /***/ }),
-/* 110 */
+/* 109 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
@@ -25672,8 +25602,8 @@ var curves = __webpack_require__(30);
 var utils = __webpack_require__(1);
 var assert = utils.assert;
 var parseBytes = utils.parseBytes;
-var KeyPair = __webpack_require__(111);
-var Signature = __webpack_require__(112);
+var KeyPair = __webpack_require__(110);
+var Signature = __webpack_require__(111);
 
 function EDDSA(curve) {
   assert(curve === 'ed25519', 'only tested with ed25519 so far');
@@ -25786,7 +25716,7 @@ EDDSA.prototype.isPoint = function isPoint(val) {
 
 
 /***/ }),
-/* 111 */
+/* 110 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
@@ -25888,7 +25818,7 @@ module.exports = KeyPair;
 
 
 /***/ }),
-/* 112 */
+/* 111 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
@@ -25960,10 +25890,10 @@ module.exports = Signature;
 
 
 /***/ }),
-/* 113 */
+/* 112 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-var Buffer = (__webpack_require__(9).Buffer)
+var Buffer = (__webpack_require__(6).Buffer)
 
 var checkParameters = __webpack_require__(32)
 var defaultEncoding = __webpack_require__(33)
@@ -26084,21 +26014,21 @@ module.exports = function (password, salt, iterations, keylen, digest, callback)
 
 
 /***/ }),
-/* 114 */
+/* 113 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 module.exports = __webpack_require__(4).randomBytes
 
 
 /***/ }),
-/* 115 */
+/* 114 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-var assert = __webpack_require__(162)
+var assert = __webpack_require__(161)
 var Buffer = (__webpack_require__(77).Buffer)
 var crypto = __webpack_require__(4)
-var bs58check = __webpack_require__(116)
-var secp256k1 = __webpack_require__(163)
+var bs58check = __webpack_require__(115)
+var secp256k1 = __webpack_require__(162)
 
 var MASTER_SECRET = Buffer.from('Bitcoin seed', 'utf8')
 var HARDENED_OFFSET = 0x80000000
@@ -26339,14 +26269,14 @@ module.exports = HDKey
 
 
 /***/ }),
-/* 116 */
+/* 115 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
 
 var createHash = __webpack_require__(54)
-var bs58checkBase = __webpack_require__(117)
+var bs58checkBase = __webpack_require__(116)
 
 // SHA256(SHA256(buffer))
 function sha256x2 (buffer) {
@@ -26358,14 +26288,14 @@ module.exports = bs58checkBase(sha256x2)
 
 
 /***/ }),
-/* 117 */
+/* 116 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
 
-var base58 = __webpack_require__(118)
-var Buffer = (__webpack_require__(9).Buffer)
+var base58 = __webpack_require__(117)
+var Buffer = (__webpack_require__(6).Buffer)
 
 module.exports = function (checksumFn) {
   // Encode a buffer as a base58-check encoded string
@@ -26415,17 +26345,17 @@ module.exports = function (checksumFn) {
 
 
 /***/ }),
-/* 118 */
+/* 117 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-var basex = __webpack_require__(119)
+var basex = __webpack_require__(118)
 var ALPHABET = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
 
 module.exports = basex(ALPHABET)
 
 
 /***/ }),
-/* 119 */
+/* 118 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
@@ -26436,7 +26366,7 @@ module.exports = basex(ALPHABET)
 // Distributed under the MIT software license, see the accompanying
 // file LICENSE or http://www.opensource.org/licenses/mit-license.php.
 // @ts-ignore
-var _Buffer = (__webpack_require__(9).Buffer)
+var _Buffer = (__webpack_require__(6).Buffer)
 function base (ALPHABET) {
   if (ALPHABET.length >= 255) { throw new TypeError('Alphabet too long') }
   var BASE_MAP = new Uint8Array(256)
@@ -26551,7 +26481,7 @@ module.exports = base
 
 
 /***/ }),
-/* 120 */
+/* 119 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
@@ -26560,7 +26490,7 @@ module.exports = __webpack_require__(68)('secp256k1')
 
 
 /***/ }),
-/* 121 */
+/* 120 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 
@@ -26632,23 +26562,23 @@ function fileUriToPath (uri) {
 
 
 /***/ }),
+/* 121 */
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+module.exports = __webpack_require__(122)(__webpack_require__(125))
+
+
+/***/ }),
 /* 122 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
-module.exports = __webpack_require__(123)(__webpack_require__(126))
-
-
-/***/ }),
-/* 123 */
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-"use strict";
-
-var assert = __webpack_require__(164)
-var der = __webpack_require__(165)
-var messages = __webpack_require__(125)
+var assert = __webpack_require__(163)
+var der = __webpack_require__(164)
+var messages = __webpack_require__(124)
 
 function initCompressedValue (value, defaultValue) {
   if (value === undefined) return defaultValue
@@ -26893,14 +26823,14 @@ module.exports = function (secp256k1) {
 
 
 /***/ }),
-/* 124 */
+/* 123 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 // Reference https://github.com/bitcoin/bips/blob/master/bip-0066.mediawiki
 // Format: 0x30 [total-length] 0x02 [R-length] [R] 0x02 [S-length] [S]
 // NOTE: SIGHASH byte ignored AND restricted, truncate before use
 
-var Buffer = (__webpack_require__(9).Buffer)
+var Buffer = (__webpack_require__(6).Buffer)
 
 function check (buffer) {
   if (buffer.length < 8) return false
@@ -27012,24 +26942,24 @@ module.exports = {
 
 
 /***/ }),
-/* 125 */
+/* 124 */
 /***/ ((module) => {
 
 "use strict";
 module.exports = JSON.parse('{"COMPRESSED_TYPE_INVALID":"compressed should be a boolean","EC_PRIVATE_KEY_TYPE_INVALID":"private key should be a Buffer","EC_PRIVATE_KEY_LENGTH_INVALID":"private key length is invalid","EC_PRIVATE_KEY_RANGE_INVALID":"private key range is invalid","EC_PRIVATE_KEY_TWEAK_ADD_FAIL":"tweak out of range or resulting private key is invalid","EC_PRIVATE_KEY_TWEAK_MUL_FAIL":"tweak out of range","EC_PRIVATE_KEY_EXPORT_DER_FAIL":"couldn\'t export to DER format","EC_PRIVATE_KEY_IMPORT_DER_FAIL":"couldn\'t import from DER format","EC_PUBLIC_KEYS_TYPE_INVALID":"public keys should be an Array","EC_PUBLIC_KEYS_LENGTH_INVALID":"public keys Array should have at least 1 element","EC_PUBLIC_KEY_TYPE_INVALID":"public key should be a Buffer","EC_PUBLIC_KEY_LENGTH_INVALID":"public key length is invalid","EC_PUBLIC_KEY_PARSE_FAIL":"the public key could not be parsed or is invalid","EC_PUBLIC_KEY_CREATE_FAIL":"private was invalid, try again","EC_PUBLIC_KEY_TWEAK_ADD_FAIL":"tweak out of range or resulting public key is invalid","EC_PUBLIC_KEY_TWEAK_MUL_FAIL":"tweak out of range","EC_PUBLIC_KEY_COMBINE_FAIL":"the sum of the public keys is not valid","ECDH_FAIL":"scalar was invalid (zero or overflow)","ECDSA_SIGNATURE_TYPE_INVALID":"signature should be a Buffer","ECDSA_SIGNATURE_LENGTH_INVALID":"signature length is invalid","ECDSA_SIGNATURE_PARSE_FAIL":"couldn\'t parse signature","ECDSA_SIGNATURE_PARSE_DER_FAIL":"couldn\'t parse DER signature","ECDSA_SIGNATURE_SERIALIZE_DER_FAIL":"couldn\'t serialize signature to DER format","ECDSA_SIGN_FAIL":"nonce generation function failed or private key is invalid","ECDSA_RECOVER_FAIL":"couldn\'t recover public key from signature","MSG32_TYPE_INVALID":"message should be a Buffer","MSG32_LENGTH_INVALID":"message length is invalid","OPTIONS_TYPE_INVALID":"options should be an Object","OPTIONS_DATA_TYPE_INVALID":"options.data should be a Buffer","OPTIONS_DATA_LENGTH_INVALID":"options.data length is invalid","OPTIONS_NONCEFN_TYPE_INVALID":"options.noncefn should be a Function","RECOVERY_ID_TYPE_INVALID":"recovery should be a Number","RECOVERY_ID_VALUE_INVALID":"recovery should have value between -1 and 4","TWEAK_TYPE_INVALID":"tweak should be a Buffer","TWEAK_LENGTH_INVALID":"tweak length is invalid"}');
 
 /***/ }),
-/* 126 */
+/* 125 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
 
-var Buffer = (__webpack_require__(9).Buffer)
+var Buffer = (__webpack_require__(6).Buffer)
 var createHash = __webpack_require__(54)
 var BN = __webpack_require__(2)
 var EC = (__webpack_require__(48).ec)
 
-var messages = __webpack_require__(125)
+var messages = __webpack_require__(124)
 
 var ec = new EC('secp256k1')
 var ecparams = ec.curve
@@ -27289,16 +27219,16 @@ exports.ecdhUnsafe = function (publicKey, privateKey, compressed) {
 
 
 /***/ }),
-/* 127 */
+/* 126 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const scrypt = __webpack_require__(128)
-scrypt.async = __webpack_require__(129)
+const scrypt = __webpack_require__(127)
+scrypt.async = __webpack_require__(128)
 module.exports = scrypt
 
 
 /***/ }),
-/* 128 */
+/* 127 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 const crypto = __webpack_require__(4)
@@ -27330,7 +27260,7 @@ module.exports = scrypt
 
 
 /***/ }),
-/* 129 */
+/* 128 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 const crypto = __webpack_require__(4)
@@ -27362,14 +27292,14 @@ module.exports = scrypt
 
 
 /***/ }),
-/* 130 */
+/* 129 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__(59)(__webpack_require__(140)(__dirname))
+module.exports = __webpack_require__(59)(__webpack_require__(139)(__dirname))
 
 
 /***/ }),
-/* 131 */
+/* 130 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 const { Transform } = __webpack_require__(36)
@@ -27452,21 +27382,21 @@ module.exports = (KeccakState) => class Keccak extends Transform {
 
 
 /***/ }),
-/* 132 */
+/* 131 */
 /***/ ((module) => {
 
 "use strict";
 module.exports = require("stream");
 
 /***/ }),
-/* 133 */
+/* 132 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__(132);
+module.exports = __webpack_require__(131);
 
 
 /***/ }),
-/* 134 */
+/* 133 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
@@ -27480,7 +27410,7 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
 function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return typeof key === "symbol" ? key : String(key); }
 function _toPrimitive(input, hint) { if (typeof input !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (typeof res !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
-var _require = __webpack_require__(10),
+var _require = __webpack_require__(12),
   Buffer = _require.Buffer;
 var _require2 = __webpack_require__(29),
   inspect = _require2.inspect;
@@ -27655,7 +27585,7 @@ module.exports = /*#__PURE__*/function () {
 }();
 
 /***/ }),
-/* 135 */
+/* 134 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
@@ -27841,7 +27771,7 @@ var createReadableStreamAsyncIterator = function createReadableStreamAsyncIterat
 module.exports = createReadableStreamAsyncIterator;
 
 /***/ }),
-/* 136 */
+/* 135 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
@@ -27900,7 +27830,7 @@ module.exports = from;
 
 
 /***/ }),
-/* 137 */
+/* 136 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
@@ -27933,7 +27863,7 @@ module.exports = from;
 
 module.exports = PassThrough;
 var Transform = __webpack_require__(64);
-__webpack_require__(6)(PassThrough, Transform);
+__webpack_require__(7)(PassThrough, Transform);
 function PassThrough(options) {
   if (!(this instanceof PassThrough)) return new PassThrough(options);
   Transform.call(this, options);
@@ -27943,7 +27873,7 @@ PassThrough.prototype._transform = function (chunk, encoding, cb) {
 };
 
 /***/ }),
-/* 138 */
+/* 137 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
@@ -28035,7 +27965,7 @@ function pipeline() {
 module.exports = pipeline;
 
 /***/ }),
-/* 139 */
+/* 138 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 const { Transform } = __webpack_require__(36)
@@ -28109,23 +28039,23 @@ module.exports = (KeccakState) => class Shake extends Transform {
 
 
 /***/ }),
-/* 140 */
+/* 139 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 if (typeof process.addon === 'function') { // if the platform supports native resolving prefer that
   module.exports = process.addon.bind(process)
 } else { // else use the runtime version here
-  module.exports = __webpack_require__(141)
+  module.exports = __webpack_require__(140)
 }
 
 
 /***/ }),
-/* 141 */
+/* 140 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 var fs = __webpack_require__(56)
 var path = __webpack_require__(57)
-var os = __webpack_require__(170)
+var os = __webpack_require__(169)
 
 // Workaround to fix webpack's build warnings: 'the request of a dependency is an expression'
 var runtimeRequire =  true ? require : 0 // eslint-disable-line
@@ -28333,17 +28263,17 @@ load.compareTuples = compareTuples
 
 
 /***/ }),
-/* 142 */
+/* 141 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__(59)(__webpack_require__(143))
+module.exports = __webpack_require__(59)(__webpack_require__(142))
 
 
 /***/ }),
-/* 143 */
+/* 142 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-const keccakState = __webpack_require__(171)
+const keccakState = __webpack_require__(170)
 
 function Keccak () {
   // much faster than `new Array(50)`
@@ -28414,7 +28344,7 @@ module.exports = Keccak
 
 
 /***/ }),
-/* 144 */
+/* 143 */
 /***/ ((module) => {
 
 "use strict";
@@ -28423,7 +28353,7 @@ module.exports = str => encodeURIComponent(str).replace(/[!'()*]/g, x => `%${x.c
 
 
 /***/ }),
-/* 145 */
+/* 144 */
 /***/ ((module) => {
 
 "use strict";
@@ -28524,7 +28454,7 @@ module.exports = function (encodedURI) {
 
 
 /***/ }),
-/* 146 */
+/* 145 */
 /***/ ((module) => {
 
 "use strict";
@@ -28553,7 +28483,7 @@ module.exports = (string, separator) => {
 
 
 /***/ }),
-/* 147 */
+/* 146 */
 /***/ ((module) => {
 
 "use strict";
@@ -28577,17 +28507,17 @@ module.exports = function (obj, predicate) {
 
 
 /***/ }),
-/* 148 */
+/* 147 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 // light library entry point.
 
 
-module.exports = __webpack_require__(79);
+module.exports = __webpack_require__(78);
 
 /***/ }),
-/* 149 */
+/* 148 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -28600,6 +28530,11 @@ const wordlists = {};
 exports.wordlists = wordlists;
 let _default;
 exports._default = _default;
+try {
+    exports._default = _default = __webpack_require__(Object(function webpackMissingModule() { var e = new Error("Cannot find module './wordlists/czech.json'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+    wordlists.czech = _default;
+}
+catch (err) { }
 try {
     exports._default = _default = __webpack_require__(Object(function webpackMissingModule() { var e = new Error("Cannot find module './wordlists/chinese_simplified.json'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
     wordlists.chinese_simplified = _default;
@@ -28637,7 +28572,12 @@ try {
 }
 catch (err) { }
 try {
-    exports._default = _default = __webpack_require__(161);
+    exports._default = _default = __webpack_require__(Object(function webpackMissingModule() { var e = new Error("Cannot find module './wordlists/portuguese.json'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+    wordlists.portuguese = _default;
+}
+catch (err) { }
+try {
+    exports._default = _default = __webpack_require__(160);
     wordlists.english = _default;
     wordlists.EN = _default;
 }
@@ -28645,7 +28585,7 @@ catch (err) { }
 
 
 /***/ }),
-/* 150 */
+/* 149 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -28674,7 +28614,7 @@ catch (err) { }
 
 /*<replacement>*/
 
-var Buffer = (__webpack_require__(78).Buffer);
+var Buffer = (__webpack_require__(6).Buffer);
 /*</replacement>*/
 
 var isEncoding = Buffer.isEncoding || function (encoding) {
@@ -28947,49 +28887,63 @@ function simpleEnd(buf) {
 }
 
 /***/ }),
-/* 151 */,
-/* 152 */
+/* 150 */,
+/* 151 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 // full library entry point.
 
 
-module.exports = __webpack_require__(153);
+module.exports = __webpack_require__(152);
 
 
 /***/ }),
-/* 153 */
+/* 152 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
-var protobuf = module.exports = __webpack_require__(79);
+var protobuf = module.exports = __webpack_require__(78);
 
 protobuf.build = "full";
 
 // Parser
 protobuf.tokenize         = __webpack_require__(47);
-protobuf.parse            = __webpack_require__(95);
-protobuf.common           = __webpack_require__(96);
+protobuf.parse            = __webpack_require__(94);
+protobuf.common           = __webpack_require__(95);
 
 // Configure parser
 protobuf.Root._configure(protobuf.Type, protobuf.parse, protobuf.common);
 
 
 /***/ }),
-/* 154 */
+/* 153 */
 /***/ ((module) => {
 
 "use strict";
 module.exports = JSON.parse('{"nested":{"google":{"nested":{"protobuf":{"nested":{"FileDescriptorSet":{"fields":{"file":{"rule":"repeated","type":"FileDescriptorProto","id":1}}},"FileDescriptorProto":{"fields":{"name":{"type":"string","id":1},"package":{"type":"string","id":2},"dependency":{"rule":"repeated","type":"string","id":3},"publicDependency":{"rule":"repeated","type":"int32","id":10,"options":{"packed":false}},"weakDependency":{"rule":"repeated","type":"int32","id":11,"options":{"packed":false}},"messageType":{"rule":"repeated","type":"DescriptorProto","id":4},"enumType":{"rule":"repeated","type":"EnumDescriptorProto","id":5},"service":{"rule":"repeated","type":"ServiceDescriptorProto","id":6},"extension":{"rule":"repeated","type":"FieldDescriptorProto","id":7},"options":{"type":"FileOptions","id":8},"sourceCodeInfo":{"type":"SourceCodeInfo","id":9},"syntax":{"type":"string","id":12}}},"DescriptorProto":{"fields":{"name":{"type":"string","id":1},"field":{"rule":"repeated","type":"FieldDescriptorProto","id":2},"extension":{"rule":"repeated","type":"FieldDescriptorProto","id":6},"nestedType":{"rule":"repeated","type":"DescriptorProto","id":3},"enumType":{"rule":"repeated","type":"EnumDescriptorProto","id":4},"extensionRange":{"rule":"repeated","type":"ExtensionRange","id":5},"oneofDecl":{"rule":"repeated","type":"OneofDescriptorProto","id":8},"options":{"type":"MessageOptions","id":7},"reservedRange":{"rule":"repeated","type":"ReservedRange","id":9},"reservedName":{"rule":"repeated","type":"string","id":10}},"nested":{"ExtensionRange":{"fields":{"start":{"type":"int32","id":1},"end":{"type":"int32","id":2}}},"ReservedRange":{"fields":{"start":{"type":"int32","id":1},"end":{"type":"int32","id":2}}}}},"FieldDescriptorProto":{"fields":{"name":{"type":"string","id":1},"number":{"type":"int32","id":3},"label":{"type":"Label","id":4},"type":{"type":"Type","id":5},"typeName":{"type":"string","id":6},"extendee":{"type":"string","id":2},"defaultValue":{"type":"string","id":7},"oneofIndex":{"type":"int32","id":9},"jsonName":{"type":"string","id":10},"options":{"type":"FieldOptions","id":8}},"nested":{"Type":{"values":{"TYPE_DOUBLE":1,"TYPE_FLOAT":2,"TYPE_INT64":3,"TYPE_UINT64":4,"TYPE_INT32":5,"TYPE_FIXED64":6,"TYPE_FIXED32":7,"TYPE_BOOL":8,"TYPE_STRING":9,"TYPE_GROUP":10,"TYPE_MESSAGE":11,"TYPE_BYTES":12,"TYPE_UINT32":13,"TYPE_ENUM":14,"TYPE_SFIXED32":15,"TYPE_SFIXED64":16,"TYPE_SINT32":17,"TYPE_SINT64":18}},"Label":{"values":{"LABEL_OPTIONAL":1,"LABEL_REQUIRED":2,"LABEL_REPEATED":3}}}},"OneofDescriptorProto":{"fields":{"name":{"type":"string","id":1},"options":{"type":"OneofOptions","id":2}}},"EnumDescriptorProto":{"fields":{"name":{"type":"string","id":1},"value":{"rule":"repeated","type":"EnumValueDescriptorProto","id":2},"options":{"type":"EnumOptions","id":3}}},"EnumValueDescriptorProto":{"fields":{"name":{"type":"string","id":1},"number":{"type":"int32","id":2},"options":{"type":"EnumValueOptions","id":3}}},"ServiceDescriptorProto":{"fields":{"name":{"type":"string","id":1},"method":{"rule":"repeated","type":"MethodDescriptorProto","id":2},"options":{"type":"ServiceOptions","id":3}}},"MethodDescriptorProto":{"fields":{"name":{"type":"string","id":1},"inputType":{"type":"string","id":2},"outputType":{"type":"string","id":3},"options":{"type":"MethodOptions","id":4},"clientStreaming":{"type":"bool","id":5},"serverStreaming":{"type":"bool","id":6}}},"FileOptions":{"fields":{"javaPackage":{"type":"string","id":1},"javaOuterClassname":{"type":"string","id":8},"javaMultipleFiles":{"type":"bool","id":10},"javaGenerateEqualsAndHash":{"type":"bool","id":20,"options":{"deprecated":true}},"javaStringCheckUtf8":{"type":"bool","id":27},"optimizeFor":{"type":"OptimizeMode","id":9,"options":{"default":"SPEED"}},"goPackage":{"type":"string","id":11},"ccGenericServices":{"type":"bool","id":16},"javaGenericServices":{"type":"bool","id":17},"pyGenericServices":{"type":"bool","id":18},"deprecated":{"type":"bool","id":23},"ccEnableArenas":{"type":"bool","id":31},"objcClassPrefix":{"type":"string","id":36},"csharpNamespace":{"type":"string","id":37},"uninterpretedOption":{"rule":"repeated","type":"UninterpretedOption","id":999}},"extensions":[[1000,536870911]],"reserved":[[38,38]],"nested":{"OptimizeMode":{"values":{"SPEED":1,"CODE_SIZE":2,"LITE_RUNTIME":3}}}},"MessageOptions":{"fields":{"messageSetWireFormat":{"type":"bool","id":1},"noStandardDescriptorAccessor":{"type":"bool","id":2},"deprecated":{"type":"bool","id":3},"mapEntry":{"type":"bool","id":7},"uninterpretedOption":{"rule":"repeated","type":"UninterpretedOption","id":999}},"extensions":[[1000,536870911]],"reserved":[[8,8]]},"FieldOptions":{"fields":{"ctype":{"type":"CType","id":1,"options":{"default":"STRING"}},"packed":{"type":"bool","id":2},"jstype":{"type":"JSType","id":6,"options":{"default":"JS_NORMAL"}},"lazy":{"type":"bool","id":5},"deprecated":{"type":"bool","id":3},"weak":{"type":"bool","id":10},"uninterpretedOption":{"rule":"repeated","type":"UninterpretedOption","id":999}},"extensions":[[1000,536870911]],"reserved":[[4,4]],"nested":{"CType":{"values":{"STRING":0,"CORD":1,"STRING_PIECE":2}},"JSType":{"values":{"JS_NORMAL":0,"JS_STRING":1,"JS_NUMBER":2}}}},"OneofOptions":{"fields":{"uninterpretedOption":{"rule":"repeated","type":"UninterpretedOption","id":999}},"extensions":[[1000,536870911]]},"EnumOptions":{"fields":{"allowAlias":{"type":"bool","id":2},"deprecated":{"type":"bool","id":3},"uninterpretedOption":{"rule":"repeated","type":"UninterpretedOption","id":999}},"extensions":[[1000,536870911]]},"EnumValueOptions":{"fields":{"deprecated":{"type":"bool","id":1},"uninterpretedOption":{"rule":"repeated","type":"UninterpretedOption","id":999}},"extensions":[[1000,536870911]]},"ServiceOptions":{"fields":{"deprecated":{"type":"bool","id":33},"uninterpretedOption":{"rule":"repeated","type":"UninterpretedOption","id":999}},"extensions":[[1000,536870911]]},"MethodOptions":{"fields":{"deprecated":{"type":"bool","id":33},"uninterpretedOption":{"rule":"repeated","type":"UninterpretedOption","id":999}},"extensions":[[1000,536870911]]},"UninterpretedOption":{"fields":{"name":{"rule":"repeated","type":"NamePart","id":2},"identifierValue":{"type":"string","id":3},"positiveIntValue":{"type":"uint64","id":4},"negativeIntValue":{"type":"int64","id":5},"doubleValue":{"type":"double","id":6},"stringValue":{"type":"bytes","id":7},"aggregateValue":{"type":"string","id":8}},"nested":{"NamePart":{"fields":{"namePart":{"rule":"required","type":"string","id":1},"isExtension":{"rule":"required","type":"bool","id":2}}}}},"SourceCodeInfo":{"fields":{"location":{"rule":"repeated","type":"Location","id":1}},"nested":{"Location":{"fields":{"path":{"rule":"repeated","type":"int32","id":1},"span":{"rule":"repeated","type":"int32","id":2},"leadingComments":{"type":"string","id":3},"trailingComments":{"type":"string","id":4},"leadingDetachedComments":{"rule":"repeated","type":"string","id":6}}}}},"GeneratedCodeInfo":{"fields":{"annotation":{"rule":"repeated","type":"Annotation","id":1}},"nested":{"Annotation":{"fields":{"path":{"rule":"repeated","type":"int32","id":1},"sourceFile":{"type":"string","id":2},"begin":{"type":"int32","id":3},"end":{"type":"int32","id":4}}}}}}}}}}}');
 
 /***/ }),
-/* 155 */
+/* 154 */
 /***/ ((module) => {
 
 "use strict";
 module.exports = {"i8":"6.5.4"};
+
+/***/ }),
+/* 155 */
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+exports.sha1 = __webpack_require__(99);
+exports.sha224 = __webpack_require__(101);
+exports.sha256 = __webpack_require__(52);
+exports.sha384 = __webpack_require__(102);
+exports.sha512 = __webpack_require__(53);
+
 
 /***/ }),
 /* 156 */
@@ -28998,21 +28952,7 @@ module.exports = {"i8":"6.5.4"};
 "use strict";
 
 
-exports.sha1 = __webpack_require__(100);
-exports.sha224 = __webpack_require__(102);
-exports.sha256 = __webpack_require__(52);
-exports.sha384 = __webpack_require__(103);
-exports.sha512 = __webpack_require__(53);
-
-
-/***/ }),
-/* 157 */
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
-
-"use strict";
-
-
-var utils = __webpack_require__(7);
+var utils = __webpack_require__(8);
 var common = __webpack_require__(20);
 
 var rotl32 = utils.rotl32;
@@ -29159,32 +29099,49 @@ var sh = [
 
 
 /***/ }),
-/* 158 */
+/* 157 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const createHash = __webpack_require__(54);
-const pbkdf2_1 = __webpack_require__(159);
-const randomBytes = __webpack_require__(114);
-const _wordlists_1 = __webpack_require__(149);
+const pbkdf2_1 = __webpack_require__(158);
+const randomBytes = __webpack_require__(113);
+const _wordlists_1 = __webpack_require__(148);
 let DEFAULT_WORDLIST = _wordlists_1._default;
 const INVALID_MNEMONIC = 'Invalid mnemonic';
 const INVALID_ENTROPY = 'Invalid entropy';
 const INVALID_CHECKSUM = 'Invalid mnemonic checksum';
 const WORDLIST_REQUIRED = 'A wordlist is required but a default could not be found.\n' +
-    'Please explicitly pass a 2048 word array explicitly.';
+    'Please pass a 2048 word array explicitly.';
+function pbkdf2Promise(password, saltMixin, iterations, keylen, digest) {
+    return Promise.resolve().then(() => new Promise((resolve, reject) => {
+        const callback = (err, derivedKey) => {
+            if (err) {
+                return reject(err);
+            }
+            else {
+                return resolve(derivedKey);
+            }
+        };
+        pbkdf2_1.pbkdf2(password, saltMixin, iterations, keylen, digest, callback);
+    }));
+}
+function normalize(str) {
+    return (str || '').normalize('NFKD');
+}
 function lpad(str, padString, length) {
-    while (str.length < length)
+    while (str.length < length) {
         str = padString + str;
+    }
     return str;
 }
 function binaryToByte(bin) {
     return parseInt(bin, 2);
 }
 function bytesToBinary(bytes) {
-    return bytes.map(x => lpad(x.toString(2), '0', 8)).join('');
+    return bytes.map((x) => lpad(x.toString(2), '0', 8)).join('');
 }
 function deriveChecksumBits(entropyBuffer) {
     const ENT = entropyBuffer.length * 8;
@@ -29192,32 +29149,22 @@ function deriveChecksumBits(entropyBuffer) {
     const hash = createHash('sha256')
         .update(entropyBuffer)
         .digest();
-    return bytesToBinary([...hash]).slice(0, CS);
+    return bytesToBinary(Array.from(hash)).slice(0, CS);
 }
 function salt(password) {
     return 'mnemonic' + (password || '');
 }
 function mnemonicToSeedSync(mnemonic, password) {
-    const mnemonicBuffer = Buffer.from((mnemonic || '').normalize('NFKD'), 'utf8');
-    const saltBuffer = Buffer.from(salt((password || '').normalize('NFKD')), 'utf8');
+    const mnemonicBuffer = Buffer.from(normalize(mnemonic), 'utf8');
+    const saltBuffer = Buffer.from(salt(normalize(password)), 'utf8');
     return pbkdf2_1.pbkdf2Sync(mnemonicBuffer, saltBuffer, 2048, 64, 'sha512');
 }
 exports.mnemonicToSeedSync = mnemonicToSeedSync;
 function mnemonicToSeed(mnemonic, password) {
-    return new Promise((resolve, reject) => {
-        try {
-            const mnemonicBuffer = Buffer.from((mnemonic || '').normalize('NFKD'), 'utf8');
-            const saltBuffer = Buffer.from(salt((password || '').normalize('NFKD')), 'utf8');
-            pbkdf2_1.pbkdf2(mnemonicBuffer, saltBuffer, 2048, 64, 'sha512', (err, data) => {
-                if (err)
-                    return reject(err);
-                else
-                    return resolve(data);
-            });
-        }
-        catch (error) {
-            return reject(error);
-        }
+    return Promise.resolve().then(() => {
+        const mnemonicBuffer = Buffer.from(normalize(mnemonic), 'utf8');
+        const saltBuffer = Buffer.from(salt(normalize(password)), 'utf8');
+        return pbkdf2Promise(mnemonicBuffer, saltBuffer, 2048, 64, 'sha512');
     });
 }
 exports.mnemonicToSeed = mnemonicToSeed;
@@ -29226,15 +29173,17 @@ function mnemonicToEntropy(mnemonic, wordlist) {
     if (!wordlist) {
         throw new Error(WORDLIST_REQUIRED);
     }
-    const words = (mnemonic || '').normalize('NFKD').split(' ');
-    if (words.length % 3 !== 0)
+    const words = normalize(mnemonic).split(' ');
+    if (words.length % 3 !== 0) {
         throw new Error(INVALID_MNEMONIC);
+    }
     // convert word indices to 11 bit binary strings
     const bits = words
-        .map(word => {
+        .map((word) => {
         const index = wordlist.indexOf(word);
-        if (index === -1)
+        if (index === -1) {
             throw new Error(INVALID_MNEMONIC);
+        }
         return lpad(index.toString(2), '0', 11);
     })
         .join('');
@@ -29244,38 +29193,46 @@ function mnemonicToEntropy(mnemonic, wordlist) {
     const checksumBits = bits.slice(dividerIndex);
     // calculate the checksum and compare
     const entropyBytes = entropyBits.match(/(.{1,8})/g).map(binaryToByte);
-    if (entropyBytes.length < 16)
+    if (entropyBytes.length < 16) {
         throw new Error(INVALID_ENTROPY);
-    if (entropyBytes.length > 32)
+    }
+    if (entropyBytes.length > 32) {
         throw new Error(INVALID_ENTROPY);
-    if (entropyBytes.length % 4 !== 0)
+    }
+    if (entropyBytes.length % 4 !== 0) {
         throw new Error(INVALID_ENTROPY);
+    }
     const entropy = Buffer.from(entropyBytes);
     const newChecksum = deriveChecksumBits(entropy);
-    if (newChecksum !== checksumBits)
+    if (newChecksum !== checksumBits) {
         throw new Error(INVALID_CHECKSUM);
+    }
     return entropy.toString('hex');
 }
 exports.mnemonicToEntropy = mnemonicToEntropy;
 function entropyToMnemonic(entropy, wordlist) {
-    if (!Buffer.isBuffer(entropy))
+    if (!Buffer.isBuffer(entropy)) {
         entropy = Buffer.from(entropy, 'hex');
+    }
     wordlist = wordlist || DEFAULT_WORDLIST;
     if (!wordlist) {
         throw new Error(WORDLIST_REQUIRED);
     }
     // 128 <= ENT <= 256
-    if (entropy.length < 16)
+    if (entropy.length < 16) {
         throw new TypeError(INVALID_ENTROPY);
-    if (entropy.length > 32)
+    }
+    if (entropy.length > 32) {
         throw new TypeError(INVALID_ENTROPY);
-    if (entropy.length % 4 !== 0)
+    }
+    if (entropy.length % 4 !== 0) {
         throw new TypeError(INVALID_ENTROPY);
-    const entropyBits = bytesToBinary([...entropy]);
+    }
+    const entropyBits = bytesToBinary(Array.from(entropy));
     const checksumBits = deriveChecksumBits(entropy);
     const bits = entropyBits + checksumBits;
     const chunks = bits.match(/(.{1,11})/g);
-    const words = chunks.map(binary => {
+    const words = chunks.map((binary) => {
         const index = binaryToByte(binary);
         return wordlist[index];
     });
@@ -29286,8 +29243,9 @@ function entropyToMnemonic(entropy, wordlist) {
 exports.entropyToMnemonic = entropyToMnemonic;
 function generateMnemonic(strength, rng, wordlist) {
     strength = strength || 128;
-    if (strength % 32 !== 0)
+    if (strength % 32 !== 0) {
         throw new TypeError(INVALID_ENTROPY);
+    }
     rng = rng || randomBytes;
     return entropyToMnemonic(rng(strength / 8), wordlist);
 }
@@ -29304,28 +29262,32 @@ function validateMnemonic(mnemonic, wordlist) {
 exports.validateMnemonic = validateMnemonic;
 function setDefaultWordlist(language) {
     const result = _wordlists_1.wordlists[language];
-    if (result)
+    if (result) {
         DEFAULT_WORDLIST = result;
-    else
+    }
+    else {
         throw new Error('Could not find wordlist for language "' + language + '"');
+    }
 }
 exports.setDefaultWordlist = setDefaultWordlist;
 function getDefaultWordlist() {
-    if (!DEFAULT_WORDLIST)
+    if (!DEFAULT_WORDLIST) {
         throw new Error('No Default Wordlist set');
-    return Object.keys(_wordlists_1.wordlists).filter(lang => {
-        if (lang === 'JA' || lang === 'EN')
+    }
+    return Object.keys(_wordlists_1.wordlists).filter((lang) => {
+        if (lang === 'JA' || lang === 'EN') {
             return false;
+        }
         return _wordlists_1.wordlists[lang].every((word, index) => word === DEFAULT_WORDLIST[index]);
     })[0];
 }
 exports.getDefaultWordlist = getDefaultWordlist;
-var _wordlists_2 = __webpack_require__(149);
+var _wordlists_2 = __webpack_require__(148);
 exports.wordlists = _wordlists_2.wordlists;
 
 
 /***/ }),
-/* 159 */
+/* 158 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 var native = __webpack_require__(4)
@@ -29359,7 +29321,7 @@ function nativePBKDF2Sync (password, salt, iterations, keylen, digest) {
 /* istanbul ignore next */
 if (!native.pbkdf2Sync || native.pbkdf2Sync.toString().indexOf('keylen, digest') === -1) {
   exports.pbkdf2Sync = __webpack_require__(55)
-  exports.pbkdf2 = __webpack_require__(113)
+  exports.pbkdf2 = __webpack_require__(112)
 
 // native
 } else {
@@ -29369,45 +29331,45 @@ if (!native.pbkdf2Sync || native.pbkdf2Sync.toString().indexOf('keylen, digest')
 
 
 /***/ }),
-/* 160 */
+/* 159 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 module.exports = __webpack_require__(4).createHmac
 
 
 /***/ }),
-/* 161 */
+/* 160 */
 /***/ ((module) => {
 
 "use strict";
 module.exports = JSON.parse('["abandon","ability","able","about","above","absent","absorb","abstract","absurd","abuse","access","accident","account","accuse","achieve","acid","acoustic","acquire","across","act","action","actor","actress","actual","adapt","add","addict","address","adjust","admit","adult","advance","advice","aerobic","affair","afford","afraid","again","age","agent","agree","ahead","aim","air","airport","aisle","alarm","album","alcohol","alert","alien","all","alley","allow","almost","alone","alpha","already","also","alter","always","amateur","amazing","among","amount","amused","analyst","anchor","ancient","anger","angle","angry","animal","ankle","announce","annual","another","answer","antenna","antique","anxiety","any","apart","apology","appear","apple","approve","april","arch","arctic","area","arena","argue","arm","armed","armor","army","around","arrange","arrest","arrive","arrow","art","artefact","artist","artwork","ask","aspect","assault","asset","assist","assume","asthma","athlete","atom","attack","attend","attitude","attract","auction","audit","august","aunt","author","auto","autumn","average","avocado","avoid","awake","aware","away","awesome","awful","awkward","axis","baby","bachelor","bacon","badge","bag","balance","balcony","ball","bamboo","banana","banner","bar","barely","bargain","barrel","base","basic","basket","battle","beach","bean","beauty","because","become","beef","before","begin","behave","behind","believe","below","belt","bench","benefit","best","betray","better","between","beyond","bicycle","bid","bike","bind","biology","bird","birth","bitter","black","blade","blame","blanket","blast","bleak","bless","blind","blood","blossom","blouse","blue","blur","blush","board","boat","body","boil","bomb","bone","bonus","book","boost","border","boring","borrow","boss","bottom","bounce","box","boy","bracket","brain","brand","brass","brave","bread","breeze","brick","bridge","brief","bright","bring","brisk","broccoli","broken","bronze","broom","brother","brown","brush","bubble","buddy","budget","buffalo","build","bulb","bulk","bullet","bundle","bunker","burden","burger","burst","bus","business","busy","butter","buyer","buzz","cabbage","cabin","cable","cactus","cage","cake","call","calm","camera","camp","can","canal","cancel","candy","cannon","canoe","canvas","canyon","capable","capital","captain","car","carbon","card","cargo","carpet","carry","cart","case","cash","casino","castle","casual","cat","catalog","catch","category","cattle","caught","cause","caution","cave","ceiling","celery","cement","census","century","cereal","certain","chair","chalk","champion","change","chaos","chapter","charge","chase","chat","cheap","check","cheese","chef","cherry","chest","chicken","chief","child","chimney","choice","choose","chronic","chuckle","chunk","churn","cigar","cinnamon","circle","citizen","city","civil","claim","clap","clarify","claw","clay","clean","clerk","clever","click","client","cliff","climb","clinic","clip","clock","clog","close","cloth","cloud","clown","club","clump","cluster","clutch","coach","coast","coconut","code","coffee","coil","coin","collect","color","column","combine","come","comfort","comic","common","company","concert","conduct","confirm","congress","connect","consider","control","convince","cook","cool","copper","copy","coral","core","corn","correct","cost","cotton","couch","country","couple","course","cousin","cover","coyote","crack","cradle","craft","cram","crane","crash","crater","crawl","crazy","cream","credit","creek","crew","cricket","crime","crisp","critic","crop","cross","crouch","crowd","crucial","cruel","cruise","crumble","crunch","crush","cry","crystal","cube","culture","cup","cupboard","curious","current","curtain","curve","cushion","custom","cute","cycle","dad","damage","damp","dance","danger","daring","dash","daughter","dawn","day","deal","debate","debris","decade","december","decide","decline","decorate","decrease","deer","defense","define","defy","degree","delay","deliver","demand","demise","denial","dentist","deny","depart","depend","deposit","depth","deputy","derive","describe","desert","design","desk","despair","destroy","detail","detect","develop","device","devote","diagram","dial","diamond","diary","dice","diesel","diet","differ","digital","dignity","dilemma","dinner","dinosaur","direct","dirt","disagree","discover","disease","dish","dismiss","disorder","display","distance","divert","divide","divorce","dizzy","doctor","document","dog","doll","dolphin","domain","donate","donkey","donor","door","dose","double","dove","draft","dragon","drama","drastic","draw","dream","dress","drift","drill","drink","drip","drive","drop","drum","dry","duck","dumb","dune","during","dust","dutch","duty","dwarf","dynamic","eager","eagle","early","earn","earth","easily","east","easy","echo","ecology","economy","edge","edit","educate","effort","egg","eight","either","elbow","elder","electric","elegant","element","elephant","elevator","elite","else","embark","embody","embrace","emerge","emotion","employ","empower","empty","enable","enact","end","endless","endorse","enemy","energy","enforce","engage","engine","enhance","enjoy","enlist","enough","enrich","enroll","ensure","enter","entire","entry","envelope","episode","equal","equip","era","erase","erode","erosion","error","erupt","escape","essay","essence","estate","eternal","ethics","evidence","evil","evoke","evolve","exact","example","excess","exchange","excite","exclude","excuse","execute","exercise","exhaust","exhibit","exile","exist","exit","exotic","expand","expect","expire","explain","expose","express","extend","extra","eye","eyebrow","fabric","face","faculty","fade","faint","faith","fall","false","fame","family","famous","fan","fancy","fantasy","farm","fashion","fat","fatal","father","fatigue","fault","favorite","feature","february","federal","fee","feed","feel","female","fence","festival","fetch","fever","few","fiber","fiction","field","figure","file","film","filter","final","find","fine","finger","finish","fire","firm","first","fiscal","fish","fit","fitness","fix","flag","flame","flash","flat","flavor","flee","flight","flip","float","flock","floor","flower","fluid","flush","fly","foam","focus","fog","foil","fold","follow","food","foot","force","forest","forget","fork","fortune","forum","forward","fossil","foster","found","fox","fragile","frame","frequent","fresh","friend","fringe","frog","front","frost","frown","frozen","fruit","fuel","fun","funny","furnace","fury","future","gadget","gain","galaxy","gallery","game","gap","garage","garbage","garden","garlic","garment","gas","gasp","gate","gather","gauge","gaze","general","genius","genre","gentle","genuine","gesture","ghost","giant","gift","giggle","ginger","giraffe","girl","give","glad","glance","glare","glass","glide","glimpse","globe","gloom","glory","glove","glow","glue","goat","goddess","gold","good","goose","gorilla","gospel","gossip","govern","gown","grab","grace","grain","grant","grape","grass","gravity","great","green","grid","grief","grit","grocery","group","grow","grunt","guard","guess","guide","guilt","guitar","gun","gym","habit","hair","half","hammer","hamster","hand","happy","harbor","hard","harsh","harvest","hat","have","hawk","hazard","head","health","heart","heavy","hedgehog","height","hello","helmet","help","hen","hero","hidden","high","hill","hint","hip","hire","history","hobby","hockey","hold","hole","holiday","hollow","home","honey","hood","hope","horn","horror","horse","hospital","host","hotel","hour","hover","hub","huge","human","humble","humor","hundred","hungry","hunt","hurdle","hurry","hurt","husband","hybrid","ice","icon","idea","identify","idle","ignore","ill","illegal","illness","image","imitate","immense","immune","impact","impose","improve","impulse","inch","include","income","increase","index","indicate","indoor","industry","infant","inflict","inform","inhale","inherit","initial","inject","injury","inmate","inner","innocent","input","inquiry","insane","insect","inside","inspire","install","intact","interest","into","invest","invite","involve","iron","island","isolate","issue","item","ivory","jacket","jaguar","jar","jazz","jealous","jeans","jelly","jewel","job","join","joke","journey","joy","judge","juice","jump","jungle","junior","junk","just","kangaroo","keen","keep","ketchup","key","kick","kid","kidney","kind","kingdom","kiss","kit","kitchen","kite","kitten","kiwi","knee","knife","knock","know","lab","label","labor","ladder","lady","lake","lamp","language","laptop","large","later","latin","laugh","laundry","lava","law","lawn","lawsuit","layer","lazy","leader","leaf","learn","leave","lecture","left","leg","legal","legend","leisure","lemon","lend","length","lens","leopard","lesson","letter","level","liar","liberty","library","license","life","lift","light","like","limb","limit","link","lion","liquid","list","little","live","lizard","load","loan","lobster","local","lock","logic","lonely","long","loop","lottery","loud","lounge","love","loyal","lucky","luggage","lumber","lunar","lunch","luxury","lyrics","machine","mad","magic","magnet","maid","mail","main","major","make","mammal","man","manage","mandate","mango","mansion","manual","maple","marble","march","margin","marine","market","marriage","mask","mass","master","match","material","math","matrix","matter","maximum","maze","meadow","mean","measure","meat","mechanic","medal","media","melody","melt","member","memory","mention","menu","mercy","merge","merit","merry","mesh","message","metal","method","middle","midnight","milk","million","mimic","mind","minimum","minor","minute","miracle","mirror","misery","miss","mistake","mix","mixed","mixture","mobile","model","modify","mom","moment","monitor","monkey","monster","month","moon","moral","more","morning","mosquito","mother","motion","motor","mountain","mouse","move","movie","much","muffin","mule","multiply","muscle","museum","mushroom","music","must","mutual","myself","mystery","myth","naive","name","napkin","narrow","nasty","nation","nature","near","neck","need","negative","neglect","neither","nephew","nerve","nest","net","network","neutral","never","news","next","nice","night","noble","noise","nominee","noodle","normal","north","nose","notable","note","nothing","notice","novel","now","nuclear","number","nurse","nut","oak","obey","object","oblige","obscure","observe","obtain","obvious","occur","ocean","october","odor","off","offer","office","often","oil","okay","old","olive","olympic","omit","once","one","onion","online","only","open","opera","opinion","oppose","option","orange","orbit","orchard","order","ordinary","organ","orient","original","orphan","ostrich","other","outdoor","outer","output","outside","oval","oven","over","own","owner","oxygen","oyster","ozone","pact","paddle","page","pair","palace","palm","panda","panel","panic","panther","paper","parade","parent","park","parrot","party","pass","patch","path","patient","patrol","pattern","pause","pave","payment","peace","peanut","pear","peasant","pelican","pen","penalty","pencil","people","pepper","perfect","permit","person","pet","phone","photo","phrase","physical","piano","picnic","picture","piece","pig","pigeon","pill","pilot","pink","pioneer","pipe","pistol","pitch","pizza","place","planet","plastic","plate","play","please","pledge","pluck","plug","plunge","poem","poet","point","polar","pole","police","pond","pony","pool","popular","portion","position","possible","post","potato","pottery","poverty","powder","power","practice","praise","predict","prefer","prepare","present","pretty","prevent","price","pride","primary","print","priority","prison","private","prize","problem","process","produce","profit","program","project","promote","proof","property","prosper","protect","proud","provide","public","pudding","pull","pulp","pulse","pumpkin","punch","pupil","puppy","purchase","purity","purpose","purse","push","put","puzzle","pyramid","quality","quantum","quarter","question","quick","quit","quiz","quote","rabbit","raccoon","race","rack","radar","radio","rail","rain","raise","rally","ramp","ranch","random","range","rapid","rare","rate","rather","raven","raw","razor","ready","real","reason","rebel","rebuild","recall","receive","recipe","record","recycle","reduce","reflect","reform","refuse","region","regret","regular","reject","relax","release","relief","rely","remain","remember","remind","remove","render","renew","rent","reopen","repair","repeat","replace","report","require","rescue","resemble","resist","resource","response","result","retire","retreat","return","reunion","reveal","review","reward","rhythm","rib","ribbon","rice","rich","ride","ridge","rifle","right","rigid","ring","riot","ripple","risk","ritual","rival","river","road","roast","robot","robust","rocket","romance","roof","rookie","room","rose","rotate","rough","round","route","royal","rubber","rude","rug","rule","run","runway","rural","sad","saddle","sadness","safe","sail","salad","salmon","salon","salt","salute","same","sample","sand","satisfy","satoshi","sauce","sausage","save","say","scale","scan","scare","scatter","scene","scheme","school","science","scissors","scorpion","scout","scrap","screen","script","scrub","sea","search","season","seat","second","secret","section","security","seed","seek","segment","select","sell","seminar","senior","sense","sentence","series","service","session","settle","setup","seven","shadow","shaft","shallow","share","shed","shell","sheriff","shield","shift","shine","ship","shiver","shock","shoe","shoot","shop","short","shoulder","shove","shrimp","shrug","shuffle","shy","sibling","sick","side","siege","sight","sign","silent","silk","silly","silver","similar","simple","since","sing","siren","sister","situate","six","size","skate","sketch","ski","skill","skin","skirt","skull","slab","slam","sleep","slender","slice","slide","slight","slim","slogan","slot","slow","slush","small","smart","smile","smoke","smooth","snack","snake","snap","sniff","snow","soap","soccer","social","sock","soda","soft","solar","soldier","solid","solution","solve","someone","song","soon","sorry","sort","soul","sound","soup","source","south","space","spare","spatial","spawn","speak","special","speed","spell","spend","sphere","spice","spider","spike","spin","spirit","split","spoil","sponsor","spoon","sport","spot","spray","spread","spring","spy","square","squeeze","squirrel","stable","stadium","staff","stage","stairs","stamp","stand","start","state","stay","steak","steel","stem","step","stereo","stick","still","sting","stock","stomach","stone","stool","story","stove","strategy","street","strike","strong","struggle","student","stuff","stumble","style","subject","submit","subway","success","such","sudden","suffer","sugar","suggest","suit","summer","sun","sunny","sunset","super","supply","supreme","sure","surface","surge","surprise","surround","survey","suspect","sustain","swallow","swamp","swap","swarm","swear","sweet","swift","swim","swing","switch","sword","symbol","symptom","syrup","system","table","tackle","tag","tail","talent","talk","tank","tape","target","task","taste","tattoo","taxi","teach","team","tell","ten","tenant","tennis","tent","term","test","text","thank","that","theme","then","theory","there","they","thing","this","thought","three","thrive","throw","thumb","thunder","ticket","tide","tiger","tilt","timber","time","tiny","tip","tired","tissue","title","toast","tobacco","today","toddler","toe","together","toilet","token","tomato","tomorrow","tone","tongue","tonight","tool","tooth","top","topic","topple","torch","tornado","tortoise","toss","total","tourist","toward","tower","town","toy","track","trade","traffic","tragic","train","transfer","trap","trash","travel","tray","treat","tree","trend","trial","tribe","trick","trigger","trim","trip","trophy","trouble","truck","true","truly","trumpet","trust","truth","try","tube","tuition","tumble","tuna","tunnel","turkey","turn","turtle","twelve","twenty","twice","twin","twist","two","type","typical","ugly","umbrella","unable","unaware","uncle","uncover","under","undo","unfair","unfold","unhappy","uniform","unique","unit","universe","unknown","unlock","until","unusual","unveil","update","upgrade","uphold","upon","upper","upset","urban","urge","usage","use","used","useful","useless","usual","utility","vacant","vacuum","vague","valid","valley","valve","van","vanish","vapor","various","vast","vault","vehicle","velvet","vendor","venture","venue","verb","verify","version","very","vessel","veteran","viable","vibrant","vicious","victory","video","view","village","vintage","violin","virtual","virus","visa","visit","visual","vital","vivid","vocal","voice","void","volcano","volume","vote","voyage","wage","wagon","wait","walk","wall","walnut","want","warfare","warm","warrior","wash","wasp","waste","water","wave","way","wealth","weapon","wear","weasel","weather","web","wedding","weekend","weird","welcome","west","wet","whale","what","wheat","wheel","when","where","whip","whisper","wide","width","wife","wild","will","win","window","wine","wing","wink","winner","winter","wire","wisdom","wise","wish","witness","wolf","woman","wonder","wood","wool","word","work","world","worry","worth","wrap","wreck","wrestle","wrist","write","wrong","yard","year","yellow","you","young","youth","zebra","zero","zone","zoo"]');
 
 /***/ }),
-/* 162 */
+/* 161 */
 /***/ ((module) => {
 
 "use strict";
 module.exports = require("assert");
 
 /***/ }),
-/* 163 */
+/* 162 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
 try {
-  module.exports = __webpack_require__(120)
+  module.exports = __webpack_require__(119)
 } catch (err) {
   if (process.env.DEBUG) {
     console.error('Secp256k1 bindings are not compiled. Pure JS implementation will be used.')
   }
 
-  module.exports = __webpack_require__(122)
+  module.exports = __webpack_require__(121)
 }
 
 
 /***/ }),
-/* 164 */
+/* 163 */
 /***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
@@ -29458,13 +29420,13 @@ exports.isNumberInInterval = function (number, x, y, message) {
 
 
 /***/ }),
-/* 165 */
+/* 164 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
 
-var Buffer = (__webpack_require__(9).Buffer)
-var bip66 = __webpack_require__(124)
+var Buffer = (__webpack_require__(6).Buffer)
+var bip66 = __webpack_require__(123)
 
 var EC_PRIVKEY_EXPORT_DER_COMPRESSED = Buffer.from([
   // begin
@@ -29658,7 +29620,7 @@ exports.signatureImportLax = function (sig) {
 
 
 /***/ }),
-/* 166 */
+/* 165 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 var __webpack_unused_export__;
@@ -29672,25 +29634,25 @@ __webpack_unused_export__ = __webpack_unused_export__ = crypto.getCiphers
 
 
 /***/ }),
-/* 167 */
+/* 166 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 try {
-  module.exports = __webpack_require__(130)
+  module.exports = __webpack_require__(129)
 } catch (err) {
-  module.exports = __webpack_require__(142)
+  module.exports = __webpack_require__(141)
 }
 
 
 /***/ }),
-/* 168 */
+/* 167 */
 /***/ ((module) => {
 
 "use strict";
 module.exports = require("events");
 
 /***/ }),
-/* 169 */
+/* 168 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 
@@ -29702,14 +29664,14 @@ module.exports = __webpack_require__(29).deprecate;
 
 
 /***/ }),
-/* 170 */
+/* 169 */
 /***/ ((module) => {
 
 "use strict";
 module.exports = require("os");
 
 /***/ }),
-/* 171 */
+/* 170 */
 /***/ ((__unused_webpack_module, exports) => {
 
 const P1600_ROUND_CONSTANTS = [1, 0, 32898, 0, 32906, 2147483648, 2147516416, 2147483648, 32907, 0, 2147483649, 0, 2147516545, 2147483648, 32777, 2147483648, 138, 0, 136, 0, 2147516425, 0, 2147483658, 0, 2147516555, 0, 139, 2147483648, 32905, 2147483648, 32771, 2147483648, 32770, 2147483648, 128, 2147483648, 32778, 0, 2147483658, 2147483648, 2147516545, 2147483648, 32896, 2147483648, 2147483649, 0, 2147516424, 2147483648]
@@ -29901,7 +29863,7 @@ exports.p1600 = function (s) {
 
 
 /***/ }),
-/* 172 */
+/* 171 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 /**
@@ -29917,8 +29879,8 @@ exports.p1600 = function (s) {
  * @license MIT
  */
 
-var Url = __webpack_require__(173);
-var spawn = (__webpack_require__(174).spawn);
+var Url = __webpack_require__(172);
+var spawn = (__webpack_require__(173).spawn);
 var fs = __webpack_require__(56);
 
 exports.h = function() {
@@ -29928,8 +29890,8 @@ exports.h = function() {
    * Private variables
    */
   var self = this;
-  var http = __webpack_require__(175);
-  var https = __webpack_require__(176);
+  var http = __webpack_require__(174);
+  var https = __webpack_require__(175);
 
   // Holds http.js objects
   var request;
@@ -30527,28 +30489,28 @@ exports.h = function() {
 
 
 /***/ }),
-/* 173 */
+/* 172 */
 /***/ ((module) => {
 
 "use strict";
 module.exports = require("url");
 
 /***/ }),
-/* 174 */
+/* 173 */
 /***/ ((module) => {
 
 "use strict";
 module.exports = require("child_process");
 
 /***/ }),
-/* 175 */
+/* 174 */
 /***/ ((module) => {
 
 "use strict";
 module.exports = require("http");
 
 /***/ }),
-/* 176 */
+/* 175 */
 /***/ ((module) => {
 
 "use strict";
@@ -30790,7 +30752,7 @@ __webpack_require__.d(keyStore_namespaceObject, {
 });
 
 // EXTERNAL MODULE: ./node_modules/@aelfqueen/protobufjs/light.js
-var light = __webpack_require__(148);
+var light = __webpack_require__(147);
 // EXTERNAL MODULE: ./node_modules/js-sha256/src/sha256.js
 var sha256 = __webpack_require__(66);
 var sha256_default = /*#__PURE__*/__webpack_require__.n(sha256);
@@ -33688,7 +33650,7 @@ var BigNumber = clone();
 /* harmony default export */ const bignumber = (BigNumber);
 
 // EXTERNAL MODULE: ./node_modules/bs58/index.js
-var bs58 = __webpack_require__(93);
+var bs58 = __webpack_require__(92);
 var bs58_default = /*#__PURE__*/__webpack_require__.n(bs58);
 // EXTERNAL MODULE: ./node_modules/@aelfqueen/protobufjs/ext/descriptor/index.js
 var descriptor = __webpack_require__(65);
@@ -36480,9 +36442,9 @@ function merkleTree_with_(object) {
 var elliptic = __webpack_require__(48);
 var elliptic_default = /*#__PURE__*/__webpack_require__.n(elliptic);
 // EXTERNAL MODULE: ./node_modules/bip39/src/index.js
-var src = __webpack_require__(158);
+var src = __webpack_require__(157);
 // EXTERNAL MODULE: ./node_modules/hdkey/lib/hdkey.js
-var hdkey = __webpack_require__(115);
+var hdkey = __webpack_require__(114);
 var hdkey_default = /*#__PURE__*/__webpack_require__.n(hdkey);
 // EXTERNAL MODULE: ./node_modules/crypto-js/aes.js
 var aes = __webpack_require__(69);
@@ -36491,15 +36453,15 @@ var aes_default = /*#__PURE__*/__webpack_require__.n(aes);
 var enc_utf8 = __webpack_require__(75);
 var enc_utf8_default = /*#__PURE__*/__webpack_require__.n(enc_utf8);
 // EXTERNAL MODULE: ./node_modules/scryptsy/lib/index.js
-var lib = __webpack_require__(127);
+var lib = __webpack_require__(126);
 var lib_default = /*#__PURE__*/__webpack_require__.n(lib);
 // EXTERNAL MODULE: ./node_modules/browserify-cipher/index.js
-var browserify_cipher = __webpack_require__(166);
+var browserify_cipher = __webpack_require__(165);
 // EXTERNAL MODULE: ./node_modules/randombytes/index.js
-var randombytes = __webpack_require__(114);
+var randombytes = __webpack_require__(113);
 var randombytes_default = /*#__PURE__*/__webpack_require__.n(randombytes);
 ;// CONCATENATED MODULE: ./src/util/keccak.js
-const createKeccakHash = __webpack_require__(167);
+const createKeccakHash = __webpack_require__(166);
 const keccak = bits => str => {
   let msg;
   if (str.slice(0, 2) === '0x') {
@@ -39014,7 +38976,7 @@ let isFetch = false;
 if (false) {} else {
   // For node use xmlhttprequest
   // eslint-disable-next-line global-require
-  httpProvider_assign_("RequestLibrary", (__webpack_require__(172)/* .XMLHttpRequest */ .h));
+  httpProvider_assign_("RequestLibrary", (__webpack_require__(171)/* .XMLHttpRequest */ .h));
 }
 class HttpProvider {
   constructor() {
