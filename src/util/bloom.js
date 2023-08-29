@@ -3,7 +3,7 @@
  * @author joshstevens19
  * @link https://github.com/joshstevens19/ethereum-bloom-filters
  */
-import { sha256 } from 'js-sha256';
+import sha256 from './sha256';
 import {
   Address,
   getAddressObjectFromRep
