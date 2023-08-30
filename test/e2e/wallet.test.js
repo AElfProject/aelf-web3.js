@@ -32,6 +32,28 @@ describe('test wallet', () => {
     expect(walletGotByMn.address).toEqual(address);
   });
 
+
+  test('test check new wallet address', () => {
+    const { address, mnemonic, privateKey } = AElf.wallet.createNewWallet();
+    const walletGotByKey1 = AElf.wallet.getWalletByPrivateKey(privateKey);
+    const walletGotByMn1 = AElf.wallet.getWalletByMnemonic(mnemonic);
+    expect(walletGotByKey1.address).toEqual(address);
+    expect(walletGotByMn1.address).toEqual(address);
+
+    const walletGotByKey2 = AElf.wallet.getWalletByPrivateKey(privateKey);
+    const walletGotByMn2 = AElf.wallet.getWalletByMnemonic(mnemonic);
+    expect(walletGotByKey2.address).toEqual(address);
+    expect(walletGotByMn2.address).toEqual(address);
+    
+
+    const walletGotByKey3 = AElf.wallet.getWalletByPrivateKey(privateKey);
+    const walletGotByMn3 = AElf.wallet.getWalletByMnemonic(mnemonic);
+
+    expect(walletGotByKey3.address).toEqual(address);
+    expect(walletGotByMn3.address).toEqual(address);
+
+  });
+
   test('test get address from public key', () => {
     var wallet = AElf.wallet.getWalletByPrivateKey(privateKey);
     expect(wallet).toBeDefined();
