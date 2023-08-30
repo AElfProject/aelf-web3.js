@@ -4,9 +4,7 @@ on:
   push:
     branches:
       - master
-    pull_request_target:
-      types: [assigned, opened, synchronize, reopened]
-  #pull_request: {}
+    pull_request: {}
 
 jobs:
   test:
