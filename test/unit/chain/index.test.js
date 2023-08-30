@@ -106,7 +106,7 @@ describe('chain should work', () => {
     ).toThrow(
       'txId dce643d5c142945dc9f0665819dbf0b268b8423a94fa7a488d24cd89c0b67a23 has no correspond transaction in the block with height 2'
     );
-  });
+  }, 20000);
 
   test('test txId has corresponding transaction in the block with height when async', async () => {
     const aelf = new AElf(new AElf.providers.HttpProvider(stageEndpoint));
@@ -125,4 +125,4 @@ describe('chain should work', () => {
       'txId dce643d5c142945dc9f0665819dbf0b268b8423a94fa7a488d24cd89c0b67a23 has no correspond transaction in the block with height 2'
     );
   });
-});
+}, 20000);
