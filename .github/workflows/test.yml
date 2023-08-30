@@ -8,6 +8,7 @@ on:
 
 jobs:
   test:
+    permissions: write-all
     name: Coverage Diff
     runs-on: ubuntu-latest
 
