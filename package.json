@@ -47,6 +47,7 @@
   "engineStrict": true,
   "dependencies": {
     "@aelfqueen/protobufjs": "^6.8.9",
+    "@aws-crypto/sha256-js": "^5.0.0",
     "@babel/runtime": "^7.4.5",
     "@typescript-eslint/parser": "^5.47.1",
     "assert": "^2.0.0",
