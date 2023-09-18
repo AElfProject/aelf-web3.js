@@ -2,6 +2,7 @@ import Chain from '../../../src/chain/index';
 import RequestManager from '../../../src/util/requestManage';
 import HttpProvider from '../../../src/util/httpProvider';
 import AElf from '../../../src';
+import { noop } from '../../../src/util/utils';
 const stageEndpoint = 'https://explorer-test-tdvw.aelf.io/chain';
 let httpProvider, requestManager, chain;
 
@@ -19,6 +20,12 @@ describe('chain should work', () => {
     const args = [fn];
     const result = chain.extractArgumentsIntoObject(args);
     expect(result.callback).toBe(fn);
+  });
+  test('test undefined argument into object ', () => {
+    const args = [undefined];
+    const result = chain.extractArgumentsIntoObject(args);
+    expect(result.callback).toBe(noop);
+    expect(result.isSync).toBe(false);
   });
   test('test sync argument into object', () => {
     const args = [{ sync: true }];

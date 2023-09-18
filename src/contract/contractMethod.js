@@ -106,7 +106,7 @@ export default class ContractMethod {
 
   prepareParametersAsync(args) {
     const filterArgs = args.filter(
-      arg => !isFunction(arg) && !isBoolean(arg.sync)
+      arg => !isFunction(arg) && !isBoolean(arg?.sync)
     );
     const encoded = this.packInput(filterArgs[0]);
 
@@ -187,7 +187,7 @@ export default class ContractMethod {
       result.callback = args[args.length - 1];
     }
     args.forEach(arg => {
-      if (isBoolean(arg.sync)) {
+      if (isBoolean(arg?.sync)) {
         result.isSync = arg.sync;
       }
     });

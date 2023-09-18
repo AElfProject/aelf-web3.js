@@ -28,7 +28,7 @@ export default class Chain {
   extractArgumentsIntoObject(args) {
     const result = {
       callback: noop,
-      isSync: false
+      isSync: false,
     };
     if (args.length === 0) {
       // has no callback, default to be async mode
@@ -38,7 +38,7 @@ export default class Chain {
       result.callback = args[args.length - 1];
     }
     args.forEach(arg => {
-      if (isBoolean((arg.sync))) {
+      if (isBoolean(arg?.sync)) {
         result.isSync = arg.sync;
       }
     });
@@ -49,7 +49,7 @@ export default class Chain {
     const { callback, isSync } = this.extractArgumentsIntoObject(args);
     if (isSync) {
       const fds = this.getContractFileDescriptorSet(address, {
-        sync: true
+        sync: true,
       });
       if (fds && fds.file && fds.file.length > 0) {
         const factory = new ContractFactory(this, fds, wallet);
@@ -77,19 +77,26 @@ export default class Chain {
     const { isSync } = this.extractArgumentsIntoObject(args);
     if (isSync) {
       const block = this.getBlockByHeight(height, true, {
-        sync: true
+        sync: true,
       });
       const { BlockHash, Body } = block;
       const txIds = Body.Transactions;
       const txIndex = txIds.findIndex(id => id === txId);
       if (txIndex === -1) {
-        throw new Error(`txId ${txId} has no correspond transaction in the block with height ${height}`);
+        throw new Error(
+          `txId ${txId} has no correspond transaction in the block with height ${height}`
+        );
       }
-      const txResults = this.getTxResults(BlockHash, 0, txIds.length, { sync: true });
+      const txResults = this.getTxResults(BlockHash, 0, txIds.length, {
+        sync: true,
+      });
       const nodes = txResults.map((result, index) => {
         const id = txIds[index];
         const status = result.Status;
-        const buffer = Buffer.concat([Buffer.from(id.replace('0x', ''), 'hex'), Buffer.from(status, 'utf8')]);
+        const buffer = Buffer.concat([
+          Buffer.from(id.replace('0x', ''), 'hex'),
+          Buffer.from(status, 'utf8'),
+        ]);
         return merkleTree.node(buffer);
       });
       return merkleTree.getMerklePath(txIndex, nodes);
@@ -99,13 +106,18 @@ export default class Chain {
       const txIds = Body.Transactions;
       const txIndex = txIds.findIndex(id => id === txId);
       if (txIndex === -1) {
-        throw new Error(`txId ${txId} has no correspond transaction in the block with height ${height}`);
+        throw new Error(
+          `txId ${txId} has no correspond transaction in the block with height ${height}`
+        );
       }
       return this.getTxResults(BlockHash, 0, txIds.length).then(results => {
         const nodes = results.map((result, index) => {
           const id = txIds[index];
           const status = result.Status;
-          const buffer = Buffer.concat([Buffer.from(id.replace('0x', ''), 'hex'), Buffer.from(status, 'utf8')]);
+          const buffer = Buffer.concat([
+            Buffer.from(id.replace('0x', ''), 'hex'),
+            Buffer.from(status, 'utf8'),
+          ]);
           return merkleTree.node(buffer);
         });
         return merkleTree.getMerklePath(txIndex, nodes);
