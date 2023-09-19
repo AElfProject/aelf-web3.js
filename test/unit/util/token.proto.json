@@ -207,6 +207,21 @@
           "id": 2
         }
       }
+    },
+    "TestEnum": {
+      "values": {
+        "EMAIL": 0,
+        "PHONE": 1
+      }
+    },
+    "TestEnumArray": {
+      "fields": {
+        "type": {
+          "rule": "repeated",
+          "type": "TestEnum",
+          "id": 1
+        }
+      }
     }
   }
 }
