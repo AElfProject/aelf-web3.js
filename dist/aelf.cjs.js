@@ -34798,7 +34798,8 @@ function transformArrayToMap(inputType, origin) {
       resolvedType = _fields$field.resolvedType;
     if (resolvedType && origin !== null && origin !== undefined) {
       if (origin[name] && Array.isArray(origin[name])) {
-        var fieldsArray = resolvedType.fieldsArray,
+        var _resolvedType$fieldsA = resolvedType.fieldsArray,
+          fieldsArray = _resolvedType$fieldsA === void 0 ? [] : _resolvedType$fieldsA,
           resolvedFields = resolvedType.fields,
           _resolvedType$options = resolvedType.options,
           resolvedOptions = _resolvedType$options === void 0 ? {} : _resolvedType$options; // eslint-disable-next-line max-len
