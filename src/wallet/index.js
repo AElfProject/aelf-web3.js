@@ -5,9 +5,9 @@
 import elliptic from 'elliptic';
 import * as bip39 from 'bip39';
 import hdkey from 'hdkey';
-import jsSha256 from 'js-sha256';
 import AES from 'crypto-js/aes';
 import encUTF8 from 'crypto-js/enc-utf8';
+import sha256 from '../util/sha256';
 import * as keyStore from '../util/keyStore';
 import {
   encodeAddressRep,
@@ -15,7 +15,6 @@ import {
 } from '../util/utils';
 import { Transaction } from '../util/proto';
 
-const { sha256 } = jsSha256;
 // eslint-disable-next-line new-cap
 const ellipticEc = new elliptic.ec('secp256k1');
 

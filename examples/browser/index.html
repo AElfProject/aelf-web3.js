@@ -13,11 +13,11 @@
   const sha256 = AElf.utils.sha256;
 
   const wallet = AElf.wallet.createNewWallet();
-  const walletGotByKey = AElf.wallet.getWalletByPrivateKey(wallet.privateKey);
-  const walletGotByMn = AElf.wallet.getWalletByMnemonic(wallet.mnemonic);
+  const walletGetByKey = AElf.wallet.getWalletByPrivateKey(wallet.privateKey);
+  const walletGetByMn = AElf.wallet.getWalletByMnemonic(wallet.mnemonic);
   console.log(wallet.address);
-  console.log(walletGotByKey);
-  console.log(walletGotByMn);
+  console.log(walletGetByKey);
+  console.log(walletGetByMn);
   // link to Blockchain
   const aelf = new AElf(new AElf.providers.HttpProvider(
     'http://18.162.41.20:8000'
