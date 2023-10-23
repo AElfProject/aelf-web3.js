@@ -1,5 +1,5 @@
 /*!
- * aelf-sdk.js v4.0.0 
+ * aelf-sdk.js v3.3.0 
  * (c) 2019-2023 AElf 
  * Released under MIT License
  */
@@ -34042,7 +34042,7 @@ function () {
     defineProperty_default()(this, "settings", new settings_Settings());
 
     defineProperty_default()(this, "version", {
-      api: "4.0.0"
+      api: "3.3.0"
     });
 
     this._requestManager = new requestManage_RequestManager(provider);
@@ -34081,7 +34081,7 @@ function () {
 /* eslint-enable */
 
 
-defineProperty_default()(src_AElf, "version", "4.0.0");
+defineProperty_default()(src_AElf, "version", "3.3.0");
 
 defineProperty_default()(src_AElf, "providers", {
   HttpProvider: httpProvider_HttpProvider
