@@ -83,14 +83,14 @@ const _getWallet = (type, value, BIP44Path = 'm/44\'/1616\'/0\'/0/0') => {
     case 'createNewWallet':
       mnemonic = bip39.generateMnemonic();
       rootSeed = bip39.mnemonicToSeedSync(mnemonic).toString('hex');
-      hdWallet = hdkey.fromMasterSeed(rootSeed);
+      hdWallet = hdkey.fromMasterSeed(Buffer.from(rootSeed, 'hex'));
       childWallet = hdWallet.derive(BIP44Path);
       keyPair = ellipticEc.keyFromPrivate(childWallet.privateKey);
       break;
     case 'getWalletByMnemonic':
       mnemonic = value;
       rootSeed = bip39.mnemonicToSeedSync(mnemonic).toString('hex');
-      hdWallet = hdkey.fromMasterSeed(rootSeed);
+      hdWallet = hdkey.fromMasterSeed(Buffer.from(rootSeed, 'hex'));
       childWallet = hdWallet.derive(BIP44Path);
       keyPair = ellipticEc.keyFromPrivate(childWallet.privateKey);
       break;
@@ -106,7 +106,7 @@ const _getWallet = (type, value, BIP44Path = 'm/44\'/1616\'/0\'/0/0') => {
   }
   // let mnemonic = bip39.generateMnemonic();
   // let rootSeed = bip39.mnemonicToSeedHex(mnemonic);
-  // let hdWallet = hdkey.fromMasterSeed(rootSeed);
+  // let hdWallet = hdkey.fromMasterSeed(Buffer.from(rootSeed, 'hex'));
   // let keyPair = ec.keyFromPrivate(xPrivateKey);
   // TODO 1.将私钥加密保存,用密码解密才能使用。
   // TODO 2.将助记词机密保存,用密码解密才能获取。
@@ -119,7 +119,7 @@ const _getWallet = (type, value, BIP44Path = 'm/44\'/1616\'/0\'/0/0') => {
     childWallet,
     keyPair,
     privateKey,
-    address
+    address,
   };
 };
 
