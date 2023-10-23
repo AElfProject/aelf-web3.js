@@ -4,7 +4,6 @@
  */
 
 import BigNumber from 'bignumber.js';
-import jsSha256 from 'js-sha256';
 import bs58 from 'bs58';
 import { UNIT_MAP, UNSIGNED_256_INT } from '../common/constants';
 import { Transaction } from './proto';
@@ -14,8 +13,8 @@ import {
   transform,
   transformArrayToMap
 } from './transform';
+import sha256 from './sha256';
 
-const { sha256 } = jsSha256;
 
 export const base58 = {
   encode(data, encoding = 'hex') {

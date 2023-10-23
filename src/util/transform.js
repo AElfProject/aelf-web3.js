@@ -134,7 +134,7 @@ export function transformArrayToMap(inputType, origin) {
     if (resolvedType && origin !== null && origin !== undefined) {
       if (origin[name] && Array.isArray(origin[name])) {
         const {
-          fieldsArray,
+          fieldsArray = [],
           fields: resolvedFields,
           options: resolvedOptions = {}
         } = resolvedType;
