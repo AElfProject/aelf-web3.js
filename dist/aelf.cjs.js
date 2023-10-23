@@ -1,5 +1,5 @@
 /*!
- * aelf-sdk.js v3.2.44 
+ * aelf-sdk.js v4.0.0 
  * (c) 2019-2023 AElf 
  * Released under MIT License
  */
@@ -32750,7 +32750,7 @@ var wallet_getWallet = function _getWallet(type, value) {
     case 'createNewWallet':
       mnemonic = src["generateMnemonic"]();
       rootSeed = src["mnemonicToSeedSync"](mnemonic).toString('hex');
-      hdWallet = hdkey_default.a.fromMasterSeed(rootSeed);
+      hdWallet = hdkey_default.a.fromMasterSeed(Buffer.from(rootSeed, 'hex'));
       childWallet = hdWallet.derive(BIP44Path);
       keyPair = ellipticEc.keyFromPrivate(childWallet.privateKey);
       break;
@@ -32758,7 +32758,7 @@ var wallet_getWallet = function _getWallet(type, value) {
     case 'getWalletByMnemonic':
       mnemonic = value;
       rootSeed = src["mnemonicToSeedSync"](mnemonic).toString('hex');
-      hdWallet = hdkey_default.a.fromMasterSeed(rootSeed);
+      hdWallet = hdkey_default.a.fromMasterSeed(Buffer.from(rootSeed, 'hex'));
       childWallet = hdWallet.derive(BIP44Path);
       keyPair = ellipticEc.keyFromPrivate(childWallet.privateKey);
       break;
@@ -32776,7 +32776,7 @@ var wallet_getWallet = function _getWallet(type, value) {
       throw new Error('not a valid method');
   } // let mnemonic = bip39.generateMnemonic();
   // let rootSeed = bip39.mnemonicToSeedHex(mnemonic);
-  // let hdWallet = hdkey.fromMasterSeed(rootSeed);
+  // let hdWallet = hdkey.fromMasterSeed(Buffer.from(rootSeed, 'hex'));
   // let keyPair = ec.keyFromPrivate(xPrivateKey);
   // TODO 1.将私钥加密保存,用密码解密才能使用。
   // TODO 2.将助记词机密保存,用密码解密才能获取。
@@ -34042,7 +34042,7 @@ function () {
     defineProperty_default()(this, "settings", new settings_Settings());
 
     defineProperty_default()(this, "version", {
-      api: "3.2.44"
+      api: "4.0.0"
     });
 
     this._requestManager = new requestManage_RequestManager(provider);
@@ -34081,7 +34081,7 @@ function () {
 /* eslint-enable */
 
 
-defineProperty_default()(src_AElf, "version", "3.2.44");
+defineProperty_default()(src_AElf, "version", "4.0.0");
 
 defineProperty_default()(src_AElf, "providers", {
   HttpProvider: httpProvider_HttpProvider

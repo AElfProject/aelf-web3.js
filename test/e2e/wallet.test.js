@@ -1,11 +1,14 @@
 import AElf from '../../src/index';
 let aelf = null;
-const address = 'YxE2zSWev5AGuBNtStW5Mdw8HyVtcZ8X5vYmKAx9yZ7dPnRo5';
+const address = "SbWhnq3XU8yeiUTYJmZBSgt7ekgszRXHxh8qNqkFj9g6d3bWh";
 const mnemonic = 'orange learn result add snack curtain double state expose bless also clarify';
-const privateKey = 'a831378a02a765c577de1c2f69800c905f5dd410940eb08e7711fb38c6de18b5';
+const privateKey =
+  "cc2895b46707a34eefd3c61bd4a8487266e0398a93309a9910a2b88e587b6582";
 describe('test wallet', () => {
-  test('create instance', () => {
-    aelf = new AElf(new AElf.providers.HttpProvider('http://18.162.41.20:8000'));
+  test('create instance',() => {
+    aelf = new AElf(
+      new AElf.providers.HttpProvider("https://aelf-test-node.aelf.io")
+    );
     expect(aelf).toBeDefined();
     expect(aelf.isConnected()).toBeTruthy();
     expect(aelf.chain).toBeTruthy();
