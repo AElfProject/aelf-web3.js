@@ -40,10 +40,10 @@
   "author": "hzz780",
   "license": "MIT",
   "devEngines": {
-    "node": "14.x || 16.x"
+    "node": "14.x || 16.x || 18.x || 19.x || 20.x"
   },
   "engines": {
-    "node": ">=14.17.0 <=16.20.0"
+    "node": ">=14.17.0"
   },
   "types": "types",
   "engineStrict": true,
