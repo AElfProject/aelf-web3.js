@@ -1,6 +1,4 @@
-import jsSha256 from 'js-sha256';
-
-const { sha256 } = jsSha256;
+import sha256 from './sha256';
 
 const fromTwoBuffers = data => {
   if (data.length !== 2) throw new TypeError('Wrong data size.');
