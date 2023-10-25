@@ -62,6 +62,8 @@ interface IUtils {
   getAuthorization: typeof getAuthorization;
 }
 import Settings from './util/settings';
+import Chain from './chain';
+import { RequestManager } from './util/requestManage';
 interface IBloom {
   isInBloom: typeof isInBloom;
   isEventInBloom: typeof isEventInBloom;
@@ -77,23 +79,32 @@ type TUtil = IUtils &
 interface IVersion {
   api?: string;
 }
-declare namespace AElf {}
-export declare class AElf {
+
+declare namespace AElf {
+  // Constructor signature
+  type THttpProvider = {
+    new (host?: string, timeout?: number, headers?: Headers): HttpProvider;
+  };
+}
+declare class AElf {
   constructor(provider: HttpProvider);
   static version?: string;
   static providers: {
-    HttpProvider: HttpProvider;
+    HttpProvider: AElf.THttpProvider;
   };
   static pbjs: typeof protobuf;
   static pbUtils: typeof proto;
   static wallet: Wallet;
   static utils: TUtil;
   providers: {
-    HttpProvider: HttpProvider;
+    HttpProvider: AElf.THttpProvider;
   };
   settings: Settings;
   version: IVersion;
   isConnected(): boolean;
   setProvider(provider: HttpProvider): void;
+  _requestManager: RequestManager;
+  currentProvider: HttpProvider;
+  chain: Chain;
 }
 export default AElf;
