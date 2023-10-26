@@ -3,7 +3,7 @@ import HttpProvider from '../../src/util/httpProvider';
 
 const stageEndpoint = 'https://explorer-test-tdvw.aelf.io/chain';
 const fakeEndpoint = 'http://127.0.0.1:9999';
-const realEndpoint = '54.74.174.1:6801';
+const realPeerEndpoint = '54.74.174.1:6801';
 describe('test AElf-sdk', () => {
   let aelf = null;
   aelf = new AElf(new AElf.providers.HttpProvider(stageEndpoint));
@@ -139,7 +139,7 @@ describe('test AElf-sdk', () => {
   });
   test('check remove peer', async () => {
     try {
-      const result = await aelf.chain.removePeer(realEndpoint);
+      const result = await aelf.chain.removePeer(realPeerEndpoint);
       expect(result).toBeTruthy();
     } catch (error) {
       console.log(error, '====remove');
@@ -151,7 +151,7 @@ describe('test AElf-sdk', () => {
     expect(peersInfo.length).toBeGreaterThan(1);
   });
   test('check add peer', async () => {
-    const result = await aelf.chain.addPeer(realEndpoint);
+    const result = await aelf.chain.addPeer(realPeerEndpoint);
     expect(result).toBeTruthy();
   }, 5000);
   test('check get peers info', async () => {
