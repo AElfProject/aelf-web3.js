@@ -1,5 +1,7 @@
 import BigNumber from 'bignumber.js';
 import * as protobuf from '@aelfqueen/protobufjs/light';
+
+export type GenericFunction = (...args: any[]) => any;
 export interface base58 {
   encode(data: ArrayBuffer | SharedArrayBuffer, encoding?: number): string;
   decode(str: string, encoding?: string): Buffer;

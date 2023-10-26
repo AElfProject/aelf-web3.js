@@ -1,12 +1,13 @@
 import HttpProvider from './httpProvider';
+import { GenericFunction } from './utils';
 interface IRequestBody {
   requestMethod: string;
-  method: Function;
+  method: GenericFunction;
   params: { [k: string]: any };
 }
 interface IPrepareResult {
   method: string;
-  url: Function;
+  url: GenericFunction;
   params: { [k in string]: any };
 }
 export declare class RequestManager {

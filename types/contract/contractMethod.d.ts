@@ -1,20 +1,21 @@
-import Chain from 'types/chain';
-import { IWallet } from 'types/wallet';
+import Chain from '../chain';
+import { IWallet } from '../wallet';
 import * as protobuf from '@aelfqueen/protobufjs';
-import { ITransaction } from 'types/util/proto';
+import { ITransaction } from '../util/proto';
 import { Contract } from '.';
+import { GenericFunction } from '../util/utils';
 export type TRawTx = ITransaction & {
   refBlockNumber: string;
   refBlockPrefix: string;
 };
 
 interface IExtractArgumentsIntoObject {
-  callback: Function;
+  callback: GenericFunction;
   isSync: boolean;
 }
 interface IRequestRes {
   method: string;
-  callback: Function;
+  callback: GenericFunction;
   params: string;
   format?: { [k: string]: any } | null;
 }

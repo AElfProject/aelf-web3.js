@@ -1,11 +1,9 @@
-import HDNode = require("hdkey");
-import * as Bip39 from "bip39";
-import { ec, curve } from "elliptic";
-import { ITransaction } from "../util/proto";
-import * as KeyStore from "../util/keyStore";
+import HDNode = require('hdkey');
+import * as Bip39 from 'bip39';
+import { ec, curve } from 'elliptic';
+import { ITransaction } from '../util/proto';
+import * as KeyStore from '../util/keyStore';
 import { TRawTx } from 'types/contract/contractMethod';
-
-export default Wallet;
 
 interface ISignature {
   signature: Uint8Array;
@@ -21,7 +19,7 @@ export interface IWallet {
   privateKey: string;
 }
 
-declare class Wallet {
+export declare class Wallet {
   ellipticEc: ec;
   hdkey: HDNode;
   bip39: typeof Bip39;
@@ -36,3 +34,4 @@ declare class Wallet {
   signTransaction(rawTxn: ITransaction, keyPair: ec.KeyPair): TSignTransaction;
   sign(hexString: string, keyPair: ec.KeyPair): Buffer;
 }
+export default Wallet;

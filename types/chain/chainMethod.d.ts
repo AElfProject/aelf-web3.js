@@ -1,5 +1,6 @@
 import * as protobuf from '@aelfqueen/protobufjs/light';
-import { RequestManager } from 'types/util/requestManage';
+import { RequestManager } from '../util/requestManage';
+import { GenericFunction } from '../util/utils';
 type TInputAddressFormatter = (address: any) => string;
 interface IChainMethodParams {
   name: string;
@@ -9,16 +10,20 @@ interface IChainMethodParams {
   inputFormatter?: Array<TInputAddressFormatter | undefined>;
   outputFormatter?: protobuf.Type | null;
 }
-export type TExtractArg = Function & {
-  isSync: boolean;
-  callback?: Function;
-  [k: string]: any;
-};
+
+export type TExtractArg =
+  | GenericFunction
+  | {
+      isSync: boolean;
+      callback?: GenericFunction;
+      [k: string]: any;
+    };
+
 export interface IExtractArgumentsIntoObjectResult {
-  method?: Function;
+  method?: GenericFunction;
   requestMethod?: string;
   isSync: boolean;
-  callback: Function;
+  callback: GenericFunction;
   params?: { [k in string]: any };
 }
 declare class ChainMethod {

@@ -1,9 +1,9 @@
 import * as protobuf from '@aelfqueen/protobufjs/light';
-import HttpProvider from './util/httpProvider';
+import HttpProvider, { IHttpHeaders } from './util/httpProvider';
 import Wallet from './wallet/index';
 import * as proto from './util/proto';
 import * as utils from './util/utils';
-import { sha256 } from 'js-sha256';
+import sha256 from './util/sha256';
 import * as transform from './util/transform';
 import {
   arrayToHex,
@@ -83,7 +83,7 @@ interface IVersion {
 declare namespace AElf {
   // Constructor signature
   type THttpProvider = {
-    new (host?: string, timeout?: number, headers?: Headers): HttpProvider;
+    new (host?: string, timeout?: number, headers?: IHttpHeaders): HttpProvider;
   };
 }
 declare class AElf {

@@ -1,8 +1,9 @@
 interface ITimeoutResolve {
-  type: string;
+  type: 'timeout';
 }
 type TRequestConfig = {
   url: RequestInfo | URL;
+  params?: Record<string, any>;
 } & RequestInit;
 interface IError {
   message: string;
@@ -13,21 +14,27 @@ interface IFormatResponseTextRes {
   Error: IError;
   statusText: string;
 }
+export interface IHttpHeaders {
+  [headerName: string]: string;
+}
 declare class HttpProvider {
-  constructor(host?: string, timeout?: number, headers?: Headers);
-  public static formatResponse(response: Response): { [k: string]: any };
-  public static formatResponseText(request: Request): IFormatResponseTextRes;
+  constructor(host?: string, timeout?: number, headers?: IHttpHeaders);
+  public static formatResponse<T>(response: T): T | Record<string, any>;
+  public static formatResponseText(
+    request: {
+      status: number;
+      statusText: string;
+    } & Record<string, any>
+  ): IFormatResponseTextRes;
   public static timeoutPromise(delay: number): Promise<ITimeoutResolve>;
   public requestSendByFetch(
     requestConfig: TRequestConfig,
-    request: typeof XMLHttpRequest
-  ): any;
-  public sendAsyncByFetch(
-    requestConfig: TRequestConfig
-  ): Promise<{ [k: string]: any }>;
+    request: (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>
+  ): Response;
+  public sendAsyncByFetch(requestConfig: TRequestConfig): Promise<Response>;
   public requestSend(
     requestConfig: TRequestConfig,
-    request: typeof XMLHttpRequest,
+    request: XMLHttpRequest,
     isAsync?: boolean
   ): void;
   public send(requestConfig: TRequestConfig): { [k: string]: any };

@@ -1,4 +1,4 @@
-import { IWallet } from "../wallet";
+import { IWallet } from '../wallet';
 
 interface IOptions {
   dklen: number;
@@ -39,7 +39,7 @@ interface IkeyStore {
 export declare function getKeystore(
   walletInfoInput: TWalletInfo,
   password: string,
-  option?: IOptions
+  option?: IOptions & Record<string, any>
 ): IkeyStore;
 export declare function unlockKeystore(
   keyStoreInput: IkeyStore,

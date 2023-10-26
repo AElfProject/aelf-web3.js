@@ -1,6 +1,7 @@
 import { Contract } from 'types/contract';
 import { RequestManager } from 'types/util/requestManage';
-import { IWallet } from 'types/wallet';
+import * as Bip39 from 'bip39';
+import { IWallet } from '../wallet';
 import { IExtractArgumentsIntoObjectResult, TExtractArg } from './chainMethod';
 export interface IError {
   Error: {
@@ -169,7 +170,7 @@ declare class Chain {
   public getMerklePath(
     txId: string,
     height: number,
-    args: { [k in string]: any }
+    ...args: { [k in string]: any }[]
   ): any[] | null | Promise<any[] | null>;
   getChainStatus(): Promise<IGetChainStatus & IError>;
   getChainState(blockHash: string): Promise<IGetChainState & IError>;
