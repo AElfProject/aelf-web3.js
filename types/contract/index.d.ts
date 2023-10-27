@@ -6,7 +6,12 @@ import { GenericFunction } from '../util/utils';
 export class Contract {
   constructor(chain: Chain, services: Array<protobuf.Service>, address: string);
 }
-declare class ContractFactory {
+
+interface IContractFactory {
+  // just describe the public side of the class
+  at(address: string, callback: GenericFunction): Contract;
+}
+declare class ContractFactory implements IContractFactory {
   constructor(
     chain: Chain,
     fileDescriptorSet: IFileDescriptorSet,

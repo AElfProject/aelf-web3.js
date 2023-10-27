@@ -13,7 +13,7 @@ interface IExtractArgumentsIntoObject {
   callback: GenericFunction;
   isSync: boolean;
 }
-interface IRequestRes {
+interface IRequestResult {
   method: string;
   callback: GenericFunction;
   params: string;
@@ -50,7 +50,7 @@ declare class ContractMethod {
     blockHashInput: string,
     packedInput: any
   ): TRawTx;
-  public request(...args: Array<any>): IRequestRes;
+  public request(...args: Array<any>): IRequestResult;
   public run(
     ...args: Array<any>
   ): { TransactionId: string } | Promise<{ TransactionId: string }>;

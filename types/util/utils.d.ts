@@ -2,11 +2,11 @@ import BigNumber from 'bignumber.js';
 import * as protobuf from '@aelfqueen/protobufjs/light';
 
 export type GenericFunction = (...args: any[]) => any;
-export interface base58 {
+export interface IBase58 {
   encode(data: ArrayBuffer | SharedArrayBuffer, encoding?: number): string;
   decode(str: string, encoding?: string): Buffer;
 }
-export interface chainIdConvertor {
+export interface IChainIdConvertor {
   chainIdToBase58(chainId: string): string;
   base58ToChainId(base58String: string): Buffer;
 }

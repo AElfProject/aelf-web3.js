@@ -21,7 +21,7 @@ export interface IError {
       | null;
   };
 }
-export interface IGetChainStatus {
+export interface IChainStatus {
   ChainId: string;
   Branches: {
     [key in string]: number;
@@ -39,7 +39,7 @@ export interface IGetChainStatus {
   BestChainHeight: number;
 }
 
-export interface IGetChainState {
+export interface IChainState {
   BlockHash: string;
   PreviousHash: string;
   BlockHeight: number;
@@ -49,7 +49,7 @@ export interface IGetChainState {
   Deletes: [string];
 }
 
-export interface IGetBlock {
+export interface IBlock {
   BlockHash: string;
   Header: {
     PreviousBlockHash: string;
@@ -70,7 +70,7 @@ export interface IGetBlock {
   BlockSize: number;
 }
 
-export interface IGetBlockByHeight {
+export interface IBlockByHeight {
   BlockHash: string;
   Header: {
     PreviousBlockHash: string;
@@ -91,7 +91,7 @@ export interface IGetBlockByHeight {
   BlockSize: number;
 }
 
-export interface IGetTransactionResult {
+export interface ITransactionResult {
   TransactionId: string;
   Status: string;
   Logs: {
@@ -116,7 +116,7 @@ export interface IGetTransactionResult {
   Error: string;
   TransactionSize: number;
 }
-export interface IGetMerklePathByTxId {
+export interface IMerklePathByTxId {
   MerklePathNodes: {
     Hash: string;
     IsLeftChildNode: boolean;
@@ -131,12 +131,12 @@ export interface ICalculateTransactionFee {
     [key in string]: number;
   };
 }
-export interface IGetTransactionPoolStatus {
+export interface ITransactionPoolStatus {
   Queued: number;
   Validated: number;
 }
 
-export interface IGetPeer {
+export interface IPeer {
   IpAddress: string;
   ProtocolVersion: number;
   ConnectionTime: number;
@@ -172,28 +172,28 @@ declare class Chain {
     height: number,
     ...args: { [k in string]: any }[]
   ): any[] | null | Promise<any[] | null>;
-  getChainStatus(): Promise<IGetChainStatus & IError>;
-  getChainState(blockHash: string): Promise<IGetChainState & IError>;
+  getChainStatus(): Promise<IChainStatus & IError>;
+  getChainState(blockHash: string): Promise<IChainState & IError>;
   getContractFileDescriptorSet(address: string): Promise<string & IError>;
   getBlockHeight(): number;
   getBlock(
     blockHash: string,
     includeTransactions: boolean
-  ): Promise<IGetBlock & IError>;
+  ): Promise<IBlock & IError>;
   getBlockByHeight(
     blockHeight: number,
     includeTransactions?: boolean
-  ): Promise<IGetBlockByHeight & IError>;
-  getTxResult(transactionId: string): Promise<IGetTransactionResult & IError>;
+  ): Promise<IBlockByHeight & IError>;
+  getTxResult(transactionId: string): Promise<ITransactionResult & IError>;
   getTxResults(
     blockHash: string,
     offset: number,
     limit: number
-  ): Promise<IGetTransactionResult[] & IError>;
+  ): Promise<ITransactionResult[] & IError>;
   getMerklePathByTxId(
     transactionId: string
-  ): Promise<IGetMerklePathByTxId & IError>;
-  getTransactionPoolStatus(): Promise<IGetTransactionPoolStatus & IError>;
+  ): Promise<IMerklePathByTxId & IError>;
+  getTransactionPoolStatus(): Promise<ITransactionPoolStatus & IError>;
   sendTransaction(
     RawTransaction: string
   ): Promise<{ TransactionId: string } & IError>;
@@ -202,7 +202,7 @@ declare class Chain {
     RawTransaction: string
   ): Promise<ICalculateTransactionFee & IError>;
   callReadOnly(RawTransaction: string): Promise<string & IError>;
-  getPeers(withMetrics?: boolean): Promise<IGetPeer[] & IError>;
+  getPeers(withMetrics?: boolean): Promise<IPeer[] & IError>;
   addPeer(Address: string): Promise<true & IError>;
   removePeer(address: string): Promise<true & IError>;
   networkInfo(): Promise<

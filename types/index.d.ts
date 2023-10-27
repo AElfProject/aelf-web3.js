@@ -36,8 +36,8 @@ import {
   isAddressInBloom,
 } from './util/bloom';
 interface IUtils {
-  base58: utils.base58;
-  chainIdConvertor: utils.chainIdConvertor;
+  base58: utils.IBase58;
+  chainIdConvertor: utils.IChainIdConvertor;
   arrayToHex: typeof arrayToHex;
   padLeft: typeof padLeft;
   padRight: typeof padRight;
