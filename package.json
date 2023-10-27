@@ -17,7 +17,7 @@
     "lint": "eslint src",
     "proto": "node scripts/compile-proto.js",
     "release": "standard-version -a",
-    "test": "yarn test:node && yarn test:browser",
+    "test": "yarn test:browser && yarn test:node",
     "test:browser": "jest --config=jest.browser.config.js",
     "test:browser:watch": "jest --config=jest.browser.config.js --watch",
     "test:node": "jest --config=jest.node.config.js",
