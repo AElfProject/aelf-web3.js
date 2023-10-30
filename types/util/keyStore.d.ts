@@ -1,4 +1,4 @@
-import { IWallet } from '../wallet';
+import { IWalletInfo } from '../wallet';
 
 interface IOptions {
   dklen: number;
@@ -14,7 +14,7 @@ interface IKdfparams {
   p: number;
   salt: string;
 }
-type TWalletInfo = IWallet & {
+type TWalletInfo = IWalletInfo & {
   nickName?: string;
 };
 interface ICipherparams {

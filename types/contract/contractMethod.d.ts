@@ -1,5 +1,5 @@
 import Chain from '../chain';
-import { IWallet } from '../wallet';
+import { IWalletInfo } from '../wallet';
 import * as protobuf from '@aelfqueen/protobufjs';
 import { ITransaction } from '../util/proto';
 import { Contract } from '.';
@@ -24,7 +24,7 @@ declare class ContractMethod {
     chain: Chain,
     method: protobuf.Method,
     contractAddress: string,
-    walletInstance: IWallet
+    walletInstance: IWalletInfo
   );
   public packInput(input?: any): Buffer | null;
   public unpackPackedInput(

@@ -1,7 +1,7 @@
 import { Contract } from 'types/contract';
 import { RequestManager } from 'types/util/requestManage';
 import * as Bip39 from 'bip39';
-import { IWallet } from '../wallet';
+import { IWalletInfo } from '../wallet';
 import { IExtractArgumentsIntoObjectResult, TExtractArg } from './chainMethod';
 export interface IError {
   Error: {
@@ -164,7 +164,7 @@ declare class Chain {
   ): IExtractArgumentsIntoObjectResult;
   public contractAt(
     address: string,
-    wallet: IWallet,
+    wallet: IWalletInfo,
     args: { [k in string]: any }
   ): Contract | Promise<Contract>;
   public getMerklePath(
