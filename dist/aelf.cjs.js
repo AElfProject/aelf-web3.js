@@ -40103,6 +40103,15 @@ var src_AElf = /*#__PURE__*/function () {
     this.currentProvider = provider;
     this.chain = new (src_get_("Chain"))(this._requestManager);
   }
+
+  /**
+   * @type {protobuf} export protobufjs for developers
+   */
+
+  /**
+   * AElf-sdk version
+   * @type {{api: string}}
+   */
   createClass_default()(AElf, [{
     key: "isConnected",
     /**

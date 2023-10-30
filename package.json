@@ -30,6 +30,7 @@
   ],
   "files": [
     "src",
+    "types",
     "dist",
     "proto",
     "README.md",
