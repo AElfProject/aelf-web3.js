@@ -226,3 +226,4 @@ typings/
 .DS_Store
 
 .vscode
+aelf.umd.js.LICENSE.txt

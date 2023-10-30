@@ -4,7 +4,7 @@
  */
 
 /* eslint-env node */
-const merge = require('webpack-merge');
+const { merge } = require('webpack-merge');
 const baseConfig = require('./webpack.common');
 const {OUTPUT_PATH} = require('./utils');
 
@@ -25,7 +25,8 @@ const  nodeConfig = {
   target: 'node',
   optimization: {
     removeEmptyChunks: true,
-    occurrenceOrder: true,
+    chunkIds: 'total-size',
+    moduleIds: 'size',
     sideEffects: true,
     minimize: false
   }

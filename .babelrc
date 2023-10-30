@@ -3,38 +3,29 @@
     [
       "@babel/preset-env",
       {
+        "useBuiltIns": "usage",
+        "corejs": 3,
         "modules": false,
-        "targets": "> 1%, not dead"
+        "targets": "> 0.5%, last 2 versions, Firefox ESR, not dead"
       }
     ]
   ],
-  "plugins": [
-    "@babel/plugin-proposal-class-properties",
-    "@babel/plugin-transform-runtime",
-    "@babel/plugin-proposal-optional-chaining",
-    "rewire"
-  ],
-  "ignore": [
-    "dist/*.js"
-  ],
+  "plugins": ["rewire"],
+  "ignore": ["dist/*.js"],
   "env": {
     "test": {
       "presets": [
         [
           "@babel/preset-env",
           {
+            "useBuiltIns": "usage",
+            "corejs": 3,
             "modules": "auto"
           }
         ]
       ],
-      "plugins": [
-        "@babel/plugin-proposal-class-properties",
-        "@babel/plugin-transform-runtime",
-        "rewire"
-      ],
-      "ignore": [
-        "dist/*.js"
-      ]
+      "plugins": ["rewire"],
+      "ignore": ["dist/*.js"]
     }
   }
 }

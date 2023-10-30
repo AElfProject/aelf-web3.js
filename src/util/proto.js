@@ -22,7 +22,6 @@ export const {
   ResourceTokenCharged
 } = coreRootProto;
 
-
 export const getFee = (base64Str, type = 'TransactionFeeCharged') => {
   if (['ResourceTokenCharged', 'TransactionFeeCharged'].indexOf(type) === -1) {
     throw new Error('type needs to be one of ResourceTokenCharged and TransactionFeeCharged');
