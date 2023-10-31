@@ -41,10 +41,10 @@
   "author": "hzz780",
   "license": "MIT",
   "devEngines": {
-    "node": "14.x || 16.x || 18.x || 20.x"
+    "node": "16.x || 18.x || 20.x"
   },
   "engines": {
-    "node": ">=14.17.0 || ^16.10.0 || >=18.0.0"
+    "node": "^16.10.0 || >=18.0.0"
   },
   "types": "types",
   "engineStrict": true,
