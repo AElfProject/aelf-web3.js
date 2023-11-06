@@ -198,6 +198,15 @@ export const isJson = str => {
 };
 
 /**
+ * Returns true if given number is valid number
+ *
+ * @method isNumber
+ * @param {Number} number
+ * @return {Boolean}
+ */
+export const isNumber = number => number === +number;
+
+/**
  * Takes an input and transforms it into an bignumber
  *
  * @method toBigNumber

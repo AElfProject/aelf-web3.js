@@ -16,6 +16,7 @@ import {
 import {
   isBoolean,
   isFunction,
+  isNumber,
   noop,
   uint8ArrayToHex,
   unpackSpecifiedTypeData
@@ -73,8 +74,8 @@ export default class ContractMethod {
       return null;
     }
     let result = unpackSpecifiedTypeData({
-      data: output,
-      dataType: this._outputType
+      data: isNumber(output) ? String(output) : output,
+      dataType: this._outputType,
     });
     result = transform(this._outputType, result, OUTPUT_TRANSFORMERS);
     result = transformArrayToMap(this._outputType, result);
