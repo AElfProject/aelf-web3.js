@@ -1,5 +1,5 @@
 /*!
- * aelf-sdk.js v3.3.1 
+ * aelf-sdk.js v3.4.1 
  * (c) 2019-2023 AElf 
  * Released under MIT License
  */
@@ -33075,13 +33075,18 @@ function () {
     }
   }, {
     key: "prepareParametersAsync",
-    value: function prepareParametersAsync(args) {
+    value: function prepareParametersAsync(args, isView) {
       var _this = this;
 
       var filterArgs = args.filter(function (arg) {
         return !isFunction(arg) && !isBoolean(arg.sync);
       });
       var encoded = this.packInput(filterArgs[0]);
+
+      if (isView) {
+        return Promise.resolve(this.handleTransaction('', '', encoded));
+      }
+
       return this._chain.getChainStatus().then(function (status) {
         var BestChainHeight = status.BestChainHeight,
             BestChainHash = status.BestChainHash;
@@ -33090,11 +33095,15 @@ function () {
     }
   }, {
     key: "prepareParameters",
-    value: function prepareParameters(args) {
+    value: function prepareParameters(args, isView) {
       var filterArgs = args.filter(function (arg) {
         return !isFunction(arg) && !isBoolean(arg.sync);
       });
       var encoded = this.packInput(filterArgs[0]);
+
+      if (isView) {
+        return this.handleTransaction('', '', encoded);
+      }
 
       var _this$_chain$getChain = this._chain.getChainStatus({
         sync: true
@@ -33152,14 +33161,14 @@ function () {
       var argsObject = this.extractArgumentsIntoObject(args);
 
       if (argsObject.isSync) {
-        var parameters = this.prepareParameters(args);
+        var parameters = this.prepareParameters(args, true);
         return this.unpackOutput(this._chain.callReadOnly(parameters, {
           sync: true
         }));
       } // eslint-disable-next-line arrow-body-style
 
 
-      return this.prepareParametersAsync(args).then(function (parameters) {
+      return this.prepareParametersAsync(args, true).then(function (parameters) {
         return _this3._chain.callReadOnly(parameters, function (error, result) {
           argsObject.callback(error, _this3.unpackOutput(result));
         }).then(_this3.unpackOutput);
@@ -33219,9 +33228,16 @@ function () {
     key: "getRawTx",
     value: function getRawTx(blockHeightInput, blockHashInput, packedInput) {
       var rawTx = getTransaction(this._wallet.address, this._contractAddress, this._name, packedInput);
-      rawTx.refBlockNumber = blockHeightInput;
-      var blockHash = blockHashInput.match(/^0x/) ? blockHashInput.substring(2) : blockHashInput;
-      rawTx.refBlockPrefix = Buffer.from(blockHash, 'hex').slice(0, 4);
+
+      if (blockHeightInput) {
+        rawTx.refBlockNumber = blockHeightInput;
+      }
+
+      if (blockHashInput) {
+        var blockHash = blockHashInput.match(/^0x/) ? blockHashInput.substring(2) : blockHashInput;
+        rawTx.refBlockPrefix = Buffer.from(blockHash, 'hex').slice(0, 4);
+      }
+
       return rawTx;
     }
   }, {
@@ -34054,7 +34070,7 @@ function () {
     defineProperty_default()(this, "settings", new settings_Settings());
 
     defineProperty_default()(this, "version", {
-      api: "3.3.1"
+      api: "3.4.1"
     });
 
     this._requestManager = new requestManage_RequestManager(provider);
@@ -34093,7 +34109,7 @@ function () {
 /* eslint-enable */
 
 
-defineProperty_default()(src_AElf, "version", "3.3.1");
+defineProperty_default()(src_AElf, "version", "3.4.1");
 
 defineProperty_default()(src_AElf, "providers", {
   HttpProvider: httpProvider_HttpProvider
