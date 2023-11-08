@@ -1,5 +1,5 @@
 /*!
- * aelf-sdk.js v3.3.0 
+ * aelf-sdk.js v3.4.1 
  * (c) 2019-2023 AElf 
  * Released under MIT License
  */
@@ -26612,6 +26612,7 @@ __webpack_require__.d(utils_namespaceObject, "isFunction", function() { return i
 __webpack_require__.d(utils_namespaceObject, "isObject", function() { return utils_isObject; });
 __webpack_require__.d(utils_namespaceObject, "isBoolean", function() { return isBoolean; });
 __webpack_require__.d(utils_namespaceObject, "isJson", function() { return isJson; });
+__webpack_require__.d(utils_namespaceObject, "isNumber", function() { return isNumber; });
 __webpack_require__.d(utils_namespaceObject, "toBigNumber", function() { return utils_toBigNumber; });
 __webpack_require__.d(utils_namespaceObject, "getValueOfUnit", function() { return utils_getValueOfUnit; });
 __webpack_require__.d(utils_namespaceObject, "fromWei", function() { return fromWei; });
@@ -31144,6 +31145,17 @@ var isJson = function isJson(str) {
   }
 };
 /**
+ * Returns true if given number is valid number
+ *
+ * @method isNumber
+ * @param {Number} number
+ * @return {Boolean}
+ */
+
+var isNumber = function isNumber(number) {
+  return number === +number;
+};
+/**
  * Takes an input and transforms it into an bignumber
  *
  * @method toBigNumber
@@ -33027,7 +33039,7 @@ function () {
       }
 
       var result = unpackSpecifiedTypeData({
-        data: output,
+        data: isNumber(output) ? String(output) : output,
         dataType: this._outputType
       });
       result = transform(this._outputType, result, OUTPUT_TRANSFORMERS);
@@ -34058,7 +34070,7 @@ function () {
     defineProperty_default()(this, "settings", new settings_Settings());
 
     defineProperty_default()(this, "version", {
-      api: "3.3.0"
+      api: "3.4.1"
     });
 
     this._requestManager = new requestManage_RequestManager(provider);
@@ -34097,7 +34109,7 @@ function () {
 /* eslint-enable */
 
 
-defineProperty_default()(src_AElf, "version", "3.3.0");
+defineProperty_default()(src_AElf, "version", "3.4.1");
 
 defineProperty_default()(src_AElf, "providers", {
   HttpProvider: httpProvider_HttpProvider
