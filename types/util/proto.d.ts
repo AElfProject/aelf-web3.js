@@ -1,4 +1,11 @@
 import * as protobuf from '@aelfqueen/protobufjs/light';
+
+export type TChainId = string;
+export type TBlockHash = string;
+export type TBlockHeight = number;
+export type TAddress = string;
+export type TTransactionId = string;
+export type TRawTransaction = string;
 export interface IAddress {
   value: Buffer;
 }
@@ -21,7 +28,7 @@ export function getFee(
 ): { [k: string]: any } | undefined | null;
 
 interface ILog {
-  Address: string;
+  Address: TAddress;
   Name: string;
   Indexed: Array<string> | null;
   NonIndexed: string;
@@ -49,8 +56,8 @@ export function getHashFromHex(
 export function getHashObjectFromHex(hex: string): { [k: string]: any };
 export function encodeTransaction(tx: { [k: string]: any }): Uint8Array;
 export function getTransaction(
-  from: string,
-  to: string,
+  from: TAddress,
+  to: TAddress,
   methodName: string,
   params: any
 ): protobuf.Message<{

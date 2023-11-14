@@ -3,13 +3,14 @@ import { IFileDescriptorSet } from '@aelfqueen/protobufjs/ext/descriptor';
 import * as protobuf from '@aelfqueen/protobufjs/light';
 import { IWalletInfo } from '../wallet';
 import { GenericFunction } from '../util/utils';
+import { TAddress } from '../util/proto';
 export class Contract {
   constructor(chain: Chain, services: Array<protobuf.Service>, address: string);
 }
 
 interface IContractFactory {
   // just describe the public side of the class
-  at(address: string, callback: GenericFunction): Contract;
+  at(address: TAddress, callback: GenericFunction): Contract;
 }
 declare class ContractFactory implements IContractFactory {
   constructor(
@@ -22,7 +23,7 @@ declare class ContractFactory implements IContractFactory {
     wallet: IWalletInfo
   ): void;
 
-  public at(address: string, callback: GenericFunction): Contract;
+  public at(address: TAddress, callback: GenericFunction): Contract;
 }
 
 export default ContractFactory;

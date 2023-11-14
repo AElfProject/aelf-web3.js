@@ -2,7 +2,7 @@ import ContractMethod from '../../../src/contract/contractMethod';
 import ContractFactory from '../../../src/contract/index';
 import AElf from '../../../src/index';
 import { noop } from '../../../src/util/utils';
-const stageEndpoint = 'https://explorer-test-tdvw.aelf.io/chain';
+const stageEndpoint = 'https://tdvw-test-node.aelf.io/';
 describe('token contract with transfer method', () => {
   const aelf = new AElf(new AElf.providers.HttpProvider(stageEndpoint));
   const wallet = AElf.wallet.getWalletByPrivateKey(

@@ -1,5 +1,6 @@
 import BigNumber from 'bignumber.js';
 import * as protobuf from '@aelfqueen/protobufjs/light';
+import { TAddress } from './proto';
 
 export type GenericFunction = (...args: any[]) => any;
 export interface IBase58 {
@@ -21,7 +22,7 @@ export declare function padRight(
   charLen: number,
   sign?: string
 ): string;
-export declare function decodeAddressRep(address: string): string;
+export declare function decodeAddressRep(address: TAddress): string;
 export declare function encodeAddressRep(hex: string): string;
 export declare function isBigNumber(object: any): boolean;
 export declare function isString(object: any): boolean;

@@ -1,4 +1,6 @@
-export declare function isInBloom(bloom: string, hash: string): boolean;
+import { TAddress, TBlockHash } from './proto';
+
+export declare function isInBloom(bloom: string, hash: TBlockHash): boolean;
 export declare function isEventInBloom(
   bloom: string,
   eventName: string
@@ -9,5 +11,5 @@ export declare function isIndexedInBloom(
 ): boolean;
 export declare function isAddressInBloom(
   bloom: string,
-  address: string
+  address: TAddress
 ): boolean;

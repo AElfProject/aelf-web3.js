@@ -1,4 +1,5 @@
 import { IWalletInfo } from '../wallet';
+import { TAddress } from './proto';
 
 interface IOptions {
   dklen: number;
@@ -33,7 +34,7 @@ interface IkeyStore {
   version: number;
   type: string;
   nickName?: string;
-  address: string;
+  address: TAddress;
   crypto: ICrypto;
 }
 export declare function getKeystore(

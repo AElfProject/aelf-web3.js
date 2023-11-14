@@ -1,7 +1,13 @@
 import Chain from '../chain';
 import { IWalletInfo } from '../wallet';
 import * as protobuf from '@aelfqueen/protobufjs';
-import { ITransaction } from '../util/proto';
+import {
+  ITransaction,
+  TAddress,
+  TBlockHash,
+  TBlockHeight,
+  TTransactionId,
+} from '../util/proto';
 import { Contract } from '.';
 import { GenericFunction } from '../util/utils';
 export type TRawTx = ITransaction & {
@@ -23,7 +29,7 @@ declare class ContractMethod {
   constructor(
     chain: Chain,
     method: protobuf.Method,
-    contractAddress: string,
+    contractAddress: TAddress,
     walletInstance: IWalletInfo
   );
   public packInput(input?: any): Buffer | null;
@@ -32,13 +38,19 @@ declare class ContractMethod {
   ): any;
   public unpackOutput(output?: ArrayBuffer | SharedArrayBuffer | null): any;
   public packOutput(result?: any): Buffer | null;
-  public handleTransaction(height: string, hash: string, encoded: any): string;
+  public handleTransaction(
+    height: TBlockHeight,
+    hash: TBlockHash,
+    encoded: any
+  ): string;
   public prepareParametersAsync(args: Array<any>): Promise<string>;
   public prepareParameters(args: Array<any>): string;
   public prepareParametersWithBlockInfo(args: Array<any>): string;
   public sendTransaction(
     ...args: Array<any>
-  ): { TransactionId: string } | Promise<{ TransactionId: string }>;
+  ):
+    | { TransactionId: TTransactionId }
+    | Promise<{ TransactionId: TTransactionId }>;
   public callReadOnly(...args: Array<any>): any;
   public extractArgumentsIntoObject(
     ...args: Array<any>
@@ -46,8 +58,8 @@ declare class ContractMethod {
 
   public getSignedTx(...args: Array<any>): string;
   public getRawTx(
-    blockHeightInput: string,
-    blockHashInput: string,
+    blockHeightInput: TBlockHeight,
+    blockHashInput: TBlockHash,
     packedInput: any
   ): TRawTx;
   public request(...args: Array<any>): IRequestResult;

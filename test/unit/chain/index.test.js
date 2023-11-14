@@ -3,7 +3,7 @@ import RequestManager from '../../../src/util/requestManage';
 import HttpProvider from '../../../src/util/httpProvider';
 import AElf from '../../../src';
 import { noop } from '../../../src/util/utils';
-const stageEndpoint = 'https://explorer-test-tdvw.aelf.io/chain';
+const stageEndpoint = 'https://tdvw-test-node.aelf.io/';
 let httpProvider, requestManager, chain;
 
 describe('chain should work', () => {
