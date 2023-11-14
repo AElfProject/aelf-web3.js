@@ -28,7 +28,7 @@ export interface IError {
   };
 }
 export interface IChainStatus {
-  TChainId: TChainId;
+  ChainId: TChainId;
   Branches: {
     [key in string]: number;
   };
