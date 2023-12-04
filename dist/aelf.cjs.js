@@ -1,5 +1,5 @@
 /*!
- * aelf-sdk.js v3.4.1 
+ * aelf-sdk.js v3.4.2-alpha 
  * (c) 2019-2023 AElf 
  * Released under MIT License
  */
@@ -27475,9 +27475,18 @@ var sha256_sha256 = function sha256(value) {
   var hash = new jsSha256_Sha256();
   hash.update(hexStr);
   var hashUint8Array = hash.digestSync();
-  return Buffer.from(hashUint8Array).toString('hex');
+  return Buffer.from(hashUint8Array).toString("hex");
 };
 
+sha256_sha256.digest = function (value) {
+  var hexStr = value;
+  var hash = new jsSha256_Sha256();
+  hash.update(hexStr);
+  var hashUint8Array = hash.digestSync();
+  return hashUint8Array;
+};
+
+sha256_sha256.array = sha256_sha256.digest;
 /* harmony default export */ var util_sha256 = (sha256_sha256);
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/toConsumableArray.js
 var toConsumableArray = __webpack_require__(26);
@@ -34070,7 +34079,7 @@ function () {
     defineProperty_default()(this, "settings", new settings_Settings());
 
     defineProperty_default()(this, "version", {
-      api: "3.4.1"
+      api: "3.4.2-alpha"
     });
 
     this._requestManager = new requestManage_RequestManager(provider);
@@ -34109,7 +34118,7 @@ function () {
 /* eslint-enable */
 
 
-defineProperty_default()(src_AElf, "version", "3.4.1");
+defineProperty_default()(src_AElf, "version", "3.4.2-alpha");
 
 defineProperty_default()(src_AElf, "providers", {
   HttpProvider: httpProvider_HttpProvider
