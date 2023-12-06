@@ -1,5 +1,5 @@
 import * as protobuf from '@aelfqueen/protobufjs/light';
-import HttpProvider, { IHttpHeaders } from './util/httpProvider';
+import HttpProvider, { HttpHeaders } from './util/httpProvider';
 import Wallet from './wallet/index';
 import * as proto from './util/proto';
 import * as utils from './util/utils';
@@ -35,9 +35,9 @@ import {
   isIndexedInBloom,
   isAddressInBloom,
 } from './util/bloom';
-interface IUtils {
-  base58: utils.IBase58;
-  chainIdConvertor: utils.IChainIdConvertor;
+interface Utils {
+  base58: utils.Base58;
+  chainIdConvertor: utils.ChainIdConvertor;
   arrayToHex: typeof arrayToHex;
   padLeft: typeof padLeft;
   padRight: typeof padRight;
@@ -64,43 +64,43 @@ interface IUtils {
 import Settings from './util/settings';
 import Chain from './chain';
 import { RequestManager } from './util/requestManage';
-interface IBloom {
+interface Bloom {
   isInBloom: typeof isInBloom;
   isEventInBloom: typeof isEventInBloom;
   isIndexedInBloom: typeof isIndexedInBloom;
   isAddressInBloom: typeof isAddressInBloom;
 }
-type TUtil = IUtils &
-  IBloom & {
+type UtilType = Utils &
+  Bloom & {
     sha256: typeof sha256;
   } & {
     transform: typeof transform;
   };
-interface IVersion {
+interface Version {
   api?: string;
 }
 
 declare namespace AElf {
   // Constructor signature
-  type THttpProvider = {
-    new (host?: string, timeout?: number, headers?: IHttpHeaders): HttpProvider;
+  type HttpProviderType = {
+    new (host?: string, timeout?: number, headers?: HttpHeaders): HttpProvider;
   };
 }
 declare class AElf {
   constructor(provider: HttpProvider);
   static version?: string;
   static providers: {
-    HttpProvider: AElf.THttpProvider;
+    HttpProvider: AElf.HttpProviderType;
   };
   static pbjs: typeof protobuf;
   static pbUtils: typeof proto;
   static wallet: Wallet;
-  static utils: TUtil;
+  static utils: UtilType;
   providers: {
-    HttpProvider: AElf.THttpProvider;
+    HttpProvider: AElf.HttpProviderType;
   };
   settings: Settings;
-  version: IVersion;
+  version: Version;
   isConnected(): boolean;
   setProvider(provider: HttpProvider): void;
   _requestManager: RequestManager;

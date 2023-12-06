@@ -1,23 +1,28 @@
 import HttpProvider from './httpProvider';
 import { GenericFunction } from './utils';
-interface IRequestBody {
+interface RequestBody {
   requestMethod: string;
   method: GenericFunction;
   params: { [k: string]: any };
 }
-interface IPrepareResult {
+interface PrepareResult {
   method: string;
   url: GenericFunction;
   params: { [k in string]: any };
 }
-export declare class RequestManager {
+interface IRequestManager {
+  setProvider(provider: HttpProvider): void;
+  send(requestBody: RequestBody): any;
+  sendAsync(requestBody: RequestBody): Promise<any>;
+}
+export declare class RequestManager implements IRequestManager {
   constructor(provider: HttpProvider);
   public static prepareRequest({
     requestMethod,
     method,
     params,
-  }: IRequestBody): IPrepareResult;
+  }: RequestBody): PrepareResult;
   public setProvider(provider: HttpProvider): void;
-  public send(requestBody: IRequestBody): any;
-  public sendAsync(requestBody: IRequestBody): Promise<any>;
+  public send(requestBody: RequestBody): any;
+  public sendAsync(requestBody: RequestBody): Promise<any>;
 }

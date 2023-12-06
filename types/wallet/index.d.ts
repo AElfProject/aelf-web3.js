@@ -1,25 +1,25 @@
 import HDNode = require('hdkey');
 import * as Bip39 from 'bip39';
 import { ec, curve } from 'elliptic';
-import { ITransaction, TAddress } from '../util/proto';
+import { RawTransaction, Address } from '../util/proto';
 import * as KeyStore from '../util/keyStore';
-import { TRawTx } from '../contract/contractMethod';
+import { RawTx } from '../contract/contractMethod';
 
-type TBIP44Path = string;
-type TMnemonic = string;
-type TPrivateKey = string;
-interface ISignature {
+type BIP44Path = string;
+type Mnemonic = string;
+type PrivateKey = string;
+interface SignatureObject {
   signature: Uint8Array;
 }
-type TSignTransaction = ISignature & TRawTx;
+type SignTransaction = SignatureObject & RawTx;
 
-export interface IWalletInfo {
-  BIP44Path: TBIP44Path;
-  address: TAddress;
-  childWallet: IWalletInfo | string;
+export interface WalletInfo {
+  BIP44Path: BIP44Path;
+  address: Address;
+  childWallet: WalletInfo | string;
   keyPair: ec.KeyPair;
-  mnemonic: TMnemonic;
-  privateKey: TPrivateKey;
+  mnemonic: Mnemonic;
+  privateKey: PrivateKey;
 }
 
 interface IWallet {
@@ -31,10 +31,13 @@ interface IWallet {
   AESDescrypt(input: string, password: string): string;
   getSignature(bytesToBeSign: string, keyPair: ec.KeyPair): Buffer;
   getAddressFromPubKey(pubKey: curve.base.BasePoint): string;
-  createNewWallet(BIP44Path?: TBIP44Path): IWalletInfo;
-  getWalletByMnemonic(mnemonic: TMnemonic, BIP44Path: TBIP44Path): IWalletInfo;
-  getWalletByPrivateKey(privateKey: TPrivateKey): IWalletInfo;
-  signTransaction(rawTxn: ITransaction, keyPair: ec.KeyPair): TSignTransaction;
+  createNewWallet(BIP44Path?: BIP44Path): WalletInfo;
+  getWalletByMnemonic(mnemonic: Mnemonic, BIP44Path: BIP44Path): WalletInfo;
+  getWalletByPrivateKey(privateKey: PrivateKey): WalletInfo;
+  signTransaction(
+    rawTxn: RawTransaction,
+    keyPair: ec.KeyPair
+  ): SignTransaction;
   sign(hexString: string, keyPair: ec.KeyPair): Buffer;
 }
 export declare class Wallet implements IWallet {
@@ -46,10 +49,13 @@ export declare class Wallet implements IWallet {
   AESDescrypt(input: string, password: string): string;
   getSignature(bytesToBeSign: string, keyPair: ec.KeyPair): Buffer;
   getAddressFromPubKey(pubKey: curve.base.BasePoint): string;
-  createNewWallet(BIP44Path?: TBIP44Path): IWalletInfo;
-  getWalletByMnemonic(mnemonic: TMnemonic, BIP44Path: TBIP44Path): IWalletInfo;
-  getWalletByPrivateKey(privateKey: TPrivateKey): IWalletInfo;
-  signTransaction(rawTxn: ITransaction, keyPair: ec.KeyPair): TSignTransaction;
+  createNewWallet(BIP44Path?: BIP44Path): WalletInfo;
+  getWalletByMnemonic(mnemonic: Mnemonic, BIP44Path: BIP44Path): WalletInfo;
+  getWalletByPrivateKey(privateKey: PrivateKey): WalletInfo;
+  signTransaction(
+    rawTxn: RawTransaction,
+    keyPair: ec.KeyPair
+  ): SignTransaction;
   sign(hexString: string, keyPair: ec.KeyPair): Buffer;
 }
 export default Wallet;

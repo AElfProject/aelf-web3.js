@@ -1,13 +1,13 @@
 import BigNumber from 'bignumber.js';
 import * as protobuf from '@aelfqueen/protobufjs/light';
-import { TAddress } from './proto';
+import { Address } from './proto';
 
 export type GenericFunction = (...args: any[]) => any;
-export interface IBase58 {
+export interface Base58 {
   encode(data: ArrayBuffer | SharedArrayBuffer, encoding?: number): string;
   decode(str: string, encoding?: string): Buffer;
 }
-export interface IChainIdConvertor {
+export interface ChainIdConvertor {
   chainIdToBase58(chainId: string): string;
   base58ToChainId(base58String: string): Buffer;
 }
@@ -22,7 +22,7 @@ export declare function padRight(
   charLen: number,
   sign?: string
 ): string;
-export declare function decodeAddressRep(address: TAddress): string;
+export declare function decodeAddressRep(address: Address): string;
 export declare function encodeAddressRep(hex: string): string;
 export declare function isBigNumber(object: any): boolean;
 export declare function isString(object: any): boolean;
@@ -51,7 +51,7 @@ export declare function uint8ArrayToHex(uint8Array: Uint8Array): string;
 
 export declare function noop(): void;
 export declare function setPath(obj: any, path: string, value: any): void;
-interface IUnpackSpecifiedParams {
+interface UnpackSpecifiedParams {
   data: ArrayBuffer | SharedArrayBuffer;
   dataType: protobuf.Type;
   encoding?: string;
@@ -60,7 +60,7 @@ export declare function unpackSpecifiedTypeData({
   data,
   dataType,
   encoding,
-}: IUnpackSpecifiedParams): { [k: string]: any };
+}: UnpackSpecifiedParams): { [k: string]: any };
 export declare function deserializeTransaction(
   rawTx: ArrayBuffer | SharedArrayBuffer,
   paramsDataType: protobuf.Type
