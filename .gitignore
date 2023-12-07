@@ -227,3 +227,5 @@ typings/
 
 .vscode
 aelf.umd.js.LICENSE.txt
+
+dist
