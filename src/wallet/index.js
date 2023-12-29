@@ -7,6 +7,7 @@ import * as bip39 from 'bip39';
 import hdkey from 'hdkey';
 import AES from 'crypto-js/aes';
 import encUTF8 from 'crypto-js/enc-utf8';
+import BN from 'bn.js';
 import sha256 from '../util/sha256';
 import * as keyStore from '../util/keyStore';
 import {
@@ -252,10 +253,23 @@ const sign = (hexString, keyPair) => {
   return getSignature(bytesToBeSign, keyPair);
 };
 
+const verify = (signature, msgHash, pubKey) => {
+  const rHex = signature.substring(0, 64);
+  const sHex = signature.substring(64, 128);
+  const recoveryParamHex = signature.substring(128, 130);
+  const sigObj = {
+    r: new BN(rHex, 16),
+    s: new BN(sHex, 16),
+    recoveryParam: recoveryParamHex.slice(1),
+  };
+  return ellipticEc.verify(msgHash, sigObj, Buffer.from(pubKey, 'hex'));
+};
+
 export default {
   hdkey,
   bip39,
   sign,
+  verify,
   signTransaction,
   createNewWallet,
   getWalletByMnemonic,
