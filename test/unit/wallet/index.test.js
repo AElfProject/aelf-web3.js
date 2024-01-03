@@ -1,6 +1,5 @@
 import { getTransaction } from '../../../src/util/proto';
 import Wallet from '../../../src/wallet/index';
-import sha256 from '../../../src/util/sha256';
 describe('test wallet', () => {
   test('test create new wallet', () => {
     const result = Wallet.createNewWallet();
