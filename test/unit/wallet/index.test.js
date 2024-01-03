@@ -90,4 +90,15 @@ describe('test wallet', () => {
     const _getWallet = Wallet.__GetDependency__('_getWallet');
     expect(() => _getWallet()).toThrow('not a valid method');
   });
+
+  test('test verify', () => {
+    const signature =
+      'f6c8eb063cb44037d42e39803d6cd2f348895f6a27a0cc353ef6ea3c9275f5ca36b77981b8c7b25b093c5a46e5f7575f1afa11018db0a0dba2eaaa00779f581601';
+    const msgHash =
+      'aa3ec16e6acc809d8b2818662276256abfd2f1b441cb51574933f3d4bd115d11';
+    const pubKey =
+      '0409fdbe79db858522b456327f9bb0035ca5084097efce46ca363583776bbe86c8542f77cf3a3814f536de743b7d5eb30738b9c8df05c791a2faee749945d4550d';
+    const isValid = Wallet.verify(signature.toString('hex'), msgHash, pubKey);
+    expect(isValid).toBe(true);
+  });
 });
