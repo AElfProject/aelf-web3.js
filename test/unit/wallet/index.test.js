@@ -92,12 +92,14 @@ describe('test wallet', () => {
   });
 
   test('test verify', () => {
+    const privateKey =
+      '03bd0cea9730bcfc8045248fd7f4841ea19315995c44801a3dfede0ca872f808';
+    const wallet = Wallet.getWalletByPrivateKey(privateKey);
     const signature =
-      'f6c8eb063cb44037d42e39803d6cd2f348895f6a27a0cc353ef6ea3c9275f5ca36b77981b8c7b25b093c5a46e5f7575f1afa11018db0a0dba2eaaa00779f581601';
+      '276aa36fcab0ac3d4071a4bfb868f636d1a9639916afe4ec329529014f923a372b688b4eb59d6587481bc15e4a1684e1d92b7598967767713d1504dcea83dadb01';
+    const pubKey = wallet.keyPair.getPublic('hex');
     const msgHash =
-      'aa3ec16e6acc809d8b2818662276256abfd2f1b441cb51574933f3d4bd115d11';
-    const pubKey =
-      '0409fdbe79db858522b456327f9bb0035ca5084097efce46ca363583776bbe86c8542f77cf3a3814f536de743b7d5eb30738b9c8df05c791a2faee749945d4550d';
+      'b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9';
     const isValid = Wallet.verify(signature.toString('hex'), msgHash, pubKey);
     expect(isValid).toBe(true);
   });
