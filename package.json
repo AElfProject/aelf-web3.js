@@ -1,6 +1,6 @@
 {
   "name": "aelf-sdk",
-  "version": "3.4.3",
+  "version": "3.4.4",
   "description": "aelf-sdk js library",
   "main": "dist/aelf.cjs.js",
   "browser": "dist/aelf.umd.js",
@@ -53,7 +53,7 @@
     "browserify-cipher": "^1.0.1",
     "bs58": "^4.0.1",
     "buffer": "^5.2.1",
-    "crypto-js": "^3.1.9-1",
+    "crypto-js": "^4.2.0",
     "elliptic": "^6.4.1",
     "hdkey": "^1.1.1",
     "query-string": "5.1.1",
