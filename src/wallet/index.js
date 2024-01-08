@@ -2,22 +2,18 @@
  * @file wallet
  * @author atom-yang
  */
-import elliptic from 'elliptic';
-import * as bip39 from 'bip39';
-import hdkey from 'hdkey';
-import AES from 'crypto-js/aes';
-import encUTF8 from 'crypto-js/enc-utf8';
-import BN from 'bn.js';
-import sha256 from '../util/sha256';
-import * as keyStore from '../util/keyStore';
-import {
-  encodeAddressRep,
-  padLeft
-} from '../util/utils';
-import { Transaction } from '../util/proto';
+import elliptic from "elliptic";
+import * as bip39 from "bip39";
+import hdkey from "hdkey";
+import { AES, encUTF8 } from "@originjs/crypto-js-wasm";
+import BN from "bn.js";
+import sha256 from "../util/sha256";
+import * as keyStore from "../util/keyStore";
+import { encodeAddressRep, padLeft } from "../util/utils";
+import { Transaction } from "../util/proto";
 
 // eslint-disable-next-line new-cap
-const ellipticEc = new elliptic.ec('secp256k1');
+const ellipticEc = new elliptic.ec("secp256k1");
 
 /**
  * Advanced Encryption Standard need crypto-js
@@ -50,7 +46,8 @@ const AESEncrypt = (input, password) => AES.encrypt(input, password).toString();
  * const AESDecryptMnemonic = aelf.wallet.AESDecrypt('U2FsdGVkX19gCjHzYmoY5FGZA1ArXG+eGZIR77dK2GE=', '123');
  * // AESDecryptMnemonic = "hello world"
  */
-const AESDecrypt = (input, password) => AES.decrypt(input, password).toString(encUTF8);
+const AESDecrypt = (input, password) =>
+  AES.decrypt(input, password).toString(encUTF8);
 
 /**
  * the same as in C#
@@ -63,46 +60,46 @@ const AESDecrypt = (input, password) => AES.decrypt(input, password).toString(en
  * const pubKey = wallet.keyPair.getPublic();
  * const address = aelf.wallet.getAddressFromPubKey(pubKey);
  */
-const getAddressFromPubKey = pubKey => {
+const getAddressFromPubKey = (pubKey) => {
   const pubKeyEncoded = pubKey.encode();
-  const onceSHAResult = Buffer.from(sha256(pubKeyEncoded), 'hex');
+  const onceSHAResult = Buffer.from(sha256(pubKeyEncoded), "hex");
   const hash = sha256(onceSHAResult).slice(0, 64);
   return encodeAddressRep(hash);
 };
 
-const _getWallet = (type, value, BIP44Path = 'm/44\'/1616\'/0\'/0/0') => {
+const _getWallet = (type, value, BIP44Path = "m/44'/1616'/0'/0/0") => {
   // m/purpose'/coin_type'/account'/change/address_index
   // "m/44'/1616'/0'/0/0"
 
-  let mnemonic = '';
-  let rootSeed = '';
-  let childWallet = '';
-  let keyPair = '';
+  let mnemonic = "";
+  let rootSeed = "";
+  let childWallet = "";
+  let keyPair = "";
   let hdWallet;
   switch (type) {
-    case 'createNewWallet':
+    case "createNewWallet":
       mnemonic = bip39.generateMnemonic();
-      rootSeed = bip39.mnemonicToSeedSync(mnemonic).toString('hex');
-      hdWallet = hdkey.fromMasterSeed(Buffer.from(rootSeed, 'hex'));
+      rootSeed = bip39.mnemonicToSeedSync(mnemonic).toString("hex");
+      hdWallet = hdkey.fromMasterSeed(Buffer.from(rootSeed, "hex"));
       childWallet = hdWallet.derive(BIP44Path);
       keyPair = ellipticEc.keyFromPrivate(childWallet.privateKey);
       break;
-    case 'getWalletByMnemonic':
+    case "getWalletByMnemonic":
       mnemonic = value;
-      rootSeed = bip39.mnemonicToSeedSync(mnemonic).toString('hex');
-      hdWallet = hdkey.fromMasterSeed(Buffer.from(rootSeed, 'hex'));
+      rootSeed = bip39.mnemonicToSeedSync(mnemonic).toString("hex");
+      hdWallet = hdkey.fromMasterSeed(Buffer.from(rootSeed, "hex"));
       childWallet = hdWallet.derive(BIP44Path);
       keyPair = ellipticEc.keyFromPrivate(childWallet.privateKey);
       break;
-    case 'getWalletByPrivateKey':
-      if (typeof value === 'string') {
-        keyPair = ellipticEc.keyFromPrivate(padLeft(value, 64, '0'));
+    case "getWalletByPrivateKey":
+      if (typeof value === "string") {
+        keyPair = ellipticEc.keyFromPrivate(padLeft(value, 64, "0"));
       } else {
         keyPair = ellipticEc.keyFromPrivate(value);
       }
       break;
     default:
-      throw new Error('not a valid method');
+      throw new Error("not a valid method");
   }
   // let mnemonic = bip39.generateMnemonic();
   // let rootSeed = bip39.mnemonicToSeedHex(mnemonic);
@@ -130,17 +127,22 @@ const _getWallet = (type, value, BIP44Path = 'm/44\'/1616\'/0\'/0/0') => {
  * @returns {Buffer}
  */
 const getSignature = (bytesToBeSign, keyPair) => {
-  const privateKey = keyPair.getPrivate('hex');
+  const privateKey = keyPair.getPrivate("hex");
   const msgHash = sha256(bytesToBeSign);
-  const sigObj = ellipticEc.sign(Buffer.from(msgHash, 'hex'), privateKey, 'hex', {
-    canonical: true
-  });
+  const sigObj = ellipticEc.sign(
+    Buffer.from(msgHash, "hex"),
+    privateKey,
+    "hex",
+    {
+      canonical: true,
+    }
+  );
   const hex = [
-    sigObj.r.toString('hex', 32),
-    sigObj.s.toString('hex', 32),
-    `0${sigObj.recoveryParam.toString()}`
-  ].join('');
-  return Buffer.from(hex, 'hex');
+    sigObj.r.toString("hex", 32),
+    sigObj.s.toString("hex", 32),
+    `0${sigObj.recoveryParam.toString()}`,
+  ].join("");
+  return Buffer.from(hex, "hex");
 };
 
 /**
@@ -162,7 +164,8 @@ const getSignature = (bytesToBeSign, keyPair) => {
  * //     address: "5uhk3434242424"
  * // }
  */
-const createNewWallet = (BIP44Path = 'm/44\'/1616\'/0\'/0/0') => _getWallet('createNewWallet', '', BIP44Path);
+const createNewWallet = (BIP44Path = "m/44'/1616'/0'/0/0") =>
+  _getWallet("createNewWallet", "", BIP44Path);
 
 /**
  * create a wallet by mnemonic
@@ -176,9 +179,9 @@ const createNewWallet = (BIP44Path = 'm/44\'/1616\'/0\'/0/0') => _getWallet('cre
  *
  * const mnemonicWallet = aelf.wallet.getWalletByMnemonic('hello world');
  */
-const getWalletByMnemonic = (mnemonic, BIP44Path = 'm/44\'/1616\'/0\'/0/0') => {
+const getWalletByMnemonic = (mnemonic, BIP44Path = "m/44'/1616'/0'/0/0") => {
   if (bip39.validateMnemonic(mnemonic)) {
-    return _getWallet('getWalletByMnemonic', mnemonic, BIP44Path);
+    return _getWallet("getWalletByMnemonic", mnemonic, BIP44Path);
   }
   return false;
 };
@@ -194,7 +197,8 @@ const getWalletByMnemonic = (mnemonic, BIP44Path = 'm/44\'/1616\'/0\'/0/0') => {
  * const privateKeyWallet = aelf.wallet.getWalletByPrivateKey('123');
  *
  */
-const getWalletByPrivateKey = privateKey => _getWallet('getWalletByPrivateKey', privateKey);
+const getWalletByPrivateKey = (privateKey) =>
+  _getWallet("getWalletByPrivateKey", privateKey);
 
 /**
  * sign a transaction
@@ -227,7 +231,7 @@ const signTransaction = (rawTxn, keyPair) => {
   return {
     ...rawTxn,
     params,
-    signature: sig
+    signature: sig,
   };
 };
 
@@ -249,7 +253,7 @@ const signTransaction = (rawTxn, keyPair) => {
  * 188, 123, 168, 163, 244, 151, 1]
  */
 const sign = (hexString, keyPair) => {
-  const bytesToBeSign = Buffer.from(hexString.replace('0x', ''), 'hex');
+  const bytesToBeSign = Buffer.from(hexString.replace("0x", ""), "hex");
   return getSignature(bytesToBeSign, keyPair);
 };
 
@@ -278,5 +282,5 @@ export default {
   ellipticEc,
   AESEncrypt,
   AESDecrypt,
-  keyStore
+  keyStore,
 };
