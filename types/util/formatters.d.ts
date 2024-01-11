@@ -1,4 +1,6 @@
 import { Message } from '@aelfqueen/protobufjs';
-import { AddressObject, Address } from './proto';
-export function inputAddressFormatter(address: Address | AddressObject): string;
+import { IAddressObject, TAddress } from './proto';
+export function inputAddressFormatter(
+  address: TAddress | IAddressObject
+): string;
 export function outputFileDescriptorSetFormatter(result: string): Message<{}>;

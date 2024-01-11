@@ -1,5 +1,5 @@
 import * as protobuf from '@aelfqueen/protobufjs/light';
-import HttpProvider, { HttpHeaders } from './util/httpProvider';
+import HttpProvider, { IHttpHeaders } from './util/httpProvider';
 import Wallet from './wallet/index';
 import * as proto from './util/proto';
 import * as utils from './util/utils';
@@ -35,9 +35,14 @@ import {
   isIndexedInBloom,
   isAddressInBloom,
 } from './util/bloom';
-interface Utils {
-  base58: utils.Base58;
-  chainIdConvertor: utils.ChainIdConvertor;
+
+import Settings from './util/settings';
+import Chain from './chain';
+import { RequestManager } from './util/requestManage';
+
+interface IUtils {
+  base58: utils.IBase58;
+  chainIdConvertor: utils.IChainIdConvertor;
   arrayToHex: typeof arrayToHex;
   padLeft: typeof padLeft;
   padRight: typeof padRight;
@@ -61,29 +66,27 @@ interface Utils {
   deserializeTransaction: typeof deserializeTransaction;
   getAuthorization: typeof getAuthorization;
 }
-import Settings from './util/settings';
-import Chain from './chain';
-import { RequestManager } from './util/requestManage';
-interface Bloom {
+
+interface IBloom {
   isInBloom: typeof isInBloom;
   isEventInBloom: typeof isEventInBloom;
   isIndexedInBloom: typeof isIndexedInBloom;
   isAddressInBloom: typeof isAddressInBloom;
 }
-type UtilType = Utils &
-  Bloom & {
+type TUtilsType = IUtils &
+  IBloom & {
     sha256: typeof sha256;
   } & {
     transform: typeof transform;
   };
-interface Version {
+interface IVersion {
   api?: string;
 }
 
 declare namespace AElf {
   // Constructor signature
   type HttpProviderType = {
-    new (host?: string, timeout?: number, headers?: HttpHeaders): HttpProvider;
+    new (host?: string, timeout?: number, headers?: IHttpHeaders): HttpProvider;
   };
 }
 declare class AElf {
@@ -95,12 +98,12 @@ declare class AElf {
   static pbjs: typeof protobuf;
   static pbUtils: typeof proto;
   static wallet: Wallet;
-  static utils: UtilType;
+  static utils: TUtilsType;
   providers: {
     HttpProvider: AElf.HttpProviderType;
   };
   settings: Settings;
-  version: Version;
+  version: IVersion;
   isConnected(): boolean;
   setProvider(provider: HttpProvider): void;
   _requestManager: RequestManager;

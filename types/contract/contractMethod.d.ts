@@ -1,40 +1,39 @@
 import Chain from '../chain';
-import { WalletInfo } from '../wallet';
+import { IWalletInfo } from '../wallet';
 import * as protobuf from '@aelfqueen/protobufjs';
 import {
-  TransactionObject,
-  Address,
-  BlockHash,
-  BlockHeight,
-  TransactionId,
+  ITransactionObject,
+  TAddress,
+  TBlockHash,
+  TBlockHeight,
+  TTransactionId,
 } from '../util/proto';
-import { Contract } from '.';
-import { GenericFunction } from '../util/utils';
-export type RawTx = TransactionObject & {
+
+import { TGenericFunction } from '../util/utils';
+import { Contract } from './index';
+export type TRawTx = ITransactionObject & {
   refBlockNumber: string;
   refBlockPrefix: string;
 };
 
-interface ExtractArgumentsIntoObject {
-  callback: GenericFunction;
+interface IExtractArgumentsIntoObject {
+  callback: TGenericFunction;
   isSync: boolean;
 }
-interface RequestResult {
+interface IRequestResult {
   method: string;
-  callback: GenericFunction;
+  callback: TGenericFunction;
   params: string;
   format?: { [k: string]: any } | null;
 }
 interface IContractMethod {
   packInput(input?: any): Buffer | null;
-  unpackPackedInput(
-    inputPacked?: ArrayBuffer | SharedArrayBuffer | null
-  ): any;
+  unpackPackedInput(inputPacked?: ArrayBuffer | SharedArrayBuffer | null): any;
   unpackOutput(output?: ArrayBuffer | SharedArrayBuffer | null): any;
   packOutput(result?: any): Buffer | null;
   handleTransaction(
-    height: BlockHeight,
-    hash: BlockHash,
+    height: TBlockHeight,
+    hash: TBlockHash,
     encoded: any
   ): string;
   prepareParametersAsync(args: Array<any>): Promise<string>;
@@ -43,33 +42,31 @@ interface IContractMethod {
   sendTransaction(
     ...args: Array<any>
   ):
-    | { TransactionId: TransactionId }
-    | Promise<{ TransactionId: TransactionId }>;
+    | { TransactionId: TTransactionId }
+    | Promise<{ TransactionId: TTransactionId }>;
   callReadOnly(...args: Array<any>): any;
-  extractArgumentsIntoObject(
-    ...args: Array<any>
-  ): ExtractArgumentsIntoObject;
+  extractArgumentsIntoObject(...args: Array<any>): IExtractArgumentsIntoObject;
 
   getSignedTx(...args: Array<any>): string;
   getRawTx(
-    blockHeightInput: BlockHeight,
-    blockHashInput: BlockHash,
+    blockHeightInput: TBlockHeight,
+    blockHashInput: TBlockHash,
     packedInput: any
-  ): RawTx;
-  request(...args: Array<any>): RequestResult;
+  ): TRawTx;
+  request(...args: Array<any>): IRequestResult;
   run(
     ...args: Array<any>
   ):
-    | { TransactionId: TransactionId }
-    | Promise<{ TransactionId: TransactionId }>;
+    | { TransactionId: TTransactionId }
+    | Promise<{ TransactionId: TTransactionId }>;
   bindMethodToContract(contract: Contract): void;
 }
 declare class ContractMethod implements IContractMethod {
   constructor(
     chain: Chain,
     method: protobuf.Method,
-    contractAddress: Address,
-    walletInstance: WalletInfo
+    contractAddress: TAddress,
+    walletInstance: IWalletInfo
   );
   public packInput(input?: any): Buffer | null;
   public unpackPackedInput(
@@ -78,8 +75,8 @@ declare class ContractMethod implements IContractMethod {
   public unpackOutput(output?: ArrayBuffer | SharedArrayBuffer | null): any;
   public packOutput(result?: any): Buffer | null;
   public handleTransaction(
-    height: BlockHeight,
-    hash: BlockHash,
+    height: TBlockHeight,
+    hash: TBlockHash,
     encoded: any
   ): string;
   public prepareParametersAsync(args: Array<any>): Promise<string>;
@@ -88,25 +85,25 @@ declare class ContractMethod implements IContractMethod {
   public sendTransaction(
     ...args: Array<any>
   ):
-    | { TransactionId: TransactionId }
-    | Promise<{ TransactionId: TransactionId }>;
+    | { TransactionId: TTransactionId }
+    | Promise<{ TransactionId: TTransactionId }>;
   public callReadOnly(...args: Array<any>): any;
   public extractArgumentsIntoObject(
     ...args: Array<any>
-  ): ExtractArgumentsIntoObject;
+  ): IExtractArgumentsIntoObject;
 
   public getSignedTx(...args: Array<any>): string;
   public getRawTx(
-    blockHeightInput: BlockHeight,
-    blockHashInput: BlockHash,
+    blockHeightInput: TBlockHeight,
+    blockHashInput: TBlockHash,
     packedInput: any
-  ): RawTx;
-  public request(...args: Array<any>): RequestResult;
+  ): TRawTx;
+  public request(...args: Array<any>): IRequestResult;
   public run(
     ...args: Array<any>
   ):
-    | { TransactionId: TransactionId }
-    | Promise<{ TransactionId: TransactionId }>;
+    | { TransactionId: TTransactionId }
+    | Promise<{ TransactionId: TTransactionId }>;
   public bindMethodToContract(contract: Contract): void;
 }
 export default ContractMethod;

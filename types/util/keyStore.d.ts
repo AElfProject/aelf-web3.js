@@ -1,52 +1,52 @@
-import { WalletInfo } from '../wallet';
-import { Address } from './proto';
+import { IWalletInfo } from '../wallet';
+import { TAddress } from './proto';
 
-interface Options {
+interface IOptions {
   dklen: number;
   n: number;
   r: number;
   p: number;
   cipher: string;
 }
-interface Kdfparams {
+interface IKdfparams {
   dklen: number;
   n: number;
   r: number;
   p: number;
   salt: string;
 }
-type WalletInfoObject = WalletInfo & {
+type TWalletInfoObject = IWalletInfo & {
   nickName?: string;
 };
-interface Cipherparams {
+interface ICipherparams {
   iv: string;
 }
-interface Crypto {
+interface ICrypto {
   cipher: string;
-  cipherparams: Cipherparams;
+  cipherparams: ICipherparams;
   ciphertext: string;
   kdf: string;
-  kdfparams: Kdfparams;
+  kdfparams: IKdfparams;
   mac: string;
   mnemonicEncrypted: string;
 }
-interface keyStore {
+interface IkeyStore {
   version: number;
   type: string;
   nickName?: string;
-  address: Address;
+  address: TAddress;
   crypto: Crypto;
 }
 export declare function getKeystore(
-  walletInfoInput: WalletInfoObject,
+  walletInfoInput: TWalletInfoObject,
   password: string,
-  option?: Options & Record<string, any>
-): keyStore;
+  option?: IOptions & Record<string, any>
+): IkeyStore;
 export declare function unlockKeystore(
-  keyStoreInput: keyStore,
+  keyStoreInput: IkeyStore,
   password: string
-): WalletInfoObject;
+): TWalletInfoObject;
 export declare function checkPassword(
-  keyStoreInput: keyStore,
+  keyStoreInput: IkeyStore,
   password: string
 ): boolean;

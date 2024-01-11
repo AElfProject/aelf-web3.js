@@ -1,65 +1,67 @@
-interface TimeoutResolve {
+interface ITimeoutResolve {
   type: 'timeout';
 }
-type RequestConfig = {
+type TRequestConfig = {
   url: RequestInfo | URL;
   params?: Record<string, any>;
 } & RequestInit;
-interface ErrorMessage {
+interface IErrorMessage {
   message: string;
 }
-interface FormatResponseTextRes {
+interface IFormatResponseTextRes {
   status: number;
   error: number;
-  Error: ErrorMessage;
+  Error: IErrorMessage;
   statusText: string;
 }
-export interface HttpHeaders {
+export interface IHttpHeaders {
   [headerName: string]: string;
 }
 interface IHttpProvider {
   requestSendByFetch(
-    requestConfig: RequestConfig,
+    requestConfig: TRequestConfig,
     request: (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>
   ): Response;
-  sendAsyncByFetch(requestConfig: RequestConfig): Promise<Response>;
+  sendAsyncByFetch(requestConfig: TRequestConfig): Promise<Response>;
   requestSend(
-    requestConfig: RequestConfig,
+    requestConfig: TRequestConfig,
     request: XMLHttpRequest,
     isAsync?: boolean
   ): void;
-  send(requestConfig: RequestConfig): { [k: string]: any };
-  sendAsync(requestConfig: RequestConfig): Promise<{ [k: string]: any }>;
+  send(requestConfig: TRequestConfig): { [k: string]: any };
+  sendAsync(requestConfig: TRequestConfig): Promise<{ [k: string]: any }>;
   sendAsyncByXMLHttp(
-    requestConfig: RequestConfig
+    requestConfig: TRequestConfig
   ): Promise<{ [k: string]: any }>;
   isConnected(): boolean;
   isConnectedAsync(): boolean;
 }
 declare class HttpProvider implements IHttpProvider {
-  constructor(host?: string, timeout?: number, headers?: HttpHeaders);
+  constructor(host?: string, timeout?: number, headers?: IHttpHeaders);
   public static formatResponse<T>(response: T): T | Record<string, any>;
   public static formatResponseText(
     request: {
       status: number;
       statusText: string;
     } & Record<string, any>
-  ): FormatResponseTextRes;
-  public static timeoutPromise(delay: number): Promise<TimeoutResolve>;
+  ): IFormatResponseTextRes;
+  public static timeoutPromise(delay: number): Promise<ITimeoutResolve>;
   public requestSendByFetch(
-    requestConfig: RequestConfig,
+    requestConfig: TRequestConfig,
     request: (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>
   ): Response;
-  public sendAsyncByFetch(requestConfig: RequestConfig): Promise<Response>;
+  public sendAsyncByFetch(requestConfig: TRequestConfig): Promise<Response>;
   public requestSend(
-    requestConfig: RequestConfig,
+    requestConfig: TRequestConfig,
     request: XMLHttpRequest,
     isAsync?: boolean
   ): void;
-  public send(requestConfig: RequestConfig): { [k: string]: any };
-  public sendAsync(requestConfig: RequestConfig): Promise<{ [k: string]: any }>;
+  public send(requestConfig: TRequestConfig): { [k: string]: any };
+  public sendAsync(
+    requestConfig: TRequestConfig
+  ): Promise<{ [k: string]: any }>;
   public sendAsyncByXMLHttp(
-    requestConfig: RequestConfig
+    requestConfig: TRequestConfig
   ): Promise<{ [k: string]: any }>;
   public isConnected(): boolean;
   public isConnectedAsync(): boolean;

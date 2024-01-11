@@ -1,33 +1,33 @@
 import Chain from '../chain';
 import { IFileDescriptorSet } from '@aelfqueen/protobufjs/ext/descriptor';
 import * as protobuf from '@aelfqueen/protobufjs/light';
-import { WalletInfo } from '../wallet';
-import { GenericFunction } from '../util/utils';
-import { Address } from '../util/proto';
+import { IWalletInfo } from '../wallet';
+import { TGenericFunction } from '../util/utils';
+import { TAddress } from '../util/proto';
 export class Contract {
   constructor(
     chain: Chain,
     services: Array<protobuf.Service>,
-    address: Address
+    address: TAddress
   );
 }
 
 interface IContractFactory {
   // just describe the public side of the class
-  at(address: Address, callback: GenericFunction): Contract;
+  at(address: TAddress, callback: TGenericFunction): Contract;
 }
 declare class ContractFactory implements IContractFactory {
   constructor(
     chain: Chain,
     fileDescriptorSet: IFileDescriptorSet,
-    wallet: WalletInfo
+    wallet: IWalletInfo
   );
   public static bindMethodsToContract(
     contract: Contract,
-    wallet: WalletInfo
+    wallet: IWalletInfo
   ): void;
 
-  public at(address: Address, callback: GenericFunction): Contract;
+  public at(address: TAddress, callback: TGenericFunction): Contract;
 }
 
 export default ContractFactory;
