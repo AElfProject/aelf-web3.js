@@ -253,6 +253,13 @@ const sign = (hexString, keyPair) => {
   return getSignature(bytesToBeSign, keyPair);
 };
 
+const hexToDecimal = x => ellipticEc.keyFromPrivate(x, "hex").getPrivate().toString(10);
+
+/**
+ * @param {string} signature Signature
+ * @param {string} msgHash Message for signing
+ * @param {string} pubKey deprecatedParam - This parameter is deprecated.
+ */
 const verify = (signature, msgHash, pubKey) => {
   const rHex = signature.substring(0, 64);
   const sHex = signature.substring(64, 128);
@@ -262,7 +269,19 @@ const verify = (signature, msgHash, pubKey) => {
     s: new BN(sHex, 16),
     recoveryParam: recoveryParamHex.slice(1),
   };
-  return ellipticEc.verify(msgHash, sigObj, Buffer.from(pubKey, "hex"));
+  let publicKey;
+  if (!pubKey) {
+    const key = ellipticEc.recoverPubKey(
+      hexToDecimal(msgHash),
+      sigObj,
+      +sigObj.recoveryParam,
+      "hex"
+    );
+    publicKey = ellipticEc.keyFromPublic(key).getPublic("hex");
+  } else {
+    publicKey = pubKey;
+  }
+  return ellipticEc.verify(msgHash, sigObj, Buffer.from(publicKey, "hex"));
 };
 
 export default {
