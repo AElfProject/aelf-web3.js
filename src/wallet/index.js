@@ -5,9 +5,10 @@
 import elliptic from 'elliptic';
 import * as bip39 from 'bip39';
 import hdkey from 'hdkey';
-import jsSha256 from 'js-sha256';
 import AES from 'crypto-js/aes';
 import encUTF8 from 'crypto-js/enc-utf8';
+import BN from 'bn.js';
+import sha256 from '../util/sha256';
 import * as keyStore from '../util/keyStore';
 import {
   encodeAddressRep,
@@ -15,7 +16,6 @@ import {
 } from '../util/utils';
 import { Transaction } from '../util/proto';
 
-const { sha256 } = jsSha256;
 // eslint-disable-next-line new-cap
 const ellipticEc = new elliptic.ec('secp256k1');
 
@@ -253,10 +253,42 @@ const sign = (hexString, keyPair) => {
   return getSignature(bytesToBeSign, keyPair);
 };
 
+const hexToDecimal = x => ellipticEc.keyFromPrivate(x, 'hex').getPrivate().toString(10);
+
+/**
+ * @param {string} signature Signature
+ * @param {string} msgHash Message for signing
+ * @param {string} pubKey deprecatedParam - This parameter is deprecated.
+ */
+const verify = (signature, msgHash, pubKey) => {
+  const rHex = signature.substring(0, 64);
+  const sHex = signature.substring(64, 128);
+  const recoveryParamHex = signature.substring(128, 130);
+  const sigObj = {
+    r: new BN(rHex, 16),
+    s: new BN(sHex, 16),
+    recoveryParam: recoveryParamHex.slice(1),
+  };
+  let publicKey;
+  if (!pubKey) {
+    const key = ellipticEc.recoverPubKey(
+      hexToDecimal(msgHash),
+      sigObj,
+      +sigObj.recoveryParam,
+      'hex'
+    );
+    publicKey = ellipticEc.keyFromPublic(key).getPublic('hex');
+  } else {
+    publicKey = pubKey;
+  }
+  return ellipticEc.verify(msgHash, sigObj, Buffer.from(publicKey, 'hex'));
+};
+
 export default {
   hdkey,
   bip39,
   sign,
+  verify,
   signTransaction,
   createNewWallet,
   getWalletByMnemonic,

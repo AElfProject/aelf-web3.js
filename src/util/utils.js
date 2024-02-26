@@ -4,7 +4,6 @@
  */
 
 import BigNumber from 'bignumber.js';
-import jsSha256 from 'js-sha256';
 import bs58 from 'bs58';
 import { UNIT_MAP, UNSIGNED_256_INT } from '../common/constants';
 import { Transaction } from './proto';
@@ -14,8 +13,8 @@ import {
   transform,
   transformArrayToMap
 } from './transform';
+import sha256 from './sha256';
 
-const { sha256 } = jsSha256;
 
 export const base58 = {
   encode(data, encoding = 'hex') {
@@ -291,16 +290,16 @@ export const toWei = (number, unit) => {
 
 /**
  * Takes and input transforms it into bignumber and if it is negative value, into two's complement
- *
+ * bignumber.js get rid of round + floor in 6.0 https://github.com/MikeMcl/bignumber.js/issues/139
+ * the method lessThan was named isLessThan after 6.0 https://github.com/MikeMcl/bignumber.js/issues/152
  * @method toTwosComplement
  * @param {Number|String|BigNumber} number
  * @return {BigNumber}
  */
 export const toTwosComplement = number => {
-  const bigNumber = toBigNumber(number).round();
-  if (bigNumber.lessThan(0)) {
-    return new BigNumber(UNSIGNED_256_INT, 16)
-      .plus(bigNumber).plus(1);
+  const bigNumber = toBigNumber(number).integerValue();
+  if (bigNumber.isLessThan(0)) {
+    return new BigNumber(UNSIGNED_256_INT, 16).plus(bigNumber).plus(1);
   }
   return bigNumber;
 };
@@ -356,7 +355,7 @@ export const setPath = (obj, path, value) => {
 };
 
 export const unpackSpecifiedTypeData = ({ data, dataType, encoding = 'hex' }) => {
-  const buffer = Buffer.from(data, encoding || 'hex');
+  const buffer = Buffer.from(data, encoding);
   const decoded = dataType.decode(buffer);
   const result = dataType.toObject(decoded, {
     enums: String, // enums as string names
