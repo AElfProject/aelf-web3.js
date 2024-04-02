@@ -112,15 +112,17 @@ export default class ContractMethod {
       return Promise.resolve(this.handleTransaction('', '', encoded));
     }
     return this._chain.getChainStatus().then(status => {
-      let BestChainHeight; let BestChainHash;
-
-      BestChainHeight = status.BestChainHeight;
-      BestChainHash = status.BestChainHash;
+      let { BestChainHeight, BestChainHash } = status;
 
       let { refBlockNumberStrategy } = this._option || {};
 
       args.forEach(arg => {
-        if (typeof arg.refBlockNumberStrategy === 'number') refBlockNumberStrategy = arg.refBlockNumberStrategy;
+        if (arg.refBlockNumberStrategy) {
+          // eslint-disable-next-line max-len
+          if (typeof arg.refBlockNumberStrategy !== 'number') throw new Error('Invalid type, refBlockNumberStrategy must be number');
+          if (arg.refBlockNumberStrategy > 0) throw new Error('refBlockNumberStrategy must be less than 0');
+          refBlockNumberStrategy = arg.refBlockNumberStrategy;
+        }
       });
 
       if (refBlockNumberStrategy) {
@@ -153,15 +155,20 @@ export default class ContractMethod {
     let { refBlockNumberStrategy } = this._option;
 
     args.forEach(arg => {
-      if (typeof arg.refBlockNumberStrategy === 'number') refBlockNumberStrategy = arg.refBlockNumberStrategy;
+      if (arg.refBlockNumberStrategy) {
+        // eslint-disable-next-line max-len
+        if (typeof arg.refBlockNumberStrategy !== 'number') throw new Error('Invalid type, refBlockNumberStrategy must be number');
+        if (arg.refBlockNumberStrategy > 0) throw new Error('refBlockNumberStrategy must be less than 0');
+        refBlockNumberStrategy = arg.refBlockNumberStrategy;
+      }
     });
 
-    let BestChainHeight; let BestChainHash;
     const statusRes = this._chain.getChainStatus({
       sync: true,
     });
-    BestChainHeight = statusRes.BestChainHeight;
-    BestChainHash = statusRes.BestChainHash;
+
+    let { BestChainHeight, BestChainHash } = statusRes;
+
     if (refBlockNumberStrategy) {
       BestChainHeight += refBlockNumberStrategy;
       const block = this._chain.getBlockByHeight(BestChainHeight, true, {
