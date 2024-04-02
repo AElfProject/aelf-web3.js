@@ -1,57 +1,71 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Hello AElf</title>
-</head>
-<body>
-<p>Hello AElf.</p>
+  <head>
+    <title>Hello AElf</title>
+  </head>
+  <body>
+    <p>Hello AElf.</p>
 
-<script type="text/javascript" src="../../dist/aelf.umd.js"></script>
-<script type="text/javascript">
-  const AElf = window.AElf;
-  const Wallet = AElf.wallet;
-  const sha256 = AElf.utils.sha256;
+    <script type="text/javascript" src="../../dist/aelf.umd.js"></script>
+    <script type="text/javascript">
+      const AElf = window.AElf;
+      const Wallet = AElf.wallet;
+      const sha256 = AElf.utils.sha256;
 
-  const wallet = AElf.wallet.createNewWallet();
-  const walletGetByKey = AElf.wallet.getWalletByPrivateKey(wallet.privateKey);
-  const walletGetByMn = AElf.wallet.getWalletByMnemonic(wallet.mnemonic);
-  console.log(wallet.address);
-  console.log(walletGetByKey);
-  console.log(walletGetByMn);
-  // link to Blockchain
-  const aelf = new AElf(new AElf.providers.HttpProvider(
-    'http://18.162.41.20:8000'
-  ));
+      const wallet = AElf.wallet.createNewWallet();
+      const walletGetByKey = AElf.wallet.getWalletByPrivateKey(wallet.privateKey);
+      const walletGetByMn = AElf.wallet.getWalletByMnemonic(wallet.mnemonic);
+      console.log(wallet.address);
+      console.log(walletGetByKey);
+      console.log(walletGetByMn);
+      // link to Blockchain
+      const aelf = new AElf(new AElf.providers.HttpProvider('http://18.162.41.20:8000'));
+      if (!aelf.isConnected()) {
+        alert('Blockchain Node is not running.');
+      }
 
-  if(!aelf.isConnected()) {
-    alert('Blockchain Node is not running.');
-  }
-
-  // the contract you want to query
-  const tokenContractName = 'AElf.ContractNames.Token';
-  const {
-    // directly accessible information
-    GenesisContractAddress
-  } = aelf.chain.getChainStatus({sync: true});
-  aelf.chain.contractAt(GenesisContractAddress, wallet)
-    .then(zeroC => {
-      // return contract's address which you query by contract's name
-      return zeroC.GetContractAddressByName.call(sha256(tokenContractName));
-    })
-    .then(tokenContractAddress => {
-      // return contract's instance and you can call the methods on this instance
-      return aelf.chain.contractAt(tokenContractAddress, wallet);
-    })
-    .then(tokenContract => {
-      // return token's info
-      return tokenContract.GetTokenInfo.call({
-        symbol: 'ELF'
-      });
-    })
-    .then(res => {
-      console.log(res);
-      alert(JSON.stringify(res));
-    });
-</script>
-</body>
+      // the contract you want to query
+      const tokenContractName = 'AElf.ContractNames.Token';
+      const {
+        // directly accessible information
+        GenesisContractAddress
+      } = aelf.chain.getChainStatus({ sync: true });
+      aelf.chain
+        .contractAt(GenesisContractAddress, wallet)
+        .then(zeroC => {
+          // return contract's address which you query by contract's name
+          return zeroC.GetContractAddressByName.call(sha256(tokenContractName));
+        })
+        .then(tokenContractAddress => {
+          // return contract's instance and you can call the methods on this instance
+          return aelf.chain.contractAt(tokenContractAddress, wallet, {
+            refBlockNumberStrategy: -8
+          });
+        })
+        .then(async tokenContract => {
+          // return token's info
+          const result = await tokenContract.GetTokenInfo.call({
+            symbol: 'ELF'
+          });
+          console.log(result, 'view token(ELF) info');
+          return tokenContract;
+        })
+        .then(async tokenContract => {
+          const sendResult = tokenContract.Transfer(
+            {
+              symbol: 'ELF',
+              // memo: '',
+              to: 'ELF_s3tE7DA1TNndCKsXM4frMAsYfiaU3kXc1obVxxSJ2bhQEC7HA_tDVW',
+              amount: 100
+            },
+            {
+              refBlockNumberStrategy: -16,
+              sync: true
+            }
+          );
+          console.log(sendResult, 'sendResult==');
+          // alert(JSON.stringify(res));
+        });
+    </script>
+  </body>
 </html>
