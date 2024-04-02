@@ -53,7 +53,9 @@
             .then((tokenContractAddress) => {
               console.log("GetTokenInfo", tokenContractAddress);
               // return contract's instance and you can call the methods on this instance
-              return aelf.chain.contractAt(tokenContractAddress, wallet);
+              return aelf.chain.contractAt(tokenContractAddress, wallet, {
+                    refBlockNumberStrategy: -8
+                });
             })
             .then((tokenContract) => {
               // return token's info

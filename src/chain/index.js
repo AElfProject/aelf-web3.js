@@ -28,7 +28,8 @@ export default class Chain {
   extractArgumentsIntoObject(args) {
     const result = {
       callback: noop,
-      isSync: false
+      isSync: false,
+      refBlockNumberStrategy: 0,
     };
     if (args.length === 0) {
       // has no callback, default to be async mode
@@ -41,18 +42,28 @@ export default class Chain {
       if (isBoolean((arg.sync))) {
         result.isSync = arg.sync;
       }
+      if (typeof arg.refBlockNumberStrategy === 'number') {
+        result.refBlockNumberStrategy = arg.refBlockNumberStrategy;
+      }
     });
     return result;
   }
 
+  /**
+   * @param {string} address - Contract address
+   * @param {IBlockchainWallet} wallet - aelf wallet
+   * @param {object} options - {sync: boolean, refBlockNumberStrategy: number}
+   * @param  {...any} args
+   * @returns
+   */
   contractAt(address, wallet, ...args) {
-    const { callback, isSync } = this.extractArgumentsIntoObject(args);
+    const { callback, isSync, refBlockNumberStrategy } = this.extractArgumentsIntoObject(args);
     if (isSync) {
       const fds = this.getContractFileDescriptorSet(address, {
         sync: true
       });
       if (fds && fds.file && fds.file.length > 0) {
-        const factory = new ContractFactory(this, fds, wallet);
+        const factory = new ContractFactory(this, fds, wallet, { refBlockNumberStrategy });
         return factory.at(address);
       }
       throw new Error('no such contract');
@@ -60,7 +71,7 @@ export default class Chain {
     // eslint-disable-next-line consistent-return
     return this.getContractFileDescriptorSet(address).then(fds => {
       if (fds && fds.file && fds.file.length > 0) {
-        const factory = new ContractFactory(this, fds, wallet);
+        const factory = new ContractFactory(this, fds, wallet, { refBlockNumberStrategy });
         const result = factory.at(address);
         callback(null, result);
         return result;

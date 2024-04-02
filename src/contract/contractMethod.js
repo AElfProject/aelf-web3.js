@@ -21,9 +21,10 @@ import {
 import wallet from '../wallet';
 
 export default class ContractMethod {
-  constructor(chain, method, contractAddress, walletInstance) {
+  constructor(chain, method, contractAddress, walletInstance, option) {
     this._chain = chain;
     this._method = method;
+    this._option = option || {};
     const { resolvedRequestType, resolvedResponseType } = method;
     this._inputType = resolvedRequestType;
     this._outputType = resolvedResponseType;
@@ -111,11 +112,36 @@ export default class ContractMethod {
       return Promise.resolve(this.handleTransaction('', '', encoded));
     }
     return this._chain.getChainStatus().then(status => {
-      const { BestChainHeight, BestChainHash } = status;
+      let { BestChainHeight, BestChainHash } = status;
+
+      let { refBlockNumberStrategy } = this._option || {};
+
+      args.forEach(arg => {
+        if (arg.refBlockNumberStrategy) {
+          // eslint-disable-next-line max-len
+          if (typeof arg.refBlockNumberStrategy !== 'number') throw new Error('Invalid type, refBlockNumberStrategy must be number');
+          if (arg.refBlockNumberStrategy > 0) throw new Error('refBlockNumberStrategy must be less than 0');
+          refBlockNumberStrategy = arg.refBlockNumberStrategy;
+        }
+      });
+
+      if (refBlockNumberStrategy) {
+        BestChainHeight += refBlockNumberStrategy;
+        const block = this._chain.getBlockByHeight(BestChainHeight, true, {
+          sync: true
+        });
+        BestChainHash = block.BlockHash;
+      }
+
       return this.handleTransaction(BestChainHeight, BestChainHash, encoded);
     });
   }
 
+  /**
+   * @param {Array} args - argument
+   * @param {boolean} isView - view method
+   * @returns any
+   */
   prepareParameters(args, isView) {
     const filterArgs = args.filter(
       arg => !isFunction(arg) && !isBoolean(arg.sync)
@@ -126,9 +152,30 @@ export default class ContractMethod {
       return this.handleTransaction('', '', encoded);
     }
 
-    const { BestChainHeight, BestChainHash } = this._chain.getChainStatus({
+    let { refBlockNumberStrategy } = this._option;
+
+    args.forEach(arg => {
+      if (arg.refBlockNumberStrategy) {
+        // eslint-disable-next-line max-len
+        if (typeof arg.refBlockNumberStrategy !== 'number') throw new Error('Invalid type, refBlockNumberStrategy must be number');
+        if (arg.refBlockNumberStrategy > 0) throw new Error('refBlockNumberStrategy must be less than 0');
+        refBlockNumberStrategy = arg.refBlockNumberStrategy;
+      }
+    });
+
+    const statusRes = this._chain.getChainStatus({
       sync: true,
     });
+
+    let { BestChainHeight, BestChainHash } = statusRes;
+
+    if (refBlockNumberStrategy) {
+      BestChainHeight += refBlockNumberStrategy;
+      const block = this._chain.getBlockByHeight(BestChainHeight, true, {
+        sync: true
+      });
+      BestChainHash = block.BlockHash;
+    }
 
     return this.handleTransaction(BestChainHeight, BestChainHash, encoded);
   }
