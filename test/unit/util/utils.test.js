@@ -13,7 +13,8 @@ import {
   isJson,
   toBigNumber,
   uint8ArrayToHex,
-  setPath
+  setPath,
+  getTransactionId
 } from '../../../src/util/utils';
 
 describe('test utils', () => {
@@ -32,9 +33,15 @@ describe('test utils', () => {
 
   test('decode and encode address hex represent', () => {
     /* eslint-disable max-len */
-    expect(decodeAddressRep('rkws1GibTwWQnLyLvpRtnDQiZYf51tEqQDwpGaou5s4ZQvi1v')).toBe('70fb1d6779d84f718966eb0558619bd70a2b56fe8f74d60737d1efabb701c119');
-    expect(encodeAddressRep('70fb1d6779d84f718966eb0558619bd70a2b56fe8f74d60737d1efabb701c119')).toBe('rkws1GibTwWQnLyLvpRtnDQiZYf51tEqQDwpGaou5s4ZQvi1v');
-    expect(encodeAddressRep('0x70fb1d6779d84f718966eb0558619bd70a2b56fe8f74d60737d1efabb701c119')).toBe('rkws1GibTwWQnLyLvpRtnDQiZYf51tEqQDwpGaou5s4ZQvi1v');
+    expect(decodeAddressRep('rkws1GibTwWQnLyLvpRtnDQiZYf51tEqQDwpGaou5s4ZQvi1v')).toBe(
+      '70fb1d6779d84f718966eb0558619bd70a2b56fe8f74d60737d1efabb701c119'
+    );
+    expect(encodeAddressRep('70fb1d6779d84f718966eb0558619bd70a2b56fe8f74d60737d1efabb701c119')).toBe(
+      'rkws1GibTwWQnLyLvpRtnDQiZYf51tEqQDwpGaou5s4ZQvi1v'
+    );
+    expect(encodeAddressRep('0x70fb1d6779d84f718966eb0558619bd70a2b56fe8f74d60737d1efabb701c119')).toBe(
+      'rkws1GibTwWQnLyLvpRtnDQiZYf51tEqQDwpGaou5s4ZQvi1v'
+    );
   });
 
   test('is bigNumBer', () => {
@@ -87,7 +94,7 @@ describe('test utils', () => {
 
   test('transform into bigNumber', () => {
     expect(toBigNumber(1)).toStrictEqual(new BigNumber(1));
-    expect(toBigNumber(('0x1'))).toStrictEqual(new BigNumber(1));
+    expect(toBigNumber('0x1')).toStrictEqual(new BigNumber(1));
     expect(toBigNumber(new BigNumber(1213))).toStrictEqual(new BigNumber(1213));
     expect(toBigNumber(undefined)).toStrictEqual(new BigNumber(0));
   });
@@ -123,5 +130,11 @@ describe('test utils', () => {
         }
       }
     });
+  });
+  test('test getTransactionId', () => {
+    const txId = getTransactionId(
+      '0a220a2071a4dc8cdf109bd72913c90c3fc666c78d080cdda0da7f3abbc7105c6b651fd512220a2089ac786c8ad3b56f63a6f2767369a5273f801de2415b613c783cad3d148ce3ab18d5d3bb35220491cf6ba12a18537761704578616374546f6b656e73466f72546f6b656e73325008c0f7f27110bbe5947c1a09534752544553542d311a03454c4622220a2071a4dc8cdf109bd72913c90c3fc666c78d080cdda0da7f3abbc7105c6b651fd52a08088996ceb0061000320631323334353682f10441ec6ad50c4b210976ba0ba5c287ab6fabd0c444839e2505ecb1b5f52838095b290cb245ec1c97dade3bde6ac14c6892e526569e9b71240d3c120b1a6c8e41afba00'
+    );
+    expect(txId).toEqual('cf564f3169012cb173efcf5543b2a71b030b16fad3ddefe3e04a5c1e1bc0047d');
   });
 });
