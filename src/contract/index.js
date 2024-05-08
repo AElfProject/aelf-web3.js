@@ -3,27 +3,29 @@
  * @author atom-yang
  */
 // eslint-disable-next-line max-classes-per-file
-import * as protobuf from '@aelfqueen/protobufjs/light';
+import * as protobuf from "@aelfqueen/protobufjs";
 import {
   transform,
   transformArrayToMap,
-  OUTPUT_TRANSFORMERS
-} from '../util/transform';
-import ContractMethod from './contractMethod';
-import { noop } from '../util/utils';
+  OUTPUT_TRANSFORMERS,
+} from "../util/transform";
+import ContractMethod from "./contractMethod";
+import { noop } from "../util/utils";
 
-const getServicesFromFileDescriptors = descriptors => {
-  const root = protobuf.Root.fromDescriptor(descriptors, 'proto3').resolveAll();
-  return descriptors.file.filter(f => f.service.length > 0).map(f => {
-    const sn = f.service[0].name;
-    const fullName = f.package ? `${f.package}.${sn}` : sn;
-    return root.lookupService(fullName);
-  });
+const getServicesFromFileDescriptors = (descriptors) => {
+  const root = protobuf.Root.fromDescriptor(descriptors, "proto3").resolveAll();
+  return descriptors.file
+    .filter((f) => f.service.length > 0)
+    .map((f) => {
+      const sn = f.service[0].name;
+      const fullName = f.package ? `${f.package}.${sn}` : sn;
+      return root.lookupService(fullName);
+    });
 };
 
 const getDeserializeLogResult = (serializedData, dataType) => {
   let deserializeLogResult = serializedData.reduce((acc, v) => {
-    let deserialize = dataType.decode(Buffer.from(v, 'base64'));
+    let deserialize = dataType.decode(Buffer.from(v, "base64"));
     deserialize = dataType.toObject(deserialize, {
       enums: String, // enums as string names
       longs: String, // longs as strings (requires long.js)
@@ -44,10 +46,7 @@ const getDeserializeLogResult = (serializedData, dataType) => {
     deserializeLogResult,
     OUTPUT_TRANSFORMERS
   );
-  deserializeLogResult = transformArrayToMap(
-    dataType,
-    deserializeLogResult
-  );
+  deserializeLogResult = transformArrayToMap(dataType, deserializeLogResult);
   return deserializeLogResult;
 };
 
@@ -58,20 +57,18 @@ class Contract {
     this.services = services;
   }
 
-  async deserializeLog(logs = [], logName) {
-    const logInThisAddress = (logs || []).filter(v => v.Address === this.address && logName === v.Name);
+  deserializeLog(logs = [], logName) {
+    let logInThisAddress = logs.filter(
+      (v) => v.Address === this.address && logName === v.Name
+    );
     if (logInThisAddress.length === 0) {
       return [];
     }
-    const Root = await protobuf.load(
-      './proto/virtual_transaction/virtual_transaction.proto'
+    const Root = protobuf.loadSync(
+      "proto/virtual_transaction/virtual_transaction.proto"
     );
-    return logInThisAddress.map(item => {
-      const {
-        Name,
-        NonIndexed,
-        Indexed
-      } = item;
+    logInThisAddress = logInThisAddress.map((item) => {
+      const { Name, NonIndexed, Indexed } = item;
       let dataType;
       // eslint-disable-next-line no-restricted-syntax
       for (const service of this.services) {
@@ -84,7 +81,7 @@ class Contract {
       if (NonIndexed) {
         serializedData.push(NonIndexed);
       }
-      if (Name === 'VirtualTransactionCreated') {
+      if (Name === "VirtualTransactionCreated") {
         // VirtualTransactionCreated is system-default
         try {
           dataType = Root.VirtualTransactionCreated;
@@ -98,6 +95,7 @@ class Contract {
         return getDeserializeLogResult(serializedData, dataType);
       }
     });
+    return logInThisAddress;
   }
 }
 
@@ -109,10 +107,15 @@ export default class ContractFactory {
   }
 
   static bindMethodsToContract(contract, wallet) {
-    contract.services.forEach(service => {
-      Object.keys(service.methods).forEach(key => {
+    contract.services.forEach((service) => {
+      Object.keys(service.methods).forEach((key) => {
         const method = service.methods[key].resolve();
-        const contractMethod = new ContractMethod(contract._chain, method, contract.address, wallet);
+        const contractMethod = new ContractMethod(
+          contract._chain,
+          method,
+          contract.address,
+          wallet
+        );
         contractMethod.bindMethodToContract(contract);
       });
     });
