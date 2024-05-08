@@ -21,6 +21,36 @@ const getServicesFromFileDescriptors = descriptors => {
   });
 };
 
+const getDeserializeLogResult = (serializedData, dataType) => {
+  let deserializeLogResult = serializedData.reduce((acc, v) => {
+    let deserialize = dataType.decode(Buffer.from(v, 'base64'));
+    deserialize = dataType.toObject(deserialize, {
+      enums: String, // enums as string names
+      longs: String, // longs as strings (requires long.js)
+      bytes: String, // bytes as base64 encoded strings
+      defaults: false, // includes default values
+      arrays: true, // populates empty arrays (repeated fields) even if defaults=false
+      objects: true, // populates empty objects (map fields) even if defaults=false
+      oneofs: true, // includes virtual oneof fields set to the present field's name
+    });
+    return {
+      ...acc,
+      ...deserialize,
+    };
+  }, {});
+  // eslint-disable-next-line max-len
+  deserializeLogResult = transform(
+    dataType,
+    deserializeLogResult,
+    OUTPUT_TRANSFORMERS
+  );
+  deserializeLogResult = transformArrayToMap(
+    dataType,
+    deserializeLogResult
+  );
+  return deserializeLogResult;
+};
+
 class Contract {
   constructor(chain, services, address) {
     this._chain = chain;
@@ -28,11 +58,14 @@ class Contract {
     this.services = services;
   }
 
-  deserializeLog(logs = [], logName) {
+  async deserializeLog(logs = [], logName) {
     const logInThisAddress = (logs || []).filter(v => v.Address === this.address && logName === v.Name);
     if (logInThisAddress.length === 0) {
       return [];
     }
+    const Root = await protobuf.load(
+      './proto/virtual_transaction/virtual_transaction.proto'
+    );
     return logInThisAddress.map(item => {
       const {
         Name,
@@ -51,25 +84,19 @@ class Contract {
       if (NonIndexed) {
         serializedData.push(NonIndexed);
       }
-      let result = serializedData.reduce((acc, v) => {
-        let deserialize = dataType.decode(Buffer.from(v, 'base64'));
-        deserialize = dataType.toObject(deserialize, {
-          enums: String, // enums as string names
-          longs: String, // longs as strings (requires long.js)
-          bytes: String, // bytes as base64 encoded strings
-          defaults: false, // includes default values
-          arrays: true, // populates empty arrays (repeated fields) even if defaults=false
-          objects: true, // populates empty objects (map fields) even if defaults=false
-          oneofs: true // includes virtual oneof fields set to the present field's name
-        });
-        return {
-          ...acc,
-          ...deserialize
-        };
-      }, {});
-      result = transform(dataType, result, OUTPUT_TRANSFORMERS);
-      result = transformArrayToMap(dataType, result);
-      return result;
+      if (Name === 'VirtualTransactionCreated') {
+        // VirtualTransactionCreated is system-default
+        try {
+          dataType = Root.VirtualTransactionCreated;
+          return getDeserializeLogResult(serializedData, dataType);
+        } catch (e) {
+          // if normal contract has a method called VirtualTransactionCreated
+          return getDeserializeLogResult(serializedData, dataType);
+        }
+      } else {
+        // other method
+        return getDeserializeLogResult(serializedData, dataType);
+      }
     });
   }
 }
