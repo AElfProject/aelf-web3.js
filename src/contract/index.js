@@ -59,7 +59,7 @@ class Contract {
   }
 
   deserializeLog(logs = [], logName) {
-    let logInThisAddress = (logs || []).filter(v => v.Address === this.address && logName === v.Name);
+    let logInThisAddress = (logs).filter(v => v.Address === this.address && logName === v.Name);
     if (logInThisAddress.length === 0) {
       return [];
     }
