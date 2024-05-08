@@ -42,6 +42,41 @@ describe('contract factory', () => {
     expect(result).toEqual(['454c46']);
     expect(contractInstance.deserializeLog()).toEqual([]);
   });
+  test('test deserialize log with VirtualTransactionCreated', () => {
+    const Logs = [
+      {
+        Address: '238X6iw1j8YKcHvkDYVtYVbuYk2gJnK8UoNpVCtssynSpVC8hb',
+        Name: 'VirtualTransactionCreated',
+        Indexed: [
+          'CiIKIA8J04pLJGNHl4y2KWuBJipdXjtJ2ForrSRRuRx9w2LY',
+          'EiIKIAR/b9iJa/+kT2+h9XAdQE0UX9wFZogfPtn9YvtlCnB2',
+          'GiIKICeR6ZKlfyjnWhHxOvLArsiw6zXS8EjULrqJAckuA3jc',
+          'IghUcmFuc2Zlcg==',
+          'MiIKICWmXUMWhKDuXFdYz8/uF7ze4kC5r3i7boxM5Dj+RE4G',
+        ],
+        NonIndexed:
+          'KjAKIgogIKCTibOwFJNFp0zUNEXymkyazYKz8LLwLqOZxEqKRF0SA09NSRiA0NvD9AI=',
+      },
+    ];
+    const contractInstance = factory.at(
+      '238X6iw1j8YKcHvkDYVtYVbuYk2gJnK8UoNpVCtssynSpVC8hb'
+    );
+    const result = contractInstance.deserializeLog(
+      Logs,
+      'VirtualTransactionCreated'
+    );
+    expect(result).toEqual(
+      [{
+      "from": "2ytdtA2PDX7VLYWkqf36MQQ8wUtcXWRdpovX7Wxy8tJZXumaY",
+      "methodName": "Transfer",
+      "params": "CiIKICCgk4mzsBSTRadM1DRF8ppMms2Cs/Cy8C6jmcRKikRdEgNPTUkYgNDbw/QC",
+      "signatory": "HaiUnezHpBieiVZNuyQV4uLFspYDGxsEwt8wSFYqGSpXY3CzJ",
+      "to": "JRmBduh4nXWi1aXgdUsj5gJrzeZb2LxmrAbf7W99faZSvoAaE",
+      "virtualHash": "0f09d38a4b246347978cb6296b81262a5d5e3b49d85a2bad2451b91c7dc362d8",
+      }]
+    );
+    expect(contractInstance.deserializeLog()).toEqual([]);
+  });
   test('test deserialize log with empty logs', () => {
     const contractInstance = factory.at(address);
     const result = contractInstance.deserializeLog();
