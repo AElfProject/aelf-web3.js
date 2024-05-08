@@ -63,7 +63,7 @@ export function transform(inputType, origin, transformers = []) {
 }
 
 export function transformMapToArray(inputType, origin) {
-  const fieldsLength = inputType.fieldsArray.length;
+  const fieldsLength = inputType.fieldsArray ? inputType.fieldsArray.length : 0;
   let result = origin;
   if (!origin) {
     return origin;
@@ -134,7 +134,7 @@ export function transformArrayToMap(inputType, origin) {
     if (resolvedType && origin !== null && origin !== undefined) {
       if (origin[name] && Array.isArray(origin[name])) {
         const {
-          fieldsArray,
+          fieldsArray = [],
           fields: resolvedFields,
           options: resolvedOptions = {}
         } = resolvedType;
