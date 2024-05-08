@@ -77,6 +77,18 @@ describe('contract factory', () => {
     );
     expect(contractInstance.deserializeLog()).toEqual([]);
   });
+  test('test deserialize log with normal contract which has a method called VirtualTransactionCreated', () => {
+    const Logs = [
+      {
+        Address: 'ELF_2sGZFRtqQ57F55Z2KvhmoozKrf7ik2htNVQawEAo3Vyvcx9Qwr_tDVW',
+        Name: 'VirtualTransactionCreated',
+        Indexed: null,
+        NonIndexed: 'CgNFTEYQoI/hGQ==',
+      },
+    ];
+    const contractInstance = factory.at(address);
+    expect(() => contractInstance.deserializeLog(Logs, 'VirtualTransactionCreated')).toThrow();
+  });
   test('test deserialize log with empty logs', () => {
     const contractInstance = factory.at(address);
     const result = contractInstance.deserializeLog();
