@@ -2,8 +2,7 @@
  * @file proto utils
  * @author atom-yang
  */
-import * as protobuf from '@aelfqueen/protobufjs/light';
-import coreDescriptor from '../../proto/core.proto.json';
+import * as protobuf from '@aelfqueen/protobufjs';
 import * as utils from './utils';
 import {
   transform,
@@ -11,8 +10,7 @@ import {
   transformArrayToMap
 } from './transform';
 
-export const coreRootProto = protobuf.Root.fromJSON(coreDescriptor);
-/* eslint-disable no-unused-vars */
+export const coreRootProto = protobuf.loadSync('proto/transaction_fee.proto').nested.aelf;
 
 export const {
   Transaction,

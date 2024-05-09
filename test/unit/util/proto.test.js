@@ -27,6 +27,7 @@ describe('test proto', () => {
     expect(getTransactionFee(Logs)).toEqual([
       {
         symbol: 'ELF',
+        chargingAddress: null,
         amount: '54020000',
       },
     ]);
@@ -41,10 +42,12 @@ describe('test proto', () => {
     const result = getFee('CgNFTEYQoI/hGQ==', 'TransactionFeeCharged');
     expect(result).toEqual({
       symbol: 'ELF',
+      chargingAddress: null,
       amount: '54020000',
     });
     expect(getFee('CgNFTEYQoI/hGQ==')).toEqual({
       symbol: 'ELF',
+      chargingAddress: null,
       amount: '54020000',
     });
   });
@@ -143,7 +146,9 @@ describe('test proto', () => {
       },
     ];
     const result = getTransactionFee(logs);
-    expect(result).toEqual([{ symbol: 'ELF', amount: '54020000' }]);
+    expect(result).toEqual([
+      { symbol: 'ELF', chargingAddress: null, amount: '54020000' },
+    ]);
   });
   test('test get transaction fee without TransactionFeeCharged type', () => {
     const logs = [

@@ -63,7 +63,7 @@ class Contract {
     if (logInThisAddress.length === 0) {
       return [];
     }
-    const Root = protobuf.loadSync('proto/virtual_transaction/virtual_transaction.proto');
+    const Root = protobuf.loadSync('proto/virtual_transaction.proto');
     logInThisAddress = logInThisAddress.map(item => {
       const { Name, NonIndexed, Indexed } = item;
       let dataType;
