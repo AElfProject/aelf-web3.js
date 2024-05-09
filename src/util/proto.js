@@ -246,6 +246,12 @@ const handleLogs = (logs = [], services, Root) => {
         return getDeserializeLogResult(serializedData, dataType);
       }
     } else {
+      // if dataType cannot be found and also is not VirtualTransactionCreated
+      if (!dataType) {
+        return {
+          message: 'This log is not supported.',
+        };
+      }
       // other method
       return getDeserializeLogResult(serializedData, dataType);
     }
