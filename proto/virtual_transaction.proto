@@ -3,8 +3,8 @@ syntax = "proto3";
 option csharp_namespace = "AElf.Types";
 
 
-import "aelf/core.proto";
-import "aelf/options.proto";
+import "./aelf/core.proto";
+import "./aelf/options.proto";
 
 service VirtualTransaction {
 }
