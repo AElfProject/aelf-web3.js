@@ -22,7 +22,6 @@ class Contract {
     this._chain = chain;
     this.address = address;
     this.services = services;
-    console.log(services, 'services');
   }
 
   deserializeLog(logs = [], logName) {
