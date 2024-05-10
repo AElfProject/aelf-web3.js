@@ -6,7 +6,7 @@
 import * as protobuf from '@aelfqueen/protobufjs';
 import ContractMethod from './contractMethod';
 import { noop } from '../util/utils';
-import { deserializeLogSync } from '../util/proto';
+import { deserializeLog } from '../util/proto';
 
 const getServicesFromFileDescriptors = descriptors => {
   const root = protobuf.Root.fromDescriptor(descriptors, 'proto3').resolveAll();
@@ -28,7 +28,7 @@ class Contract {
 
   deserializeLog(logs = [], logName) {
     const logInThisAddress = logs.filter(v => v.Address === this.address && v.Name === logName);
-    return deserializeLogSync(logInThisAddress, this.services);
+    return deserializeLog(logInThisAddress, this.services);
   }
 }
 
