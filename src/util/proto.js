@@ -191,7 +191,7 @@ export const getTransaction = (from, to, methodName, params) => {
   return Transaction.create(txn);
 };
 
-const getDeserializeLogResult = (serializedData, dataType) => {
+const deserializeIndexedAndNonIndexed = (serializedData, dataType) => {
   let deserializeLogResult = serializedData.reduce((acc, v) => {
     let deserialize = dataType.decode(Buffer.from(v, 'base64'));
     deserialize = dataType.toObject(deserialize, {
@@ -217,7 +217,7 @@ const getDeserializeLogResult = (serializedData, dataType) => {
   deserializeLogResult = transformArrayToMap(dataType, deserializeLogResult);
   return deserializeLogResult;
 };
-const handleLogs = (logs = [], services, Root) => {
+const deserializeWithServicesAndRoot = (logs, services, Root) => {
   // filter by address and name
   if (logs.length === 0) {
     return [];
@@ -240,10 +240,10 @@ const handleLogs = (logs = [], services, Root) => {
       // VirtualTransactionCreated is system-default
       try {
         dataType = Root.VirtualTransactionCreated;
-        return getDeserializeLogResult(serializedData, dataType);
+        return deserializeIndexedAndNonIndexed(serializedData, dataType);
       } catch (e) {
         // if normal contract has a method called VirtualTransactionCreated
-        return getDeserializeLogResult(serializedData, dataType);
+        return deserializeIndexedAndNonIndexed(serializedData, dataType);
       }
     } else {
       // if dataType cannot be found and also is not VirtualTransactionCreated
@@ -253,7 +253,7 @@ const handleLogs = (logs = [], services, Root) => {
         };
       }
       // other method
-      return getDeserializeLogResult(serializedData, dataType);
+      return deserializeIndexedAndNonIndexed(serializedData, dataType);
     }
   });
   return results;
@@ -268,7 +268,7 @@ const handleLogs = (logs = [], services, Root) => {
  */
 export const deserializeLog = async (logs = [], services) => {
   const Root = await protobuf.load('proto/virtual_transaction.proto');
-  return handleLogs(logs, services, Root);
+  return deserializeWithServicesAndRoot(logs, services, Root);
 };
 /**
  * deserialize logs sync
@@ -280,7 +280,7 @@ export const deserializeLog = async (logs = [], services) => {
  */
 export const deserializeLogSync = (logs = [], services) => {
   const Root = protobuf.loadSync('proto/virtual_transaction.proto');
-  return handleLogs(logs, services, Root);
+  return deserializeWithServicesAndRoot(logs, services, Root);
 };
 
 /* eslint-enable */
