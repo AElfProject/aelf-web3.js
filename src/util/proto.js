@@ -9,9 +9,12 @@ import {
   OUTPUT_TRANSFORMERS,
   transformArrayToMap
 } from './transform';
+import coreDescriptor from '../../proto/transaction_fee.proto.json';
+import VirtualTransactionDescriptor from '../../proto/virtual_transaction.proto.json';
 
-export const coreRootProto = protobuf.loadSync('proto/transaction_fee.proto').nested.aelf;
-
+// We cannot use loadSync because it's not supoort browsers
+// https://github.com/protobufjs/protobuf.js/issues/1648
+export const coreRootProto = protobuf.Root.fromJSON(coreDescriptor).nested.aelf;
 export const {
   Transaction,
   Hash,
@@ -259,28 +262,15 @@ const deserializeWithServicesAndRoot = (logs, services, Root) => {
   return results;
 };
 /**
- * deserialize logs async
+ * deserialize logs
  *
  * @alias module:AElf/pbUtils
  * @param {array} logs array of log which enclude Address,Name,Indexed and NonIndexed.
  * @param {array} services array of service which got from getContractFileDescriptorSet
  * @return {array} deserializeLogResult
  */
-export const deserializeLog = async (logs = [], services) => {
-  const Root = await protobuf.load('proto/virtual_transaction.proto');
+export const deserializeLog = (logs = [], services) => {
+  const Root = protobuf.Root.fromJSON(VirtualTransactionDescriptor);
   return deserializeWithServicesAndRoot(logs, services, Root);
 };
-/**
- * deserialize logs sync
- *
- * @alias module:AElf/pbUtils
- * @param {array} logs array of log which enclude Address,Name,Indexed and NonIndexed.
- * @param {array} services array of service which got from getContractFileDescriptorSet
- * @return {array} deserializeLogResult
- */
-export const deserializeLogSync = (logs = [], services) => {
-  const Root = protobuf.loadSync('proto/virtual_transaction.proto');
-  return deserializeWithServicesAndRoot(logs, services, Root);
-};
-
 /* eslint-enable */
