@@ -13,7 +13,6 @@ import {
   encodeTransaction,
   getTransaction,
   deserializeLog,
-  deserializeLogSync,
 } from '../../../src/util/proto';
 import ContractFactory from '../../../src/contract/index';
 import AElf from '../../../src/index';
@@ -296,17 +295,13 @@ describe('test proto',() => {
       },
     ];
     const contractInstance = factory.at(address);
-    const result = await deserializeLog(Logs, contractInstance.services);
+    const result = deserializeLog(Logs, contractInstance.services);
     expect(result).toEqual([{
       message: 'This log is not supported.',
     }]);
   });
   test('test deserialize logs with empty logs', async () => {
-    const result = await deserializeLog();
-    expect(result).toEqual([]);
-  });
-  test('test sync deserialize logs with empty logs', async () => {
-    const result = deserializeLogSync();
+    const result = deserializeLog();
     expect(result).toEqual([]);
   });
 });
