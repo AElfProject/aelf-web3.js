@@ -26,6 +26,7 @@ describe('test formatter', () => {
       })
     ).toBe('rkws1GibTwWQnLyLvpRtnDQiZYf51tEqQDwpGaou5s4ZQvi1v');
     expect(() => inputAddressFormatter('test')).toThrow('Invalid address');
+    expect(() => inputAddressFormatter('JxF12TrwUP45BMd0OIl')).toThrow('Invalid address');
   });
   test('test output file descriptor set formatter', () => {
     const name = outputFileDescriptorSetFormatter(
