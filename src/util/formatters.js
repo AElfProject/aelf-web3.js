@@ -25,7 +25,7 @@ export const inputAddressFormatter = address => {
   try {
     if (realAddress.indexOf('_') > 0) {
       const parts = realAddress.split('_');
-      realAddress = parts?.[1];
+      realAddress = parts[1];
     }
     if (getByteCountByAddress(realAddress) !== 36) {
       throw new Error('Invalid address');
