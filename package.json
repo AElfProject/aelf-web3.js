@@ -1,6 +1,6 @@
 {
   "name": "aelf-sdk",
-  "version": "3.4.12",
+  "version": "3.4.13-beta.0",
   "description": "aelf-sdk js library",
   "main": "dist/aelf.cjs.js",
   "browser": "dist/aelf.umd.js",
@@ -56,6 +56,7 @@
     "crypto-js": "^4.2.0",
     "elliptic": "^6.4.1",
     "hdkey": "^1.1.1",
+    "node-fetch": "2",
     "query-string": "5.1.1",
     "randombytes": "^2.1.0",
     "scryptsy": "^2.1.0",
