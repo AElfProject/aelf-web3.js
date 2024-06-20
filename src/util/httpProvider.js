@@ -10,6 +10,7 @@ const defaultHeaders = {
 };
 
 let RequestLibrary = {};
+let RequestLibraryXMLOnly = null;
 let isFetch = false;
 if (process.env.RUNTIME_ENV === 'browser') {
   // For browsers use DOM Api XMLHttpRequest
@@ -27,18 +28,24 @@ if (process.env.RUNTIME_ENV === 'browser') {
 } else {
   // For node use xmlhttprequest
   // eslint-disable-next-line global-require
-  RequestLibrary = require('xmlhttprequest').XMLHttpRequest;
+  RequestLibraryXMLOnly = require('xmlhttprequest').XMLHttpRequest;
+  // eslint-disable-next-line global-require
+  RequestLibrary = require('node-fetch');
+  isFetch = true;
 }
 
 export default class HttpProvider {
   constructor(
     host = 'http://localhost:8545',
     timeout = 8000,
-    headers = defaultHeaders
+    headers = defaultHeaders,
+    // support node-fetch options
+    options = {}
   ) {
     this.host = host.replace(/\/$/, '');
     this.timeout = timeout;
     this.headers = {};
+    this.options = options;
     if (Array.isArray(headers)) {
       headers.forEach(({ name, value }) => {
         this.headers[name] = value;
@@ -112,6 +119,7 @@ export default class HttpProvider {
       myHeaders.append(header, this.headers[header]);
     });
     return request(uri, {
+      ...this.options,
       method: method.toUpperCase(),
       headers: myHeaders,
       body,
@@ -179,8 +187,17 @@ export default class HttpProvider {
   }
 
   send(requestConfig) {
-    if (isFetch) throw new Error("Can not get XMLHttpRequest, invalid parameter: 'sync'");
-    const request = new RequestLibrary();
+    let request;
+    if (isFetch) {
+      if (!RequestLibraryXMLOnly) {
+        // browser case, Chrome extension v3.
+        throw new Error("Can not get XMLHttpRequest, invalid parameter: 'sync'");
+      } else {
+        request = new RequestLibraryXMLOnly();
+      }
+    } else {
+      request = new RequestLibrary();
+    }
     request.withCredentials = false;
     this.requestSend(requestConfig, request);
     let result = request.responseText;

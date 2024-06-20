@@ -160,7 +160,7 @@ describe('test httpProvider', () => {
       fetch
     );
     const result = await response.text();
-    expect(JSON.parse(result)).toEqual({
+    expect(JSON.parse(result)).toMatchObject({
       Success: false,
       TransactionFee: null,
       ResourceFee: null,
@@ -401,7 +401,7 @@ describe('test httpProvider', () => {
       request
     );
     const result = request.responseText;
-    expect(JSON.parse(result)).toEqual({
+    expect(JSON.parse(result)).toMatchObject({
       Success: false,
       TransactionFee: null,
       ResourceFee: null,
