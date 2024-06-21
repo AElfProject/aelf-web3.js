@@ -27,7 +27,7 @@ if (process.env.RUNTIME_ENV === 'browser') {
 } else {
   // For node use xmlhttprequest
   // eslint-disable-next-line global-require
-  RequestLibrary = require('xmlhttprequest').XMLHttpRequest;
+  RequestLibraryXMLOnly = require('xmlhttprequest').XMLHttpRequest;
   // eslint-disable-next-line global-require
   RequestLibrary = require('node-fetch');
   isFetch = true;
@@ -210,7 +210,7 @@ export default class HttpProvider {
   }
 
   sendAsyncByXMLHttp(requestConfig) {
-    const request = new RequestLibrary();
+    const request = RequestLibraryXMLOnly ? new RequestLibraryXMLOnly() : new RequestLibrary();
     request.withCredentials = false;
     request.timeout = this.timeout;
     this.requestSend(requestConfig, request, true);
