@@ -215,7 +215,7 @@ export default class HttpProvider {
   }
 
   sendAsyncByXMLHttp(requestConfig) {
-    const request = new RequestLibrary();
+    const request = RequestLibraryXMLOnly ? new RequestLibraryXMLOnly() : new RequestLibrary();
     request.withCredentials = false;
     request.timeout = this.timeout;
     this.requestSend(requestConfig, request, true);
