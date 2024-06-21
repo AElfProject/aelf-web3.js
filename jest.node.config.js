@@ -156,7 +156,9 @@ module.exports = {
   testMatch: [
     '**/test/unit/**/?(*.)+(test).[jt]s?(x)',
     '**/test/unit/util/httpProvider.node-test.js',
+    '**/test/unit/util/httpProvider.fetch.node-test.js',
   ],
+  testTimeout: 20000,
 
   // An array of regexp pattern strings that are matched against all test paths, matched tests are skipped
   // testPathIgnorePatterns: [
