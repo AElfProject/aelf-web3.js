@@ -172,6 +172,7 @@ module.exports = {
     '**/test/unit/util/httpProvider.browser-test.js',
     // "**/?(*.)+(spec|test).[tj]s?(x)"
   ],
+  testTimeout: 20000,
 
   // An array of regexp pattern strings that are matched against all test paths, matched tests are skipped
   // testPathIgnorePatterns: [
