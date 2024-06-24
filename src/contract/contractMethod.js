@@ -78,7 +78,9 @@ export default class ContractMethod {
       return null;
     }
     let params = transformMapToArray(this._outputType, result);
+
     params = transform(this._outputType, params, INPUT_TRANSFORMERS);
+
     const message = this._outputType.fromObject(params);
     return this._outputType.encode(message).finish();
   }
@@ -89,6 +91,8 @@ export default class ContractMethod {
     let tx = wallet.signTransaction(rawTx, this._wallet.keyPair);
 
     tx = Transaction.encode(tx).finish();
+    // jest environment just go into Buffer branch
+    // we have test in browser example handly
     if (tx instanceof Buffer) {
       return tx.toString('hex');
     }
