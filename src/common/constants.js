@@ -52,6 +52,13 @@ export const CHAIN_METHODS = {
     method: 'GET',
     params: ['blockHeight', 'includeTransactions'],
   },
+  getContractViewMethodList: {
+    name: 'getContractViewMethodList',
+    call: 'blockChain/ContractViewMethodList',
+    method: 'GET',
+    params: ['address'],
+    inputFormatter: []
+  },
   getTxResult: {
     name: 'getTxResult',
     call: 'blockChain/transactionResult',

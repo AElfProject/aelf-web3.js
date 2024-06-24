@@ -4,6 +4,7 @@ import HttpProvider from '../../../src/util/httpProvider';
 import AElf from '../../../src';
 import { noop } from '../../../src/util/utils';
 const stageEndpoint = 'https://tdvw-test-node.aelf.io/';
+const testEndpoint = 'https://explorer-test-side02.aelf.io/chain';
 let httpProvider, requestManager, chain;
 
 describe('chain should work', () => {
@@ -36,26 +37,19 @@ describe('chain should work', () => {
     const aelf = new AElf(new AElf.providers.HttpProvider(stageEndpoint));
     const { GenesisContractAddress } = await aelf.chain.getChainStatus();
     const args = [{ sync: true }];
-    const contract = await chain.contractAt(
-      GenesisContractAddress,
-      null,
-      ...args
-    );
+    const contract = await chain.contractAt(GenesisContractAddress, null, ...args);
     expect(contract.deserializeLog).toBeInstanceOf(Function);
   });
   test('test is invalid contract when sync', async () => {
-    const address =
-      'ELF_iUY5CLwzU8L8vjVgH95vx3ZRuvD5d9hVK3EdPMVD8v9EaQT75_AELF';
+    const address = 'ELF_iUY5CLwzU8L8vjVgH95vx3ZRuvD5d9hVK3EdPMVD8v9EaQT75_AELF';
     const args = [{ sync: true }];
     // mock contractFileDescriptorSet
     chain.getContractFileDescriptorSet = jest.fn(() => {
       return {
-        file: [],
+        file: []
       };
     });
-    expect(() => chain.contractAt(address, null, ...args)).toThrow(
-      'no such contract'
-    );
+    expect(() => chain.contractAt(address, null, ...args)).toThrow('no such contract');
   });
   test('test is concrete contract when async', async () => {
     const aelf = new AElf(new AElf.providers.HttpProvider(stageEndpoint));
@@ -64,53 +58,45 @@ describe('chain should work', () => {
     expect(contract.deserializeLog).toBeInstanceOf(Function);
   });
   test('test is invalid contract when async', async () => {
-    const address =
-      'ELF_iUY5CLwzU8L8vjVgH95vx3ZRuvD5d9hVK3EdPMVD8v9EaQT75_AELF';
+    const address = 'ELF_iUY5CLwzU8L8vjVgH95vx3ZRuvD5d9hVK3EdPMVD8v9EaQT75_AELF';
     chain.getContractFileDescriptorSet = jest.fn(() => {
       return Promise.resolve({
-        file: [],
+        file: []
       });
     });
     let error;
     chain.extractArgumentsIntoObject = jest.fn(() => {
       return {
-        callback: (e) => {
+        callback: e => {
           error = e;
         },
-        isSync: false,
+        isSync: false
       };
     });
     await chain.contractAt(address, null);
     expect(error).toEqual(new Error('no such contract'));
   }, 5000);
   test('test is invalid contract with noop callback', async () => {
-    const address =
-      'ELF_iUY5CLwzU8L8vjVgH95vx3ZRuvD5d9hVK3EdPMVD8v9EaQT75_AELF';
+    const address = 'ELF_iUY5CLwzU8L8vjVgH95vx3ZRuvD5d9hVK3EdPMVD8v9EaQT75_AELF';
     chain.getContractFileDescriptorSet = jest.fn(() => {
       return Promise.resolve({
-        file: [],
+        file: []
       });
     });
-    await expect(chain.contractAt(address, null)).rejects.toEqual(
-      new Error('no such contract')
-    );
+    await expect(chain.contractAt(address, null)).rejects.toEqual(new Error('no such contract'));
   }, 5000);
   test('test txId has corresponding transaction in the block with height when sync', async () => {
     const aelf = new AElf(new AElf.providers.HttpProvider(stageEndpoint));
     const blockInfo = await aelf.chain.getBlockByHeight(1, true);
     const txId = blockInfo.Body.Transactions[0];
-    const result = Array.isArray(
-      aelf.chain.getMerklePath(txId, 1, { sync: true })
-    );
+    const result = Array.isArray(aelf.chain.getMerklePath(txId, 1, { sync: true }));
     expect(result).toBe(true);
   }, 5000);
   test('test txId has no corresponding transaction in the block with height when sync', async () => {
     const aelf = new AElf(new AElf.providers.HttpProvider(stageEndpoint));
     const blockInfo = await chain.getBlockByHeight(1, true);
     const txId = blockInfo.Body.Transactions[0];
-    await expect(() =>
-      aelf.chain.getMerklePath(txId, 2, { sync: true })
-    ).toThrow(
+    await expect(() => aelf.chain.getMerklePath(txId, 2, { sync: true })).toThrow(
       'txId dce643d5c142945dc9f0665819dbf0b268b8423a94fa7a488d24cd89c0b67a23 has no correspond transaction in the block with height 2'
     );
   }, 20000);
@@ -126,10 +112,14 @@ describe('chain should work', () => {
     const aelf = new AElf(new AElf.providers.HttpProvider(stageEndpoint));
     const blockInfo = await aelf.chain.getBlockByHeight(1, true);
     const txId = blockInfo.Body.Transactions[0];
-    await expect(
-      async () => await aelf.chain.getMerklePath(txId, 2)
-    ).rejects.toThrow(
+    await expect(async () => await aelf.chain.getMerklePath(txId, 2)).rejects.toThrow(
       'txId dce643d5c142945dc9f0665819dbf0b268b8423a94fa7a488d24cd89c0b67a23 has no correspond transaction in the block with height 2'
     );
+  });
+  test('should show list of ContractViewMethod', async () => {
+    const aelf = new AElf(new AElf.providers.HttpProvider(testEndpoint));
+    const address = '2WzfRW6KZhAfh3gCZ8Akw4wcti69GUNc1F2sXNa2fgjndv59bE';
+    const result = await aelf.chain.getContractViewMethodList(address);
+    await expect(Array.isArray(result)).toBe(true);
   });
 }, 20000);
