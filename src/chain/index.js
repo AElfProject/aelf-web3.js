@@ -2,12 +2,7 @@
  * @file chain
  * @author atom-yang
  */
-import {
-  isBoolean,
-  isFunction,
-  noop,
-  setPath
-} from '../util/utils';
+import { isBoolean, isFunction, noop, setPath } from '../util/utils';
 import { CHAIN_METHODS } from '../common/constants';
 import ChainMethod from './chainMethod';
 import * as merkleTree from '../util/merkleTree';
@@ -29,6 +24,7 @@ export default class Chain {
     const result = {
       callback: noop,
       isSync: false,
+      refBlockNumberStrategy: 0
     };
     if (args.length === 0) {
       // has no callback, default to be async mode
@@ -41,18 +37,28 @@ export default class Chain {
       if (isBoolean(arg?.sync)) {
         result.isSync = arg.sync;
       }
+      if (typeof arg?.refBlockNumberStrategy === 'number') {
+        result.refBlockNumberStrategy = arg.refBlockNumberStrategy;
+      }
     });
     return result;
   }
 
+  /**
+   * @param {string} address - Contract address
+   * @param {IBlockchainWallet} wallet - aelf wallet
+   * @param {object} options - {sync: boolean, refBlockNumberStrategy: number}
+   * @param  {...any} args
+   * @returns
+   */
   contractAt(address, wallet, ...args) {
-    const { callback, isSync } = this.extractArgumentsIntoObject(args);
+    const { callback, isSync, refBlockNumberStrategy } = this.extractArgumentsIntoObject(args);
     if (isSync) {
       const fds = this.getContractFileDescriptorSet(address, {
-        sync: true,
+        sync: true
       });
       if (fds && fds.file && fds.file.length > 0) {
-        const factory = new ContractFactory(this, fds, wallet);
+        const factory = new ContractFactory(this, fds, wallet, { refBlockNumberStrategy });
         return factory.at(address);
       }
       throw new Error('no such contract');
@@ -60,7 +66,7 @@ export default class Chain {
     // eslint-disable-next-line consistent-return
     return this.getContractFileDescriptorSet(address).then(fds => {
       if (fds && fds.file && fds.file.length > 0) {
-        const factory = new ContractFactory(this, fds, wallet);
+        const factory = new ContractFactory(this, fds, wallet, { refBlockNumberStrategy });
         const result = factory.at(address);
         callback(null, result);
         return result;
@@ -77,26 +83,21 @@ export default class Chain {
     const { isSync } = this.extractArgumentsIntoObject(args);
     if (isSync) {
       const block = this.getBlockByHeight(height, true, {
-        sync: true,
+        sync: true
       });
       const { BlockHash, Body } = block;
       const txIds = Body.Transactions;
       const txIndex = txIds.findIndex(id => id === txId);
       if (txIndex === -1) {
-        throw new Error(
-          `txId ${txId} has no correspond transaction in the block with height ${height}`
-        );
+        throw new Error(`txId ${txId} has no correspond transaction in the block with height ${height}`);
       }
       const txResults = this.getTxResults(BlockHash, 0, txIds.length, {
-        sync: true,
+        sync: true
       });
       const nodes = txResults.map((result, index) => {
         const id = txIds[index];
         const status = result.Status;
-        const buffer = Buffer.concat([
-          Buffer.from(id.replace('0x', ''), 'hex'),
-          Buffer.from(status, 'utf8'),
-        ]);
+        const buffer = Buffer.concat([Buffer.from(id.replace('0x', ''), 'hex'), Buffer.from(status, 'utf8')]);
         return merkleTree.node(buffer);
       });
       return merkleTree.getMerklePath(txIndex, nodes);
@@ -106,18 +107,13 @@ export default class Chain {
       const txIds = Body.Transactions;
       const txIndex = txIds.findIndex(id => id === txId);
       if (txIndex === -1) {
-        throw new Error(
-          `txId ${txId} has no correspond transaction in the block with height ${height}`
-        );
+        throw new Error(`txId ${txId} has no correspond transaction in the block with height ${height}`);
       }
       return this.getTxResults(BlockHash, 0, txIds.length).then(results => {
         const nodes = results.map((result, index) => {
           const id = txIds[index];
           const status = result.Status;
-          const buffer = Buffer.concat([
-            Buffer.from(id.replace('0x', ''), 'hex'),
-            Buffer.from(status, 'utf8'),
-          ]);
+          const buffer = Buffer.concat([Buffer.from(id.replace('0x', ''), 'hex'), Buffer.from(status, 'utf8')]);
           return merkleTree.node(buffer);
         });
         return merkleTree.getMerklePath(txIndex, nodes);

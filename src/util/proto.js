@@ -4,24 +4,14 @@
  */
 import * as protobuf from '@aelfqueen/protobufjs';
 import * as utils from './utils';
-import {
-  transform,
-  OUTPUT_TRANSFORMERS,
-  transformArrayToMap
-} from './transform';
+import { transform, OUTPUT_TRANSFORMERS, transformArrayToMap } from './transform';
 import coreDescriptor from '../../proto/transaction_fee.proto.json';
 import VirtualTransactionDescriptor from '../../proto/virtual_transaction.proto.json';
 
 // We cannot use loadSync because it's not supoort browsers
 // https://github.com/protobufjs/protobuf.js/issues/1648
 export const coreRootProto = protobuf.Root.fromJSON(coreDescriptor).nested.aelf;
-export const {
-  Transaction,
-  Hash,
-  Address,
-  TransactionFeeCharged,
-  ResourceTokenCharged
-} = coreRootProto;
+export const { Transaction, Hash, Address, TransactionFeeCharged, ResourceTokenCharged } = coreRootProto;
 
 export const getFee = (base64Str, type = 'TransactionFeeCharged') => {
   if (['ResourceTokenCharged', 'TransactionFeeCharged'].indexOf(type) === -1) {
@@ -45,10 +35,7 @@ export const getFee = (base64Str, type = 'TransactionFeeCharged') => {
 };
 
 export const getSerializedDataFromLog = log => {
-  const {
-    NonIndexed,
-    Indexed = []
-  } = log;
+  const { NonIndexed, Indexed = [] } = log;
   const serializedData = [...(Indexed || [])];
   if (NonIndexed) {
     serializedData.push(NonIndexed);
@@ -60,16 +47,16 @@ export const getResourceFee = (Logs = []) => {
   if (!Array.isArray(Logs) || Logs.length === 0) {
     return [];
   }
-  return Logs.filter(log => log.Name === 'ResourceTokenCharged')
-    .map(v => getFee(getSerializedDataFromLog(v), 'ResourceTokenCharged'));
+  return Logs.filter(log => log.Name === 'ResourceTokenCharged').map(v =>
+    getFee(getSerializedDataFromLog(v), 'ResourceTokenCharged'));
 };
 
 export const getTransactionFee = (Logs = []) => {
   if (!Array.isArray(Logs) || Logs.length === 0) {
     return [];
   }
-  return Logs.filter(log => log.Name === 'TransactionFeeCharged')
-    .map(v => getFee(getSerializedDataFromLog(v), 'TransactionFeeCharged'));
+  return Logs.filter(log => log.Name === 'TransactionFeeCharged').map(v =>
+    getFee(getSerializedDataFromLog(v), 'TransactionFeeCharged'));
 };
 
 /**
@@ -79,10 +66,8 @@ export const getTransactionFee = (Logs = []) => {
  * @param {Buffer} arrayBuffer arrayBuffer
  * @return {string} hex string
  */
-export const arrayBufferToHex = arrayBuffer => Array.prototype.map.call(
-  new Uint8Array(arrayBuffer),
-  n => (`0${n.toString(16)}`).slice(-2)
-).join('');
+export const arrayBufferToHex = arrayBuffer =>
+  Array.prototype.map.call(new Uint8Array(arrayBuffer), n => `0${n.toString(16)}`.slice(-2)).join('');
 
 /**
  * get hex rep From Address
@@ -152,9 +137,10 @@ export const getRepForHash = hash => {
  * @param {string} hex string
  * @return {protobuf} kernel.Hash
  */
-export const getHashFromHex = hex => Hash.create({
-  value: Buffer.from(hex.replace('0x', ''), 'hex')
-});
+export const getHashFromHex = hex =>
+  Hash.create({
+    value: Buffer.from(hex.replace('0x', ''), 'hex')
+  });
 
 /**
  * get Hash Object From Hex
@@ -204,19 +190,15 @@ const deserializeIndexedAndNonIndexed = (serializedData, dataType) => {
       defaults: false, // includes default values
       arrays: true, // populates empty arrays (repeated fields) even if defaults=false
       objects: true, // populates empty objects (map fields) even if defaults=false
-      oneofs: true, // includes virtual oneof fields set to the present field's name
+      oneofs: true // includes virtual oneof fields set to the present field's name
     });
     return {
       ...acc,
-      ...deserialize,
+      ...deserialize
     };
   }, {});
   // eslint-disable-next-line max-len
-  deserializeLogResult = transform(
-    dataType,
-    deserializeLogResult,
-    OUTPUT_TRANSFORMERS
-  );
+  deserializeLogResult = transform(dataType, deserializeLogResult, OUTPUT_TRANSFORMERS);
   deserializeLogResult = transformArrayToMap(dataType, deserializeLogResult);
   return deserializeLogResult;
 };
@@ -252,7 +234,7 @@ const deserializeWithServicesAndRoot = (logs, services, Root) => {
       // if dataType cannot be found and also is not VirtualTransactionCreated
       if (!dataType) {
         return {
-          message: 'This log is not supported.',
+          message: 'This log is not supported.'
         };
       }
       // other method

@@ -14,216 +14,189 @@ const AES_MODES = {
     key: 128,
     iv: 0,
     mode: 'ECB',
-    type: 'block',
-
+    type: 'block'
   },
   'aes-192-ecb': {
     cipher: 'AES',
     key: 192,
     iv: 0,
     mode: 'ECB',
-    type: 'block',
-
+    type: 'block'
   },
   'aes-256-ecb': {
     cipher: 'AES',
     key: 256,
     iv: 0,
     mode: 'ECB',
-    type: 'block',
-
+    type: 'block'
   },
   'aes-128-cbc': {
     cipher: 'AES',
     key: 128,
     iv: 16,
     mode: 'CBC',
-    type: 'block',
-
+    type: 'block'
   },
   'aes-192-cbc': {
     cipher: 'AES',
     key: 192,
     iv: 16,
     mode: 'CBC',
-    type: 'block',
-
+    type: 'block'
   },
   'aes-256-cbc': {
     cipher: 'AES',
     key: 256,
     iv: 16,
     mode: 'CBC',
-    type: 'block',
-
+    type: 'block'
   },
   aes128: {
     cipher: 'AES',
     key: 128,
     iv: 16,
     mode: 'CBC',
-    type: 'block',
-
+    type: 'block'
   },
   aes192: {
     cipher: 'AES',
     key: 192,
     iv: 16,
     mode: 'CBC',
-    type: 'block',
-
+    type: 'block'
   },
   aes256: {
     cipher: 'AES',
     key: 256,
     iv: 16,
     mode: 'CBC',
-    type: 'block',
-
+    type: 'block'
   },
   'aes-128-cfb': {
     cipher: 'AES',
     key: 128,
     iv: 16,
     mode: 'CFB',
-    type: 'stream',
-
+    type: 'stream'
   },
   'aes-192-cfb': {
     cipher: 'AES',
     key: 192,
     iv: 16,
     mode: 'CFB',
-    type: 'stream',
-
+    type: 'stream'
   },
   'aes-256-cfb': {
     cipher: 'AES',
     key: 256,
     iv: 16,
     mode: 'CFB',
-    type: 'stream',
-
+    type: 'stream'
   },
   'aes-128-cfb8': {
     cipher: 'AES',
     key: 128,
     iv: 16,
     mode: 'CFB8',
-    type: 'stream',
-
+    type: 'stream'
   },
   'aes-192-cfb8': {
     cipher: 'AES',
     key: 192,
     iv: 16,
     mode: 'CFB8',
-    type: 'stream',
-
+    type: 'stream'
   },
   'aes-256-cfb8': {
     cipher: 'AES',
     key: 256,
     iv: 16,
     mode: 'CFB8',
-    type: 'stream',
-
+    type: 'stream'
   },
   'aes-128-cfb1': {
     cipher: 'AES',
     key: 128,
     iv: 16,
     mode: 'CFB1',
-    type: 'stream',
-
+    type: 'stream'
   },
   'aes-192-cfb1': {
     cipher: 'AES',
     key: 192,
     iv: 16,
     mode: 'CFB1',
-    type: 'stream',
-
+    type: 'stream'
   },
   'aes-256-cfb1': {
     cipher: 'AES',
     key: 256,
     iv: 16,
     mode: 'CFB1',
-    type: 'stream',
-
+    type: 'stream'
   },
   'aes-128-ofb': {
     cipher: 'AES',
     key: 128,
     iv: 16,
     mode: 'OFB',
-    type: 'stream',
-
+    type: 'stream'
   },
   'aes-192-ofb': {
     cipher: 'AES',
     key: 192,
     iv: 16,
     mode: 'OFB',
-    type: 'stream',
-
+    type: 'stream'
   },
   'aes-256-ofb': {
     cipher: 'AES',
     key: 256,
     iv: 16,
     mode: 'OFB',
-    type: 'stream',
-
+    type: 'stream'
   },
   'aes-128-ctr': {
     cipher: 'AES',
     key: 128,
     iv: 16,
     mode: 'CTR',
-    type: 'stream',
-
+    type: 'stream'
   },
   'aes-192-ctr': {
     cipher: 'AES',
     key: 192,
     iv: 16,
     mode: 'CTR',
-    type: 'stream',
-
+    type: 'stream'
   },
   'aes-256-ctr': {
     cipher: 'AES',
     key: 256,
     iv: 16,
     mode: 'CTR',
-    type: 'stream',
-
+    type: 'stream'
   },
   'aes-128-gcm': {
     cipher: 'AES',
     key: 128,
     iv: 12,
     mode: 'GCM',
-    type: 'auth',
-
+    type: 'auth'
   },
   'aes-192-gcm': {
     cipher: 'AES',
     key: 192,
     iv: 12,
     mode: 'GCM',
-    type: 'auth',
-
+    type: 'auth'
   },
   'aes-256-gcm': {
     cipher: 'AES',
     key: 256,
     iv: 12,
     mode: 'GCM',
-    type: 'auth',
-
+    type: 'auth'
   }
 };
 
@@ -244,16 +217,7 @@ const defaultOptions = {
  * @param {Object} option option
  * @return {Object} keyStore
  */
-export function getKeystore(
-  {
-    mnemonic,
-    privateKey,
-    nickName = '',
-    address = ''
-  },
-  password,
-  option = defaultOptions
-) {
+export function getKeystore({ mnemonic, privateKey, nickName = '', address = '' }, password, option = defaultOptions) {
   const opt = {
     ...defaultOptions,
     ...option
@@ -263,14 +227,7 @@ export function getKeystore(
   const salt = randomBytes(32); // instance of Buffer
   const ivLength = (AES_MODES[cipher.toLowerCase()] || {}).iv;
   const iv = randomBytes(ivLength === undefined ? 16 : ivLength); // instance of Buffer
-  const derivedKey = scrypt(
-    Buffer.from(password, 'utf8'),
-    salt,
-    opt.n,
-    opt.r,
-    opt.p,
-    opt.dklen
-  ); // instance of Buffer
+  const derivedKey = scrypt(Buffer.from(password, 'utf8'), salt, opt.n, opt.r, opt.p, opt.dklen); // instance of Buffer
   const privateKeyCipher = createCipheriv(cipher, derivedKey.slice(0, sliceLength), iv);
   const privateKeyEncrypted = Buffer.concat([
     privateKeyCipher.update(Buffer.from(privateKey, 'hex')),
@@ -316,24 +273,10 @@ export function getKeystore(
  * @param {string} password password
  * @return {Object} walletInfo
  */
-export function unlockKeystore(
-  {
-    crypto,
-    nickName = '',
-    address = ''
-  },
-  password
-) {
+export function unlockKeystore({ crypto, nickName = '', address = '' }, password) {
   let error = null;
   let result = null;
-  const {
-    kdfparams,
-    mac,
-    cipherparams,
-    mnemonicEncrypted = '',
-    ciphertext,
-    cipher = 'aes-128-ctr'
-  } = crypto;
+  const { kdfparams, mac, cipherparams, mnemonicEncrypted = '', ciphertext, cipher = 'aes-128-ctr' } = crypto;
   const sliceLength = /128/.test(cipher) ? 16 : 32;
   const iv = Buffer.from(cipherparams.iv, 'hex');
   const derivedKey = scrypt(
@@ -380,10 +323,7 @@ export function unlockKeystore(
  * @param {string} password password
  * @return {boolean} true or false
  */
-export const checkPassword = (
-  keyStoreInput,
-  password
-) => {
+export const checkPassword = (keyStoreInput, password) => {
   try {
     const result = unlockKeystore(keyStoreInput, password);
     return !!result.privateKey;

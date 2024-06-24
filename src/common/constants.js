@@ -10,8 +10,7 @@ import {
 /**
  * unsigned 256 int
  */
-export const UNSIGNED_256_INT =
-  'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff';
+export const UNSIGNED_256_INT = 'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff';
 
 export const CHAIN_METHODS = {
   getChainStatus: {

@@ -1,15 +1,8 @@
 import { Contract } from 'types/contract';
 import { RequestManager } from 'types/util/requestManage';
-import { WalletInfo } from '../wallet';
+import { IWalletInfo } from '../wallet';
 import { ExtractArgumentsIntoObjectResult, ExtractArg } from './chainMethod';
-import {
-  TAddress,
-  TBlockHash,
-  TBlockHeight,
-  TChainId,
-  TTransactionId,
-  TRawTransaction,
-} from '../util/proto';
+import { TAddress, TBlockHash, TBlockHeight, TChainId, TTransactionId, TRawTransaction } from '../util/proto';
 export interface IError {
   Error: {
     Code: string | null;
@@ -144,14 +137,8 @@ export interface IPeer {
 }
 
 interface IChain {
-  extractArgumentsIntoObject(
-    args: ExtractArg[]
-  ): ExtractArgumentsIntoObjectResult;
-  contractAt(
-    address: TAddress,
-    wallet: WalletInfo,
-    args: { [k in string]: any }
-  ): Contract | Promise<Contract>;
+  extractArgumentsIntoObject(args: ExtractArg[]): ExtractArgumentsIntoObjectResult;
+  contractAt(address: TAddress, wallet: IWalletInfo, args: { [k in string]: any }): Contract | Promise<Contract>;
   getMerklePath(
     txId: string,
     height: TBlockHeight,
@@ -161,33 +148,16 @@ interface IChain {
   getChainState(blockHash: string): Promise<ChainState & IError>;
   getContractFileDescriptorSet(address: string): Promise<string & IError>;
   getBlockHeight(): TBlockHeight;
-  getBlock(
-    blockHash: TBlockHash,
-    includeTransactions: boolean
-  ): Promise<Block & IError>;
-  getBlockByHeight(
-    blockHeight: TBlockHeight,
-    includeTransactions?: boolean
-  ): Promise<Block & IError>;
-  getTxResult(
-    transactionId: TTransactionId
-  ): Promise<TransactionResult & IError>;
-  getTxResults(
-    blockHash: TBlockHash,
-    offset: number,
-    limit: number
-  ): Promise<TransactionResult[] & IError>;
-  getMerklePathByTxId(
-    transactionId: TTransactionId
-  ): Promise<MerklePathByTxId & IError>;
+  getBlock(blockHash: TBlockHash, includeTransactions: boolean): Promise<Block & IError>;
+  getBlockByHeight(blockHeight: TBlockHeight, includeTransactions?: boolean): Promise<Block & IError>;
+  getContractViewMethodList(): Promise<string[] & IError>;
+  getTxResult(transactionId: TTransactionId): Promise<TransactionResult & IError>;
+  getTxResults(blockHash: TBlockHash, offset: number, limit: number): Promise<TransactionResult[] & IError>;
+  getMerklePathByTxId(transactionId: TTransactionId): Promise<MerklePathByTxId & IError>;
   getTransactionPoolStatus(): Promise<TransactionPoolStatus & IError>;
-  sendTransaction(
-    RawTransaction: TRawTransaction
-  ): Promise<{ TransactionId: TTransactionId } & IError>;
+  sendTransaction(RawTransaction: TRawTransaction): Promise<{ TransactionId: TTransactionId } & IError>;
   sendTransactions(RawTransaction: string): Promise<string[] & IError>;
-  calculateTransactionFee(
-    RawTransaction: TRawTransaction
-  ): Promise<CalculateTransactionFee & IError>;
+  calculateTransactionFee(RawTransaction: TRawTransaction): Promise<CalculateTransactionFee & IError>;
   callReadOnly(RawTransaction: TRawTransaction): Promise<string & IError>;
   getPeers(withMetrics?: boolean): Promise<IPeer[] & IError>;
   addPeer(Address: TAddress): Promise<true & IError>;
@@ -203,14 +173,8 @@ interface IChain {
 
 declare class Chain implements IChain {
   constructor(requestManager: RequestManager);
-  public extractArgumentsIntoObject(
-    args: ExtractArg[]
-  ): ExtractArgumentsIntoObjectResult;
-  public contractAt(
-    address: TAddress,
-    wallet: WalletInfo,
-    args: { [k in string]: any }
-  ): Contract | Promise<Contract>;
+  public extractArgumentsIntoObject(args: ExtractArg[]): ExtractArgumentsIntoObjectResult;
+  public contractAt(address: TAddress, wallet: IWalletInfo, args: { [k in string]: any }): Contract | Promise<Contract>;
   public getMerklePath(
     txId: string,
     height: TBlockHeight,
@@ -220,33 +184,16 @@ declare class Chain implements IChain {
   getChainState(blockHash: string): Promise<ChainState & IError>;
   getContractFileDescriptorSet(address: string): Promise<string & IError>;
   getBlockHeight(): TBlockHeight;
-  getBlock(
-    blockHash: TBlockHash,
-    includeTransactions: boolean
-  ): Promise<Block & IError>;
-  getBlockByHeight(
-    blockHeight: TBlockHeight,
-    includeTransactions?: boolean
-  ): Promise<Block & IError>;
-  getTxResult(
-    transactionId: TTransactionId
-  ): Promise<TransactionResult & IError>;
-  getTxResults(
-    blockHash: TBlockHash,
-    offset: number,
-    limit: number
-  ): Promise<TransactionResult[] & IError>;
-  getMerklePathByTxId(
-    transactionId: TTransactionId
-  ): Promise<MerklePathByTxId & IError>;
+  getBlock(blockHash: TBlockHash, includeTransactions: boolean): Promise<Block & IError>;
+  getBlockByHeight(blockHeight: TBlockHeight, includeTransactions?: boolean): Promise<Block & IError>;
+  getContractViewMethodList(): Promise<string[] & IError>;
+  getTxResult(transactionId: TTransactionId): Promise<TransactionResult & IError>;
+  getTxResults(blockHash: TBlockHash, offset: number, limit: number): Promise<TransactionResult[] & IError>;
+  getMerklePathByTxId(transactionId: TTransactionId): Promise<MerklePathByTxId & IError>;
   getTransactionPoolStatus(): Promise<TransactionPoolStatus & IError>;
-  sendTransaction(
-    RawTransaction: TRawTransaction
-  ): Promise<{ TransactionId: TTransactionId } & IError>;
+  sendTransaction(RawTransaction: TRawTransaction): Promise<{ TransactionId: TTransactionId } & IError>;
   sendTransactions(RawTransaction: string): Promise<string[] & IError>;
-  calculateTransactionFee(
-    RawTransaction: TRawTransaction
-  ): Promise<CalculateTransactionFee & IError>;
+  calculateTransactionFee(RawTransaction: TRawTransaction): Promise<CalculateTransactionFee & IError>;
   callReadOnly(RawTransaction: TRawTransaction): Promise<string & IError>;
   getPeers(withMetrics?: boolean): Promise<IPeer[] & IError>;
   addPeer(Address: TAddress): Promise<true & IError>;

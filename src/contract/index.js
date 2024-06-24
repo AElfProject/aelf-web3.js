@@ -10,11 +10,13 @@ import { deserializeLog } from '../util/proto';
 
 const getServicesFromFileDescriptors = descriptors => {
   const root = protobuf.Root.fromDescriptor(descriptors, 'proto3').resolveAll();
-  return descriptors.file.filter(f => f.service.length > 0).map(f => {
-    const sn = f.service[0].name;
-    const fullName = f.package ? `${f.package}.${sn}` : sn;
-    return root.lookupService(fullName);
-  });
+  return descriptors.file
+    .filter(f => f.service.length > 0)
+    .map(f => {
+      const sn = f.service[0].name;
+      const fullName = f.package ? `${f.package}.${sn}` : sn;
+      return root.lookupService(fullName);
+    });
 };
 
 class Contract {
@@ -25,9 +27,7 @@ class Contract {
   }
 
   deserializeLog(logs = [], logName) {
-    const logInThisAddress = logs.filter(
-      v => v.Address === this.address && v.Name === logName
-    );
+    const logInThisAddress = logs.filter(v => v.Address === this.address && v.Name === logName);
     return deserializeLog(logInThisAddress, this.services);
   }
 }
