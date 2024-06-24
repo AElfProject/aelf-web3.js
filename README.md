@@ -1,9 +1,9 @@
 # aelf-sdk.js - AELF JavaScript API
 
-[![Build Status][1]][2]
+| Statements                  | Branches                | Functions                 | Lines             |
+| --------------------------- | ----------------------- | ------------------------- | ----------------- |
+| ![Statements](https://img.shields.io/badge/statements-96.16%25-brightgreen.svg?style=flat) | ![Branches](https://img.shields.io/badge/branches-92.62%25-brightgreen.svg?style=flat) | ![Functions](https://img.shields.io/badge/functions-98.61%25-brightgreen.svg?style=flat) | ![Lines](https://img.shields.io/badge/lines-96.1%25-brightgreen.svg?style=flat) |
 
-[1]: https://travis-ci.org/AElfProject/aelf-sdk.js.svg?branch=master
-[2]: https://travis-ci.org/AElfProject/aelf-sdk.js
 
 ## 1. Introduction
 
@@ -65,9 +65,9 @@ module.exports = {
   // ...
   resolve: {
     alias: {
-      'aelf-sdk$': 'aelf-sdk/dist/aelf.umd.js'
-    }
-  }
+      'aelf-sdk$': 'aelf-sdk/dist/aelf.umd.js',
+    },
+  },
 };
 ```
 
@@ -80,9 +80,9 @@ rollup({
   // ...
   plugins: [
     alias({
-      'aelf-sdk': require.resolve('aelf-sdk/dist/aelf.umd.js')
-    })
-  ]
+      'aelf-sdk': require.resolve('aelf-sdk/dist/aelf.umd.js'),
+    }),
+  ],
 });
 ```
 
@@ -95,9 +95,9 @@ module.exports = {
   // ...
   resolve: {
     alias: {
-      'aelf-sdk$': 'aelf-sdk/dist/aelf.cjs.js'
-    }
-  }
+      'aelf-sdk$': 'aelf-sdk/dist/aelf.cjs.js',
+    },
+  },
 };
 ```
 
@@ -110,9 +110,9 @@ rollup({
   // ...
   plugins: [
     alias({
-      'aelf-sdk': require.resolve('aelf-sdk/dist/aelf.cjs.js')
-    })
-  ]
+      'aelf-sdk': require.resolve('aelf-sdk/dist/aelf.cjs.js'),
+    }),
+  ],
 });
 ```
 
@@ -128,7 +128,9 @@ You can also see full examples in [./examples](./examples);
    import AElf from 'aelf-sdk';
 
    // create a new instance of AElf
-   const aelf = new AElf(new AElf.providers.HttpProvider('http://127.0.0.1:1235'));
+   const aelf = new AElf(
+     new AElf.providers.HttpProvider('http://127.0.0.1:1235')
+   );
    ```
 
 2. Create or load a wallet with `AElf.wallet`
@@ -153,9 +155,14 @@ You can also see full examples in [./examples](./examples);
      // get genesis contract address
      const GenesisContractAddress = chainStatus.GenesisContractAddress;
      // get genesis contract instance
-     const zeroContract = await aelf.chain.contractAt(GenesisContractAddress, newWallet);
+     const zeroContract = await aelf.chain.contractAt(
+       GenesisContractAddress,
+       newWallet
+     );
      // Get contract address by the read only method `GetContractAddressByName` of genesis contract
-     tokenContractAddress = await zeroContract.GetContractAddressByName.call(AElf.utils.sha256(tokenContractName));
+     tokenContractAddress = await zeroContract.GetContractAddressByName.call(
+       AElf.utils.sha256(tokenContractName)
+     );
    })();
    ```
 
@@ -193,7 +200,7 @@ You can also see full examples in [./examples](./examples);
      // with `.call` method, `aelf-sdk` will only call read-only method
      const result = await tokenContract.GetBalance.call({
        symbol: 'ELF',
-       owner: '7s4XoUHfPuqoZAwnTV7pHWZAaivMiL8aZrDSnY9brE1woa8vz'
+       owner: '7s4XoUHfPuqoZAwnTV7pHWZAaivMiL8aZrDSnY9brE1woa8vz',
      });
      console.log(result);
      /**
@@ -208,7 +215,7 @@ You can also see full examples in [./examples](./examples);
        symbol: 'ELF',
        to: '7s4XoUHfPuqoZAwnTV7pHWZAaivMiL8aZrDSnY9brE1woa8vz',
        amount: '1000000000',
-       memo: 'transfer in demo'
+       memo: 'transfer in demo',
      });
      console.log(transactionId);
      /**
@@ -224,7 +231,9 @@ You can also see full examples in [./examples](./examples);
    ```javascript
    import AElf from 'aelf-sdk';
 
-   const aelf = new AElf(new AElf.providers.HttpProvider('http://127.0.0.1:1235'));
+   const aelf = new AElf(
+     new AElf.providers.HttpProvider('http://127.0.0.1:1235')
+   );
    aelf.setProvider(new AElf.providers.HttpProvider('http://127.0.0.1:8000'));
    ```
 
@@ -568,13 +577,21 @@ Attempts to add a node to the connected network nodes
 you need to create a aelf authorization instance and set a provider
 
 ```javascript
-const aelf = new AElf(new AElf.providers.HttpProvider('http://127.0.0.1:8000', 8000, { Authorization: AElf.utils.getAuthorization('UseName', 'Password') }));
+const aelf = new AElf(
+  new AElf.providers.HttpProvider('http://127.0.0.1:8000', 8000, {
+    Authorization: AElf.utils.getAuthorization('UseName', 'Password'),
+  })
+);
 ```
 
 _Example_
 
 ```javascript
-const aelf = new AElf(new AElf.providers.HttpProvider('http://127.0.0.1:8000', 8000, { Authorization: AElf.utils.getAuthorization('aelf', '12345678') }));
+const aelf = new AElf(
+  new AElf.providers.HttpProvider('http://127.0.0.1:8000', 8000, {
+    Authorization: AElf.utils.getAuthorization('aelf', '12345678'),
+  })
+);
 
 aelf.chain.addPeer('192.168.11.140:6801').then((res) => {
   console.log(res);
@@ -588,13 +605,21 @@ Attempts to remove a node from the connected network nodes
 you need to create a aelf authorization instance and set a provider
 
 ```javascript
-const aelf = new AElf(new AElf.providers.HttpProvider('http://127.0.0.1:8000', 8000, { Authorization: AElf.utils.getAuthorization('UseName', 'Password') }));
+const aelf = new AElf(
+  new AElf.providers.HttpProvider('http://127.0.0.1:8000', 8000, {
+    Authorization: AElf.utils.getAuthorization('UseName', 'Password'),
+  })
+);
 ```
 
 _Example_
 
 ```javascript
-const aelf = new AElf(new AElf.providers.HttpProvider('http://127.0.0.1:8000', 8000, { Authorization: AElf.utils.getAuthorization('aelf', '12345678') }));
+const aelf = new AElf(
+  new AElf.providers.HttpProvider('http://127.0.0.1:8000', 8000, {
+    Authorization: AElf.utils.getAuthorization('aelf', '12345678'),
+  })
+);
 
 aelf.chain.removePeer('192.168.11.140:6801').then((res) => {
   console.log(res);
@@ -751,7 +776,32 @@ AElf.version; // eg. 3.2.23
 ![browsers](https://img.shields.io/badge/browsers-latest%202%20versions-brightgreen.svg)
 ![node](https://img.shields.io/badge/node->=10-green.svg)
 
-## 4. About contributing
+## 4. Building
+-   [Node.js](https://nodejs.org)
+-   [npm](https://www.npmjs.com/)
+
+```bash
+sudo apt-get update
+sudo apt-get install nodejs
+sudo apt-get install npm
+```
+
+### 4.1 Building (webpack)
+
+Build the web3.js package:
+
+```bash
+yarn run build
+```
+
+### 4.2 Testing (jest)
+
+```bash
+yarn run test
+```
+
+Commit code will run test and lint automatically, and show the test result in readme.md, please make sure all test cases passed.
+### 4.3 About contributing
 
 Read out [contributing guide](./.github/CONTRIBUTING.md)
 

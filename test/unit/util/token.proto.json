@@ -89,6 +89,33 @@
         }
       }
     },
+    "MerklePathMapEntry": {
+      "options": {
+        "map_entry": true
+      },
+      "fields": {
+        "merklePathNodes": {
+          "rule": "repeated",
+          "type": "MerklePathNodeMapEntry",
+          "id": 1
+        }
+      }
+    },
+    "MerklePathNodeMapEntry": {
+      "options": {
+        "map_entry": true
+      },
+      "fields": {
+        "key": {
+          "type": "bytes",
+          "id": 1
+        },
+        "value": {
+          "type": "bytes",
+          "id": 2
+        }
+      }
+    },
     "BinaryMerkleTree": {
       "fields": {
         "nodes": {
@@ -163,6 +190,36 @@
               }
             }
           }
+        }
+      }
+    },
+    "TestEmptyFieldsArray": {
+      "fields": {}
+    },
+    "TestHashAddress": {
+      "fields": {
+        "to": {
+          "type": "Address",
+          "id": 1
+        },
+        "from": {
+          "type": "Hash",
+          "id": 2
+        }
+      }
+    },
+    "TestEnum": {
+      "values": {
+        "EMAIL": 0,
+        "PHONE": 1
+      }
+    },
+    "TestEnumArray": {
+      "fields": {
+        "type": {
+          "rule": "repeated",
+          "type": "TestEnum",
+          "id": 1
         }
       }
     }

@@ -8,16 +8,9 @@ import {
   transformMapToArray,
   transform,
   INPUT_TRANSFORMERS,
-  OUTPUT_TRANSFORMERS,
+  OUTPUT_TRANSFORMERS
 } from '../util/transform';
-import {
-  isBoolean,
-  isFunction,
-  isNumber,
-  noop,
-  uint8ArrayToHex,
-  unpackSpecifiedTypeData,
-} from '../util/utils';
+import { isBoolean, isFunction, isNumber, noop, uint8ArrayToHex, unpackSpecifiedTypeData } from '../util/utils';
 import wallet from '../wallet';
 
 export default class ContractMethod {
@@ -60,7 +53,7 @@ export default class ContractMethod {
     }
     const result = unpackSpecifiedTypeData({
       data: inputPacked,
-      dataType: this._inputType,
+      dataType: this._inputType
     });
     let params = transform(this._inputType, result, OUTPUT_TRANSFORMERS);
     params = transformArrayToMap(this._inputType, params);
@@ -73,7 +66,7 @@ export default class ContractMethod {
     }
     let result = unpackSpecifiedTypeData({
       data: isNumber(output) ? String(output) : output,
-      dataType: this._outputType,
+      dataType: this._outputType
     });
     result = transform(this._outputType, result, OUTPUT_TRANSFORMERS);
     result = transformArrayToMap(this._outputType, result);
@@ -103,9 +96,7 @@ export default class ContractMethod {
   }
 
   prepareParametersAsync(args, isView) {
-    const filterArgs = args.filter(
-      arg => !isFunction(arg) && !isBoolean(arg.sync)
-    );
+    const filterArgs = args.filter(arg => !isFunction(arg) && !isBoolean(arg.sync));
     const encoded = this.packInput(filterArgs[0]);
 
     if (isView) {
@@ -119,8 +110,12 @@ export default class ContractMethod {
       args.forEach(arg => {
         if (arg.refBlockNumberStrategy) {
           // eslint-disable-next-line max-len
-          if (typeof arg.refBlockNumberStrategy !== 'number') throw new Error('Invalid type, refBlockNumberStrategy must be number');
-          if (arg.refBlockNumberStrategy > 0) throw new Error('refBlockNumberStrategy must be less than 0');
+          if (typeof arg.refBlockNumberStrategy !== 'number') {
+            throw new Error('Invalid type, refBlockNumberStrategy must be number');
+          }
+          if (arg.refBlockNumberStrategy > 0) {
+            throw new Error('refBlockNumberStrategy must be less than 0');
+          }
           refBlockNumberStrategy = arg.refBlockNumberStrategy;
         }
       });
@@ -143,9 +138,7 @@ export default class ContractMethod {
    * @returns any
    */
   prepareParameters(args, isView) {
-    const filterArgs = args.filter(
-      arg => !isFunction(arg) && !isBoolean(arg.sync)
-    );
+    const filterArgs = args.filter(arg => !isFunction(arg) && !isBoolean(arg.sync));
     const encoded = this.packInput(filterArgs[0]);
 
     if (isView) {
@@ -157,14 +150,18 @@ export default class ContractMethod {
     args.forEach(arg => {
       if (arg.refBlockNumberStrategy) {
         // eslint-disable-next-line max-len
-        if (typeof arg.refBlockNumberStrategy !== 'number') throw new Error('Invalid type, refBlockNumberStrategy must be number');
-        if (arg.refBlockNumberStrategy > 0) throw new Error('refBlockNumberStrategy must be less than 0');
+        if (typeof arg.refBlockNumberStrategy !== 'number') {
+          throw new Error('Invalid type, refBlockNumberStrategy must be number');
+        }
+        if (arg.refBlockNumberStrategy > 0) {
+          throw new Error('refBlockNumberStrategy must be less than 0');
+        }
         refBlockNumberStrategy = arg.refBlockNumberStrategy;
       }
     });
 
     const statusRes = this._chain.getChainStatus({
-      sync: true,
+      sync: true
     });
 
     let { BestChainHeight, BestChainHash } = statusRes;
@@ -181,9 +178,7 @@ export default class ContractMethod {
   }
 
   prepareParametersWithBlockInfo(args) {
-    const filterArgs = args.filter(
-      arg => !isFunction(arg) && !isBoolean(arg.sync)
-    );
+    const filterArgs = args.filter(arg => !isFunction(arg) && !isBoolean(arg.sync));
     const encoded = this.packInput(filterArgs[0]);
 
     const { height, hash } = filterArgs[1]; // blockInfo
@@ -196,7 +191,7 @@ export default class ContractMethod {
     if (argsObject.isSync) {
       const parameters = this.prepareParameters(args);
       return this._chain.sendTransaction(parameters, {
-        sync: true,
+        sync: true
       });
     }
     // eslint-disable-next-line arrow-body-style
@@ -211,7 +206,7 @@ export default class ContractMethod {
       const parameters = this.prepareParameters(args, true);
       return this.unpackOutput(
         this._chain.callReadOnly(parameters, {
-          sync: true,
+          sync: true
         })
       );
     }
@@ -228,7 +223,7 @@ export default class ContractMethod {
   extractArgumentsIntoObject(args) {
     const result = {
       callback: noop,
-      isSync: false,
+      isSync: false
     };
     if (args.length === 0) {
       // has no callback, default to be async mode
@@ -247,9 +242,7 @@ export default class ContractMethod {
 
   // getData(...args) {
   getSignedTx(...args) {
-    const filterArgs = args.filter(
-      arg => !isFunction(arg) && !isBoolean(arg.sync)
-    );
+    const filterArgs = args.filter(arg => !isFunction(arg) && !isBoolean(arg.sync));
 
     if (filterArgs[1]) {
       const { height, hash } = filterArgs[1]; // blockInfo
@@ -263,19 +256,12 @@ export default class ContractMethod {
   }
 
   getRawTx(blockHeightInput, blockHashInput, packedInput) {
-    const rawTx = getTransaction(
-      this._wallet.address,
-      this._contractAddress,
-      this._name,
-      packedInput
-    );
+    const rawTx = getTransaction(this._wallet.address, this._contractAddress, this._name, packedInput);
     if (blockHeightInput) {
       rawTx.refBlockNumber = blockHeightInput;
     }
     if (blockHashInput) {
-      const blockHash = blockHashInput.match(/^0x/)
-        ? blockHashInput.substring(2)
-        : blockHashInput;
+      const blockHash = blockHashInput.match(/^0x/) ? blockHashInput.substring(2) : blockHashInput;
       rawTx.refBlockPrefix = Buffer.from(blockHash, 'hex').slice(0, 4);
     }
     return rawTx;
@@ -288,7 +274,7 @@ export default class ContractMethod {
       method: 'broadcast_tx',
       callback,
       params,
-      format: this.unpackOutput,
+      format: this.unpackOutput
     };
   }
 
