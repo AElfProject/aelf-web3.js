@@ -4,18 +4,11 @@
  */
 
 import BigNumber from 'bignumber.js';
-import jsSha256 from 'js-sha256';
 import bs58 from 'bs58';
 import { UNIT_MAP, UNSIGNED_256_INT } from '../common/constants';
 import { Transaction } from './proto';
-import {
-  OUTPUT_TRANSFORMERS,
-  encodeAddress,
-  transform,
-  transformArrayToMap
-} from './transform';
-
-const { sha256 } = jsSha256;
+import { OUTPUT_TRANSFORMERS, encodeAddress, transform, transformArrayToMap } from './transform';
+import sha256 from './sha256';
 
 export const base58 = {
   encode(data, encoding = 'hex') {
@@ -63,10 +56,8 @@ export const chainIdConvertor = {
   }
 };
 
-const arrayBufferToHex = arrayBuffer => Array.prototype.map.call(
-  new Uint8Array(arrayBuffer),
-  n => (`0${n.toString(16)}`).slice(-2)
-).join('');
+const arrayBufferToHex = arrayBuffer =>
+  Array.prototype.map.call(new Uint8Array(arrayBuffer), n => `0${n.toString(16)}`.slice(-2)).join('');
 
 export const arrayToHex = value => {
   let hex = '';
@@ -104,9 +95,8 @@ export const padLeft = (string, charLen, sign) => {
  */
 export const padRight = (string, charLen, sign) => {
   const length = charLen - string.length + 1;
-  return string + (new Array(length < 0 ? 0 : length).join(sign || '0'));
+  return string + new Array(length < 0 ? 0 : length).join(sign || '0');
 };
-
 
 /**
  * Returns a hex rep from the encoded address
@@ -143,8 +133,8 @@ export const encodeAddressRep = hex => {
  * @param {Object} object
  * @return {Boolean}
  */
-export const isBigNumber = object => object instanceof BigNumber
-  || (object && object.constructor && object.constructor.name === 'BigNumber');
+export const isBigNumber = object =>
+  object instanceof BigNumber || (object && object.constructor && object.constructor.name === 'BigNumber');
 
 /**
  * Returns true if object is string, otherwise false
@@ -153,8 +143,8 @@ export const isBigNumber = object => object instanceof BigNumber
  * @param {Object} object
  * @return {Boolean}
  */
-export const isString = object => typeof object === 'string'
-    || (object && object.constructor && object.constructor.name === 'String');
+export const isString = object =>
+  typeof object === 'string' || (object && object.constructor && object.constructor.name === 'String');
 
 /**
  * Returns true if object is function, otherwise false
@@ -172,7 +162,7 @@ export const isFunction = object => typeof object === 'function';
  * @param {Object} object
  * @return {Boolean}
  */
-export const isObject = object => object !== null && !(Array.isArray(object)) && typeof object === 'object';
+export const isObject = object => object !== null && !Array.isArray(object) && typeof object === 'object';
 
 /**
  * Returns true if object is boolean, otherwise false
@@ -197,6 +187,15 @@ export const isJson = str => {
     return false;
   }
 };
+
+/**
+ * Returns true if given number is valid number
+ *
+ * @method isNumber
+ * @param {Number} number
+ * @return {Boolean}
+ */
+export const isNumber = number => number === +number;
 
 /**
  * Takes an input and transforms it into an bignumber
@@ -230,7 +229,9 @@ export const getValueOfUnit = unit => {
   const unitValue = UNIT_MAP[unit ? unit.toLowerCase() : 'ether'];
   if (unitValue === undefined) {
     // eslint-disable-next-line max-len
-    throw new Error(`This unit doesn\'t exists, please use the one of the following units ${JSON.stringify(UNIT_MAP, null, 2)}`);
+    throw new Error(
+      `This unit doesn\'t exists, please use the one of the following units ${JSON.stringify(UNIT_MAP, null, 2)}`
+    );
   }
   return new BigNumber(unitValue, 10);
 };
@@ -291,20 +292,19 @@ export const toWei = (number, unit) => {
 
 /**
  * Takes and input transforms it into bignumber and if it is negative value, into two's complement
- *
+ * bignumber.js get rid of round + floor in 6.0 https://github.com/MikeMcl/bignumber.js/issues/139
+ * the method lessThan was named isLessThan after 6.0 https://github.com/MikeMcl/bignumber.js/issues/152
  * @method toTwosComplement
  * @param {Number|String|BigNumber} number
  * @return {BigNumber}
  */
 export const toTwosComplement = number => {
-  const bigNumber = toBigNumber(number).round();
-  if (bigNumber.lessThan(0)) {
-    return new BigNumber(UNSIGNED_256_INT, 16)
-      .plus(bigNumber).plus(1);
+  const bigNumber = toBigNumber(number).integerValue();
+  if (bigNumber.isLessThan(0)) {
+    return new BigNumber(UNSIGNED_256_INT, 16).plus(bigNumber).plus(1);
   }
   return bigNumber;
 };
-
 
 /**
  * Returns hex
@@ -356,7 +356,7 @@ export const setPath = (obj, path, value) => {
 };
 
 export const unpackSpecifiedTypeData = ({ data, dataType, encoding = 'hex' }) => {
-  const buffer = Buffer.from(data, encoding || 'hex');
+  const buffer = Buffer.from(data, encoding);
   const decoded = dataType.decode(buffer);
   const result = dataType.toObject(decoded, {
     enums: String, // enums as string names
@@ -371,14 +371,7 @@ export const unpackSpecifiedTypeData = ({ data, dataType, encoding = 'hex' }) =>
 };
 
 export function deserializeTransaction(rawTx, paramsDataType) {
-  const {
-    from,
-    to,
-    params,
-    refBlockPrefix,
-    signature,
-    ...rest
-  } = unpackSpecifiedTypeData({
+  const { from, to, params, refBlockPrefix, signature, ...rest } = unpackSpecifiedTypeData({
     data: rawTx,
     dataType: Transaction
   });
@@ -412,6 +405,23 @@ export function deserializeTransaction(rawTx, paramsDataType) {
 export function getAuthorization(userName, password) {
   const base = Buffer.from(`${userName}:${password}`).toString('base64');
   return `Basic ${base}`;
+}
+/**
+ *
+ * Use rawTransaction to get transaction id
+ * @param {String} rawTx rawTransaction
+ * @return {String} string
+ *
+ * const txId = getTransactionId('0a220a2071a4dc8cdf109bd72913c90c3fc666c78d080cdda0da7f3abbc7105c6b651fd512220a2089ac786c8ad3b56f63a6f2767369a5273f801de2415b613c783cad3d148ce3ab18d5d3bb35220491cf6ba12a18537761704578616374546f6b656e73466f72546f6b656e73325008c0f7f27110bbe5947c1a09534752544553542d311a03454c4622220a2071a4dc8cdf109bd72913c90c3fc666c78d080cdda0da7f3abbc7105c6b651fd52a08088996ceb0061000320631323334353682f10441ec6ad50c4b210976ba0ba5c287ab6fabd0c444839e2505ecb1b5f52838095b290cb245ec1c97dade3bde6ac14c6892e526569e9b71240d3c120b1a6c8e41afba00');
+ * console.log(txId);
+ * // => cf564f3169012cb173efcf5543b2a71b030b16fad3ddefe3e04a5c1e1bc0047d
+ */
+export function getTransactionId(rawTx) {
+  const hash = Buffer.from(rawTx.replace('0x', ''), 'hex');
+  const decode = Transaction.decode(hash);
+  decode.signature = null;
+  const encode = Transaction.encode(decode).finish();
+  return sha256(encode);
 }
 
 // /**

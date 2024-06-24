@@ -2,12 +2,7 @@
  * @file chain
  * @author atom-yang
  */
-import {
-  isBoolean,
-  isFunction,
-  noop,
-  setPath
-} from '../util/utils';
+import { isBoolean, isFunction, noop, setPath } from '../util/utils';
 import { CHAIN_METHODS } from '../common/constants';
 import ChainMethod from './chainMethod';
 import * as merkleTree from '../util/merkleTree';
@@ -28,7 +23,8 @@ export default class Chain {
   extractArgumentsIntoObject(args) {
     const result = {
       callback: noop,
-      isSync: false
+      isSync: false,
+      refBlockNumberStrategy: 0
     };
     if (args.length === 0) {
       // has no callback, default to be async mode
@@ -38,21 +34,31 @@ export default class Chain {
       result.callback = args[args.length - 1];
     }
     args.forEach(arg => {
-      if (isBoolean((arg.sync))) {
+      if (isBoolean(arg?.sync)) {
         result.isSync = arg.sync;
+      }
+      if (typeof arg?.refBlockNumberStrategy === 'number') {
+        result.refBlockNumberStrategy = arg.refBlockNumberStrategy;
       }
     });
     return result;
   }
 
+  /**
+   * @param {string} address - Contract address
+   * @param {IBlockchainWallet} wallet - aelf wallet
+   * @param {object} options - {sync: boolean, refBlockNumberStrategy: number}
+   * @param  {...any} args
+   * @returns
+   */
   contractAt(address, wallet, ...args) {
-    const { callback, isSync } = this.extractArgumentsIntoObject(args);
+    const { callback, isSync, refBlockNumberStrategy } = this.extractArgumentsIntoObject(args);
     if (isSync) {
       const fds = this.getContractFileDescriptorSet(address, {
         sync: true
       });
       if (fds && fds.file && fds.file.length > 0) {
-        const factory = new ContractFactory(this, fds, wallet);
+        const factory = new ContractFactory(this, fds, wallet, { refBlockNumberStrategy });
         return factory.at(address);
       }
       throw new Error('no such contract');
@@ -60,13 +66,14 @@ export default class Chain {
     // eslint-disable-next-line consistent-return
     return this.getContractFileDescriptorSet(address).then(fds => {
       if (fds && fds.file && fds.file.length > 0) {
-        const factory = new ContractFactory(this, fds, wallet);
+        const factory = new ContractFactory(this, fds, wallet, { refBlockNumberStrategy });
         const result = factory.at(address);
         callback(null, result);
         return result;
       }
       callback(new Error('no such contract'));
-      if (callback.length > 0) {
+      // if callback is noop, throw error
+      if (callback.length === 0) {
         throw new Error('no such contract');
       }
     });
@@ -84,7 +91,9 @@ export default class Chain {
       if (txIndex === -1) {
         throw new Error(`txId ${txId} has no correspond transaction in the block with height ${height}`);
       }
-      const txResults = this.getTxResults(BlockHash, 0, txIds.length, { sync: true });
+      const txResults = this.getTxResults(BlockHash, 0, txIds.length, {
+        sync: true
+      });
       const nodes = txResults.map((result, index) => {
         const id = txIds[index];
         const status = result.Status;

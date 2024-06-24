@@ -5,16 +5,14 @@
 import { isFunction, noop, isBoolean } from '../util/utils';
 
 export default class ChainMethod {
-  constructor(
-    {
-      name,
-      call,
-      method = 'GET',
-      params = [],
-      inputFormatter = [],
-      outputFormatter = null
-    }
-  ) {
+  constructor({
+    name,
+    call,
+    method = 'GET',
+    params = [],
+    inputFormatter = [],
+    outputFormatter = null,
+  }) {
     this.name = name;
     this.call = call;
     this.requestMethod = method;
@@ -41,7 +39,9 @@ export default class ChainMethod {
   }
 
   formatOutput(result) {
-    return this.outputFormatter && result ? this.outputFormatter(result) : result;
+    return this.outputFormatter && result
+      ? this.outputFormatter(result)
+      : result;
   }
 
   extractArgumentsIntoObject(args) {
@@ -53,7 +53,7 @@ export default class ChainMethod {
       requestMethod: this.requestMethod,
       isSync: false,
       callback: noop,
-      params: {}
+      params: {},
     };
     this.formatInput(args).forEach((arg, index) => {
       if (index > this.params.length - 1) {
@@ -63,7 +63,7 @@ export default class ChainMethod {
           result.callback = arg;
           result.isSync = false;
         }
-        if (isBoolean(arg.sync)) {
+        if (isBoolean(arg?.sync)) {
           result.isSync = arg.sync;
         }
       } else {
@@ -79,12 +79,15 @@ export default class ChainMethod {
     if (argsObj.isSync) {
       return this.formatOutput(this.requestManager.send(argsObj));
     }
-    return this.requestManager.sendAsync(argsObj).then(result => {
-      argsObj.callback(null, this.formatOutput(result));
-      return this.formatOutput(result);
-    }).catch(err => {
-      argsObj.callback(err);
-      throw err;
-    });
+    return this.requestManager
+      .sendAsync(argsObj)
+      .then(result => {
+        argsObj.callback(null, this.formatOutput(result));
+        return this.formatOutput(result);
+      })
+      .catch(err => {
+        argsObj.callback(err);
+        throw err;
+      });
   }
 }

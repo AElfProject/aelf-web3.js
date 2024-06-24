@@ -17,7 +17,7 @@ const baseConfig = {
   resolve: {
     modules: [
       path.resolve(ROOT, 'src'),
-      path.resolve(ROOT, 'node_modules')
+      'node_modules'
     ],
     extensions: ['.ts', '.js']
   },
@@ -40,7 +40,10 @@ const baseConfig = {
       'process.env.SDK_VERSION': JSON.stringify(version)
     }),
     new webpack.BannerPlugin(banner)
-  ]
+  ],
+  stats: {
+    chunkRelations: true
+  }
 };
 
 module.exports = baseConfig;
