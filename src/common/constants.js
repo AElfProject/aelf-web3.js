@@ -53,7 +53,7 @@ export const CHAIN_METHODS = {
     name: 'getContractViewMethodList',
     call: 'blockChain/ContractViewMethodList',
     method: 'GET',
-    params: [],
+    params: ['address'],
     inputFormatter: []
   },
   getTxResult: {
