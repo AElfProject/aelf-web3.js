@@ -1,9 +1,9 @@
 import AElf from '../../src/index';
-import HttpProvider from '../../src/util/httpProvider'
+import HttpProvider from '../../src/util/httpProvider';
 
-const stageEndpoint = 'http://192.168.66.191:8000';
+const stageEndpoint = 'https://explorer-test-tdvw.aelf.io/chain';
 const fakeEndpoint = 'http://127.0.0.1:9999';
-const realEndpoint = '192.168.11.140:6801';
+const realPeerEndpoint = '54.74.174.1:6801';
 describe('test AElf-sdk', () => {
   let aelf = null;
   aelf = new AElf(new AElf.providers.HttpProvider(stageEndpoint));
@@ -18,10 +18,10 @@ describe('test AElf-sdk', () => {
 
   test('check get chain status', () => {
     const chainStatus = aelf.chain.getChainStatus({
-      sync: true
+      sync: true,
     });
     expect(chainStatus).not.toBeNaN();
-    expect(chainStatus).toHaveProperty('ChainId', 'AELF');
+    expect(chainStatus).toHaveProperty('ChainId', 'tDVW');
     expect(chainStatus).toHaveProperty('Branches');
     expect(chainStatus).toHaveProperty('LongestChainHeight');
     expect(chainStatus).toHaveProperty('LongestChainHash');
@@ -53,7 +53,11 @@ describe('test AElf-sdk', () => {
     expect(chainStatus).not.toBeNaN();
 
     const genesisAddress = chainStatus.GenesisContractAddress;
-    const descriptorSet = await aelf.chain.getContractFileDescriptorSet(genesisAddress);
+
+    const descriptorSet = await aelf.chain.getContractFileDescriptorSet(
+      genesisAddress
+    );
+
     expect(descriptorSet).not.toBeNaN();
 
     const jsonInfo = JSON.stringify(descriptorSet);
@@ -69,7 +73,11 @@ describe('test AElf-sdk', () => {
     expect(chainStatus).not.toBeNaN();
 
     const lastIrreversibleBlockHash = chainStatus.LastIrreversibleBlockHash;
-    const transactions = await aelf.chain.getTxResults(lastIrreversibleBlockHash, 0, 10);
+    const transactions = await aelf.chain.getTxResults(
+      lastIrreversibleBlockHash,
+      0,
+      10
+    );
     expect(transactions).not.toBeNaN();
     var txArray = [];
     for (var key in transactions) {
@@ -79,14 +87,16 @@ describe('test AElf-sdk', () => {
 
     const transaction = await aelf.chain.getTxResult(txArray[0]);
     expect(transaction.Transaction).toEqual(transactions[0].Transaction);
-    expect(transaction.BlockNumber).toEqual(chainStatus.LastIrreversibleBlockHeight);
+    expect(transaction.BlockNumber).toEqual(
+      chainStatus.LastIrreversibleBlockHeight
+    );
   });
 
   test('check get merkle path by tx id', async () => {
-    const blockInfo = await aelf.chain.getBlockByHeight(1, true)
+    const blockInfo = await aelf.chain.getBlockByHeight(1, true);
     expect(blockInfo).not.toBeNaN();
 
-    const txId = blockInfo.Body.Transactions[0]
+    const txId = blockInfo.Body.Transactions[0];
     var merklePath = await aelf.chain.getMerklePathByTxId(txId);
     expect(merklePath).not.toBeNaN();
     expect(merklePath).toHaveProperty('MerklePathNodes');
@@ -101,8 +111,12 @@ describe('test AElf-sdk', () => {
   });
 
   test('set provider authorization for exist alef instance', () => {
-    aelf.setProvider(new HttpProvider(stageEndpoint, 10000, { "Authorization": AElf.utils.getAuthorization('aelf', '12345678') }));
-    expect(aelf.isConnected()).not.toBeTruthy();
+    aelf.setProvider(
+      new HttpProvider(stageEndpoint, 10000, {
+        Authorization: AElf.utils.getAuthorization('aelf', '12345678'),
+      })
+    );
+    expect(aelf.isConnected()).toBeTruthy();
   });
   test('check get peers info', async () => {
     const peersInfo = await aelf.chain.getPeers(false);
@@ -118,10 +132,6 @@ describe('test AElf-sdk', () => {
     const result = await aelf.chain.removePeer(fakeEndpoint);
     expect(result).not.toBeTruthy();
   });
-  test('check add peer', async () => {
-    const result = await aelf.chain.addPeer(realEndpoint);
-    expect(result).toBeTruthy();
-  });
   test('check get peers info', async () => {
     const peersInfo = await aelf.chain.getPeers(false);
     expect(peersInfo).not.toBeNaN();
@@ -129,12 +139,21 @@ describe('test AElf-sdk', () => {
   });
   test('check remove peer', async () => {
     try {
-      const result = await aelf.chain.removePeer(realEndpoint);
+      const result = await aelf.chain.removePeer(realPeerEndpoint);
       expect(result).toBeTruthy();
     } catch (error) {
       console.log(error, '====remove');
     }
   });
+  test('check get peers info', async () => {
+    const peersInfo = await aelf.chain.getPeers(false);
+    expect(peersInfo).not.toBeNaN();
+    expect(peersInfo.length).toBeGreaterThan(1);
+  });
+  test('check add peer', async () => {
+    const result = await aelf.chain.addPeer(realPeerEndpoint);
+    expect(result).toBeTruthy();
+  }, 5000);
   test('check get peers info', async () => {
     const peersInfo = await aelf.chain.getPeers(false);
     expect(peersInfo).not.toBeNaN();

@@ -4,7 +4,7 @@
  */
 
 /* eslint-env node */
-const merge = require('webpack-merge');
+const { merge } = require('webpack-merge');
 const baseConfig = require('./webpack.common');
 const {OUTPUT_PATH} = require('./utils');
 
@@ -20,16 +20,17 @@ const browserConfig = {
     umdNamedDefine: true
   },
   resolve: {
-    alias: {}
-  },
-  node: {
-    Buffer: true,
-    crypto: true,
-    stream: true,
-    fs: 'empty',
-    http: false,
-    https: false,
-    child_process: false
+    alias: {},
+    fallback: {
+      assert: require.resolve('assert'),
+      buffer: require.resolve('buffer'),
+      crypto: require.resolve('crypto-browserify'),
+      stream: require.resolve('stream-browserify'),
+      fs: false,
+      http: false,
+      https: false,
+      child_process: false
+    }
   },
   externals: {
     xmlhttprequest: {
@@ -48,7 +49,8 @@ const browserConfig = {
   target: 'web',
   optimization: {
     removeEmptyChunks: true,
-    occurrenceOrder: true,
+    chunkIds: 'total-size',
+    moduleIds: 'size',
     sideEffects: true,
     minimize: true
   }
