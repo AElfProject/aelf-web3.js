@@ -22,6 +22,14 @@ const  nodeConfig = {
       // 'scryptsy$': '../scrypt-polyfill.js',
     }
   },
+  externals: {
+    'node-fetch': {
+      commonjs2: 'node-fetch',
+      commonjs: 'node-fetch',
+      umd: 'node-fetch',
+      root: 'node-fetch'
+    }
+  },
   target: 'node',
   optimization: {
     removeEmptyChunks: true,
