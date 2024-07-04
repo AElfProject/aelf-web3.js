@@ -10,7 +10,6 @@
       }
     ]
   ],
-  "plugins": ["rewire"],
   "ignore": ["dist/*.js"],
   "env": {
     "test": {

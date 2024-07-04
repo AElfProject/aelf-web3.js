@@ -6,17 +6,19 @@
 /* eslint-env node */
 const { merge } = require('webpack-merge');
 const baseConfig = require('./webpack.common');
-const {OUTPUT_PATH} = require('./utils');
+const { OUTPUT_PATH } = require('./utils');
 
 const browserConfig = {
   mode: 'production',
   output: {
     path: OUTPUT_PATH,
     filename: 'aelf.umd.js',
-    library: 'AElf',
-    libraryTarget: 'umd',
+    library: {
+      name: 'AElf',
+      type: 'umd'
+    },
     libraryExport: 'default',
-    globalObject: "globalThis",
+    globalObject: 'globalThis',
     umdNamedDefine: true
   },
   resolve: {
@@ -52,9 +54,8 @@ const browserConfig = {
     chunkIds: 'total-size',
     moduleIds: 'size',
     sideEffects: true,
-    minimize: true
+    minimize: false
   }
 };
-
 
 module.exports = merge(baseConfig, browserConfig);

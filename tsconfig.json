@@ -15,12 +15,12 @@
     "strictFunctionTypes": true,
     "noEmit": true,
     "allowJs": false,
-    "allowSyntheticDefaultImports": false,
+    "allowSyntheticDefaultImports": true,
     "baseUrl": ".",
     "paths": {
       "aelf-web3": ["types"]
     },
     "esModuleInterop": true,
-    "declaration": true
+    "declaration": false
   }
 }
