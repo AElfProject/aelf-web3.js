@@ -5,6 +5,7 @@
 
 /* eslint-env node */
 const { merge } = require('webpack-merge');
+const webpack = require('webpack');
 const baseConfig = require('./webpack.common');
 const { OUTPUT_PATH } = require('./utils');
 
@@ -13,10 +14,8 @@ const browserConfig = {
   output: {
     path: OUTPUT_PATH,
     filename: 'aelf.umd.js',
-    library: {
-      name: 'AElf',
-      type: 'umd'
-    },
+    library: 'AElf',
+    libraryTarget: 'umd',
     libraryExport: 'default',
     globalObject: 'globalThis',
     umdNamedDefine: true
@@ -24,6 +23,7 @@ const browserConfig = {
   resolve: {
     alias: {},
     fallback: {
+      process: false,
       assert: require.resolve('assert'),
       buffer: require.resolve('buffer'),
       crypto: require.resolve('crypto-browserify'),
@@ -49,13 +49,25 @@ const browserConfig = {
     }
   },
   target: 'web',
+  node: {
+    global: true
+  },
   optimization: {
     removeEmptyChunks: true,
     chunkIds: 'total-size',
     moduleIds: 'size',
     sideEffects: true,
     minimize: false
-  }
+  },
+  plugins: [
+    new webpack.ProvidePlugin({
+      Buffer: ['buffer', 'Buffer']
+    }),
+    // fix "process is not defined" error:
+    new webpack.ProvidePlugin({
+      process: 'process/browser'
+    })
+  ]
 };
 
 module.exports = merge(baseConfig, browserConfig);
