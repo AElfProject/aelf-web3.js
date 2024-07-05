@@ -4,9 +4,10 @@
  */
 
 /* eslint-env node */
-const merge = require('webpack-merge');
+const { merge } = require('webpack-merge');
+const webpack = require('webpack');
 const baseConfig = require('./webpack.common');
-const {OUTPUT_PATH} = require('./utils');
+const { OUTPUT_PATH } = require('./utils');
 
 const browserConfig = {
   mode: 'production',
@@ -16,20 +17,22 @@ const browserConfig = {
     library: 'AElf',
     libraryTarget: 'umd',
     libraryExport: 'default',
-    globalObject: "globalThis",
+    globalObject: 'globalThis',
     umdNamedDefine: true
   },
   resolve: {
-    alias: {}
-  },
-  node: {
-    Buffer: true,
-    crypto: true,
-    stream: true,
-    fs: 'empty',
-    http: false,
-    https: false,
-    child_process: false
+    alias: {},
+    fallback: {
+      process: false,
+      assert: require.resolve('assert'),
+      buffer: require.resolve('buffer'),
+      crypto: require.resolve('crypto-browserify'),
+      stream: require.resolve('stream-browserify'),
+      fs: false,
+      http: false,
+      https: false,
+      child_process: false
+    }
   },
   externals: {
     xmlhttprequest: {
@@ -46,13 +49,25 @@ const browserConfig = {
     }
   },
   target: 'web',
+  node: {
+    global: true
+  },
   optimization: {
     removeEmptyChunks: true,
-    occurrenceOrder: true,
+    chunkIds: 'total-size',
+    moduleIds: 'size',
     sideEffects: true,
-    minimize: true
-  }
+    minimize: false
+  },
+  plugins: [
+    new webpack.ProvidePlugin({
+      Buffer: ['buffer', 'Buffer']
+    }),
+    // fix "process is not defined" error:
+    new webpack.ProvidePlugin({
+      process: 'process/browser'
+    })
+  ]
 };
-
 
 module.exports = merge(baseConfig, browserConfig);

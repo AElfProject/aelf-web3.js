@@ -5,31 +5,31 @@
  * @date 2015
  */
 import descriptor from '@aelfqueen/protobufjs/ext/descriptor';
-import {
-  base58
-} from './utils';
+import bs58 from 'bs58';
+import { base58 } from './utils';
+
+const getByteCountByAddress = base58Str => {
+  // convert a Base58 string to a binary array and get its byte count
+  const buffer = bs58.decode(base58Str);
+  // get byte
+  const byteCount = buffer.length;
+  // last four digits are the checksum
+  return byteCount;
+};
 
 export const inputAddressFormatter = address => {
   let realAddress = address;
   if (address && address.value) {
     realAddress = address.value;
   }
-  if (realAddress.indexOf('_') > 0) {
-    const parts = realAddress.split('_');
-    const list = parts.filter(v => {
-      try {
-        base58.decode(v, 'hex');
-        return true;
-      } catch (e) {
-        return false;
-      }
-    });
-    if (list.length === 0) {
+  try {
+    if (realAddress.indexOf('_') > 0) {
+      const parts = realAddress.split('_');
+      realAddress = parts?.[1];
+    }
+    if (getByteCountByAddress(realAddress) !== 36) {
       throw new Error('Invalid address');
     }
-    [realAddress] = list;
-  }
-  try {
     base58.decode(realAddress, 'hex');
   } catch (e) {
     throw new Error('Invalid address');

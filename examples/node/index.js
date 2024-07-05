@@ -1,6 +1,5 @@
 /* eslint-env node */
 const AElf = require('../../dist/aelf.cjs');
-
 const Wallet = AElf.wallet;
 const { sha256 } = AElf.utils;
 
@@ -10,7 +9,7 @@ const defaultPrivateKey = 'bdb3b39ef4cd18c2697a920eb6d9e8c3cf1a930570beb37d04fb5
 // const walletCreatedByMethod = Wallet.createNewWallet();
 const wallet = Wallet.getWalletByPrivateKey(defaultPrivateKey);
 // link to Blockchain
-const aelf = new AElf(new AElf.providers.HttpProvider('http://18.162.41.20:8000'));
+const aelf = new AElf(new AElf.providers.HttpProvider('https://tdvw-test-node.aelf.io/'));
 
 if (!aelf.isConnected()) {
   console.log('Blockchain Node is not running.');
@@ -21,8 +20,9 @@ const tokenContractName = 'AElf.ContractNames.Token';
 const {
   // directly accessible information
   GenesisContractAddress
-} = aelf.chain.getChainStatus({sync: true});
-aelf.chain.contractAt(GenesisContractAddress, wallet)
+} = aelf.chain.getChainStatus({ sync: true });
+aelf.chain
+  .contractAt(GenesisContractAddress, wallet)
   .then(zeroC => {
     // return contract's address which you query by contract's name
     return zeroC.GetContractAddressByName.call(sha256(tokenContractName));
