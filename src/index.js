@@ -25,7 +25,7 @@ export default class AElf {
   static version = process.env.SDK_VERSION;
 
   static providers = {
-    HttpProvider,
+    HttpProvider
   };
 
   /**
@@ -41,11 +41,11 @@ export default class AElf {
     ...utils,
     ...bloom,
     sha256,
-    transform,
+    transform
   };
 
   providers = {
-    HttpProvider,
+    HttpProvider
   };
 
   settings = new Settings();
@@ -55,7 +55,7 @@ export default class AElf {
    * @type {{api: string}}
    */
   version = {
-    api: process.env.SDK_VERSION,
+    api: process.env.SDK_VERSION
   };
 
   /**
