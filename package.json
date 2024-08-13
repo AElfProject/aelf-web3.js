@@ -1,6 +1,6 @@
 {
   "name": "aelf-sdk",
-  "version": "3.4.13-beta.1",
+  "version": "3.4.13-beta.2",
   "description": "aelf-sdk js library",
   "main": "dist/aelf.cjs.js",
   "browser": "dist/aelf.umd.js",
@@ -122,6 +122,7 @@
     "jest-environment-jsdom": "^29.5.0",
     "jest-environment-jsdom-fifteen": "^1.0.2",
     "jest-github-reporter": "^1.1.1",
+    "jest-junit": "^16.0.0",
     "lint-staged": "^13.2.1",
     "rimraf": "^5.0.0",
     "size-limit": "^8.1.2",
