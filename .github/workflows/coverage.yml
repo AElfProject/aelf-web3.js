@@ -1,0 +1,40 @@
+name: Unit Test Coverage
+
+on:
+  push:
+    branches:
+      - feature/test-chain-util
+  pull_request:
+    branches:
+      - feature/test-chain-util
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Run tests with coverage
+        run: yarn run test:coverage
+
+      - name: Generate coverage badge
+        uses: jaywcjlove/coverage-badges-cli@main
+        with:
+          source: coverage/coverage-summary.json
+          output: coverage/badges.svg
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./coverage
