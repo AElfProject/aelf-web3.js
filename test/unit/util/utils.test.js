@@ -44,6 +44,8 @@ describe('test utils', () => {
     expect(() => base58.encode(null, 'hex')).toThrow('"data" argument must be an Array of Buffers');
     expect(base58.encode('qwe123', 'utf8')).toBe('7NjemqtmHiYjxe');
     expect(base58.decode('7NjemqtmHiYjxe', 'utf8')).toBe('qwe123');
+    expect(() => base58.decode('2MTJUAViVu6ctF')).not.toThrow();
+    expect(() => base58.decode('2MTJUAViVu6ctG')).toThrow('Invalid checksum');
   });
 
   test('test chainId convertor chainIdToBase58 and base58ToChainId', () => {

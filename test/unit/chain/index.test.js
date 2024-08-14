@@ -32,6 +32,16 @@ describe('chain should work', () => {
     const result = chain.extractArgumentsIntoObject(args);
     expect(result.isSync).toBeTruthy();
   });
+  test('test refBlockNumberStrategy argument into object', () => {
+    // Arrange
+    const args = [{ refBlockNumberStrategy: 10 }];
+    
+    // Act
+    const result = chain.extractArgumentsIntoObject(args);
+    
+    // Assert
+    expect(result.refBlockNumberStrategy).toBe(10);
+  });
   test('test is concrete contract when sync', async () => {
     const aelf = new AElf(new AElf.providers.HttpProvider(stageEndpoint));
     const { GenesisContractAddress } = await aelf.chain.getChainStatus();
