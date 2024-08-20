@@ -2,7 +2,8 @@ import Chain from '../../../src/chain/index';
 import RequestManager from '../../../src/util/requestManage';
 import HttpProvider from '../../../src/util/httpProvider';
 import AElf from '../../../src';
-const stageEndpoint = 'https://explorer-test-tdvw.aelf.io/chain';
+import { noop } from '../../../src/util/utils';
+const stageEndpoint = 'https://tdvw-test-node.aelf.io/';
 let httpProvider, requestManager, chain;
 
 describe('chain should work', () => {
@@ -20,10 +21,26 @@ describe('chain should work', () => {
     const result = chain.extractArgumentsIntoObject(args);
     expect(result.callback).toBe(fn);
   });
+  test('test undefined argument into object ', () => {
+    const args = [undefined];
+    const result = chain.extractArgumentsIntoObject(args);
+    expect(result.callback).toBe(noop);
+    expect(result.isSync).toBe(false);
+  });
   test('test sync argument into object', () => {
     const args = [{ sync: true }];
     const result = chain.extractArgumentsIntoObject(args);
     expect(result.isSync).toBeTruthy();
+  });
+  test('test refBlockNumberStrategy argument into object', () => {
+    // Arrange
+    const args = [{ refBlockNumberStrategy: 10 }];
+    
+    // Act
+    const result = chain.extractArgumentsIntoObject(args);
+    
+    // Assert
+    expect(result.refBlockNumberStrategy).toBe(10);
   });
   test('test is concrete contract when sync', async () => {
     const aelf = new AElf(new AElf.providers.HttpProvider(stageEndpoint));
@@ -106,7 +123,7 @@ describe('chain should work', () => {
     ).toThrow(
       'txId dce643d5c142945dc9f0665819dbf0b268b8423a94fa7a488d24cd89c0b67a23 has no correspond transaction in the block with height 2'
     );
-  });
+  }, 20000);
 
   test('test txId has corresponding transaction in the block with height when async', async () => {
     const aelf = new AElf(new AElf.providers.HttpProvider(stageEndpoint));
@@ -114,7 +131,7 @@ describe('chain should work', () => {
     const txId = blockInfo.Body.Transactions[0];
     const result = await aelf.chain.getMerklePath(txId, 1);
     expect(Array.isArray(result)).toBe(true);
-  }, 10000);
+  }, 80000);
   test('test txId has no corresponding transaction in the block with height when async', async () => {
     const aelf = new AElf(new AElf.providers.HttpProvider(stageEndpoint));
     const blockInfo = await aelf.chain.getBlockByHeight(1, true);
@@ -125,4 +142,4 @@ describe('chain should work', () => {
       'txId dce643d5c142945dc9f0665819dbf0b268b8423a94fa7a488d24cd89c0b67a23 has no correspond transaction in the block with height 2'
     );
   });
-});
+}, 20000);

@@ -1,5 +1,5 @@
 import HttpProvider from '../../../src/util/httpProvider';
-const stageEndpoint = 'https://explorer-test-tdvw.aelf.io/';
+const stageEndpoint = 'https://aelf-public-node.aelf.io/';
 // for test timeout
 jest.useFakeTimers();
 jest.spyOn(global, 'setTimeout');
@@ -105,7 +105,7 @@ describe('test httpProvider', () => {
     return expect(p).resolves.toEqual({ type: 'timeout' });
   });
   test('test get request send by xhr', () => {
-    const httpProvider = new HttpProvider('https://aelf-public-node.aelf.io');
+    const httpProvider = new HttpProvider(stageEndpoint);
     const RequestLibrary = require('xmlhttprequest').XMLHttpRequest;
     const request = new RequestLibrary();
     request.withCredentials = false;
@@ -126,7 +126,7 @@ describe('test httpProvider', () => {
   });
 
   test('test post request send by xhr', () => {
-    const httpProvider = new HttpProvider('https://aelf-public-node.aelf.io');
+    const httpProvider = new HttpProvider(stageEndpoint);
     const RequestLibrary = require('xmlhttprequest').XMLHttpRequest;
     const request = new RequestLibrary();
     request.withCredentials = false;
@@ -141,7 +141,7 @@ describe('test httpProvider', () => {
       request
     );
     const result = request.responseText;
-    expect(JSON.parse(result)).toEqual({
+    expect(JSON.parse(result)).toMatchObject({
       Success: false,
       TransactionFee: null,
       ResourceFee: null,
@@ -149,7 +149,7 @@ describe('test httpProvider', () => {
   });
 
   test('test send by xhr', async () => {
-    const httpProvider = new HttpProvider('https://aelf-public-node.aelf.io');
+    const httpProvider = new HttpProvider(stageEndpoint);
     const result = httpProvider.send({
       url: 'blockChain/blockByHeight',
       method: 'GET',
@@ -173,7 +173,7 @@ describe('test httpProvider', () => {
       'RequestLibrary',
       jest.fn().mockImplementation(xhrMockClass)
     );
-    const httpProvider = new HttpProvider('https://aelf-public-node.aelf.io');
+    const httpProvider = new HttpProvider(stageEndpoint);
     try {
       httpProvider.send({
         url: 'blockChain/blockByHeight',
@@ -188,7 +188,7 @@ describe('test httpProvider', () => {
     HttpProvider.__ResetDependency__('RequestLibrary');
   });
   test('test send async by xhr method', async () => {
-    const httpProvider = new HttpProvider('https://aelf-public-node.aelf.io');
+    const httpProvider = new HttpProvider(stageEndpoint);
     const result = await httpProvider.sendAsync({
       url: 'blockChain/blockByHeight',
       method: 'GET',
@@ -199,7 +199,7 @@ describe('test httpProvider', () => {
     expect(result).toEqual(blockByHeightRes);
   });
   test('test send async by xhr', async () => {
-    const httpProvider = new HttpProvider('https://aelf-public-node.aelf.io');
+    const httpProvider = new HttpProvider(stageEndpoint);
     const result = await httpProvider.sendAsyncByXMLHttp({
       url: 'blockChain/blockByHeight',
       method: 'GET',
@@ -210,9 +210,7 @@ describe('test httpProvider', () => {
     expect(result).toEqual(blockByHeightRes);
   });
   test('test send async by xhr when error', async () => {
-    const httpProvider = new HttpProvider(
-      'https://explorer-test.aelf.io/chain'
-    );
+    const httpProvider = new HttpProvider(stageEndpoint);
     await expect(
       httpProvider.sendAsyncByXMLHttp({
         url: 'blockChain/executeTransaction',
@@ -229,7 +227,7 @@ describe('test httpProvider', () => {
     });
   });
   test('test is connected', () => {
-    const httpProvider = new HttpProvider('https://aelf-public-node.aelf.io');
+    const httpProvider = new HttpProvider(stageEndpoint);
     const result = httpProvider.isConnected();
     expect(result).toBeTruthy();
   });

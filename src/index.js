@@ -3,7 +3,6 @@
  * @author atom-yang
  */
 import * as protobuf from '@aelfqueen/protobufjs/light';
-import jsSha256 from 'js-sha256';
 import * as bloom from './util/bloom';
 import Chain from './chain';
 import RequestManager from './util/requestManage';
@@ -13,8 +12,8 @@ import * as utils from './util/utils';
 import * as proto from './util/proto';
 import * as transform from './util/transform';
 import Settings from './util/settings';
+import sha256 from './util/sha256';
 
-const { sha256 } = jsSha256;
 /* eslint-disable no-underscore-dangle */
 export default class AElf {
   constructor(provider) {
@@ -26,7 +25,7 @@ export default class AElf {
   static version = process.env.SDK_VERSION;
 
   static providers = {
-    HttpProvider,
+    HttpProvider
   };
 
   /**
@@ -42,11 +41,11 @@ export default class AElf {
     ...utils,
     ...bloom,
     sha256,
-    transform,
+    transform
   };
 
   providers = {
-    HttpProvider,
+    HttpProvider
   };
 
   settings = new Settings();
@@ -56,7 +55,7 @@ export default class AElf {
    * @type {{api: string}}
    */
   version = {
-    api: process.env.SDK_VERSION,
+    api: process.env.SDK_VERSION
   };
 
   /**

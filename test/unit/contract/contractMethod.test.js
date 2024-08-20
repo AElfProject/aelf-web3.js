@@ -1,8 +1,8 @@
 import ContractMethod from '../../../src/contract/contractMethod';
 import ContractFactory from '../../../src/contract/index';
 import AElf from '../../../src/index';
-import { noop } from '../../../src/util/utils';
-const stageEndpoint = 'https://explorer-test-tdvw.aelf.io/chain';
+import { noop, uint8ArrayToHex } from '../../../src/util/utils';
+const stageEndpoint = 'https://tdvw-test-node.aelf.io/';
 describe('token contract with transfer method', () => {
   const aelf = new AElf(new AElf.providers.HttpProvider(stageEndpoint));
   const wallet = AElf.wallet.getWalletByPrivateKey(
@@ -322,4 +322,94 @@ describe('token contract with GetBalance method', () => {
     );
     expect(factory.GetBalance.outputType).toEqual(contractMethod._outputType);
   });
+
+  test('test prepareParametersAsync with valid refBlockNumberStrategy', async () => {
+    const result = await contractMethod.prepareParametersAsync([
+      {
+        symbol: 'ELF',
+        owner: 'soAcchsFZGEsFeaEsk9tyMnFauPgJfMyZMRrfcntGjrtC7YvE',
+        refBlockNumberStrategy: -1,
+      },
+    ]);
+    expect(typeof result).toBe('string');
+  }, 10000);
+  
+  test('test prepareParametersAsync with invalid refBlockNumberStrategy type', async () => {
+    await expect(
+      contractMethod.prepareParametersAsync([
+        {
+          symbol: 'ELF',
+          owner: 'soAcchsFZGEsFeaEsk9tyMnFauPgJfMyZMRrfcntGjrtC7YvE',
+          refBlockNumberStrategy: 'invalid type',
+        },
+      ])
+    ).rejects.toThrow('Invalid type, refBlockNumberStrategy must be number');
+  }, 10000);
+  
+  test('test prepareParametersAsync with positive refBlockNumberStrategy', async () => {
+    await expect(
+      contractMethod.prepareParametersAsync([
+        {
+          symbol: 'ELF',
+          owner: 'soAcchsFZGEsFeaEsk9tyMnFauPgJfMyZMRrfcntGjrtC7YvE',
+          refBlockNumberStrategy: 1,
+        },
+      ])
+    ).rejects.toThrow('refBlockNumberStrategy must be less than 0');
+  }, 10000);
+  
+  test('test prepareParametersAsync without refBlockNumberStrategy', async () => {
+    const result = await contractMethod.prepareParametersAsync([
+      {
+        symbol: 'ELF',
+        owner: 'soAcchsFZGEsFeaEsk9tyMnFauPgJfMyZMRrfcntGjrtC7YvE',
+      },
+    ]);
+    expect(typeof result).toBe('string');
+  }, 10000);
+
+  test('test prepareParameters with valid refBlockNumberStrategy', () => {
+    const result = contractMethod.prepareParameters([
+      {
+        symbol: 'ELF',
+        owner: 'soAcchsFZGEsFeaEsk9tyMnFauPgJfMyZMRrfcntGjrtC7YvE',
+        refBlockNumberStrategy: -1,
+      },
+    ]);
+    expect(typeof result).toBe('string');
+  }, 10000);
+  
+  test('test prepareParameters with invalid refBlockNumberStrategy type', () => {
+    expect(() => {
+      contractMethod.prepareParameters([
+        {
+          symbol: 'ELF',
+          owner: 'soAcchsFZGEsFeaEsk9tyMnFauPgJfMyZMRrfcntGjrtC7YvE',
+          refBlockNumberStrategy: 'invalid-type', // invalid type
+        },
+      ]);
+    }).toThrow('Invalid type, refBlockNumberStrategy must be number');
+  }, 10000);
+  
+  test('test prepareParameters with refBlockNumberStrategy greater than 0', () => {
+    expect(() => {
+      contractMethod.prepareParameters([
+        {
+          symbol: 'ELF',
+          owner: 'soAcchsFZGEsFeaEsk9tyMnFauPgJfMyZMRrfcntGjrtC7YvE',
+          refBlockNumberStrategy: 1, // invalid value
+        },
+      ]);
+    }).toThrow('refBlockNumberStrategy must be less than 0');
+  }, 10000);
+  
+  test('test prepareParameters without refBlockNumberStrategy', () => {
+    const result = contractMethod.prepareParameters([
+      {
+        symbol: 'ELF',
+        owner: 'soAcchsFZGEsFeaEsk9tyMnFauPgJfMyZMRrfcntGjrtC7YvE',
+      },
+    ]);
+    expect(typeof result).toBe('string');
+  }, 10000);
 });

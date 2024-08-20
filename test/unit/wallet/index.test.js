@@ -90,4 +90,20 @@ describe('test wallet', () => {
     const _getWallet = Wallet.__GetDependency__('_getWallet');
     expect(() => _getWallet()).toThrow('not a valid method');
   });
+
+  test('test verify', () => {
+    const privateKey =
+      '03bd0cea9730bcfc8045248fd7f4841ea19315995c44801a3dfede0ca872f808';
+    const wallet = Wallet.getWalletByPrivateKey(privateKey);
+    const signature =
+      '276aa36fcab0ac3d4071a4bfb868f636d1a9639916afe4ec329529014f923a372b688b4eb59d6587481bc15e4a1684e1d92b7598967767713d1504dcea83dadb01';
+    const pubKey = wallet.keyPair.getPublic('hex');
+    const msgHash =
+      'b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9';
+    const isValid = Wallet.verify(signature.toString('hex'), msgHash, pubKey);
+    expect(isValid).toBe(true);
+
+    const isValidNoPubKey = Wallet.verify(signature.toString('hex'), msgHash);
+    expect(isValidNoPubKey).toBe(true);
+  });
 });

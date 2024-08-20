@@ -5,17 +5,14 @@
 import elliptic from 'elliptic';
 import * as bip39 from 'bip39';
 import hdkey from 'hdkey';
-import jsSha256 from 'js-sha256';
 import AES from 'crypto-js/aes';
 import encUTF8 from 'crypto-js/enc-utf8';
+import BN from 'bn.js';
+import sha256 from '../util/sha256';
 import * as keyStore from '../util/keyStore';
-import {
-  encodeAddressRep,
-  padLeft
-} from '../util/utils';
+import { encodeAddressRep, padLeft } from '../util/utils';
 import { Transaction } from '../util/proto';
 
-const { sha256 } = jsSha256;
 // eslint-disable-next-line new-cap
 const ellipticEc = new elliptic.ec('secp256k1');
 
@@ -70,7 +67,7 @@ const getAddressFromPubKey = pubKey => {
   return encodeAddressRep(hash);
 };
 
-const _getWallet = (type, value, BIP44Path = 'm/44\'/1616\'/0\'/0/0') => {
+const _getWallet = (type, value, BIP44Path = "m/44'/1616'/0'/0/0", seedWithBuffer = true) => {
   // m/purpose'/coin_type'/account'/change/address_index
   // "m/44'/1616'/0'/0/0"
 
@@ -83,14 +80,14 @@ const _getWallet = (type, value, BIP44Path = 'm/44\'/1616\'/0\'/0/0') => {
     case 'createNewWallet':
       mnemonic = bip39.generateMnemonic();
       rootSeed = bip39.mnemonicToSeedSync(mnemonic).toString('hex');
-      hdWallet = hdkey.fromMasterSeed(rootSeed);
+      hdWallet = hdkey.fromMasterSeed(seedWithBuffer ? Buffer.from(rootSeed, 'hex') : rootSeed);
       childWallet = hdWallet.derive(BIP44Path);
       keyPair = ellipticEc.keyFromPrivate(childWallet.privateKey);
       break;
     case 'getWalletByMnemonic':
       mnemonic = value;
       rootSeed = bip39.mnemonicToSeedSync(mnemonic).toString('hex');
-      hdWallet = hdkey.fromMasterSeed(rootSeed);
+      hdWallet = hdkey.fromMasterSeed(seedWithBuffer ? Buffer.from(rootSeed, 'hex') : rootSeed);
       childWallet = hdWallet.derive(BIP44Path);
       keyPair = ellipticEc.keyFromPrivate(childWallet.privateKey);
       break;
@@ -106,7 +103,7 @@ const _getWallet = (type, value, BIP44Path = 'm/44\'/1616\'/0\'/0/0') => {
   }
   // let mnemonic = bip39.generateMnemonic();
   // let rootSeed = bip39.mnemonicToSeedHex(mnemonic);
-  // let hdWallet = hdkey.fromMasterSeed(rootSeed);
+  // let hdWallet = hdkey.fromMasterSeed(Buffer.from(rootSeed, 'hex'));
   // let keyPair = ec.keyFromPrivate(xPrivateKey);
   // TODO 1.将私钥加密保存,用密码解密才能使用。
   // TODO 2.将助记词机密保存,用密码解密才能获取。
@@ -135,11 +132,9 @@ const getSignature = (bytesToBeSign, keyPair) => {
   const sigObj = ellipticEc.sign(Buffer.from(msgHash, 'hex'), privateKey, 'hex', {
     canonical: true
   });
-  const hex = [
-    sigObj.r.toString('hex', 32),
-    sigObj.s.toString('hex', 32),
-    `0${sigObj.recoveryParam.toString()}`
-  ].join('');
+  const hex = [sigObj.r.toString('hex', 32), sigObj.s.toString('hex', 32), `0${sigObj.recoveryParam.toString()}`].join(
+    ''
+  );
   return Buffer.from(hex, 'hex');
 };
 
@@ -162,7 +157,8 @@ const getSignature = (bytesToBeSign, keyPair) => {
  * //     address: "5uhk3434242424"
  * // }
  */
-const createNewWallet = (BIP44Path = 'm/44\'/1616\'/0\'/0/0') => _getWallet('createNewWallet', '', BIP44Path);
+const createNewWallet = (BIP44Path = "m/44'/1616'/0'/0/0", seedWithBuffer = true) =>
+  _getWallet('createNewWallet', '', BIP44Path, seedWithBuffer);
 
 /**
  * create a wallet by mnemonic
@@ -176,9 +172,9 @@ const createNewWallet = (BIP44Path = 'm/44\'/1616\'/0\'/0/0') => _getWallet('cre
  *
  * const mnemonicWallet = aelf.wallet.getWalletByMnemonic('hello world');
  */
-const getWalletByMnemonic = (mnemonic, BIP44Path = 'm/44\'/1616\'/0\'/0/0') => {
+const getWalletByMnemonic = (mnemonic, BIP44Path = "m/44'/1616'/0'/0/0", seedWithBuffer = true) => {
   if (bip39.validateMnemonic(mnemonic)) {
-    return _getWallet('getWalletByMnemonic', mnemonic, BIP44Path);
+    return _getWallet('getWalletByMnemonic', mnemonic, BIP44Path, seedWithBuffer);
   }
   return false;
 };
@@ -253,10 +249,37 @@ const sign = (hexString, keyPair) => {
   return getSignature(bytesToBeSign, keyPair);
 };
 
+const hexToDecimal = x => ellipticEc.keyFromPrivate(x, 'hex').getPrivate().toString(10);
+
+/**
+ * @param {string} signature Signature
+ * @param {string} msgHash Message for signing
+ * @param {string} pubKey deprecatedParam - This parameter is deprecated.
+ */
+const verify = (signature, msgHash, pubKey) => {
+  const rHex = signature.substring(0, 64);
+  const sHex = signature.substring(64, 128);
+  const recoveryParamHex = signature.substring(128, 130);
+  const sigObj = {
+    r: new BN(rHex, 16),
+    s: new BN(sHex, 16),
+    recoveryParam: recoveryParamHex.slice(1)
+  };
+  let publicKey;
+  if (!pubKey) {
+    const key = ellipticEc.recoverPubKey(hexToDecimal(msgHash), sigObj, +sigObj.recoveryParam, 'hex');
+    publicKey = ellipticEc.keyFromPublic(key).getPublic('hex');
+  } else {
+    publicKey = pubKey;
+  }
+  return ellipticEc.verify(msgHash, sigObj, Buffer.from(publicKey, 'hex'));
+};
+
 export default {
   hdkey,
   bip39,
   sign,
+  verify,
   signTransaction,
   createNewWallet,
   getWalletByMnemonic,

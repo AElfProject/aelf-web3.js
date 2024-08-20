@@ -1,4 +1,5 @@
-import { IWallet } from "../wallet";
+import { IWalletInfo } from '../wallet';
+import { TAddress } from './proto';
 
 interface IOptions {
   dklen: number;
@@ -14,7 +15,7 @@ interface IKdfparams {
   p: number;
   salt: string;
 }
-type TWalletInfo = IWallet & {
+type TWalletInfoObject = IWalletInfo & {
   nickName?: string;
 };
 interface ICipherparams {
@@ -33,18 +34,18 @@ interface IkeyStore {
   version: number;
   type: string;
   nickName?: string;
-  address: string;
-  crypto: ICrypto;
+  address: TAddress;
+  crypto: Crypto;
 }
 export declare function getKeystore(
-  walletInfoInput: TWalletInfo,
+  walletInfoInput: TWalletInfoObject,
   password: string,
-  option?: IOptions
+  option?: IOptions & Record<string, any>
 ): IkeyStore;
 export declare function unlockKeystore(
   keyStoreInput: IkeyStore,
   password: string
-): TWalletInfo;
+): TWalletInfoObject;
 export declare function checkPassword(
   keyStoreInput: IkeyStore,
   password: string

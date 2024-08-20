@@ -1,10 +1,17 @@
 import * as protobuf from '@aelfqueen/protobufjs/light';
-export interface IAddress {
+
+export type TChainId = string;
+export type TBlockHash = string;
+export type TBlockHeight = number;
+export type TAddress = string;
+export type TTransactionId = string;
+export type TRawTransaction = string;
+export interface IAddressObject {
   value: Buffer;
 }
-export interface ITransaction {
-  from: IAddress;
-  to: IAddress;
+export interface ITransactionObject {
+  from: IAddressObject;
+  to: IAddressObject;
   methodName: string;
   params: string;
 }
@@ -12,7 +19,7 @@ export interface ITransaction {
 export const coreRootProto: protobuf.Root;
 export const Transaction: protobuf.Type;
 export const Hash: protobuf.Type;
-export const Address: protobuf.Type;
+export const AddressProtobuf: protobuf.Type;
 export const TransactionFeeCharged: protobuf.Type;
 export const ResourceTokenCharged: protobuf.Type;
 export function getFee(
@@ -21,7 +28,7 @@ export function getFee(
 ): { [k: string]: any } | undefined | null;
 
 interface ILog {
-  Address: string;
+  Address: TAddress;
   Name: string;
   Indexed: Array<string> | null;
   NonIndexed: string;
@@ -49,8 +56,8 @@ export function getHashFromHex(
 export function getHashObjectFromHex(hex: string): { [k: string]: any };
 export function encodeTransaction(tx: { [k: string]: any }): Uint8Array;
 export function getTransaction(
-  from: string,
-  to: string,
+  from: TAddress,
+  to: TAddress,
   methodName: string,
   params: any
 ): protobuf.Message<{

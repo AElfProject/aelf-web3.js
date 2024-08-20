@@ -1,5 +1,5 @@
 import AElf from '../../src/index';
-const stageEndpoint = 'https://explorer-test-tdvw.aelf.io/chain';
+const stageEndpoint = 'https://tdvw-test-node.aelf.io';
 describe('test AElf', () => {
   test('test AElf is connected', () => {
     const aelf = new AElf(new AElf.providers.HttpProvider(stageEndpoint));

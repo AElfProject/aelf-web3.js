@@ -1,9 +1,6 @@
 const gbk = require('gbk-string');
 import ChainMethod from '../../../src/chain/chainMethod';
-import {
-  inputAddressFormatter,
-  outputFileDescriptorSetFormatter,
-} from '../../../src/util/formatters';
+import { inputAddressFormatter, outputFileDescriptorSetFormatter } from '../../../src/util/formatters';
 import HttpProvider from '../../../src/util/httpProvider';
 import RequestManager from '../../../src/util/requestManage';
 
@@ -14,10 +11,9 @@ describe('chainMethod should work', () => {
       call: 'net/peer',
       method: 'POST',
       params: ['address'],
-      inputFormatter: [],
+      inputFormatter: []
     });
-    const address =
-      'ELF_ASh2Wt7nSEmYqnGxPPzp4pnVDU4uhj1XW9Se5VeZcX2UDdyjx_tDVW';
+    const address = 'ELF_ASh2Wt7nSEmYqnGxPPzp4pnVDU4uhj1XW9Se5VeZcX2UDdyjx_tDVW';
     const result = chainMethod.formatInput(address);
     expect(result).toEqual(address);
   });
@@ -28,15 +24,11 @@ describe('chainMethod should work', () => {
       method: 'GET',
       params: ['address'],
       inputFormatter: [inputAddressFormatter],
-      outputFormatter: outputFileDescriptorSetFormatter,
+      outputFormatter: outputFileDescriptorSetFormatter
     });
-    const address = [
-      'ELF_ASh2Wt7nSEmYqnGxPPzp4pnVDU4uhj1XW9Se5VeZcX2UDdyjx_tDVW',
-    ];
+    const address = ['ELF_ASh2Wt7nSEmYqnGxPPzp4pnVDU4uhj1XW9Se5VeZcX2UDdyjx_tDVW'];
     const result = chainMethod.formatInput(address);
-    expect(result).toEqual([
-      'ASh2Wt7nSEmYqnGxPPzp4pnVDU4uhj1XW9Se5VeZcX2UDdyjx',
-    ]);
+    expect(result).toEqual(['ASh2Wt7nSEmYqnGxPPzp4pnVDU4uhj1XW9Se5VeZcX2UDdyjx']);
   });
   test('test manager is on ChainMethod', () => {
     const chainMethod = new ChainMethod({
@@ -44,7 +36,7 @@ describe('chainMethod should work', () => {
       call: 'net/peer',
       method: 'POST',
       params: ['address'],
-      inputFormatter: [],
+      inputFormatter: []
     });
     const manager = new RequestManager();
     chainMethod.setRequestManager(manager);
@@ -56,10 +48,9 @@ describe('chainMethod should work', () => {
       call: 'net/peer',
       method: 'POST',
       params: ['address'],
-      inputFormatter: [],
+      inputFormatter: []
     });
-    const address =
-      'ELF_ASh2Wt7nSEmYqnGxPPzp4pnVDU4uhj1XW9Se5VeZcX2UDdyjx_tDVW';
+    const address = 'ELF_ASh2Wt7nSEmYqnGxPPzp4pnVDU4uhj1XW9Se5VeZcX2UDdyjx_tDVW';
     const result = chainMethod.formatOutput(address);
     expect(result).toEqual(address);
   });
@@ -70,14 +61,12 @@ describe('chainMethod should work', () => {
       method: 'GET',
       params: ['address'],
       inputFormatter: [inputAddressFormatter],
-      outputFormatter: outputFileDescriptorSetFormatter,
+      outputFormatter: outputFileDescriptorSetFormatter
     });
     const address = 'CiIKIB7Dg+4T7eLv5hCby8b4g2IL6nkg/EerfNaAfWgby3SR';
     const name = chainMethod.formatOutput(address).file[0].name;
     const str = gbk.encodeGBK(name);
-    expect(str).toBe(
-      '%1E%3F%3F%13%3F%3F%3F%3F%10%3F%3F%3F%3F%3Fb%B%3Fy%20%3FG%3F%7C%3F%7Dh%1B%3Ft%3F'
-    );
+    expect(str).toBe('%1E%3F%3F%13%3F%3F%3F%3F%10%3F%3F%3F%3F%3Fb%B%3Fy%20%3FG%3F%7C%3F%7Dh%1B%3Ft%3F');
   });
   test('test not enough parameters', () => {
     const chainMethod = new ChainMethod({
@@ -86,7 +75,7 @@ describe('chainMethod should work', () => {
       method: 'GET',
       params: ['address'],
       inputFormatter: [inputAddressFormatter],
-      outputFormatter: outputFileDescriptorSetFormatter,
+      outputFormatter: outputFileDescriptorSetFormatter
     });
     expect(() => chainMethod.extractArgumentsIntoObject([])).toThrow(
       'should supply enough parameters for blockChain/contractFileDescriptorSet'
@@ -99,10 +88,9 @@ describe('chainMethod should work', () => {
       method: 'GET',
       params: ['address'],
       inputFormatter: [inputAddressFormatter],
-      outputFormatter: outputFileDescriptorSetFormatter,
+      outputFormatter: outputFileDescriptorSetFormatter
     });
-    const address =
-      'ELF_ASh2Wt7nSEmYqnGxPPzp4pnVDU4uhj1XW9Se5VeZcX2UDdyjx_tDVW';
+    const address = 'ELF_ASh2Wt7nSEmYqnGxPPzp4pnVDU4uhj1XW9Se5VeZcX2UDdyjx_tDVW';
     const fn = new Function();
     const args = [address, fn];
     const result = chainMethod.extractArgumentsIntoObject(args);
@@ -115,10 +103,9 @@ describe('chainMethod should work', () => {
       method: 'GET',
       params: ['address'],
       inputFormatter: [inputAddressFormatter],
-      outputFormatter: outputFileDescriptorSetFormatter,
+      outputFormatter: outputFileDescriptorSetFormatter
     });
-    const address =
-      'ELF_ASh2Wt7nSEmYqnGxPPzp4pnVDU4uhj1XW9Se5VeZcX2UDdyjx_tDVW';
+    const address = 'ELF_ASh2Wt7nSEmYqnGxPPzp4pnVDU4uhj1XW9Se5VeZcX2UDdyjx_tDVW';
     const args = [address, { sync: true }];
     const result = chainMethod.extractArgumentsIntoObject(args);
     expect(result.isSync).toBeTruthy();
@@ -128,20 +115,18 @@ describe('chainMethod should work', () => {
       name: 'getMerklePathByTxId',
       call: 'blockChain/merklePathByTransactionId',
       method: 'GET',
-      params: ['transactionId'],
+      params: ['transactionId']
     });
-    const transactionId =
-      '4c12bd187803fa1b63ac5794f614496154454725aa6c6747c890cdab39708e02';
+    const transactionId = '4c12bd187803fa1b63ac5794f614496154454725aa6c6747c890cdab39708e02';
     const result = chainMethod.extractArgumentsIntoObject([transactionId]);
     expect(result.params).toEqual({
-      transactionId:
-        '4c12bd187803fa1b63ac5794f614496154454725aa6c6747c890cdab39708e02',
+      transactionId: '4c12bd187803fa1b63ac5794f614496154454725aa6c6747c890cdab39708e02'
     });
   });
   test('test sync argument', () => {
     const chainMethod = new ChainMethod({
       name: 'getChainStatus',
-      call: 'blockChain/chainStatus',
+      call: 'blockChain/chainStatus'
     });
     const httpProvider = new HttpProvider('https://aelf-public-node.aelf.io');
     const manager = new RequestManager(httpProvider);
@@ -154,7 +139,7 @@ describe('chainMethod should work', () => {
       name: 'getChainStatus',
       call: 'blockChain/chainStatus',
       method: 'GET',
-      params: [],
+      params: []
     });
     const httpProvider = new HttpProvider('https://aelf-public-node.aelf.io');
     const manager = new RequestManager(httpProvider);
@@ -170,7 +155,7 @@ describe('chainMethod should work', () => {
       name: 'getTxResult',
       call: 'blockChain/transactionResult',
       method: 'GET',
-      params: ['transactionId'],
+      params: ['transactionId']
     });
     const httpProvider = new HttpProvider('https://aelf-public-node.aelf.io');
     const manager = new RequestManager(httpProvider);

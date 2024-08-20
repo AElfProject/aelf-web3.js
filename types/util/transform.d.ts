@@ -1,4 +1,4 @@
-import * as protobuf from "@aelfqueen/protobufjs";
+import * as protobuf from '@aelfqueen/protobufjs';
 interface IInTransformer {
   filter: (resolvedType: protobuf.Type) => boolean;
   transformer: (origin: string | Array<string>) => {

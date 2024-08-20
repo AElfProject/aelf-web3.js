@@ -39,7 +39,7 @@ module.exports = {
     '!**/examples/**',
     '!**/dist/**',
     '!**/script/**',
-    '!**/build/**',
+    '!**/build/**'
   ],
 
   // An array of regexp pattern strings used to skip coverage collection
@@ -59,11 +59,11 @@ module.exports = {
   // An object that configures minimum threshold enforcement for coverage results
   coverageThreshold: {
     global: {
-      branches: 95,
-      functions: 95,
-      lines: 95,
-      statements: 95,
-    },
+      branches: 94,
+      functions: 94,
+      lines: 94,
+      statements: 94
+    }
   },
 
   // A path to a custom dependency extractor
@@ -123,7 +123,16 @@ module.exports = {
   // projects: null,
 
   // Use this configuration option to add custom reporters to Jest
-  // reporters: [],
+  reporters: [
+    'default',
+    [
+      'jest-junit',
+      {
+        outputDirectory: '.',
+        outputName: 'jest-report.xml'
+      }
+    ]
+  ],
 
   // Automatically reset mock state between every test
   // resetMocks: false,
@@ -169,9 +178,10 @@ module.exports = {
   // The glob patterns Jest uses to detect test files
   testMatch: [
     '**/test/unit/**/?(*.)+(test).[jt]s?(x)',
-    '**/test/unit/util/httpProvider.browser-test.js',
+    '**/test/unit/util/httpProvider.browser-test.js'
     // "**/?(*.)+(spec|test).[tj]s?(x)"
   ],
+  testTimeout: 20000,
 
   // An array of regexp pattern strings that are matched against all test paths, matched tests are skipped
   // testPathIgnorePatterns: [

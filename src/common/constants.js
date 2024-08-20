@@ -2,7 +2,10 @@
  * @file AElf-sdk constants
  * @author atom-yang
  */
-import { inputAddressFormatter, outputFileDescriptorSetFormatter } from '../util/formatters';
+import {
+  inputAddressFormatter,
+  outputFileDescriptorSetFormatter,
+} from '../util/formatters';
 
 /**
  * unsigned 256 int
@@ -14,13 +17,13 @@ export const CHAIN_METHODS = {
     name: 'getChainStatus',
     call: 'blockChain/chainStatus',
     method: 'GET',
-    params: []
+    params: [],
   },
   getChainState: {
     name: 'getChainState',
     call: 'blockChain/blockState',
     method: 'GET',
-    params: ['blockHash']
+    params: ['blockHash'],
   },
   getContractFileDescriptorSet: {
     name: 'getContractFileDescriptorSet',
@@ -28,107 +31,114 @@ export const CHAIN_METHODS = {
     method: 'GET',
     params: ['address'],
     inputFormatter: [inputAddressFormatter],
-    outputFormatter: outputFileDescriptorSetFormatter
+    outputFormatter: outputFileDescriptorSetFormatter,
   },
   getBlockHeight: {
     name: 'getBlockHeight',
     call: 'blockChain/blockHeight',
     method: 'GET',
     params: [],
-    inputFormatter: []
+    inputFormatter: [],
   },
   getBlock: {
     name: 'getBlock',
     call: 'blockChain/block',
     method: 'GET',
-    params: ['blockHash', 'includeTransactions']
+    params: ['blockHash', 'includeTransactions'],
   },
   getBlockByHeight: {
     name: 'getBlockByHeight',
     call: 'blockChain/blockByHeight',
     method: 'GET',
-    params: ['blockHeight', 'includeTransactions']
+    params: ['blockHeight', 'includeTransactions'],
+  },
+  getContractViewMethodList: {
+    name: 'getContractViewMethodList',
+    call: 'blockChain/ContractViewMethodList',
+    method: 'GET',
+    params: ['address'],
+    inputFormatter: []
   },
   getTxResult: {
     name: 'getTxResult',
     call: 'blockChain/transactionResult',
     method: 'GET',
     params: ['transactionId'],
-    inputFormatter: []
+    inputFormatter: [],
   },
   getTxResults: {
     name: 'getTxResults',
     call: 'blockChain/transactionResults',
     method: 'GET',
-    params: ['blockHash', 'offset', 'limit']
+    params: ['blockHash', 'offset', 'limit'],
   },
   getMerklePathByTxId: {
     name: 'getMerklePathByTxId',
     call: 'blockChain/merklePathByTransactionId',
     method: 'GET',
-    params: ['transactionId']
+    params: ['transactionId'],
   },
   getTransactionPoolStatus: {
     name: 'getTransactionPoolStatus',
     call: 'blockChain/transactionPoolStatus',
     method: 'GET',
-    params: []
+    params: [],
   },
   sendTransaction: {
     name: 'sendTransaction',
     call: 'blockChain/sendTransaction',
     method: 'POST',
     params: ['rawTransaction'],
-    inputFormatter: []
+    inputFormatter: [],
   },
   sendTransactions: {
     name: 'sendTransactions',
     call: 'blockChain/sendTransactions',
     method: 'POST',
     params: ['rawTransaction'],
-    inputFormatter: []
+    inputFormatter: [],
   },
   calculateTransactionFee: {
     name: 'calculateTransactionFee',
     call: 'blockChain/calculateTransactionFee',
     method: 'POST',
     params: ['rawTransaction'],
-    inputFormatter: []
+    inputFormatter: [],
   },
   callReadOnly: {
     name: 'callReadOnly',
     call: 'blockChain/executeTransaction',
     method: 'POST',
     params: ['rawTransaction'],
-    inputFormatter: []
+    inputFormatter: [],
   },
   getPeers: {
     name: 'getPeers',
     call: 'net/peers',
     method: 'GET',
-    params: ['withMetrics']
+    params: ['withMetrics'],
   },
   addPeer: {
     name: 'addPeer',
     call: 'net/peer',
     method: 'POST',
     params: ['address'],
-    inputFormatter: []
+    inputFormatter: [],
   },
   removePeer: {
     name: 'removePeer',
     call: 'net/peer',
     method: 'DELETE',
     params: ['address'],
-    inputFormatter: []
+    inputFormatter: [],
   },
   networkInfo: {
     name: 'networkInfo',
     call: 'net/networkInfo',
     method: 'GET',
     params: [],
-    inputFormatter: []
-  }
+    inputFormatter: [],
+  },
 };
 
 /**
@@ -161,7 +171,7 @@ export const UNIT_MAP = {
   grand: '1000000000000000000000',
   mether: '1000000000000000000000000',
   gether: '1000000000000000000000000000',
-  tether: '1000000000000000000000000000000'
+  tether: '1000000000000000000000000000000',
 };
 
 export const TO_STRING_UTF8_ENCODING = 'utf8';
@@ -174,24 +184,24 @@ export const CONGIG = {
   contractZeroAddress: 'AELF',
   contractZeroAbi: 'AELF',
   contractZero: 'AELF',
-  defaultAccount: '0x04bb9c6c297ea90b1bc3e6af2c87d416583e'
+  defaultAccount: '0x04bb9c6c297ea90b1bc3e6af2c87d416583e',
 };
 
 export const KEY_STORE_ERRORS = {
   INVALID_PASSWORD: {
     error: 200001,
-    errorMessage: 'Password Error'
+    errorMessage: 'Password Error',
   },
   NOT_AELF_KEY_STORE: {
     error: 200002,
-    errorMessage: 'Not a aelf key store'
+    errorMessage: 'Not a aelf key store',
   },
   WRONG_VERSION: {
     error: 200004,
-    errorMessage: 'The version is incorrect'
+    errorMessage: 'The version is incorrect',
   },
   WRONG_KEY_STORE_VERSION: {
     error: 200005,
-    errorMessage: 'Not a V1 key store'
-  }
+    errorMessage: 'Not a V1 key store',
+  },
 };

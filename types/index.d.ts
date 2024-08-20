@@ -1,9 +1,9 @@
 import * as protobuf from '@aelfqueen/protobufjs/light';
-import HttpProvider from './util/httpProvider';
+import HttpProvider, { IHttpHeaders } from './util/httpProvider';
 import Wallet from './wallet/index';
 import * as proto from './util/proto';
 import * as utils from './util/utils';
-import { sha256 } from 'js-sha256';
+import sha256 from './util/sha256';
 import * as transform from './util/transform';
 import {
   arrayToHex,
@@ -35,9 +35,14 @@ import {
   isIndexedInBloom,
   isAddressInBloom,
 } from './util/bloom';
+
+import Settings from './util/settings';
+import Chain from './chain';
+import { RequestManager } from './util/requestManage';
+
 interface IUtils {
-  base58: utils.base58;
-  chainIdConvertor: utils.chainIdConvertor;
+  base58: utils.IBase58;
+  chainIdConvertor: utils.IChainIdConvertor;
   arrayToHex: typeof arrayToHex;
   padLeft: typeof padLeft;
   padRight: typeof padRight;
@@ -61,14 +66,14 @@ interface IUtils {
   deserializeTransaction: typeof deserializeTransaction;
   getAuthorization: typeof getAuthorization;
 }
-import Settings from './util/settings';
+
 interface IBloom {
   isInBloom: typeof isInBloom;
   isEventInBloom: typeof isEventInBloom;
   isIndexedInBloom: typeof isIndexedInBloom;
   isAddressInBloom: typeof isAddressInBloom;
 }
-type TUtil = IUtils &
+type TUtilsType = IUtils &
   IBloom & {
     sha256: typeof sha256;
   } & {
@@ -77,23 +82,32 @@ type TUtil = IUtils &
 interface IVersion {
   api?: string;
 }
-declare namespace AElf {}
-export declare class AElf {
+
+declare namespace AElf {
+  // Constructor signature
+  type HttpProviderType = {
+    new (host?: string, timeout?: number, headers?: IHttpHeaders): HttpProvider;
+  };
+}
+declare class AElf {
   constructor(provider: HttpProvider);
   static version?: string;
   static providers: {
-    HttpProvider: HttpProvider;
+    HttpProvider: AElf.HttpProviderType;
   };
   static pbjs: typeof protobuf;
   static pbUtils: typeof proto;
   static wallet: Wallet;
-  static utils: TUtil;
+  static utils: TUtilsType;
   providers: {
-    HttpProvider: HttpProvider;
+    HttpProvider: AElf.HttpProviderType;
   };
   settings: Settings;
   version: IVersion;
   isConnected(): boolean;
   setProvider(provider: HttpProvider): void;
+  _requestManager: RequestManager;
+  currentProvider: HttpProvider;
+  chain: Chain;
 }
 export default AElf;

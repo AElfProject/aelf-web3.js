@@ -12,9 +12,22 @@ import {
   getHashObjectFromHex,
   encodeTransaction,
   getTransaction,
+  deserializeLog,
 } from '../../../src/util/proto';
+import ContractFactory from '../../../src/contract/index';
+import AElf from '../../../src/index';
 
-describe('test proto', () => {
+describe('test proto',() => {
+  const stageEndpoint = 'https://tdvw-test-node.aelf.io';
+  const aelf = new AElf(new AElf.providers.HttpProvider(stageEndpoint));
+  const chain = aelf.chain;
+  const address =
+    'ELF_2sGZFRtqQ57F55Z2KvhmoozKrf7ik2htNVQawEAo3Vyvcx9Qwr_tDVW';
+  const fds = chain.getContractFileDescriptorSet(address, {
+    sync: true,
+  });
+  const factory = new ContractFactory(chain, fds, AElf.wallet);
+
   test('deserialize fee', () => {
     const Logs = [
       {
@@ -27,6 +40,7 @@ describe('test proto', () => {
     expect(getTransactionFee(Logs)).toEqual([
       {
         symbol: 'ELF',
+        chargingAddress: null,
         amount: '54020000',
       },
     ]);
@@ -41,10 +55,12 @@ describe('test proto', () => {
     const result = getFee('CgNFTEYQoI/hGQ==', 'TransactionFeeCharged');
     expect(result).toEqual({
       symbol: 'ELF',
+      chargingAddress: null,
       amount: '54020000',
     });
     expect(getFee('CgNFTEYQoI/hGQ==')).toEqual({
       symbol: 'ELF',
+      chargingAddress: null,
       amount: '54020000',
     });
   });
@@ -143,7 +159,9 @@ describe('test proto', () => {
       },
     ];
     const result = getTransactionFee(logs);
-    expect(result).toEqual([{ symbol: 'ELF', amount: '54020000' }]);
+    expect(result).toEqual([
+      { symbol: 'ELF', chargingAddress: null, amount: '54020000' },
+    ]);
   });
   test('test get transaction fee without TransactionFeeCharged type', () => {
     const logs = [
@@ -266,5 +284,24 @@ describe('test proto', () => {
     expect(result.to.value.toString('hex')).toEqual(
       '2791e992a57f28e75a11f13af2c0aec8b0eb35d2f048d42eba8901c92e0378dc'
     );
+  });
+  test('test deserialize logs with unsupported dataType', async () => {
+    const Logs = [
+      {
+        Address: 'ELF_2sGZFRtqQ57F55Z2KvhmoozKrf7ik2htNVQawEAo3Vyvcx9Qwr_tDVW',
+        Name: 'FAKE',
+        Indexed: null,
+        NonIndexed: 'CgNFTEYQoI/hGQ==',
+      },
+    ];
+    const contractInstance = factory.at(address);
+    const result = deserializeLog(Logs, contractInstance.services);
+    expect(result).toEqual([{
+      message: 'This log is not supported.',
+    }]);
+  });
+  test('test deserialize logs with empty logs', async () => {
+    const result = deserializeLog();
+    expect(result).toEqual([]);
   });
 });

@@ -29,8 +29,10 @@
     "no-underscore-dangle": "off",
     "no-bitwise": "off",
     "no-mixed-operators": "off",
-    "max-len": ["error", { "code": 120 }],
+    "max-len": ["error", { "code": 120 , "ignoreComments": true}],
     "class-methods-use-this": "off",
-    "no-plusplus": "off"
+    "no-plusplus": "off",
+    "implicit-arrow-linebreak": "off",
+    "object-curly-newline": "off"
   }
 }

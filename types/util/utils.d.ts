@@ -1,10 +1,13 @@
 import BigNumber from 'bignumber.js';
 import * as protobuf from '@aelfqueen/protobufjs/light';
-export interface base58 {
+import { TAddress } from './proto';
+
+export type TGenericFunction = (...args: any[]) => any;
+export interface IBase58 {
   encode(data: ArrayBuffer | SharedArrayBuffer, encoding?: number): string;
   decode(str: string, encoding?: string): Buffer;
 }
-export interface chainIdConvertor {
+export interface IChainIdConvertor {
   chainIdToBase58(chainId: string): string;
   base58ToChainId(base58String: string): Buffer;
 }
@@ -19,7 +22,7 @@ export declare function padRight(
   charLen: number,
   sign?: string
 ): string;
-export declare function decodeAddressRep(address: string): string;
+export declare function decodeAddressRep(address: TAddress): string;
 export declare function encodeAddressRep(hex: string): string;
 export declare function isBigNumber(object: any): boolean;
 export declare function isString(object: any): boolean;
