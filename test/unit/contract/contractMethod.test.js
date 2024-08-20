@@ -2,9 +2,9 @@ import ContractMethod from '../../../src/contract/contractMethod';
 import ContractFactory from '../../../src/contract/index';
 import AElf from '../../../src/index';
 import { noop } from '../../../src/util/utils';
-const stageEndpoint = 'https://explorer-test-tdvw.aelf.io/chain';
+import { tdvwEndPoint } from '../constant';
 describe('token contract with transfer method', () => {
-  const aelf = new AElf(new AElf.providers.HttpProvider(stageEndpoint));
+  const aelf = new AElf(new AElf.providers.HttpProvider(tdvwEndPoint));
   const wallet = AElf.wallet.getWalletByPrivateKey(
     '943df6d39fd1e1cc6ae9813e54f7b9988cf952814f9c31e37744b52594cb4096'
   );
@@ -59,7 +59,7 @@ describe('token contract with transfer method', () => {
   });
 });
 describe('token contract with GetBalance method', () => {
-  const aelf = new AElf(new AElf.providers.HttpProvider(stageEndpoint));
+  const aelf = new AElf(new AElf.providers.HttpProvider(tdvwEndPoint));
   const wallet = AElf.wallet.getWalletByPrivateKey(
     '943df6d39fd1e1cc6ae9813e54f7b9988cf952814f9c31e37744b52594cb4096'
   );

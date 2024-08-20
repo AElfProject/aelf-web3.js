@@ -1,8 +1,8 @@
 import ContractFactory from '../../../src/contract/index';
-const stageEndpoint = 'https://explorer-test-tdvw.aelf.io/chain';
 import AElf from '../../../src/index';
+import { tdvwEndPoint } from '../constant';
 describe('contract factory', () => {
-  const aelf = new AElf(new AElf.providers.HttpProvider(stageEndpoint));
+  const aelf = new AElf(new AElf.providers.HttpProvider(tdvwEndPoint));
   const chain = aelf.chain;
   const address = 'ELF_2sGZFRtqQ57F55Z2KvhmoozKrf7ik2htNVQawEAo3Vyvcx9Qwr_tDVW';
   const fds = chain.getContractFileDescriptorSet(address, {

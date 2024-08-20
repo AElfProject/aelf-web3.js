@@ -6,6 +6,7 @@ import {
 } from '../../../src/util/formatters';
 import HttpProvider from '../../../src/util/httpProvider';
 import RequestManager from '../../../src/util/requestManage';
+import { tdvwEndPoint } from '../constant';
 
 describe('chainMethod should work', () => {
   test('test format input params with no inputFormatter', () => {
@@ -143,11 +144,11 @@ describe('chainMethod should work', () => {
       name: 'getChainStatus',
       call: 'blockChain/chainStatus',
     });
-    const httpProvider = new HttpProvider('https://aelf-public-node.aelf.io');
+    const httpProvider = new HttpProvider(tdvwEndPoint);
     const manager = new RequestManager(httpProvider);
     chainMethod.setRequestManager(manager);
     const result = chainMethod.run({ sync: true });
-    expect(result.ChainId).toEqual('AELF');
+    expect(result.ChainId).toEqual('tDVW');
   });
   test('test fn argument when async', async () => {
     const chainMethod = new ChainMethod({
@@ -156,12 +157,12 @@ describe('chainMethod should work', () => {
       method: 'GET',
       params: [],
     });
-    const httpProvider = new HttpProvider('https://aelf-public-node.aelf.io');
+    const httpProvider = new HttpProvider(tdvwEndPoint);
     const manager = new RequestManager(httpProvider);
     chainMethod.setRequestManager(manager);
     const fn = jest.fn();
     const result = await chainMethod.run(fn);
-    expect(result.ChainId).toEqual('AELF');
+    expect(result.ChainId).toEqual('tDVW');
     expect(fn).toHaveBeenCalled();
     expect(fn).toHaveBeenCalledWith(null, result);
   });
@@ -172,7 +173,7 @@ describe('chainMethod should work', () => {
       method: 'GET',
       params: ['transactionId'],
     });
-    const httpProvider = new HttpProvider('https://aelf-public-node.aelf.io');
+    const httpProvider = new HttpProvider(tdvwEndPoint);
     const manager = new RequestManager(httpProvider);
     chainMethod.setRequestManager(manager);
     // mock

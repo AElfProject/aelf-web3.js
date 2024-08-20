@@ -9,7 +9,6 @@ import {
 import AElf from '../../../src/index';
 import tokenProto from './token.proto.json';
 import nonStandardProto from './non-standard.proto.json';
-const endpoint = 'https://aelf-public-node.aelf.io';
 
 describe('test httpProvider', () => {
   test('test transform with fieldsArray', async () => {
@@ -74,7 +73,7 @@ describe('test httpProvider', () => {
     expect(result.merklePathNodes[0].hash.value.toString('hex')).toEqual(
       '967f2a2c7f3d22f9278175c1e6aa39cf9171db91dceacd5ee0f37c2e507b5abe'
     );
-    const result1 = transform(transferInput,{},INPUT_TRANSFORMERS);
+    const result1 = transform(transferInput, {}, INPUT_TRANSFORMERS);
     expect(result1).toEqual({ merklePathNodes: undefined });
   });
   test('test transform with empty fieldsArray', async () => {
@@ -332,11 +331,15 @@ describe('test httpProvider', () => {
     );
   });
   test('test output address transformer with array object origin', () => {
-    const address = [{
-      value: 'FXD7R7PHkfRn4fmEDvHCN+7hb2XD0NgAcxXjYkMccuY=',
-    }];
+    const address = [
+      {
+        value: 'FXD7R7PHkfRn4fmEDvHCN+7hb2XD0NgAcxXjYkMccuY=',
+      },
+    ];
     const result = OUTPUT_TRANSFORMERS[0].transformer(address);
-    expect(result).toEqual(['ASh2Wt7nSEmYqnGxPPzp4pnVDU4uhj1XW9Se5VeZcX2UDdyjx']);
+    expect(result).toEqual([
+      'ASh2Wt7nSEmYqnGxPPzp4pnVDU4uhj1XW9Se5VeZcX2UDdyjx',
+    ]);
   });
   test('test output hash transformer with string origin', () => {
     const address =
@@ -347,13 +350,15 @@ describe('test httpProvider', () => {
     );
   });
   test('test output hash transformer with array object origin', () => {
-    const address = [{
-      value: 'FXD7R7PHkfRn4fmEDvHCN+7hb2XD0NgAcxXjYkMccuY=',
-    }];
+    const address = [
+      {
+        value: 'FXD7R7PHkfRn4fmEDvHCN+7hb2XD0NgAcxXjYkMccuY=',
+      },
+    ];
     const result = OUTPUT_TRANSFORMERS[1].transformer(address);
-    expect(result).toEqual(
-      ['1570fb47b3c791f467e1f9840ef1c237eee16f65c3d0d8007315e362431c72e6']
-    );
+    expect(result).toEqual([
+      '1570fb47b3c791f467e1f9840ef1c237eee16f65c3d0d8007315e362431c72e6',
+    ]);
   });
   test('test output address transformer with object origin', () => {
     const address = {

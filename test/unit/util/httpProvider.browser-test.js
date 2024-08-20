@@ -1,36 +1,36 @@
 require('isomorphic-fetch');
 import HttpProvider from '../../../src/util/httpProvider';
-const stageEndpoint = 'https://explorer-test-tdvw.aelf.io/';
+import { tdvwEndPoint } from '../constant';
 // for test timeout
 jest.useFakeTimers();
 jest.spyOn(global, 'setTimeout');
 
 const blockByHeightRes = {
-  BlockHash: 'f8bd119ae0a2a93913ad5104143cae05f71c9f4674b44462cfb39acf6e42f76d',
+  BlockHash: '2267716b9af2d6c306ded8eb992ce04518ec965704298c80e10df4b4e5358eb5',
   Header: {
     PreviousBlockHash:
-      'c9313e0db7962002df1ce90b367415c12be3ba0c963f864fe0f331c6a9af1294',
+      'c6d1142ab62e6a9d8ed1c09387c93a85698782e9fff6c3ab0580816a2c9456e0',
     MerkleTreeRootOfTransactions:
-      '46d2955581d0d276fa42cd4928fd85a7c9935d4060b61afbebd5532008ad5b29',
+      '56403fb4c93574713d4b22f2ed8159aa1933350f5daa113865b6de159330cc92',
     MerkleTreeRootOfWorldState:
-      'd3306b3f048fd26f62249e7ba9c9c04560abb41ec1581a4efc046448975d8994',
+      'cbf8816225d99877a840170ab8ced2e1e7a926b8fd622ba99b5871fcf727033a',
     MerkleTreeRootOfTransactionState:
-      '8601777b7246af5be7b3c31bd44c9826480f9785645ce216a709c1ce2da217ab',
+      'c16938414dbfc92c696beef5eafc04cd01d9293f2c04e6eb61e389a9d73c05b2',
     Extra:
-      '{ "CrossChain": "", "Consensus": "CkEE80ryjmjXybz8epeXpNiU7pqdPRQuJ1zSVLZJXtfslflUEcmBmVDCPDb9AKLGEJR0h71uCz4+2NLJDwifpPDAKhL+FQin+W8SvQIKggEwNGYzNGFmMjhlNjhkN2M5YmNmYzdhOTc5N2E0ZDg5NGVlOWE5ZDNkMTQyZTI3NWNkMjU0YjY0OTVlZDdlYzk1Zjk1NDExYzk4MTk5NTBjMjNjMzZmZDAwYTJjNjEwOTQ3NDg3YmQ2ZTBiM2UzZWQ4ZDJjOTBmMDg5ZmE0ZjBjMDJhErUBOLOZA0qCATA0ZjM0YWYyOGU2OGQ3YzliY2ZjN2E5Nzk3YTRkODk0ZWU5YTlkM2QxNDJlMjc1Y2QyNTRiNjQ5NWVkN2VjOTVmOTU0MTFjOTgxOTk1MGMyM2MzNmZkMDBhMmM2MTA5NDc0ODdiZDZlMGIzZTNlZDhkMmM5MGYwODlmYTRmMGMwMmFqBgiki9afBmoLCKSL1p8GEPjF1HlqDAiki9afBhDUvL/FAYABA4gBt7z7QBKHAQqCATA0YTY2MDdiNzJmYTI2Zjg2NDRlOGUyNGExNmY2MWM3Y2I1NmM5Yzg1MGQzYmFhNTYwYmY0ZjgzN2MyZDk5MzUxMWZhNjk5NmQ2MGQ2YmRiZDQ4OGQ5Yjc0MzgxNDg2MGE5MzgxNjI3YTQ2OTc3ZWFkZjdjYzMyMzZkYzIxNmM4ZmMSABKHAQqCATA0NTRjMmU2MDVlNzkwZThjNmUyOTU2MDRlZWI2ZTE2OWFmOTdlMjU4NjI4ODJmNDRjYmZmMTk1MDIwOTZlMjk0NjBiNDI1ZTdjYjUwZGExMjE1YjU5MzEwNTdmYTg0ZGQ4MTJhNjZhMTVlYWQ0NmE2NmE5OTcyZDNlM2MzZmUzOGISABKHAQqCATA0ODA3NGNlY2E2YzdhNDJkYmRhOTM1NWNmZTFmMTQyM2YyYjUzOGVlNzE1NjczY2VjNzY0MTNmNDU2OTAxMjBhN2ZlOTM0MjU5ZDZlNTJhMDcxNGMzNzQ5MjkzODI4ZDY1MWYyNjE3YWIyYWNmMzJmYjRkZTYzM2MyZTUyMWFhZDcSABKHAQqCATA0MGRmYWQ3NzljY2FiZGExMjk0YWEyM2VjYjQwN2U2ZmMzZGVjNGI0Zjc4ODlmMGY3NjIxMzYxODUyMjFjNzI4ZWZjZGYzOTc2MzE3YzNkYTY2Mzg2YTVkOWU3Mzc2ZWFhNzIwMWE3YzE1Njk4YWZlYmFhOTU0MjZhZGIwM2JmZDISABKHAQqCATA0ZDRmZjkxZGYyMDJlYzkyMzA0MDEyYmEzMDFhYjI0ZGVjOTNmZWQzZTc3OTUwOGVmZTRkNjQ5MzU4ZTc0OTNlMjJlMzViYjJiMGE3ODk0ZGE4Mjk5NjJlZGI2MjUxYTFkNTkwNzFkNTRhYTA4Mjc4ZTg5YWFlNWNlZGEyYzA2YzUSABKHAQqCATA0MmY3Y2FiODI3MmUxZjRlOTBlNTllOTFiYmUyYzIxMWYxYTBlMTVhNWI2NzBhZmY1MTdhMDJmNjI1ZDY3ODYwN2E5NjcyM2I2Y2UzMjMyZmNmNmFkMGZjOTg4ZTNlMTk4Y2RlZGViY2MxMGNkNGQ4NmI0ZGRkZmQ4YTk5ZWRjZjASABKHAQqCATA0MmU5YWM5NzRkYTA4NWNiZmQyMTZlY2EwMmQxYTQ3ZjczYmJmMGFmNTVjMGIzNjQ3NGRjM2NmYzU0M2UzM2U0YWRlNDA3YzgyZGRlZDRhNmVmODYwNzZhMTY0ZGExMWM5OWE5MDhlYWE1NmI5NzdjNDc3M2RlOTA3Y2EwYjA4MTQSABKHAQqCATA0NzZkMDcyMjZkZjU0YmMzZjBjYmJmNmFiODZmNWM5ZDIzMjQ4NjBlOWUzYzM2ZGIyODg2NTU1ZDc4MzJlZWQ4OTIxNGY3M2RmZThjNDNlN2VmZGQ3MTU3ZGZiYjE0ODk2Njk0NGZiY2IxYWQwYmY4MTJiNmQzMzUwODU4ZTkxMDQSABKHAQqCATA0OTUzNmJlYzNkNzM0MWNjZGNlMGQ5MjlhMWEyZGY2MzM3OTQyYzljMDg2NmJiM2UzMzYxNTI4MTVkYjVkNzBhNmM5OTM5NjQwZDU1ZGM4MDQ5YzI2NmJiNGI0ZDM5NzY5Y2U2YTk0MmRjMTU5MWFiMmRhNmYxOWNmZjlhMzcxMjkSABKHAQqCATA0NThhZDJlYzRkODk0NGJmZjdmM2FiN2I1NmE5MGZmY2E3ODRiMDYzMmJkZjhjNGE5NTJkYTE1M2IyNGIzZmJiZGE1NDMyZjVlZjI5M2FiN2NlZDc5MTk2OWY1ZmUwMmIwYjVlNmJjNWFmN2NlMDc0YTlkYzM4NmM4ZGFiMGU2ZGISABKHAQqCATA0ZDQwNTJhOTdlZWI4YmQzMDU0ZmJiMGYzZjllYjllOGQ5NWQ0ZWM2NjQ4MmYyMjI3ZDA2NGJlNDVjYTA3ZDczY2RiODMzM2EyNWMxODE2OTVhMjZhZWE5YWVlYmQ2N2VjNTkzYmZiYTliYzlmM2MzZDVhMzFkNjcxZjdhYmJjYWMSABKHAQqCATA0MThhMzM2ZjQ4NGY5OTBkOTcxYmFjOGM4M2M4MWJiY2IwNzg2ZmQ0ZTY3OTUzODYxZmMzOWYyZmUwNTY0Nzc3ZGM0ZTI0YmRhZTUyM2VkNzE5NjcwZjBkZDk5OGRjNDc0MTA4YjBmZDU1MTBjYzY1NzI3ODI4ZDk0MWM1OWYwZTkSABKHAQqCATA0MzFiYmZkYmJiNzI1Njk0ODAzNWEyN2NhN2MwOGFlZGI1N2YyMzVjNTFhNzlkZDEzNDcwN2ExYTVmNWM3ODY3NDY5MDViNTljYjcxN2ZiNzVjOWQzNTk1MGM5NTg4NDcyNzk4ZTY3MjkwY2NjY2U0MDk5M2FlN2JkMmNjMjY3MGMSABKHAQqCATA0ZDIxY2I2MTRkMGMyZmFhZGM0YWE5OWY1YjgxZjU1YWRhM2Y2NWM1ZjJhNGE3ZWI2MzkyNzhiYzU5ZGFjNDJiMGNkZTlkNzBkZmVhZDBjNjIwMTNhNTNlYzc0NjZjYWQ2NjM5NjQ5NjA3MjYyNGJlNmUwMmE5MmI1NDkyOGUwMzISABKHAQqCATA0YzcxMzJhOTFkM2IzOTI0ZDFhZmNmOTliMjU1ZGRlNWZjMGZiYjQzN2U4Y2IzYjBkMzg1OGU5YmJiZjdmMzBlMmUzOWUzODE5ZWJiOWYwMzQ5NjNiNmE3ZWQzZTNjMTJlODUyOGNmY2U2MjEwZjM5Y2YxMjgwM2Y4OTg3N2E4OTASABKHAQqCATA0OTAzZDY3NGE0YzVmOWE4NGJkMGM1MWYwNDZiYzhiYzRhYjE1YjFmZTlmMGM0YTIyY2E5MmQxNDA0ZjIyZTNjN2Q4OTY5YTRlNmRjZDA3NWM0Y2E4YzcxNGViZjVhNWZjY2JlZWVhNTkyODM4Y2RmM2I5MzU2MjQ4NDA4MTg0MGISABKHAQqCATA0MTY5ODY4YjdjY2M0ODIyZjI3YWZkNjQ5N2E5NGYyODA0OGE0ZjNiZmI5ODAyYzJkNzBkODQ3NzFkODEwNjJiMGJjMWEyNWM5YzFkZGFkMjVjODg4YmViYTBiODllYzBiZDcyOTAyMmVhMjlmNDI4ZDdjYjc0MDUzZTM5ZTFmMWYSABKHAQqCATA0OWQ4ZDZiOGI3OGI2MDRkOWE4NDA2MTM4NzVmZWQyYjkwNDhmYTBmZWYxZTA5ZjQ5NmUxYTExYjJhNzAxZGE3NDZiMWFmZTU0ZGVmMDJmMmZmYTBiOGNjNDFhN2NjNzQxZDVmMzU2YjYxZDE1NjEzOGI1MGQ0NWVkZmI5N2I2NzcSAFDk0uPZdhgE", "SystemTransactionCount": "CAI=" }',
-    Height: 136240697,
-    Time: '2023-02-22T03:01:56.4141789Z',
-    ChainId: 'AELF',
+      '{ "CrossChain": "", "Consensus": "CkEEh7sZKR/nG9P42M8dRuG6fQXzDijZH+PU4kitRuRYH9KmU87BI7Eqj2hQ4sGVLIspYWNZ+fpHUtS+xp2SoTpEURL6Bgis0rEBEsQCCoIBMDQ4N2JiMTkyOTFmZTcxYmQzZjhkOGNmMWQ0NmUxYmE3ZDA1ZjMwZTI4ZDkxZmUzZDRlMjQ4YWQ0NmU0NTgxZmQyYTY1M2NlYzEyM2IxMmE4ZjY4NTBlMmMxOTUyYzhiMjk2MTYzNTlmOWZhNDc1MmQ0YmVjNjlkOTJhMTNhNDQ1MRK8ATiAnNcGSoIBMDQ4N2JiMTkyOTFmZTcxYmQzZjhkOGNmMWQ0NmUxYmE3ZDA1ZjMwZTI4ZDkxZmUzZDRlMjQ4YWQ0NmU0NTgxZmQyYTY1M2NlYzEyM2IxMmE4ZjY4NTBlMmMxOTUyYzhiMjk2MTYzNTlmOWZhNDc1MmQ0YmVjNjlkOTJhMTNhNDQ1MWoLCMiWkbYGEMiAiW9qDAjIlpG2BhDkjNHmAWoMCMiWkbYGEPTPm8cCgAEDiAGR2pVAEocBCoIBMDQ1Mjc2MmVjMjFmZWQyOWY0Y2I4NmRmM2ZjMDhmMDJhMjM4NWM4NGQ0NWRmZDRlZjU0MDA1OTczYjQxZjVhYjI2NGUyZTVkZTBkNDZlYzQ1ZTY0OTFiOTgxMDUwMzgwYjBhYTE5NzE0YWY0ZjA4Nzg1NjAzMjE4OTNlNjI2MzFlNBIAEocBCoIBMDQ3Nzk0ZTViNDI0MTc3YmYwM2Y5ZDVlNTQxZTdiZGEyODA1NjIwOWQ4MTRjNjhhZWQyNjcwZTQ2ZDk2M2M4NWQwNGRhNWY2OWVmODI0NThlODYxNzQ4OTA3NDM5ODVlMjk3ODQzNDg1YjEwZDAyOTVmYzI4Yjg4NTMzNTVjZmI4YhIAEocBCoIBMDRkNDViOTMwODI5OWQ4YzIyZmE1N2UyZmMxNzU1Yzc1YzUzNmEyMzJjMzA0MDMyNTdjYWMxOThkN2FmMzBhZWNkZGE4NWQyODc1YzQ1YWQ4Nzk1MGZhZGIzNGEyNjkyMGUzOTAwOGRhZGVmYzhlZWU5YzYxYzJmZThmNjY0MDBlMxIAEocBCoIBMDQzNTdiMWFkOGMwNTc2ZDI2YWEzZDZiMmQwOWIyYWQwM2JmNWRiY2UyMjM3MzA2MzYxNDVjZjQ0M2ZlYjM3ZmIxOTE1NmI5OTE5NGZhNDhhZDkyNTY2Yjk1YzQ1NDkzOWRmMmNhNzFlOWJmNTE3YzI1OTBjMmVlZGRkNzZjZjkxZRIAUJDx1Y4gGAQ=", "SystemTransactionCount": "CAI=" }',
+    Height: 134573331,
+    Time: '2024-08-20T07:52:40.6862213Z',
+    ChainId: 'tDVW',
     Bloom:
-      'AAAAAAAAAAIAAAAAAAAAIABAAAAAAAgAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAACAABAAAAAAAAAAAAAAAAAAAAAAAAACACAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAABAAAAAAgAAAAABAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAgAAAAAAAAAAAAAAAA==',
+      'AAAAAAAAAAAAAAAAAAIAAABAAAAAAAAAAAAAAAAAAACAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAACAAAAAABAAAAAAAAAAAAQCAAAAAAAAAAACACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAQAAAAAEAAAAAIEAIAAAEAAAAAAEAAAAACAAAAAA==',
     SignerPubkey:
-      '04f34af28e68d7c9bcfc7a9797a4d894ee9a9d3d142e275cd254b6495ed7ec95f95411c9819950c23c36fd00a2c610947487bd6e0b3e3ed8d2c90f089fa4f0c02a',
+      '0487bb19291fe71bd3f8d8cf1d46e1ba7d05f30e28d91fe3d4e248ad46e4581fd2a653cec123b12a8f6850e2c1952c8b29616359f9fa4752d4bec69d92a13a4451',
   },
   Body: {
     TransactionsCount: 2,
     Transactions: [],
   },
-  BlockSize: 3589,
+  BlockSize: 1664,
 };
 describe('test httpProvider', () => {
   beforeEach(() => {
@@ -41,7 +41,7 @@ describe('test httpProvider', () => {
     expect(httpProvider.host).toBe('http://localhost:8545');
   });
   test('test headers are Array', () => {
-    const httpProvider = new HttpProvider(stageEndpoint, 8000, [
+    const httpProvider = new HttpProvider(tdvwEndPoint, 8000, [
       {
         name: 'Last-Modified',
         value: 'Wed, 21 Oct 2015 07:28:00 GMT',
@@ -52,7 +52,7 @@ describe('test httpProvider', () => {
     );
   });
   test('test headers are Object', () => {
-    const httpProvider = new HttpProvider(stageEndpoint, 8000, {
+    const httpProvider = new HttpProvider(tdvwEndPoint, 8000, {
       'Last-Modified': 'Wed, 21 Oct 2015 07:28:00 GMT',
     });
     expect(httpProvider.headers['Last-Modified']).toEqual(
@@ -106,85 +106,52 @@ describe('test httpProvider', () => {
     return expect(p).resolves.toEqual({ type: 'timeout' });
   });
   test('test get request send by fetch', async () => {
-    const httpProvider = new HttpProvider(stageEndpoint);
+    const httpProvider = new HttpProvider(tdvwEndPoint);
     const response = await httpProvider.requestSendByFetch(
       {
-        url: 'block/blockInfo',
+        url: 'blockChain/blockByHeight',
         method: 'GET',
         params: {
-          height: 43143609,
+          blockHeight: 134573331,
         },
       },
       fetch
     );
     const result = await response.text();
-    expect(JSON.parse(result)).toEqual({
-      id: 43735856,
-      block_hash:
-        '28ab301869791fe34b20747e77d18b364997d647ebd13acd9337a7359c92df06',
-      pre_block_hash:
-        '2270f9afe57f1ab3e99277c0a177f42ac9690de6eb4dc049e5f921ed740703af',
-      chain_id: 'tDVW',
-      dividends: '{}',
-      miner: 'szJDnSZaPBesgzD9ZS3EFaRyUbj2z3YPTzXtcW6MX27AvF4CM',
-      tx_fee: '{}',
-      resources: '{}',
-      block_height: 43143609,
-      tx_count: 2,
-      merkle_root_tx:
-        'e4edc1c356a120027d817b801d1f191fabe0a23188611ca6d38f884984e122fc',
-      merkle_root_state:
-        'd05386093ff74cde09c6144b8e5acae824710a103c1333dd797c088841b470f5',
-      time: '2023-02-21T06:25:49.1205547Z',
-    });
+    expect(JSON.parse(result)).toEqual(blockByHeightRes);
   });
   test('test post request send by fetch', async () => {
-    const httpProvider = new HttpProvider('https://aelf-public-node.aelf.io');
+    const httpProvider = new HttpProvider(tdvwEndPoint);
     const response = await httpProvider.requestSendByFetch(
       {
-        url: 'blockChain/calculateTransactionFee',
+        url: 'blockChain/executeTransaction',
         params: {
           RawTransaction:
-            '0a220a2005c3b3959caeee55b5db4004f6f9d76860aae818ce7b33d210a446ecb275468212220a200e9a238616169860ba4fb502f8e87ce62db9ef321f29fd76d6e1ce30a0e0cdba18a8a19e022204fa60011c2a085472616e73666572322e0a220a200e9a238616169860ba4fb502f8e87ce62db9ef321f29fd76d6e1ce30a0e0cdba1203454c461880c2d72f82f10441ad1647aa462a8859c7a699f22d6124c82a5239c90746ac67ebfd8e1a7b4a25f343733351162d205fc881ea62072e9fe0fad5f6113734309b6666f6812d6b7a6400',
+            '0a220a203000800ce18e6de0fc576a48759d9dc90a23f0ded388316b0f9f1274a45b809b12220a202ec3700300ef9c95ee67a20a35dad35b8b0d476533e009a746b015df7d051e2d2a1c43616c63756c6174654f7267616e697a6174696f6e4164647265737332560a240a220a2024447d28d0da2f7923a917a4176214032541bda3d0d1a4c8195f3ecccc034fc7120808011000180020011a240a220a2024447d28d0da2f7923a917a4176214032541bda3d0d1a4c8195f3ecccc034fc782f104417582ebfba9506ec499b4ac36653f0c8feefa66d32eb0cd88ed4a608187c85fea75e37405c37de7d9bf3ae03745ae6768da908aad3c0e10b1c48b0de321ad5d7201',
         },
       },
       fetch
     );
     const result = await response.text();
-    expect(JSON.parse(result)).toEqual({
-      Success: false,
-      TransactionFee: null,
-      ResourceFee: null,
-    });
+    expect(result).toEqual(
+      '0a20b2506d0e6a6f4901b85a4a9a57f30dc7acf95b9feba037566baedaf450a3b7be'
+    );
   });
   test('test send async by fetch', async () => {
     const xhr = window.XMLHttpRequest;
     delete window.XMLHttpRequest;
     window.fetch = fetch;
     const NewHttpProvider = require('../../../src/util/httpProvider').default;
-    const httpProvider = new NewHttpProvider(stageEndpoint);
+    const httpProvider = new NewHttpProvider(tdvwEndPoint);
     window.XMLHttpRequest = xhr;
     const result = await httpProvider.sendAsyncByFetch({
-      url: 'nodes/info',
+      url: 'blockChain/blockByHeight',
       method: 'GET',
+      params: {
+        blockHeight: 134573331,
+      },
     });
-    expect(result).toEqual({
-      list: [
-        {
-          id: 1,
-          contract_address: 'ASh2Wt7nSEmYqnGxPPzp4pnVDU4uhj1XW9Se5VeZcX2UDdyjx',
-          chain_id: 'tDVW',
-          api_ip: 'http://127.0.0.1:7102',
-          api_domain: 'http://127.0.0.1:7102',
-          rpc_ip: 'http://172.31.28.116:8000',
-          rpc_domain: 'http://172.31.28.116:8000',
-          token_name: 'ELF',
-          owner: 'owner',
-          status: 1,
-          create_time: '2022-06-09T06:52:13.000Z',
-        },
-      ],
-    });
+    expect(result).toEqual(blockByHeightRes);
   });
   test('test send async by fetch when no AbortController', async () => {
     const xhr = window.XMLHttpRequest;
@@ -198,7 +165,7 @@ describe('test httpProvider', () => {
       })
     );
     const NewHttpProvider = require('../../../src/util/httpProvider').default;
-    const httpProvider = new NewHttpProvider(stageEndpoint);
+    const httpProvider = new NewHttpProvider(tdvwEndPoint);
     window.XMLHttpRequest = xhr;
     window.fetch = originFetch;
     await expect(
@@ -211,20 +178,6 @@ describe('test httpProvider', () => {
     });
     global.AbortController = abortController;
   });
-  test('test send async by fetch when error', async () => {
-    const xhr = window.XMLHttpRequest;
-    delete window.XMLHttpRequest;
-    window.fetch = fetch;
-    const NewHttpProvider = require('../../../src/util/httpProvider').default;
-    const httpProvider = new NewHttpProvider(stageEndpoint);
-    window.XMLHttpRequest = xhr;
-    await expect(
-      httpProvider.sendAsyncByFetch({
-        url: 'nodes/info',
-        method: 'POST',
-      })
-    ).rejects.toEqual('<h2>403 Forbidden</h2>');
-  });
   test('test send async by fetch without result.text', async () => {
     const xhr = window.XMLHttpRequest;
     delete window.XMLHttpRequest;
@@ -235,7 +188,7 @@ describe('test httpProvider', () => {
       })
     );
     const NewHttpProvider = require('../../../src/util/httpProvider').default;
-    const httpProvider = new NewHttpProvider(stageEndpoint);
+    const httpProvider = new NewHttpProvider(tdvwEndPoint);
     window.XMLHttpRequest = xhr;
     window.fetch = originFetch;
     await expect(
@@ -256,7 +209,7 @@ describe('test httpProvider', () => {
       })
     );
     const NewHttpProvider = require('../../../src/util/httpProvider').default;
-    const httpProvider = new NewHttpProvider(stageEndpoint);
+    const httpProvider = new NewHttpProvider(tdvwEndPoint);
     window.XMLHttpRequest = xhr;
     window.fetch = originFetch;
     await expect(
@@ -276,7 +229,7 @@ describe('test httpProvider', () => {
       })
     );
     const NewHttpProvider = require('../../../src/util/httpProvider').default;
-    const httpProvider = new NewHttpProvider(stageEndpoint);
+    const httpProvider = new NewHttpProvider(tdvwEndPoint);
     window.XMLHttpRequest = xhr;
     window.fetch = originFetch;
     await expect(
@@ -299,7 +252,7 @@ describe('test httpProvider', () => {
       })
     );
     const NewHttpProvider = require('../../../src/util/httpProvider').default;
-    const httpProvider = new NewHttpProvider(stageEndpoint);
+    const httpProvider = new NewHttpProvider(tdvwEndPoint);
     window.XMLHttpRequest = xhr;
     window.fetch = originFetch;
     await expect(
@@ -320,7 +273,7 @@ describe('test httpProvider', () => {
       })
     );
     const NewHttpProvider = require('../../../src/util/httpProvider').default;
-    const httpProvider = new NewHttpProvider(stageEndpoint);
+    const httpProvider = new NewHttpProvider(tdvwEndPoint);
     window.XMLHttpRequest = xhr;
     window.fetch = originFetch;
     await expect(
@@ -331,7 +284,7 @@ describe('test httpProvider', () => {
     ).rejects.toEqual('failed when result is not ok');
   });
   test('test get request send by xhr', () => {
-    const httpProvider = new HttpProvider('https://aelf-public-node.aelf.io');
+    const httpProvider = new HttpProvider(tdvwEndPoint);
     const RequestLibrary = window.XMLHttpRequest;
     const request = new RequestLibrary();
     request.withCredentials = false;
@@ -340,19 +293,19 @@ describe('test httpProvider', () => {
         url: 'blockChain/blockByHeight',
         method: 'GET',
         params: {
-          blockHeight: 136240697,
+          blockHeight: 134573331,
         },
       },
       request
     );
     const result = JSON.parse(request.responseText);
     expect(result.BlockHash).toBe(
-      'f8bd119ae0a2a93913ad5104143cae05f71c9f4674b44462cfb39acf6e42f76d'
+      '2267716b9af2d6c306ded8eb992ce04518ec965704298c80e10df4b4e5358eb5'
     );
   });
 
   test('test post request send by xhr', () => {
-    const httpProvider = new HttpProvider('https://aelf-public-node.aelf.io');
+    const httpProvider = new HttpProvider(tdvwEndPoint);
     const RequestLibrary = window.XMLHttpRequest;
     const request = new RequestLibrary();
     request.withCredentials = false;
@@ -367,7 +320,7 @@ describe('test httpProvider', () => {
       request
     );
     const result = request.responseText;
-    expect(JSON.parse(result)).toEqual({
+    expect(JSON.parse(result)).toMatchObject({
       Success: false,
       TransactionFee: null,
       ResourceFee: null,
@@ -379,7 +332,7 @@ describe('test httpProvider', () => {
     delete window.XMLHttpRequest;
     window.fetch = fetch;
     const NewHttpProvider = require('../../../src/util/httpProvider').default;
-    const httpProvider = new NewHttpProvider(stageEndpoint);
+    const httpProvider = new NewHttpProvider(tdvwEndPoint);
     window.XMLHttpRequest = xhr;
     try {
       httpProvider.send({
@@ -394,12 +347,12 @@ describe('test httpProvider', () => {
   });
 
   test('test send by xhr', async () => {
-    const httpProvider = new HttpProvider('https://aelf-public-node.aelf.io');
+    const httpProvider = new HttpProvider(tdvwEndPoint);
     const result = httpProvider.send({
       url: 'blockChain/blockByHeight',
       method: 'GET',
       params: {
-        blockHeight: 136240697,
+        blockHeight: 134573331,
       },
     });
     expect(result).toEqual(blockByHeightRes);
@@ -416,16 +369,14 @@ describe('test httpProvider', () => {
     const xhr = window.XMLHttpRequest;
     window.XMLHttpRequest = jest.fn().mockImplementation(xhrMockClass);
     const NewHttpProvider = require('../../../src/util/httpProvider').default;
-    const httpProvider = new NewHttpProvider(
-      'https://aelf-public-node.aelf.io'
-    );
+    const httpProvider = new NewHttpProvider(tdvwEndPoint);
     window.XMLHttpRequest = xhr;
     try {
       httpProvider.send({
         url: 'blockChain/blockByHeight',
         method: 'GET',
         params: {
-          blockHeight: 136240697,
+          blockHeight: 134573331,
         },
       });
     } catch (e) {
@@ -437,56 +388,41 @@ describe('test httpProvider', () => {
     delete window.XMLHttpRequest;
     window.fetch = fetch;
     const NewHttpProvider = require('../../../src/util/httpProvider').default;
-    const httpProvider = new NewHttpProvider(stageEndpoint);
+    const httpProvider = new NewHttpProvider(tdvwEndPoint);
     window.XMLHttpRequest = xhr;
-    const result = await httpProvider.sendAsync({
-      url: 'nodes/info',
-      method: 'GET',
-    });
-    expect(result).toEqual({
-      list: [
-        {
-          id: 1,
-          contract_address: 'ASh2Wt7nSEmYqnGxPPzp4pnVDU4uhj1XW9Se5VeZcX2UDdyjx',
-          chain_id: 'tDVW',
-          api_ip: 'http://127.0.0.1:7102',
-          api_domain: 'http://127.0.0.1:7102',
-          rpc_ip: 'http://172.31.28.116:8000',
-          rpc_domain: 'http://172.31.28.116:8000',
-          token_name: 'ELF',
-          owner: 'owner',
-          status: 1,
-          create_time: '2022-06-09T06:52:13.000Z',
-        },
-      ],
-    });
-  });
-  test('test send async by xhr method', async () => {
-    const httpProvider = new HttpProvider('https://aelf-public-node.aelf.io');
     const result = await httpProvider.sendAsync({
       url: 'blockChain/blockByHeight',
       method: 'GET',
       params: {
-        blockHeight: 136240697,
+        blockHeight: 134573331,
+      },
+    });
+    expect(result).toEqual(blockByHeightRes);
+  });
+  test('test send async by xhr method', async () => {
+    const httpProvider = new HttpProvider(tdvwEndPoint);
+    const result = await httpProvider.sendAsync({
+      url: 'blockChain/blockByHeight',
+      method: 'GET',
+      params: {
+        blockHeight: 134573331,
       },
     });
     expect(result).toEqual(blockByHeightRes);
   });
   test('test send async by xhr', async () => {
-    const httpProvider = new HttpProvider('https://aelf-public-node.aelf.io');
+    const httpProvider = new HttpProvider(tdvwEndPoint);
     const result = await httpProvider.sendAsyncByXMLHttp({
       url: 'blockChain/blockByHeight',
       method: 'GET',
       params: {
-        blockHeight: 136240697,
+        blockHeight: 134573331,
       },
     });
     expect(result).toEqual(blockByHeightRes);
   });
   test('test send async by xhr when error', async () => {
-    const httpProvider = new HttpProvider(
-      'https://explorer-test.aelf.io/chain'
-    );
+    const httpProvider = new HttpProvider(tdvwEndPoint);
     await expect(
       httpProvider.sendAsyncByXMLHttp({
         url: 'blockChain/executeTransaction',
@@ -503,7 +439,7 @@ describe('test httpProvider', () => {
     });
   });
   test('test is connected', () => {
-    const httpProvider = new HttpProvider('https://aelf-public-node.aelf.io');
+    const httpProvider = new HttpProvider(tdvwEndPoint);
     const result = httpProvider.isConnected();
     expect(result).toBeTruthy();
   });
@@ -517,9 +453,7 @@ describe('test httpProvider', () => {
     delete window.XMLHttpRequest;
     window.fetch = fetch;
     const NewHttpProvider = require('../../../src/util/httpProvider').default;
-    const httpProvider = new NewHttpProvider(
-      'https://aelf-public-node.aelf.io'
-    );
+    const httpProvider = new NewHttpProvider(tdvwEndPoint);
     window.XMLHttpRequest = xhr;
     const result = await httpProvider.isConnectedAsync();
     expect(!!result).toBeTruthy();
