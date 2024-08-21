@@ -37,7 +37,7 @@ module.exports = {
     '!**/examples/**',
     '!**/dist/**',
     '!**/script/**',
-    '!**/build/**',
+    '!**/build/**'
   ],
 
   // An array of regexp pattern strings used to skip coverage collection
@@ -46,7 +46,7 @@ module.exports = {
   // ],
 
   // A list of reporter names that Jest uses when writing coverage reports
-  coverageReporters: ['text', 'json-summary'],
+  coverageReporters: ['text', 'json-summary', 'html'],
   // coverageReporters: [
   //   "json",
   //   "text",
@@ -90,7 +90,7 @@ module.exports = {
 
   // A map from regular expressions to module names that allow to stub out resources with a single module
   moduleNameMapper: {
-    '^scryptsy$': path.resolve('src/scrypt-polyfill.js'),
+    '^scryptsy$': path.resolve('src/scrypt-polyfill.js')
   },
 
   // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader
@@ -156,7 +156,7 @@ module.exports = {
   testMatch: [
     '**/test/unit/**/?(*.)+(test).[jt]s?(x)',
     '**/test/unit/util/httpProvider.node-test.js',
-    '**/test/unit/util/httpProvider.fetch.node-test.js',
+    '**/test/unit/util/httpProvider.fetch.node-test.js'
   ],
   testTimeout: 20000,
 
@@ -182,8 +182,8 @@ module.exports = {
 
   // A map from regular expressions to paths to transformers
   transform: {
-    '^.+\\.js?$': 'babel-jest',
-  },
+    '^.+\\.js?$': 'babel-jest'
+  }
 
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
   // transformIgnorePatterns: [
