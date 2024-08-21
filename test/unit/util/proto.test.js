@@ -12,19 +12,18 @@ import {
   getHashObjectFromHex,
   encodeTransaction,
   getTransaction,
-  deserializeLog,
+  deserializeLog
 } from '../../../src/util/proto';
 import ContractFactory from '../../../src/contract/index';
 import AElf from '../../../src/index';
+import { tdvwEndPoint } from '../constant';
 
-describe('test proto',() => {
-  const stageEndpoint = 'https://tdvw-test-node.aelf.io';
-  const aelf = new AElf(new AElf.providers.HttpProvider(stageEndpoint));
+describe('test proto', () => {
+  const aelf = new AElf(new AElf.providers.HttpProvider(tdvwEndPoint));
   const chain = aelf.chain;
-  const address =
-    'ELF_2sGZFRtqQ57F55Z2KvhmoozKrf7ik2htNVQawEAo3Vyvcx9Qwr_tDVW';
+  const address = 'ELF_2sGZFRtqQ57F55Z2KvhmoozKrf7ik2htNVQawEAo3Vyvcx9Qwr_tDVW';
   const fds = chain.getContractFileDescriptorSet(address, {
-    sync: true,
+    sync: true
   });
   const factory = new ContractFactory(chain, fds, AElf.wallet);
 
@@ -34,20 +33,18 @@ describe('test proto',() => {
         Address: '25CecrU94dmMdbhC3LWMKxtoaL4Wv8PChGvVJM6PxkHAyvXEhB',
         Name: 'TransactionFeeCharged',
         Indexed: null,
-        NonIndexed: 'CgNFTEYQoI/hGQ==',
-      },
+        NonIndexed: 'CgNFTEYQoI/hGQ=='
+      }
     ];
     expect(getTransactionFee(Logs)).toEqual([
       {
         symbol: 'ELF',
         chargingAddress: null,
-        amount: '54020000',
-      },
+        amount: '54020000'
+      }
     ]);
     expect(getTransactionFee(Logs).length).toEqual(1);
-    expect(getFee('CgNFTEYQoI/hGQ==', 'TransactionFeeCharged')).toEqual(
-      getTransactionFee(Logs)[0]
-    );
+    expect(getFee('CgNFTEYQoI/hGQ==', 'TransactionFeeCharged')).toEqual(getTransactionFee(Logs)[0]);
     expect(getResourceFee(Logs).length).toEqual(0);
     expect(() => getFee('CgNFTEYQoI/hGQ==', 'ResourceToken')).toThrow();
   });
@@ -56,12 +53,12 @@ describe('test proto',() => {
     expect(result).toEqual({
       symbol: 'ELF',
       chargingAddress: null,
-      amount: '54020000',
+      amount: '54020000'
     });
     expect(getFee('CgNFTEYQoI/hGQ==')).toEqual({
       symbol: 'ELF',
       chargingAddress: null,
-      amount: '54020000',
+      amount: '54020000'
     });
   });
   test('test fee with ResourceTokenCharged type', () => {
@@ -69,7 +66,7 @@ describe('test proto',() => {
     expect(result).toEqual({
       symbol: 'ELF',
       amount: '54020000',
-      contractAddress: null,
+      contractAddress: null
     });
   });
   test('test fee with wrong type', () => {
@@ -80,11 +77,11 @@ describe('test proto',() => {
       Indexed: [
         'CiIKILEmXenHStaFyei2ijKTSRTSXFwtYJZtuzCVOHs3KWEp',
         'EiIKIIw9aDQ+0IsgauW4z2rbA/hDk944n5QN6KI2S6s3Bb3h',
-        'GgNFTEY=',
+        'GgNFTEY='
       ],
       NonIndexed: 'IIDIr6Al',
       Name: 'Transferred',
-      Address: 'ELF_JRmBduh4nXWi1aXgdUsj5gJrzeZb2LxmrAbf7W99faZSvoAaE_AELF',
+      Address: 'ELF_JRmBduh4nXWi1aXgdUsj5gJrzeZb2LxmrAbf7W99faZSvoAaE_AELF'
     };
     const result = getSerializedDataFromLog(log);
     expect(result).toEqual(
@@ -95,10 +92,10 @@ describe('test proto',() => {
         Indexed: [
           'CiIKILEmXenHStaFyei2ijKTSRTSXFwtYJZtuzCVOHs3KWEp',
           'EiIKIIw9aDQ+0IsgauW4z2rbA/hDk944n5QN6KI2S6s3Bb3h',
-          'GgNFTEY=',
+          'GgNFTEY='
         ],
         Name: 'Transferred',
-        Address: 'ELF_JRmBduh4nXWi1aXgdUsj5gJrzeZb2LxmrAbf7W99faZSvoAaE_AELF',
+        Address: 'ELF_JRmBduh4nXWi1aXgdUsj5gJrzeZb2LxmrAbf7W99faZSvoAaE_AELF'
       })
     ).toEqual(
       'CiIKILEmXenHStaFyei2ijKTSRTSXFwtYJZtuzCVOHs3KWEpEiIKIIw9aDQ+0IsgauW4z2rbA/hDk944n5QN6KI2S6s3Bb3hGgNFTEY='
@@ -109,7 +106,7 @@ describe('test proto',() => {
       Indexed: null,
       NonIndexed: 'IIDIr6Al',
       Name: 'Transferred',
-      Address: 'ELF_JRmBduh4nXWi1aXgdUsj5gJrzeZb2LxmrAbf7W99faZSvoAaE_AELF',
+      Address: 'ELF_JRmBduh4nXWi1aXgdUsj5gJrzeZb2LxmrAbf7W99faZSvoAaE_AELF'
     };
     const result = getSerializedDataFromLog(log);
     expect(result).toEqual('IIDIr6Al');
@@ -117,7 +114,7 @@ describe('test proto',() => {
       getSerializedDataFromLog({
         NonIndexed: 'IIDIr6Al',
         Name: 'Transferred',
-        Address: 'ELF_JRmBduh4nXWi1aXgdUsj5gJrzeZb2LxmrAbf7W99faZSvoAaE_AELF',
+        Address: 'ELF_JRmBduh4nXWi1aXgdUsj5gJrzeZb2LxmrAbf7W99faZSvoAaE_AELF'
       })
     ).toEqual('IIDIr6Al');
   });
@@ -127,21 +124,19 @@ describe('test proto',() => {
         Address: '25CecrU94dmMdbhC3LWMKxtoaL4Wv8PChGvVJM6PxkHAyvXEhB',
         Name: 'ResourceTokenCharged',
         Indexed: null,
-        NonIndexed: 'CgNFTEYQoI/hGQ==',
-      },
+        NonIndexed: 'CgNFTEYQoI/hGQ=='
+      }
     ];
     const result = getResourceFee(logs);
-    expect(result).toEqual([
-      { symbol: 'ELF', amount: '54020000', contractAddress: null },
-    ]);
+    expect(result).toEqual([{ symbol: 'ELF', amount: '54020000', contractAddress: null }]);
   });
   test('test get resource fee without ResourceTokenCharged type', () => {
     const logs = [
       {
         Address: '25CecrU94dmMdbhC3LWMKxtoaL4Wv8PChGvVJM6PxkHAyvXEhB',
         Name: 'TransactionFeeCharged',
-        NonIndexed: 'CgNFTEYQoI/hGQ==',
-      },
+        NonIndexed: 'CgNFTEYQoI/hGQ=='
+      }
     ];
     const result = getResourceFee(logs);
     expect(result.length).toEqual(0);
@@ -155,13 +150,11 @@ describe('test proto',() => {
       {
         Address: '25CecrU94dmMdbhC3LWMKxtoaL4Wv8PChGvVJM6PxkHAyvXEhB',
         Name: 'TransactionFeeCharged',
-        NonIndexed: 'CgNFTEYQoI/hGQ==',
-      },
+        NonIndexed: 'CgNFTEYQoI/hGQ=='
+      }
     ];
     const result = getTransactionFee(logs);
-    expect(result).toEqual([
-      { symbol: 'ELF', chargingAddress: null, amount: '54020000' },
-    ]);
+    expect(result).toEqual([{ symbol: 'ELF', chargingAddress: null, amount: '54020000' }]);
   });
   test('test get transaction fee without TransactionFeeCharged type', () => {
     const logs = [
@@ -169,8 +162,8 @@ describe('test proto',() => {
         Address: '25CecrU94dmMdbhC3LWMKxtoaL4Wv8PChGvVJM6PxkHAyvXEhB',
         Name: 'ResourceTokenCharged',
         Indexed: null,
-        NonIndexed: 'CgNFTEYQoI/hGQ==',
-      },
+        NonIndexed: 'CgNFTEYQoI/hGQ=='
+      }
     ];
     const result = getTransactionFee(logs);
     expect(result.length).toEqual(0);
@@ -190,11 +183,9 @@ describe('test proto',() => {
   });
   test('test get rep from address', () => {
     const result = getRepForAddress({
-      value: '25CecrU94dmMdbhC3LWMKxtoaL4Wv8PChGvVJM6PxkHAyvXEhB',
+      value: '25CecrU94dmMdbhC3LWMKxtoaL4Wv8PChGvVJM6PxkHAyvXEhB'
     });
-    expect(result).toEqual(
-      'q9sA88YfqXJEQrKx8vmECZzMJytpw7GySFRnyYSJoBGqfsgFZpdf1SwQ'
-    );
+    expect(result).toEqual('q9sA88YfqXJEQrKx8vmECZzMJytpw7GySFRnyYSJoBGqfsgFZpdf1SwQ');
   });
   test('test get rep from address with invalid params', () => {
     const result = getRepForAddress({});
@@ -202,54 +193,36 @@ describe('test proto',() => {
   });
 
   test('test get address from rep', () => {
-    const buffer = getAddressFromRep(
-      'q9sA88YfqXJEQrKx8vmECZzMJytpw7GySFRnyYSJoBGqfsgFZpdf1SwQ'
-    ).value;
+    const buffer = getAddressFromRep('q9sA88YfqXJEQrKx8vmECZzMJytpw7GySFRnyYSJoBGqfsgFZpdf1SwQ').value;
     expect(buffer).toBeInstanceOf(Buffer);
     const str = buffer.toString('hex');
-    expect(str).toEqual(
-      'db909e72b53de1d98c75b842dcb58c2b1b6868be16bfc3c2846bd524ce8fc641c0caf5c484'
-    );
+    expect(str).toEqual('db909e72b53de1d98c75b842dcb58c2b1b6868be16bfc3c2846bd524ce8fc641c0caf5c484');
   });
   test('test get address object from rep', () => {
-    const buffer = getAddressObjectFromRep(
-      'q9sA88YfqXJEQrKx8vmECZzMJytpw7GySFRnyYSJoBGqfsgFZpdf1SwQ'
-    ).value;
+    const buffer = getAddressObjectFromRep('q9sA88YfqXJEQrKx8vmECZzMJytpw7GySFRnyYSJoBGqfsgFZpdf1SwQ').value;
     expect(buffer).toBeInstanceOf(Buffer);
     const str = buffer.toString('hex');
-    expect(str).toEqual(
-      'db909e72b53de1d98c75b842dcb58c2b1b6868be16bfc3c2846bd524ce8fc641c0caf5c484'
-    );
+    expect(str).toEqual('db909e72b53de1d98c75b842dcb58c2b1b6868be16bfc3c2846bd524ce8fc641c0caf5c484');
   });
   test('test get rep from hash', () => {
     const result = getRepForHash({
-      value: '25CecrU94dmMdbhC3LWMKxtoaL4Wv8PChGvVJM6PxkHAyvXEhB',
+      value: '25CecrU94dmMdbhC3LWMKxtoaL4Wv8PChGvVJM6PxkHAyvXEhB'
     });
-    expect(result).toEqual(
-      'db909e72b53de1d98c75b842dcb58c2b1b6868be16bfc3c2846bd524ce8fc641c0caf5c484'
-    );
+    expect(result).toEqual('db909e72b53de1d98c75b842dcb58c2b1b6868be16bfc3c2846bd524ce8fc641c0caf5c484');
   });
   test('test get rep from hash with invalid params', () => {
     const result = getRepForHash({});
     expect(result).toEqual('');
   });
   test('test get hash from hex', () => {
-    const result = getHashFromHex(
-      'db909e72b53de1d98c75b842dcb58c2b1b6868be16bfc3c2846bd524ce8fc641c0caf5c484'
-    );
+    const result = getHashFromHex('db909e72b53de1d98c75b842dcb58c2b1b6868be16bfc3c2846bd524ce8fc641c0caf5c484');
     const hex = result.value.toString('hex');
-    expect(hex).toEqual(
-      'db909e72b53de1d98c75b842dcb58c2b1b6868be16bfc3c2846bd524ce8fc641c0caf5c484'
-    );
+    expect(hex).toEqual('db909e72b53de1d98c75b842dcb58c2b1b6868be16bfc3c2846bd524ce8fc641c0caf5c484');
   });
   test('test get hash object from hex', () => {
-    const result = getHashObjectFromHex(
-      'db909e72b53de1d98c75b842dcb58c2b1b6868be16bfc3c2846bd524ce8fc641c0caf5c484'
-    );
+    const result = getHashObjectFromHex('db909e72b53de1d98c75b842dcb58c2b1b6868be16bfc3c2846bd524ce8fc641c0caf5c484');
     const hex = result.value.toString('hex');
-    expect(hex).toEqual(
-      'db909e72b53de1d98c75b842dcb58c2b1b6868be16bfc3c2846bd524ce8fc641c0caf5c484'
-    );
+    expect(hex).toEqual('db909e72b53de1d98c75b842dcb58c2b1b6868be16bfc3c2846bd524ce8fc641c0caf5c484');
   });
   test('test encode transaction to protobuf type', () => {
     const result = encodeTransaction({
@@ -259,9 +232,8 @@ describe('test proto',() => {
         '{ "blockHash": "21cbeb3ac049d5a91c66c87f7ae48923fa469c11794f7eecdc721d4e26be48f9", "blockHeight": "136624547" }',
       refBlockNumber: 136624547,
       refBlockPrefix: 'IcvrOg==',
-      signature:
-        '+9HkFh+ApJqnJp9gmLVwdQQFH283lQaLNpU5udWa818r6ig2ACll/CjFMSvvCsUkvC2xAoIJjruB+WgabiGs9gA=',
-      to: 'JRmBduh4nXWi1aXgdUsj5gJrzeZb2LxmrAbf7W99faZSvoAaE',
+      signature: '+9HkFh+ApJqnJp9gmLVwdQQFH283lQaLNpU5udWa818r6ig2ACll/CjFMSvvCsUkvC2xAoIJjruB+WgabiGs9gA=',
+      to: 'JRmBduh4nXWi1aXgdUsj5gJrzeZb2LxmrAbf7W99faZSvoAaE'
     });
     expect(result).toBeInstanceOf(Buffer);
     const hex = result.toString('hex');
@@ -281,9 +253,7 @@ describe('test proto',() => {
       'f9609c60db810203811cd99a9714b45be196c313348063a82d35faafd037480c'
     );
     expect(result.to.value).toBeInstanceOf(Buffer);
-    expect(result.to.value.toString('hex')).toEqual(
-      '2791e992a57f28e75a11f13af2c0aec8b0eb35d2f048d42eba8901c92e0378dc'
-    );
+    expect(result.to.value.toString('hex')).toEqual('2791e992a57f28e75a11f13af2c0aec8b0eb35d2f048d42eba8901c92e0378dc');
   });
   test('test deserialize logs with unsupported dataType', async () => {
     const Logs = [
@@ -291,14 +261,16 @@ describe('test proto',() => {
         Address: 'ELF_2sGZFRtqQ57F55Z2KvhmoozKrf7ik2htNVQawEAo3Vyvcx9Qwr_tDVW',
         Name: 'FAKE',
         Indexed: null,
-        NonIndexed: 'CgNFTEYQoI/hGQ==',
-      },
+        NonIndexed: 'CgNFTEYQoI/hGQ=='
+      }
     ];
     const contractInstance = factory.at(address);
     const result = deserializeLog(Logs, contractInstance.services);
-    expect(result).toEqual([{
-      message: 'This log is not supported.',
-    }]);
+    expect(result).toEqual([
+      {
+        message: 'This log is not supported.'
+      }
+    ]);
   });
   test('test deserialize logs with empty logs', async () => {
     const result = deserializeLog();

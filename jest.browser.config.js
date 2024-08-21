@@ -48,7 +48,7 @@ module.exports = {
   // ],
 
   // A list of reporter names that Jest uses when writing coverage reports
-  coverageReporters: ['text', 'json-summary'],
+  coverageReporters: ['text', 'json-summary', 'html'],
   // coverageReporters: [
   //   "json",
   //   "text",
@@ -104,7 +104,7 @@ module.exports = {
 
   // A map from regular expressions to module names that allow to stub out resources with a single module
   moduleNameMapper: {
-    '^randombytes$': '<rootDir>/node_modules/randombytes/index.js',
+    '^randombytes$': '<rootDir>/node_modules/randombytes/index.js'
   },
 
   // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader
@@ -202,8 +202,8 @@ module.exports = {
 
   // A map from regular expressions to paths to transformers
   transform: {
-    '^.+\\.js?$': 'babel-jest',
-  },
+    '^.+\\.js?$': 'babel-jest'
+  }
 
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
   // transformIgnorePatterns: [
