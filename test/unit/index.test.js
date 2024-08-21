@@ -6,10 +6,6 @@ describe('test AElf', () => {
     const result = aelf.isConnected();
     expect(result).toBeTruthy();
   });
-  // test('test AElf reset',() => {
-  //     const aelf = new AElf(new AElf.providers.HttpProvider(stageEndpoint));
-  //     aelf.reset();
-  // });
   test('test AElf set provider', () => {
     const aelf = new AElf(
       new AElf.providers.HttpProvider('https://aelf-public-node.aelf.io')

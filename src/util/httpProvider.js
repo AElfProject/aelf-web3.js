@@ -12,6 +12,7 @@ const defaultHeaders = {
 let RequestLibrary = {};
 let RequestLibraryXMLOnly = null;
 let isFetch = false;
+let NodeHeaders;
 if (process.env.RUNTIME_ENV === 'browser') {
   // For browsers use DOM Api XMLHttpRequest
   // serviceworker without window and document, only with self
@@ -31,6 +32,7 @@ if (process.env.RUNTIME_ENV === 'browser') {
   RequestLibraryXMLOnly = require('xmlhttprequest').XMLHttpRequest;
   // eslint-disable-next-line global-require
   RequestLibrary = require('node-fetch').default;
+  NodeHeaders = RequestLibrary.Headers;
   isFetch = true;
 }
 
@@ -104,7 +106,7 @@ export default class HttpProvider {
     const { url, method = 'POST', params = {}, signal } = requestConfig;
     const path = `/api/${url}`.replace(/\/\//g, '/');
     let uri = `${this.host}${path}`.replace();
-    const myHeaders = new Headers();
+    const myHeaders = process.env.RUNTIME_ENV === 'browser' ? new Headers() : new NodeHeaders();
     let body = JSON.stringify(params);
     if (method.toUpperCase() === 'GET' || method.toUpperCase() === 'DELETE') {
       uri = Object.keys(params).length > 0 ? `${uri}?${stringify(params)}` : uri;
