@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">93.27% </span>
+                <span class="strong">91.93% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>111/119</span>
+                <span class='fraction'>114/124</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">93.16% </span>
+                <span class="strong">91.8% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>109/117</span>
+                <span class='fraction'>112/122</span>
             </div>
         
             
@@ -328,7 +328,12 @@
 <a name='L263'></a><a href='#L263'>263</a>
 <a name='L264'></a><a href='#L264'>264</a>
 <a name='L265'></a><a href='#L265'>265</a>
-<a name='L266'></a><a href='#L266'>266</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L266'></a><a href='#L266'>266</a>
+<a name='L267'></a><a href='#L267'>267</a>
+<a name='L268'></a><a href='#L268'>268</a>
+<a name='L269'></a><a href='#L269'>269</a>
+<a name='L270'></a><a href='#L270'>270</a>
+<a name='L271'></a><a href='#L271'>271</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -343,6 +348,7 @@
 <span class="cline-any cline-yes">22x</span>
 <span class="cline-any cline-yes">22x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">22x</span>
 <span class="cline-any cline-yes">22x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -355,12 +361,16 @@
 <span class="cline-any cline-yes">11x</span>
 <span class="cline-any cline-yes">11x</span>
 <span class="cline-any cline-yes">11x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">11x</span>
+<span class="cline-any cline-yes">11x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -544,7 +554,7 @@
 <span class="cline-any cline-yes">26x</span>
 <span class="cline-any cline-yes">26x</span>
 <span class="cline-any cline-yes">26x</span>
-<span class="cline-any cline-yes">781x</span>
+<span class="cline-any cline-yes">810x</span>
 <span class="cline-any cline-yes">26x</span>
 <span class="cline-any cline-yes">26x</span>
 <span class="cline-any cline-yes">26x</span>
@@ -609,25 +619,30 @@ let RequestLibraryXMLOnly = null;
 let isFetch = false;
 let NodeHeaders;
 if (process.env.RUNTIME_ENV === 'browser') {
+  console.log(1);
   // For browsers use DOM Api XMLHttpRequest
   // serviceworker without window and document, only with self
   // eslint-disable-next-line no-restricted-globals
   const _self = typeof self === 'object' ? self : <span class="branch-1 cbranch-no" title="branch not covered" >{};</span>
   const _window = typeof window === 'object' ? window : <span class="branch-1 cbranch-no" title="branch not covered" >_self;</span>
   if (typeof _window.XMLHttpRequest !== 'undefined') {
+    console.log('1-1');
     RequestLibrary = _window.XMLHttpRequest;
     isFetch = false;
   } else <span class="missing-if-branch" title="else path not taken" >E</span>if (typeof _window.fetch !== 'undefined') {
+    console.log('1-2');
     RequestLibrary = _window.fetch;
     isFetch = true;
   }
 } else <span class="missing-if-branch" title="else path not taken" >E</span>{
+<span class="cstat-no" title="statement not covered" >  console.log(2);</span>
   // For node use xmlhttprequest
   // eslint-disable-next-line global-require
 <span class="cstat-no" title="statement not covered" >  RequestLibraryXMLOnly = require('xmlhttprequest').XMLHttpRequest;</span>
   // eslint-disable-next-line global-require
-<span class="cstat-no" title="statement not covered" >  RequestLibrary = require('node-fetch').default;</span>
-<span class="cstat-no" title="statement not covered" >  NodeHeaders = RequestLibrary.Headers;</span>
+  const NodeFetch = <span class="cstat-no" title="statement not covered" >require('node-fetch');</span>
+<span class="cstat-no" title="statement not covered" >  RequestLibrary = NodeFetch.default;</span>
+<span class="cstat-no" title="statement not covered" >  NodeHeaders = NodeFetch.Headers;</span>
 <span class="cstat-no" title="statement not covered" >  isFetch = true;</span>
 }
 &nbsp;
@@ -865,7 +880,7 @@ export default class HttpProvider {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-08-21T08:13:09.008Z
+                at 2024-08-22T08:20:57.024Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
