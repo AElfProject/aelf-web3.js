@@ -21,7 +21,7 @@ module.exports = {
   clearMocks: true,
 
   // Indicates whether the coverage information should be collected while executing the test
-  // collectCoverage: false,
+  collectCoverage: true,
 
   // An array of glob patterns indicating a set of files for which coverage information should be collected
   // collectCoverageFrom: null,
@@ -29,12 +29,24 @@ module.exports = {
   // The directory where Jest should output its coverage files
   coverageDirectory: 'coverage',
 
+  collectCoverageFrom: [
+    '**/src/**/*.js',
+    '!**/src/scrpt-polyfill.js',
+    '!**/src/types/*.js',
+    '!**/node_modules/**',
+    '!**/examples/**',
+    '!**/dist/**',
+    '!**/script/**',
+    '!**/build/**'
+  ],
+
   // An array of regexp pattern strings used to skip coverage collection
   // coveragePathIgnorePatterns: [
   //   "/node_modules/"
   // ],
 
   // A list of reporter names that Jest uses when writing coverage reports
+  coverageReporters: ['text', 'json-summary', 'html'],
   // coverageReporters: [
   //   "json",
   //   "text",
@@ -64,9 +76,7 @@ module.exports = {
   // globals: {},
 
   // An array of directory names to be searched recursively up from the requiring module's location
-  moduleDirectories: [
-    "node_modules"
-  ],
+  moduleDirectories: ['node_modules'],
 
   // An array of file extensions your modules use
   // moduleFileExtensions: [
@@ -99,7 +109,7 @@ module.exports = {
   // projects: null,
 
   // Use this configuration option to add custom reporters to Jest
-  // reporters: undefined,
+  reporters: ['default', 'jest-github-reporter'],
 
   // Automatically reset mock state between every test
   // resetMocks: false,
@@ -143,10 +153,12 @@ module.exports = {
   // testLocationInResults: false,
 
   // The glob patterns Jest uses to detect test files
-  // testMatch: [
-  //   "**/__tests__/**/*.[jt]s?(x)",
-  //   "**/?(*.)+(spec|test).[tj]s?(x)"
-  // ],
+  testMatch: [
+    '**/test/unit/**/?(*.)+(test).[jt]s?(x)',
+    '**/test/unit/util/httpProvider.node-test.js',
+    '**/test/unit/util/httpProvider.fetch.node-test.js'
+  ],
+  testTimeout: 20000,
 
   // An array of regexp pattern strings that are matched against all test paths, matched tests are skipped
   // testPathIgnorePatterns: [

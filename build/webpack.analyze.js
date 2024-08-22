@@ -6,8 +6,8 @@
 /* eslint-env node */
 
 const {BundleAnalyzerPlugin} = require('webpack-bundle-analyzer');
-const {UnusedFilesWebpackPlugin} = require('unused-files-webpack-plugin');
-const merge = require('webpack-merge');
+const DeadCodePlugin = require('webpack-deadcode-plugin');
+const { merge } = require('webpack-merge');
 const nodeConfig = require('./webpack.node');
 const browserConfig = require('./webpack.browser');
 
@@ -24,6 +24,6 @@ const unusedAnalyzeConfig = {
 module.exports = merge(process.env.RUNTIME_ENV === 'node' ? nodeConfig : browserConfig, {
   plugins: [
     new BundleAnalyzerPlugin({analyzerMode: 'static', generateStatsFile: true}),
-    new UnusedFilesWebpackPlugin(unusedAnalyzeConfig)
+    new DeadCodePlugin(unusedAnalyzeConfig)
   ]
 });

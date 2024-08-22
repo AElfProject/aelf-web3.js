@@ -1,57 +1,60 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>Hello AElf</title>
 </head>
+
 <body>
-<p>Hello AElf.</p>
+  <p>Hello AElf.</p>
 
-<script type="text/javascript" src="../../dist/aelf.umd.js"></script>
-<script type="text/javascript">
-  const AElf = window.AElf;
-  const Wallet = AElf.wallet;
-  const sha256 = AElf.utils.sha256;
+  <script type="text/javascript" src="../../dist/aelf.umd.js"></script>
+  <script type="text/javascript">
+    const AElf = window.AElf;
+    const Wallet = AElf.wallet;
+    const sha256 = AElf.utils.sha256;
 
-  const wallet = AElf.wallet.createNewWallet();
-  const walletGotByKey = AElf.wallet.getWalletByPrivateKey(wallet.privateKey);
-  const walletGotByMn = AElf.wallet.getWalletByMnemonic(wallet.mnemonic);
-  console.log(wallet.address);
-  console.log(walletGotByKey);
-  console.log(walletGotByMn);
-  // link to Blockchain
-  const aelf = new AElf(new AElf.providers.HttpProvider(
-    'http://18.162.41.20:8000'
-  ));
+    const wallet = AElf.wallet.createNewWallet();
+    const walletGotByKey = AElf.wallet.getWalletByPrivateKey(wallet.privateKey);
+    const walletGotByMn = AElf.wallet.getWalletByMnemonic(wallet.mnemonic);
+    console.log(wallet.address);
+    console.log(walletGotByKey);
+    console.log(walletGotByMn);
+    // link to Blockchain
+    const aelf = new AElf(new AElf.providers.HttpProvider(
+      'https://tdvw-test-node.aelf.io/'
+    ));
 
-  if(!aelf.isConnected()) {
-    alert('Blockchain Node is not running.');
-  }
+    if (!aelf.isConnected()) {
+      alert('Blockchain Node is not running.');
+    }
 
-  // the contract you want to query
-  const tokenContractName = 'AElf.ContractNames.Token';
-  const {
-    // directly accessible information
-    GenesisContractAddress
-  } = aelf.chain.getChainStatus({sync: true});
-  aelf.chain.contractAt(GenesisContractAddress, wallet)
-    .then(zeroC => {
-      // return contract's address which you query by contract's name
-      return zeroC.GetContractAddressByName.call(sha256(tokenContractName));
-    })
-    .then(tokenContractAddress => {
-      // return contract's instance and you can call the methods on this instance
-      return aelf.chain.contractAt(tokenContractAddress, wallet);
-    })
-    .then(tokenContract => {
-      // return token's info
-      return tokenContract.GetTokenInfo.call({
-        symbol: 'ELF'
+    // the contract you want to query
+    const tokenContractName = 'AElf.ContractNames.Token';
+    const {
+      // directly accessible information
+      GenesisContractAddress
+    } = aelf.chain.getChainStatus({ sync: true });
+    aelf.chain.contractAt(GenesisContractAddress,wallet)
+      .then(zeroC => {
+        // return contract's address which you query by contract's name
+        return zeroC.GetContractAddressByName.call(sha256(tokenContractName));
+      })
+      .then(tokenContractAddress => {
+        // return contract's instance and you can call the methods on this instance
+        return aelf.chain.contractAt(tokenContractAddress,wallet);
+      })
+      .then(tokenContract => {
+        // return token's info
+        return tokenContract.GetTokenInfo.call({
+          symbol: 'ELF'
+        });
+      })
+      .then(res => {
+        console.log(res);
+        alert(JSON.stringify(res));
       });
-    })
-    .then(res => {
-      console.log(res);
-      alert(JSON.stringify(res));
-    });
-</script>
+  </script>
 </body>
+
 </html>

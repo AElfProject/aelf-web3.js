@@ -10,9 +10,12 @@ const defaultHeaders = {
 };
 
 let RequestLibrary = {};
+let RequestLibraryXMLOnly = null;
 let isFetch = false;
+let NodeHeaders;
 if (process.env.RUNTIME_ENV === 'browser') {
   // For browsers use DOM Api XMLHttpRequest
+  // serviceworker without window and document, only with self
   // eslint-disable-next-line no-restricted-globals
   const _self = typeof self === 'object' ? self : {};
   const _window = typeof window === 'object' ? window : _self;
@@ -26,18 +29,26 @@ if (process.env.RUNTIME_ENV === 'browser') {
 } else {
   // For node use xmlhttprequest
   // eslint-disable-next-line global-require
-  RequestLibrary = require('xmlhttprequest').XMLHttpRequest;
+  RequestLibraryXMLOnly = require('xmlhttprequest').XMLHttpRequest;
+  // eslint-disable-next-line global-require
+  const NodeFetch = require('node-fetch');
+  RequestLibrary = NodeFetch.default;
+  NodeHeaders = NodeFetch.Headers;
+  isFetch = true;
 }
 
 export default class HttpProvider {
   constructor(
     host = 'http://localhost:8545',
     timeout = 8000,
-    headers = defaultHeaders
+    headers = defaultHeaders,
+    // support node-fetch options
+    options = {}
   ) {
     this.host = host.replace(/\/$/, '');
     this.timeout = timeout;
     this.headers = {};
+    this.options = options;
     if (Array.isArray(headers)) {
       headers.forEach(({ name, value }) => {
         this.headers[name] = value;
@@ -49,7 +60,7 @@ export default class HttpProvider {
     } else {
       this.headers = {
         ...defaultHeaders,
-        ...headers,
+        ...headers
       };
     }
   }
@@ -72,9 +83,9 @@ export default class HttpProvider {
         status: parseRequest.status,
         error: parseRequest.status === 200 ? 0 : parseRequest.status,
         Error: {
-          message: request.statusText,
+          message: request.statusText
         },
-        statusText: request.statusText,
+        statusText: request.statusText
       };
     } catch (e) {
       result = request;
@@ -93,15 +104,10 @@ export default class HttpProvider {
   }
 
   requestSendByFetch(requestConfig, request) {
-    const {
-      url,
-      method = 'POST',
-      params = {},
-      signal
-    } = requestConfig;
-    const path = `/api/${url}`.replace(/\/\//g, '\/');
+    const { url, method = 'POST', params = {}, signal } = requestConfig;
+    const path = `/api/${url}`.replace(/\/\//g, '/');
     let uri = `${this.host}${path}`.replace();
-    const myHeaders = new Headers();
+    const myHeaders = process.env.RUNTIME_ENV === 'browser' ? new Headers() : new NodeHeaders();
     let body = JSON.stringify(params);
     if (method.toUpperCase() === 'GET' || method.toUpperCase() === 'DELETE') {
       uri = Object.keys(params).length > 0 ? `${uri}?${stringify(params)}` : uri;
@@ -111,6 +117,7 @@ export default class HttpProvider {
       myHeaders.append(header, this.headers[header]);
     });
     return request(uri, {
+      ...this.options,
       method: method.toUpperCase(),
       headers: myHeaders,
       body,
@@ -124,40 +131,40 @@ export default class HttpProvider {
     const control = typeof AbortController === 'function' ? new AbortController() : {};
     const config = { ...requestConfig, signal: control.signal, credentials: 'omit' };
     // Simulation timeout
-    return Promise.race([
-      this.requestSendByFetch(config, request),
-      HttpProvider.timeoutPromise(timeout)
-    ]).then(result => new Promise((resolve, reject) => {
-      if (timeout !== 1) {
-        try {
-          if (result.type === 'timeout') {
-            // Cancel timeout request
-            if (control.abort) control.abort();
-            reject(result);
-          } else {
-            result.text().then(text => {
-              const res = HttpProvider.formatResponse(text);
-              if (result.status !== 200 || !result.ok) {
-                reject(res);
-                return;
-              }
-              resolve(res);
-            }).catch(err => reject(err));
+    return Promise.race([this.requestSendByFetch(config, request), HttpProvider.timeoutPromise(timeout)]).then(
+      result =>
+        new Promise((resolve, reject) => {
+          // @deprecated unuse timeout=1
+          // if (timeout !== 1) {
+          try {
+            if (result.type === 'timeout') {
+              // Cancel timeout request
+              if (control.abort) control.abort();
+              reject(result);
+            } else {
+              result
+                .text()
+                .then(text => {
+                  const res = HttpProvider.formatResponse(text);
+                  if (result.status !== 200 || !result.ok) {
+                    reject(res);
+                    return;
+                  }
+                  resolve(res);
+                })
+                .catch(err => reject(err));
+            }
+          } catch (e) {
+            reject(e);
           }
-        } catch (e) {
-          reject(e);
-        }
-      }
-    }));
+          // }
+        })
+    );
   }
 
   requestSend(requestConfig, request, isAsync = false) {
-    const {
-      url,
-      method = 'POST',
-      params = {}
-    } = requestConfig;
-    const path = `/api/${url}`.replace(/\/\//g, '\/');
+    const { url, method = 'POST', params = {} } = requestConfig;
+    const path = `/api/${url}`.replace(/\/\//g, '/');
     let uri = `${this.host}${path}`.replace();
     if (method.toUpperCase() === 'GET' || method.toUpperCase() === 'DELETE') {
       uri = Object.keys(params).length > 0 ? `${uri}?${stringify(params)}` : uri;
@@ -174,8 +181,17 @@ export default class HttpProvider {
   }
 
   send(requestConfig) {
-    if (isFetch) throw new Error("Can not get XMLHttpRequest, invalid parameter: 'sync'");
-    const request = new RequestLibrary();
+    let request;
+    if (isFetch) {
+      if (!RequestLibraryXMLOnly) {
+        // browser case, Chrome extension v3.
+        throw new Error("Can not get XMLHttpRequest, invalid parameter: 'sync'");
+      } else {
+        request = new RequestLibraryXMLOnly();
+      }
+    } else {
+      request = new RequestLibrary();
+    }
     request.withCredentials = false;
     this.requestSend(requestConfig, request);
     let result = request.responseText;
@@ -193,7 +209,7 @@ export default class HttpProvider {
   }
 
   sendAsyncByXMLHttp(requestConfig) {
-    const request = new RequestLibrary();
+    const request = RequestLibraryXMLOnly ? new RequestLibraryXMLOnly() : new RequestLibrary();
     request.withCredentials = false;
     request.timeout = this.timeout;
     this.requestSend(requestConfig, request, true);
