@@ -66,11 +66,6 @@ export default class AElf {
     return this.currentProvider && this.currentProvider.isConnected();
   }
 
-  reset(keepIsSyncing) {
-    this._requestManager.reset(keepIsSyncing);
-    this.settings = new Settings();
-  }
-
   setProvider(provider) {
     this._requestManager.setProvider(provider);
     this.currentProvider = provider;

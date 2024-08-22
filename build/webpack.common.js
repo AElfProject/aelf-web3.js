@@ -6,8 +6,8 @@
 /* eslint-env node */
 const path = require('path');
 const webpack = require('webpack');
-const {ROOT} = require('./utils');
-const {version, name} = require(path.resolve(ROOT, './package.json'));
+const { ROOT } = require('./utils');
+const { version, name } = require(path.resolve(ROOT, './package.json'));
 
 const banner = `${name}.js v${version} \n(c) 2019-${new Date().getFullYear()} AElf \nReleased under MIT License`;
 
@@ -15,10 +15,7 @@ const baseConfig = {
   entry: path.resolve(ROOT, 'src/index.js'),
   devtool: 'source-map',
   resolve: {
-    modules: [
-      path.resolve(ROOT, 'src'),
-      path.resolve(ROOT, 'node_modules')
-    ],
+    modules: [path.resolve(ROOT, 'src'), 'node_modules'],
     extensions: ['.ts', '.js']
   },
   module: {
@@ -40,7 +37,10 @@ const baseConfig = {
       'process.env.SDK_VERSION': JSON.stringify(version)
     }),
     new webpack.BannerPlugin(banner)
-  ]
+  ],
+  stats: {
+    chunkRelations: true
+  }
 };
 
 module.exports = baseConfig;

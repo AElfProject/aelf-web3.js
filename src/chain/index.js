@@ -2,12 +2,7 @@
  * @file chain
  * @author atom-yang
  */
-import {
-  isBoolean,
-  isFunction,
-  noop,
-  setPath
-} from '../util/utils';
+import { isBoolean, isFunction, noop, setPath } from '../util/utils';
 import { CHAIN_METHODS } from '../common/constants';
 import ChainMethod from './chainMethod';
 import * as merkleTree from '../util/merkleTree';
@@ -29,7 +24,7 @@ export default class Chain {
     const result = {
       callback: noop,
       isSync: false,
-      refBlockNumberStrategy: 0,
+      refBlockNumberStrategy: 0
     };
     if (args.length === 0) {
       // has no callback, default to be async mode
@@ -39,10 +34,10 @@ export default class Chain {
       result.callback = args[args.length - 1];
     }
     args.forEach(arg => {
-      if (isBoolean((arg.sync))) {
+      if (isBoolean(arg?.sync)) {
         result.isSync = arg.sync;
       }
-      if (typeof arg.refBlockNumberStrategy === 'number') {
+      if (typeof arg?.refBlockNumberStrategy === 'number') {
         result.refBlockNumberStrategy = arg.refBlockNumberStrategy;
       }
     });
@@ -77,7 +72,8 @@ export default class Chain {
         return result;
       }
       callback(new Error('no such contract'));
-      if (callback.length > 0) {
+      // if callback is noop, throw error
+      if (callback.length === 0) {
         throw new Error('no such contract');
       }
     });
@@ -95,7 +91,9 @@ export default class Chain {
       if (txIndex === -1) {
         throw new Error(`txId ${txId} has no correspond transaction in the block with height ${height}`);
       }
-      const txResults = this.getTxResults(BlockHash, 0, txIds.length, { sync: true });
+      const txResults = this.getTxResults(BlockHash, 0, txIds.length, {
+        sync: true
+      });
       const nodes = txResults.map((result, index) => {
         const id = txIds[index];
         const status = result.Status;

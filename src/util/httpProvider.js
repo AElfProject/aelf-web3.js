@@ -12,8 +12,10 @@ const defaultHeaders = {
 let RequestLibrary = {};
 let RequestLibraryXMLOnly = null;
 let isFetch = false;
+let NodeHeaders;
 if (process.env.RUNTIME_ENV === 'browser') {
   // For browsers use DOM Api XMLHttpRequest
+  // serviceworker without window and document, only with self
   // eslint-disable-next-line no-restricted-globals
   const _self = typeof self === 'object' ? self : {};
   const _window = typeof window === 'object' ? window : _self;
@@ -29,7 +31,9 @@ if (process.env.RUNTIME_ENV === 'browser') {
   // eslint-disable-next-line global-require
   RequestLibraryXMLOnly = require('xmlhttprequest').XMLHttpRequest;
   // eslint-disable-next-line global-require
-  RequestLibrary = require('node-fetch');
+  const NodeFetch = require('node-fetch');
+  RequestLibrary = NodeFetch.default;
+  NodeHeaders = NodeFetch.Headers;
   isFetch = true;
 }
 
@@ -56,7 +60,7 @@ export default class HttpProvider {
     } else {
       this.headers = {
         ...defaultHeaders,
-        ...headers,
+        ...headers
       };
     }
   }
@@ -79,9 +83,9 @@ export default class HttpProvider {
         status: parseRequest.status,
         error: parseRequest.status === 200 ? 0 : parseRequest.status,
         Error: {
-          message: request.statusText,
+          message: request.statusText
         },
-        statusText: request.statusText,
+        statusText: request.statusText
       };
     } catch (e) {
       result = request;
@@ -100,15 +104,10 @@ export default class HttpProvider {
   }
 
   requestSendByFetch(requestConfig, request) {
-    const {
-      url,
-      method = 'POST',
-      params = {},
-      signal
-    } = requestConfig;
-    const path = `/api/${url}`.replace(/\/\//g, '\/');
+    const { url, method = 'POST', params = {}, signal } = requestConfig;
+    const path = `/api/${url}`.replace(/\/\//g, '/');
     let uri = `${this.host}${path}`.replace();
-    const myHeaders = new Headers();
+    const myHeaders = process.env.RUNTIME_ENV === 'browser' ? new Headers() : new NodeHeaders();
     let body = JSON.stringify(params);
     if (method.toUpperCase() === 'GET' || method.toUpperCase() === 'DELETE') {
       uri = Object.keys(params).length > 0 ? `${uri}?${stringify(params)}` : uri;
@@ -132,40 +131,40 @@ export default class HttpProvider {
     const control = typeof AbortController === 'function' ? new AbortController() : {};
     const config = { ...requestConfig, signal: control.signal, credentials: 'omit' };
     // Simulation timeout
-    return Promise.race([
-      this.requestSendByFetch(config, request),
-      HttpProvider.timeoutPromise(timeout)
-    ]).then(result => new Promise((resolve, reject) => {
-      if (timeout !== 1) {
-        try {
-          if (result.type === 'timeout') {
-            // Cancel timeout request
-            if (control.abort) control.abort();
-            reject(result);
-          } else {
-            result.text().then(text => {
-              const res = HttpProvider.formatResponse(text);
-              if (result.status !== 200 || !result.ok) {
-                reject(res);
-                return;
-              }
-              resolve(res);
-            }).catch(err => reject(err));
+    return Promise.race([this.requestSendByFetch(config, request), HttpProvider.timeoutPromise(timeout)]).then(
+      result =>
+        new Promise((resolve, reject) => {
+          // @deprecated unuse timeout=1
+          // if (timeout !== 1) {
+          try {
+            if (result.type === 'timeout') {
+              // Cancel timeout request
+              if (control.abort) control.abort();
+              reject(result);
+            } else {
+              result
+                .text()
+                .then(text => {
+                  const res = HttpProvider.formatResponse(text);
+                  if (result.status !== 200 || !result.ok) {
+                    reject(res);
+                    return;
+                  }
+                  resolve(res);
+                })
+                .catch(err => reject(err));
+            }
+          } catch (e) {
+            reject(e);
           }
-        } catch (e) {
-          reject(e);
-        }
-      }
-    }));
+          // }
+        })
+    );
   }
 
   requestSend(requestConfig, request, isAsync = false) {
-    const {
-      url,
-      method = 'POST',
-      params = {}
-    } = requestConfig;
-    const path = `/api/${url}`.replace(/\/\//g, '\/');
+    const { url, method = 'POST', params = {} } = requestConfig;
+    const path = `/api/${url}`.replace(/\/\//g, '/');
     let uri = `${this.host}${path}`.replace();
     if (method.toUpperCase() === 'GET' || method.toUpperCase() === 'DELETE') {
       uri = Object.keys(params).length > 0 ? `${uri}?${stringify(params)}` : uri;

@@ -48,8 +48,7 @@ export const getResourceFee = (Logs = []) => {
     return [];
   }
   return Logs.filter(log => log.Name === 'ResourceTokenCharged').map(v =>
-    getFee(getSerializedDataFromLog(v), 'ResourceTokenCharged')
-  );
+    getFee(getSerializedDataFromLog(v), 'ResourceTokenCharged'));
 };
 
 export const getTransactionFee = (Logs = []) => {
@@ -57,8 +56,7 @@ export const getTransactionFee = (Logs = []) => {
     return [];
   }
   return Logs.filter(log => log.Name === 'TransactionFeeCharged').map(v =>
-    getFee(getSerializedDataFromLog(v), 'TransactionFeeCharged')
-  );
+    getFee(getSerializedDataFromLog(v), 'TransactionFeeCharged'));
 };
 
 /**

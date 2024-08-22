@@ -1,0 +1,108 @@
+name: Test Badge
+
+permissions:
+  contents: write
+
+on:
+  push:
+    branches:
+      - dev
+      - master
+      - feature/test-chain-util
+
+env:
+  BRANCH_NAME: 'feature/badge-json'
+
+jobs:
+  test:
+    name: Generate Test Badge
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 20
+          cache: yarn
+      - run: yarn install
+      - run: yarn run test:browser
+      - name: Install xmlstarlet
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y xmlstarlet
+
+      - name: Extract test counts
+        run: |
+          echo "TESTS=$(xmlstarlet sel -t -v "testsuites/@tests" "jest-report.xml")" >> $GITHUB_ENV
+          echo "FAILURES=$(xmlstarlet sel -t -v "testsuites/@failures" "jest-report.xml")" >> $GITHUB_ENV
+          echo "ERRORS=$(xmlstarlet sel -t -v "testsuites/@errors" "jest-report.xml")" >> $GITHUB_ENV
+
+      - name: Set file name
+        run: echo "FILENAME=$(echo ${GITHUB_REF#refs/heads/} | tr '/' '-')-test-results.json" >> $GITHUB_ENV
+
+      - name: Prepare Content
+        uses: actions/github-script@v5
+        with:
+          github-token: ${{ secrets.COMMIT_TOKEN }}
+          script: |
+            const fs = require('fs');
+            const tests = "${{ env.TESTS }}";
+            const failures = "${{ env.FAILURES }}";
+            const errors = "${{ env.ERRORS }}";
+            const success = tests - failures;
+            const color = errors > 0 ? "red" : (failures > 0 ? "green" : "brightgreen");
+            const content = `{"schemaVersion":1,"label":"tests","message":"${tests} tests, ${success} success","color":"${color}"}`;
+
+            fs.writeFileSync("${{ env.FILENAME }}", content);
+
+      - name: Check if file exists
+        uses: actions/github-script@v5
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            let fileExists = false;
+            try {
+              const { data } = await github.rest.repos.getContent({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                path: "${{ env.FILENAME }}",
+                ref: "${{ env.BRANCH_NAME }}",
+              });
+              fileExists = !!data;
+            } catch (error) {
+              if (error.status !== 404) {
+                throw error;
+              }
+            }
+            core.exportVariable('FILE_EXISTS', fileExists);
+
+      - name: Create or update file
+        uses: actions/github-script@v5
+        with:
+          github-token: ${{ secrets.COMMIT_TOKEN }}
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+            const filePath = path.join(process.env.GITHUB_WORKSPACE, "${{ env.FILENAME }}");
+            const fileContent = fs.readFileSync(filePath, 'utf8');
+
+            const params = {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              path: "${{ env.FILENAME }}",
+              message: `Update ${{ env.FILENAME }}`,
+              content: Buffer.from(fileContent).toString('base64'),
+              branch: "${{ env.BRANCH_NAME }}"
+            };
+
+            if (${{ env.FILE_EXISTS }}) {
+              const { data } = await github.rest.repos.getContent({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                path: "${{ env.FILENAME }}",
+                ref: "${{ env.BRANCH_NAME }}"
+              });
+              params.sha = data.sha;
+            }
+
+            await github.rest.repos.createOrUpdateFileContents(params);
