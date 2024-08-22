@@ -14,25 +14,30 @@ let RequestLibraryXMLOnly = null;
 let isFetch = false;
 let NodeHeaders;
 if (process.env.RUNTIME_ENV === 'browser') {
+  console.log(1);
   // For browsers use DOM Api XMLHttpRequest
   // serviceworker without window and document, only with self
   // eslint-disable-next-line no-restricted-globals
   const _self = typeof self === 'object' ? self : {};
   const _window = typeof window === 'object' ? window : _self;
   if (typeof _window.XMLHttpRequest !== 'undefined') {
+    console.log('1-1');
     RequestLibrary = _window.XMLHttpRequest;
     isFetch = false;
   } else if (typeof _window.fetch !== 'undefined') {
+    console.log('1-2');
     RequestLibrary = _window.fetch;
     isFetch = true;
   }
 } else {
+  console.log(2);
   // For node use xmlhttprequest
   // eslint-disable-next-line global-require
   RequestLibraryXMLOnly = require('xmlhttprequest').XMLHttpRequest;
   // eslint-disable-next-line global-require
-  RequestLibrary = require('node-fetch').default;
-  NodeHeaders = RequestLibrary.Headers;
+  const NodeFetch = require('node-fetch');
+  RequestLibrary = NodeFetch.default;
+  NodeHeaders = NodeFetch.Headers;
   isFetch = true;
 }
 

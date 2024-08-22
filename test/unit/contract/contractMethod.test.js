@@ -5,13 +5,11 @@ import { noop, uint8ArrayToHex } from '../../../src/util/utils';
 const stageEndpoint = 'https://tdvw-test-node.aelf.io/';
 describe('token contract with transfer method', () => {
   const aelf = new AElf(new AElf.providers.HttpProvider(stageEndpoint));
-  const wallet = AElf.wallet.getWalletByPrivateKey(
-    '943df6d39fd1e1cc6ae9813e54f7b9988cf952814f9c31e37744b52594cb4096'
-  );
+  const wallet = AElf.wallet.getWalletByPrivateKey('943df6d39fd1e1cc6ae9813e54f7b9988cf952814f9c31e37744b52594cb4096');
   const chain = aelf.chain;
   const address = 'ASh2Wt7nSEmYqnGxPPzp4pnVDU4uhj1XW9Se5VeZcX2UDdyjx';
   const fds = chain.getContractFileDescriptorSet(address, {
-    sync: true,
+    sync: true
   });
   const factory = new ContractFactory(chain, fds, wallet);
   const method = factory.services[2].methods['Transfer'].resolve();
@@ -38,7 +36,7 @@ describe('token contract with transfer method', () => {
     const rawTransactionBuffer = contractMethod.packInput({
       to: 'ASh2Wt7nSEmYqnGxPPzp4pnVDU4uhj1XW9Se5VeZcX2UDdyjx',
       amount: '10000000',
-      symbol: 'ELF',
+      symbol: 'ELF'
     });
     expect(rawTransactionBuffer).toBeInstanceOf(Buffer);
     expect(rawTransactionBuffer.toString('hex')).toBe(
@@ -53,20 +51,18 @@ describe('token contract with transfer method', () => {
       amount: '10000000',
       memo: '',
       symbol: 'ELF',
-      to: 'ASh2Wt7nSEmYqnGxPPzp4pnVDU4uhj1XW9Se5VeZcX2UDdyjx',
+      to: 'ASh2Wt7nSEmYqnGxPPzp4pnVDU4uhj1XW9Se5VeZcX2UDdyjx'
     });
     expect(contractMethod.unpackPackedInput()).toEqual(null);
   });
 });
 describe('token contract with GetBalance method', () => {
   const aelf = new AElf(new AElf.providers.HttpProvider(stageEndpoint));
-  const wallet = AElf.wallet.getWalletByPrivateKey(
-    '943df6d39fd1e1cc6ae9813e54f7b9988cf952814f9c31e37744b52594cb4096'
-  );
+  const wallet = AElf.wallet.getWalletByPrivateKey('943df6d39fd1e1cc6ae9813e54f7b9988cf952814f9c31e37744b52594cb4096');
   const chain = aelf.chain;
   const address = 'ASh2Wt7nSEmYqnGxPPzp4pnVDU4uhj1XW9Se5VeZcX2UDdyjx';
   const fds = chain.getContractFileDescriptorSet(address, {
-    sync: true,
+    sync: true
   });
   const factory = new ContractFactory(chain, fds, wallet);
   const method = factory.services[2].methods['GetBalance'].resolve();
@@ -76,16 +72,14 @@ describe('token contract with GetBalance method', () => {
       '0a220a209af13552202a457f0d77465a41b5bd55821e1f889ac7b530587100d422fa294412220a201570fb47b3c791f467e1f9840ef1c237eee16f65c3d0d8007315e362431c72e618cc81e5162204fcef5c252a085472616e73666572322e0a220a201570fb47b3c791f467e1f9840ef1c237eee16f65c3d0d8007315e362431c72e61203454c461880ade20482f10441596ffafb80b1d3185f87ba6fdfa0e42915f54d6d464b9b2b80ed77134c16a4523422e781ce7e3583ee24e76c7ed931fc9455618e7192ffcfd1508454d1bff6ff01'
     );
     expect(result.balance).toEqual('47792332');
-    expect(result.owner).toEqual(
-      'ASh2Wt7nSEmYqnGxPPzp4pnVDU4uhj1XW9Se5VeZcX2UDdyjx'
-    );
+    expect(result.owner).toEqual('ASh2Wt7nSEmYqnGxPPzp4pnVDU4uhj1XW9Se5VeZcX2UDdyjx');
     expect(typeof result.symbol).toBe('string');
     expect(contractMethod.unpackOutput()).toEqual(null);
   });
   test('test output', () => {
     const result = contractMethod.packOutput({
       symbol: 'ELF',
-      owner: 'soAcchsFZGEsFeaEsk9tyMnFauPgJfMyZMRrfcntGjrtC7YvE',
+      owner: 'soAcchsFZGEsFeaEsk9tyMnFauPgJfMyZMRrfcntGjrtC7YvE'
     });
     expect(result).toBeInstanceOf(Buffer);
     expect(result.toString('hex')).toBe(
@@ -95,44 +89,40 @@ describe('token contract with GetBalance method', () => {
   });
   test('test handle transaction', async () => {
     const chainStatus = await chain.getChainStatus();
-    const result = contractMethod.handleTransaction(
-      chainStatus?.BestChainHeight,
-      chainStatus?.BestChainHash,
-      {
-        symbol: 'ELF',
-        owner: 'soAcchsFZGEsFeaEsk9tyMnFauPgJfMyZMRrfcntGjrtC7YvE',
-      }
-    );
+    const result = contractMethod.handleTransaction(chainStatus?.BestChainHeight, chainStatus?.BestChainHash, {
+      symbol: 'ELF',
+      owner: 'soAcchsFZGEsFeaEsk9tyMnFauPgJfMyZMRrfcntGjrtC7YvE'
+    });
     expect(typeof result).toBe('string');
-  }, 10000);
+  });
   test('test prepare parameters async', async () => {
     const result = await contractMethod.prepareParametersAsync([
       {
         symbol: 'ELF',
-        owner: 'soAcchsFZGEsFeaEsk9tyMnFauPgJfMyZMRrfcntGjrtC7YvE',
-      },
+        owner: 'soAcchsFZGEsFeaEsk9tyMnFauPgJfMyZMRrfcntGjrtC7YvE'
+      }
     ]);
     expect(typeof result).toBe('string');
-  }, 10000);
+  });
   test('test prepare parameters sync', () => {
     const result = contractMethod.prepareParameters([
       {
         symbol: 'ELF',
-        owner: 'soAcchsFZGEsFeaEsk9tyMnFauPgJfMyZMRrfcntGjrtC7YvE',
-      },
+        owner: 'soAcchsFZGEsFeaEsk9tyMnFauPgJfMyZMRrfcntGjrtC7YvE'
+      }
     ]);
     expect(typeof result).toBe('string');
-  }, 10000);
+  });
   test('test prepare parameters with block info', () => {
     const result = contractMethod.prepareParametersWithBlockInfo([
       {
         symbol: 'ELF',
-        owner: 'soAcchsFZGEsFeaEsk9tyMnFauPgJfMyZMRrfcntGjrtC7YvE',
+        owner: 'soAcchsFZGEsFeaEsk9tyMnFauPgJfMyZMRrfcntGjrtC7YvE'
       },
       {
         height: 49978717,
-        hash: 'ec8ac1d87127082903d29553778425d56c339ee30070c716a4c27ab714c42bb5',
-      },
+        hash: 'ec8ac1d87127082903d29553778425d56c339ee30070c716a4c27ab714c42bb5'
+      }
     ]);
     expect(result).toBe(
       '0a220a209af13552202a457f0d77465a41b5bd55821e1f889ac7b530587100d422fa294412220a201570fb47b3c791f467e1f9840ef1c237eee16f65c3d0d8007315e362431c72e618ddbaea172204ec8ac1d82a0a47657442616c616e636532290a03454c4612220a207356a44986bbf671cfa3214fe4b65928c0102d6a1f36d0d16173a98b9cb1359082f104410b80d69ea94d5484fb3c857b57ccd06d95f1b8d503fbfced80dae64f9ac1522a4c006055ede758555bae4ee359894b49d58338729d184cfcf675e80430c991a601'
@@ -141,53 +131,53 @@ describe('token contract with GetBalance method', () => {
   test('test send transaction', async () => {
     const result = await contractMethod.sendTransaction({
       symbol: 'ELF',
-      owner: 'soAcchsFZGEsFeaEsk9tyMnFauPgJfMyZMRrfcntGjrtC7YvE',
+      owner: 'soAcchsFZGEsFeaEsk9tyMnFauPgJfMyZMRrfcntGjrtC7YvE'
     });
     expect(typeof result.TransactionId).toBe('string');
-  }, 10000);
+  });
   test('test send transaction sync', async () => {
     const result = contractMethod.sendTransaction(
       {
         symbol: 'ELF',
-        owner: 'soAcchsFZGEsFeaEsk9tyMnFauPgJfMyZMRrfcntGjrtC7YvE',
+        owner: 'soAcchsFZGEsFeaEsk9tyMnFauPgJfMyZMRrfcntGjrtC7YvE'
       },
       {
-        sync: true,
+        sync: true
       }
     );
     expect(typeof result.TransactionId).toBe('string');
-  }, 10000);
+  });
   test('test call read only', async () => {
     const result = await contractMethod.callReadOnly({
       symbol: 'ELF',
-      owner: 'soAcchsFZGEsFeaEsk9tyMnFauPgJfMyZMRrfcntGjrtC7YvE',
+      owner: 'soAcchsFZGEsFeaEsk9tyMnFauPgJfMyZMRrfcntGjrtC7YvE'
     });
     expect(result).toEqual({
       symbol: 'ELF',
       owner: 'soAcchsFZGEsFeaEsk9tyMnFauPgJfMyZMRrfcntGjrtC7YvE',
-      balance: '120000000',
+      balance: '120000000'
     });
     const resultSync = contractMethod.callReadOnly(
       {
         symbol: 'ELF',
-        owner: 'soAcchsFZGEsFeaEsk9tyMnFauPgJfMyZMRrfcntGjrtC7YvE',
+        owner: 'soAcchsFZGEsFeaEsk9tyMnFauPgJfMyZMRrfcntGjrtC7YvE'
       },
       { sync: true }
     );
     expect(resultSync).toEqual({
       symbol: 'ELF',
       owner: 'soAcchsFZGEsFeaEsk9tyMnFauPgJfMyZMRrfcntGjrtC7YvE',
-      balance: '120000000',
+      balance: '120000000'
     });
-  }, 10000);
+  });
   test('test extract arguments into object', () => {
-    const mockCallback = jest.fn((x) => x);
+    const mockCallback = jest.fn(x => x);
     const result = contractMethod.extractArgumentsIntoObject([
       {
         symbol: 'ELF',
-        owner: 'soAcchsFZGEsFeaEsk9tyMnFauPgJfMyZMRrfcntGjrtC7YvE',
+        owner: 'soAcchsFZGEsFeaEsk9tyMnFauPgJfMyZMRrfcntGjrtC7YvE'
       },
-      mockCallback,
+      mockCallback
     ]);
     expect(result.isSync).toBe(false);
     expect(result.callback).toEqual(mockCallback);
@@ -201,11 +191,11 @@ describe('token contract with GetBalance method', () => {
     const result = await contractMethod.getSignedTx(
       {
         symbol: 'ELF',
-        owner: 'soAcchsFZGEsFeaEsk9tyMnFauPgJfMyZMRrfcntGjrtC7YvE',
+        owner: 'soAcchsFZGEsFeaEsk9tyMnFauPgJfMyZMRrfcntGjrtC7YvE'
       },
       {
         height: 49978717,
-        hash: 'ec8ac1d87127082903d29553778425d56c339ee30070c716a4c27ab714c42bb5',
+        hash: 'ec8ac1d87127082903d29553778425d56c339ee30070c716a4c27ab714c42bb5'
       }
     );
     expect(typeof result).toEqual('string');
@@ -213,7 +203,7 @@ describe('token contract with GetBalance method', () => {
   test('test get signed tx with only one param', async () => {
     const result = await contractMethod.getSignedTx({
       symbol: 'ELF',
-      owner: 'soAcchsFZGEsFeaEsk9tyMnFauPgJfMyZMRrfcntGjrtC7YvE',
+      owner: 'soAcchsFZGEsFeaEsk9tyMnFauPgJfMyZMRrfcntGjrtC7YvE'
     });
     expect(typeof result).toEqual('string');
   });
@@ -222,10 +212,10 @@ describe('token contract with GetBalance method', () => {
       contractMethod.getSignedTx(
         {
           symbol: 'ELF',
-          owner: 'soAcchsFZGEsFeaEsk9tyMnFauPgJfMyZMRrfcntGjrtC7YvE',
+          owner: 'soAcchsFZGEsFeaEsk9tyMnFauPgJfMyZMRrfcntGjrtC7YvE'
         },
         {
-          height: 49978717,
+          height: 49978717
         }
       )
     ).toThrow('The second param is the height & hash of a block');
@@ -236,24 +226,20 @@ describe('token contract with GetBalance method', () => {
       '7251887cfdae9c39ec6d6209ce9c4444166c8eb805a8592e2603ddf48dcd85ec',
       {
         symbol: 'ELF',
-        owner: 'soAcchsFZGEsFeaEsk9tyMnFauPgJfMyZMRrfcntGjrtC7YvE',
+        owner: 'soAcchsFZGEsFeaEsk9tyMnFauPgJfMyZMRrfcntGjrtC7YvE'
       }
     );
     expect(result.from.value).toBeInstanceOf(Buffer);
-    expect(result.from.value.toString('hex')).toBe(
-      '9af13552202a457f0d77465a41b5bd55821e1f889ac7b530587100d422fa2944'
-    );
+    expect(result.from.value.toString('hex')).toBe('9af13552202a457f0d77465a41b5bd55821e1f889ac7b530587100d422fa2944');
     expect(result.to.value).toBeInstanceOf(Buffer);
-    expect(result.to.value.toString('hex')).toBe(
-      '1570fb47b3c791f467e1f9840ef1c237eee16f65c3d0d8007315e362431c72e6'
-    );
+    expect(result.to.value.toString('hex')).toBe('1570fb47b3c791f467e1f9840ef1c237eee16f65c3d0d8007315e362431c72e6');
     expect(result.refBlockNumber).toBe(49988688);
     expect(result.refBlockPrefix).toBeInstanceOf(Buffer);
     expect(result.refBlockPrefix.toString('hex')).toBe('7251887c');
     expect(result.methodName).toBe('GetBalance');
     expect(result.params).toEqual({
       symbol: 'ELF',
-      owner: 'soAcchsFZGEsFeaEsk9tyMnFauPgJfMyZMRrfcntGjrtC7YvE',
+      owner: 'soAcchsFZGEsFeaEsk9tyMnFauPgJfMyZMRrfcntGjrtC7YvE'
     });
   });
   test('test get raw tx with hex hashInput', async () => {
@@ -262,32 +248,28 @@ describe('token contract with GetBalance method', () => {
       '0x7251887cfdae9c39ec6d6209ce9c4444166c8eb805a8592e2603ddf48dcd85ec',
       {
         symbol: 'ELF',
-        owner: 'soAcchsFZGEsFeaEsk9tyMnFauPgJfMyZMRrfcntGjrtC7YvE',
+        owner: 'soAcchsFZGEsFeaEsk9tyMnFauPgJfMyZMRrfcntGjrtC7YvE'
       }
     );
     expect(result.from.value).toBeInstanceOf(Buffer);
-    expect(result.from.value.toString('hex')).toBe(
-      '9af13552202a457f0d77465a41b5bd55821e1f889ac7b530587100d422fa2944'
-    );
+    expect(result.from.value.toString('hex')).toBe('9af13552202a457f0d77465a41b5bd55821e1f889ac7b530587100d422fa2944');
     expect(result.to.value).toBeInstanceOf(Buffer);
-    expect(result.to.value.toString('hex')).toBe(
-      '1570fb47b3c791f467e1f9840ef1c237eee16f65c3d0d8007315e362431c72e6'
-    );
+    expect(result.to.value.toString('hex')).toBe('1570fb47b3c791f467e1f9840ef1c237eee16f65c3d0d8007315e362431c72e6');
     expect(result.refBlockNumber).toBe(49988688);
     expect(result.refBlockPrefix).toBeInstanceOf(Buffer);
     expect(result.refBlockPrefix.toString('hex')).toBe('7251887c');
     expect(result.methodName).toBe('GetBalance');
     expect(result.params).toEqual({
       symbol: 'ELF',
-      owner: 'soAcchsFZGEsFeaEsk9tyMnFauPgJfMyZMRrfcntGjrtC7YvE',
+      owner: 'soAcchsFZGEsFeaEsk9tyMnFauPgJfMyZMRrfcntGjrtC7YvE'
     });
   });
   test('test request', async () => {
-    const mockCallback = jest.fn((x) => x);
+    const mockCallback = jest.fn(x => x);
     const result = contractMethod.request(
       {
         symbol: 'ELF',
-        owner: 'soAcchsFZGEsFeaEsk9tyMnFauPgJfMyZMRrfcntGjrtC7YvE',
+        owner: 'soAcchsFZGEsFeaEsk9tyMnFauPgJfMyZMRrfcntGjrtC7YvE'
       },
       mockCallback
     );
@@ -298,10 +280,10 @@ describe('token contract with GetBalance method', () => {
   test('test run', async () => {
     const result = await contractMethod.run({
       symbol: 'ELF',
-      owner: 'soAcchsFZGEsFeaEsk9tyMnFauPgJfMyZMRrfcntGjrtC7YvE',
+      owner: 'soAcchsFZGEsFeaEsk9tyMnFauPgJfMyZMRrfcntGjrtC7YvE'
     });
     expect(typeof result.TransactionId).toBe('string');
-  }, 10000);
+  });
   test('test bind method to contract', () => {
     contractMethod.bindMethodToContract(factory);
     expect(factory.GetBalance.request).toBeInstanceOf(Function);
@@ -313,13 +295,9 @@ describe('token contract with GetBalance method', () => {
     expect(factory.GetBalance.getSignedTx).toBeInstanceOf(Function);
     expect(factory.GetBalance.getRawTx).toBeInstanceOf(Function);
     expect(factory.GetBalance.call).toBeInstanceOf(Function);
-    expect(factory.GetBalance.inputTypeInfo).toEqual(
-      contractMethod._inputType.toJSON()
-    );
+    expect(factory.GetBalance.inputTypeInfo).toEqual(contractMethod._inputType.toJSON());
     expect(factory.GetBalance.inputType).toEqual(contractMethod._inputType);
-    expect(factory.GetBalance.outputTypeInfo).toEqual(
-      contractMethod._outputType.toJSON()
-    );
+    expect(factory.GetBalance.outputTypeInfo).toEqual(contractMethod._outputType.toJSON());
     expect(factory.GetBalance.outputType).toEqual(contractMethod._outputType);
   });
 
@@ -328,88 +306,88 @@ describe('token contract with GetBalance method', () => {
       {
         symbol: 'ELF',
         owner: 'soAcchsFZGEsFeaEsk9tyMnFauPgJfMyZMRrfcntGjrtC7YvE',
-        refBlockNumberStrategy: -1,
-      },
+        refBlockNumberStrategy: -1
+      }
     ]);
     expect(typeof result).toBe('string');
-  }, 10000);
-  
+  });
+
   test('test prepareParametersAsync with invalid refBlockNumberStrategy type', async () => {
     await expect(
       contractMethod.prepareParametersAsync([
         {
           symbol: 'ELF',
           owner: 'soAcchsFZGEsFeaEsk9tyMnFauPgJfMyZMRrfcntGjrtC7YvE',
-          refBlockNumberStrategy: 'invalid type',
-        },
+          refBlockNumberStrategy: 'invalid type'
+        }
       ])
     ).rejects.toThrow('Invalid type, refBlockNumberStrategy must be number');
-  }, 10000);
-  
+  });
+
   test('test prepareParametersAsync with positive refBlockNumberStrategy', async () => {
     await expect(
       contractMethod.prepareParametersAsync([
         {
           symbol: 'ELF',
           owner: 'soAcchsFZGEsFeaEsk9tyMnFauPgJfMyZMRrfcntGjrtC7YvE',
-          refBlockNumberStrategy: 1,
-        },
+          refBlockNumberStrategy: 1
+        }
       ])
     ).rejects.toThrow('refBlockNumberStrategy must be less than 0');
-  }, 10000);
-  
+  });
+
   test('test prepareParametersAsync without refBlockNumberStrategy', async () => {
     const result = await contractMethod.prepareParametersAsync([
       {
         symbol: 'ELF',
-        owner: 'soAcchsFZGEsFeaEsk9tyMnFauPgJfMyZMRrfcntGjrtC7YvE',
-      },
+        owner: 'soAcchsFZGEsFeaEsk9tyMnFauPgJfMyZMRrfcntGjrtC7YvE'
+      }
     ]);
     expect(typeof result).toBe('string');
-  }, 10000);
+  });
 
   test('test prepareParameters with valid refBlockNumberStrategy', () => {
     const result = contractMethod.prepareParameters([
       {
         symbol: 'ELF',
         owner: 'soAcchsFZGEsFeaEsk9tyMnFauPgJfMyZMRrfcntGjrtC7YvE',
-        refBlockNumberStrategy: -1,
-      },
+        refBlockNumberStrategy: -1
+      }
     ]);
     expect(typeof result).toBe('string');
-  }, 10000);
-  
+  });
+
   test('test prepareParameters with invalid refBlockNumberStrategy type', () => {
     expect(() => {
       contractMethod.prepareParameters([
         {
           symbol: 'ELF',
           owner: 'soAcchsFZGEsFeaEsk9tyMnFauPgJfMyZMRrfcntGjrtC7YvE',
-          refBlockNumberStrategy: 'invalid-type', // invalid type
-        },
+          refBlockNumberStrategy: 'invalid-type' // invalid type
+        }
       ]);
     }).toThrow('Invalid type, refBlockNumberStrategy must be number');
-  }, 10000);
-  
+  });
+
   test('test prepareParameters with refBlockNumberStrategy greater than 0', () => {
     expect(() => {
       contractMethod.prepareParameters([
         {
           symbol: 'ELF',
           owner: 'soAcchsFZGEsFeaEsk9tyMnFauPgJfMyZMRrfcntGjrtC7YvE',
-          refBlockNumberStrategy: 1, // invalid value
-        },
+          refBlockNumberStrategy: 1 // invalid value
+        }
       ]);
     }).toThrow('refBlockNumberStrategy must be less than 0');
-  }, 10000);
-  
+  });
+
   test('test prepareParameters without refBlockNumberStrategy', () => {
     const result = contractMethod.prepareParameters([
       {
         symbol: 'ELF',
-        owner: 'soAcchsFZGEsFeaEsk9tyMnFauPgJfMyZMRrfcntGjrtC7YvE',
-      },
+        owner: 'soAcchsFZGEsFeaEsk9tyMnFauPgJfMyZMRrfcntGjrtC7YvE'
+      }
     ]);
     expect(typeof result).toBe('string');
-  }, 10000);
+  });
 });
