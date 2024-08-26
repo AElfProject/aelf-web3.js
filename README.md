@@ -3,8 +3,7 @@
 <p>
   <a href="https://nodejs.org/download/">
     <img alt="Node version" src="https://img.shields.io/node/v/aelf-sdk.svg">
-  </a>
-  <img alt="NPM" src="https://img.shields.io/npm/l/aelf-sdk">
+  </a><img alt="NPM" src="https://img.shields.io/npm/l/aelf-sdk">
   <a href="http://commitizen.github.io/cz-cli/"><img alt="Commitizen friendly" src="https://img.shields.io/badge/commitizen-friendly-brightgreen.svg"></a>
   <a href="https://github.com/AElfProject/aelf-web3.js/actions/workflows/publish.yml">
     <img alt="coverage" src="https://github.com/AElfProject/aelf-web3.js/actions/workflows/publish.yml/badge.svg">
