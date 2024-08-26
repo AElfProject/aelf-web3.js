@@ -1,18 +1,17 @@
 # aelf-sdk.js - AELF JavaScript API
 
 <p>
-  <a href="https://nodejs.org/download/">
-    <img alt="Node version" src="https://img.shields.io/node/v/aelf-sdk.svg">
-  </a><img alt="NPM" src="https://img.shields.io/npm/l/aelf-sdk">
+  <a href="https://nodejs.org/download/"><img alt="Node version" src="https://img.shields.io/node/v/aelf-sdk.svg"></a>
+  <img alt="NPM" src="https://img.shields.io/npm/l/aelf-sdk">
   <a href="http://commitizen.github.io/cz-cli/"><img alt="Commitizen friendly" src="https://img.shields.io/badge/commitizen-friendly-brightgreen.svg"></a>
   <a href="https://github.com/AElfProject/aelf-web3.js/actions/workflows/publish.yml">
     <img alt="coverage" src="https://github.com/AElfProject/aelf-web3.js/actions/workflows/publish.yml/badge.svg">
   </a>
 </p>
 
-| Branch                    | Tests                                                                                                                                                                 | Coverage                                                           |
-| ------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------ |
-| `feature/test-chain-util` | ![Tests](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/AElfProject/aelf-web3.js/feature/badge-json/feature-test-chain-util-test-results.json) | ![Coverage](https://AElfProject.github.io/aelf-web3.js/badges.svg) |
+| Branch   | Tests                                                                                                                                                                 | Coverage                                                           |
+| -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------ |
+| `master` | ![Tests](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/AElfProject/aelf-web3.js/feature/badge-json/feature-test-chain-util-test-results.json) | ![Coverage](https://AElfProject.github.io/aelf-web3.js/badges.svg) |
 
 <!-- | Statements                  | Branches                | Functions                 | Lines             |
 | --------------------------- | ----------------------- | ------------------------- | ----------------- |

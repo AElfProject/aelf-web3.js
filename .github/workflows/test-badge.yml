@@ -8,8 +8,6 @@ on:
     branches:
       - dev
       - master
-      - feature/test-chain-util
-      - feature/readme
 
 env:
   BRANCH_NAME: 'feature/badge-json'
