@@ -2,7 +2,8 @@
  * @file contract method
  * @author atom-yang
  */
-import { getTransaction, Transaction } from '../util/proto';
+import HttpProvider from '../util/httpProvider';
+import { getMultiTransaction, getTransaction, Transaction } from '../util/proto';
 import {
   transformArrayToMap,
   transformMapToArray,
@@ -18,6 +19,8 @@ export default class ContractMethod {
     this._chain = chain;
     this._method = method;
     this._option = option || {};
+    this.chainIds = option.chainIds || ['', ''];
+    this.gatewayUrl = option.gatewayUrl;
     const { resolvedRequestType, resolvedResponseType } = method;
     this._inputType = resolvedRequestType;
     this._outputType = resolvedResponseType;
@@ -85,11 +88,8 @@ export default class ContractMethod {
     return this._outputType.encode(message).finish();
   }
 
-  handleTransaction(height, hash, encoded) {
-    const rawTx = this.getRawTx(height, hash, encoded);
-
+  handleRawTx(rawTx) {
     let tx = wallet.signTransaction(rawTx, this._wallet.keyPair);
-
     tx = Transaction.encode(tx).finish();
     // jest environment just go into Buffer branch
     // we have test in browser example handly
@@ -97,6 +97,20 @@ export default class ContractMethod {
       return tx.toString('hex');
     }
     return uint8ArrayToHex(tx);
+  }
+
+  handleTransaction(height, hash, encoded) {
+    if (Array.isArray(this.chainIds)) {
+      const rawTxs = this.getMultiRawTx(height, hash, encoded);
+      const txs = [];
+      rawTxs.forEach(rawTx => {
+        const handledTx = this.handleRawTx(rawTx);
+        txs.push({ [rawTx.chainId]: handledTx });
+      });
+      return txs;
+    }
+    const rawTx = this.getRawTx(height, hash, encoded);
+    return this.handleRawTx(rawTx);
   }
 
   prepareParametersAsync(args, isView) {
@@ -204,6 +218,29 @@ export default class ContractMethod {
     });
   }
 
+  sendMultiTransactionToGateway(...args) {
+    const argsObject = this.extractArgumentsIntoObject(args);
+    const httpProvider = new HttpProvider(this.gatewayUrl);
+    const url = 'api/gateway/sendUserSignedMultiTransaction';
+    if (argsObject.isSync) {
+      const params = this.prepareParameters(args);
+      return httpProvider.send({
+        url,
+        method: 'POST',
+        params
+      });
+    }
+    // eslint-disable-next-line arrow-body-style
+    return this.prepareParametersAsync(args).then(params => {
+      const result = httpProvider.sendAsync({
+        url,
+        method: 'POST',
+        params
+      });
+      return argsObject.callback(result);
+    });
+  }
+
   callReadOnly(...args) {
     const argsObject = this.extractArgumentsIntoObject(args);
     if (argsObject.isSync) {
@@ -267,6 +304,30 @@ export default class ContractMethod {
     if (blockHashInput) {
       const blockHash = blockHashInput.match(/^0x/) ? blockHashInput.substring(2) : blockHashInput;
       rawTx.refBlockPrefix = Buffer.from(blockHash, 'hex').slice(0, 4);
+    }
+    return rawTx;
+  }
+
+  getMultiRawTx(blockHeightInput, blockHashInput, packedInput) {
+    const rawTx = getMultiTransaction(
+      this._wallet.address,
+      this._contractAddress,
+      this._name,
+      packedInput,
+      this.chainIds
+    );
+    if (blockHeightInput) {
+      rawTx.forEach(ele => {
+        // eslint-disable-next-line no-param-reassign
+        ele.refBlockNumber = blockHeightInput;
+      });
+    }
+    if (blockHashInput) {
+      const blockHash = blockHashInput.match(/^0x/) ? blockHashInput.substring(2) : blockHashInput;
+      rawTx.forEach(ele => {
+        // eslint-disable-next-line no-param-reassign
+        ele.refBlockPrefix = Buffer.from(blockHash, 'hex').slice(0, 4);
+      });
     }
     return rawTx;
   }

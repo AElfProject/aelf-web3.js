@@ -19,6 +19,7 @@
   "extends": ["eslint-config-airbnb-base"],
   "globals": {},
   "rules": {
+    "function-paren-newline": "off",
     "no-console": ["warn"],
     "no-useless-escape": 0,
     "no-empty": 0,
@@ -29,7 +30,7 @@
     "no-underscore-dangle": "off",
     "no-bitwise": "off",
     "no-mixed-operators": "off",
-    "max-len": ["error", { "code": 120 , "ignoreComments": true}],
+    "max-len": ["error", { "code": 120, "ignoreComments": true }],
     "class-methods-use-this": "off",
     "no-plusplus": "off",
     "implicit-arrow-linebreak": "off",

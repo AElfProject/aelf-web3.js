@@ -48,7 +48,8 @@ export const getResourceFee = (Logs = []) => {
     return [];
   }
   return Logs.filter(log => log.Name === 'ResourceTokenCharged').map(v =>
-    getFee(getSerializedDataFromLog(v), 'ResourceTokenCharged'));
+    getFee(getSerializedDataFromLog(v), 'ResourceTokenCharged')
+  );
 };
 
 export const getTransactionFee = (Logs = []) => {
@@ -56,7 +57,8 @@ export const getTransactionFee = (Logs = []) => {
     return [];
   }
   return Logs.filter(log => log.Name === 'TransactionFeeCharged').map(v =>
-    getFee(getSerializedDataFromLog(v), 'TransactionFeeCharged'));
+    getFee(getSerializedDataFromLog(v), 'TransactionFeeCharged')
+  );
 };
 
 /**
@@ -178,6 +180,19 @@ export const getTransaction = (from, to, methodName, params) => {
     params
   };
   return Transaction.create(txn);
+};
+
+export const getMultiTransaction = (from, to, methodName, params, chainIds) => {
+  const txn = {
+    from: getAddressFromRep(from),
+    to: getAddressFromRep(to),
+    methodName,
+    params
+  };
+  return chainIds.map(ele => ({
+    transaction: Transaction.create(txn),
+    chainId: ele
+  }));
 };
 
 const deserializeIndexedAndNonIndexed = (serializedData, dataType) => {
