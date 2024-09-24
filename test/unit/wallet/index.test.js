@@ -11,8 +11,7 @@ describe('test wallet', () => {
     expect(result).toHaveProperty('address');
   });
   test('test get wallet by mnemonic', () => {
-    const mnemonic =
-      'history segment pizza all time regret robust animal loud gasp razor gadget';
+    const mnemonic = 'history segment pizza all time regret robust animal loud gasp razor gadget';
     const result = Wallet.getWalletByMnemonic(mnemonic);
     expect(result.mnemonic).toBe(mnemonic);
     const wrongMnemonic = 'hello world';
@@ -20,8 +19,7 @@ describe('test wallet', () => {
     expect(wrongResult).toBe(false);
   });
   test('test get wallet by private key', () => {
-    const privateKey =
-      '03bd0cea9730bcfc8045248fd7f4841ea19315995c44801a3dfede0ca872f808';
+    const privateKey = '03bd0cea9730bcfc8045248fd7f4841ea19315995c44801a3dfede0ca872f808';
     const result = Wallet.getWalletByPrivateKey(privateKey);
     expect(result.privateKey).toBe(privateKey);
     const privateKeyBuffer = Buffer.from(privateKey, 'hex');
@@ -29,8 +27,7 @@ describe('test wallet', () => {
     expect(resultBuffer.privateKey).toBe(privateKey);
   });
   test('test get address from pubKey', () => {
-    const privateKey =
-      '03bd0cea9730bcfc8045248fd7f4841ea19315995c44801a3dfede0ca872f808';
+    const privateKey = '03bd0cea9730bcfc8045248fd7f4841ea19315995c44801a3dfede0ca872f808';
     const wallet = Wallet.getWalletByPrivateKey(privateKey);
     const pubKey = wallet.keyPair.getPublic();
     const result = Wallet.getAddressFromPubKey(pubKey);
@@ -43,8 +40,7 @@ describe('test wallet', () => {
       'test',
       ['hello', 'world']
     );
-    const privateKey =
-      '03bd0cea9730bcfc8045248fd7f4841ea19315995c44801a3dfede0ca872f808';
+    const privateKey = '03bd0cea9730bcfc8045248fd7f4841ea19315995c44801a3dfede0ca872f808';
     const wallet = Wallet.getWalletByPrivateKey(privateKey);
     const signWallet = Wallet.signTransaction(rawTxn, wallet.keyPair);
     expect(signWallet).toHaveProperty('signature');
@@ -58,13 +54,9 @@ describe('test wallet', () => {
       'test',
       []
     );
-    const privateKeyNullParams =
-      '03bd0cea9730bcfc8045248fd7f4841ea19315995c44801a3dfede0ca872f808';
+    const privateKeyNullParams = '03bd0cea9730bcfc8045248fd7f4841ea19315995c44801a3dfede0ca872f808';
     const walletNullParams = Wallet.getWalletByPrivateKey(privateKeyNullParams);
-    const signWalletNullParams = Wallet.signTransaction(
-      rawTxnNullParams,
-      walletNullParams.keyPair
-    );
+    const signWalletNullParams = Wallet.signTransaction(rawTxnNullParams, walletNullParams.keyPair);
     expect(signWalletNullParams).toHaveProperty('signature');
     expect(signWalletNullParams.signature).toBeInstanceOf(Buffer);
     expect(signWalletNullParams.signature.toString('hex')).toBe(
@@ -72,8 +64,7 @@ describe('test wallet', () => {
     );
   });
   test('test sign', () => {
-    const privateKey =
-      '03bd0cea9730bcfc8045248fd7f4841ea19315995c44801a3dfede0ca872f808';
+    const privateKey = '03bd0cea9730bcfc8045248fd7f4841ea19315995c44801a3dfede0ca872f808';
     const wallet = Wallet.getWalletByPrivateKey(privateKey);
     const result = Wallet.sign('68656c6c6f20776f726c64', wallet.keyPair);
     expect(result.toString('hex')).toBe(
@@ -92,14 +83,12 @@ describe('test wallet', () => {
   });
 
   test('test verify', () => {
-    const privateKey =
-      '03bd0cea9730bcfc8045248fd7f4841ea19315995c44801a3dfede0ca872f808';
+    const privateKey = '03bd0cea9730bcfc8045248fd7f4841ea19315995c44801a3dfede0ca872f808';
     const wallet = Wallet.getWalletByPrivateKey(privateKey);
     const signature =
       '276aa36fcab0ac3d4071a4bfb868f636d1a9639916afe4ec329529014f923a372b688b4eb59d6587481bc15e4a1684e1d92b7598967767713d1504dcea83dadb01';
     const pubKey = wallet.keyPair.getPublic('hex');
-    const msgHash =
-      'b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9';
+    const msgHash = 'b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9';
     const isValid = Wallet.verify(signature.toString('hex'), msgHash, pubKey);
     expect(isValid).toBe(true);
 

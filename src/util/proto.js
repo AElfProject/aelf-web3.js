@@ -11,7 +11,15 @@ import VirtualTransactionDescriptor from '../../proto/virtual_transaction.proto.
 // We cannot use loadSync because it's not supoort browsers
 // https://github.com/protobufjs/protobuf.js/issues/1648
 export const coreRootProto = protobuf.Root.fromJSON(coreDescriptor).nested.aelf;
-export const { Transaction, Hash, Address, TransactionFeeCharged, ResourceTokenCharged } = coreRootProto;
+export const {
+  Transaction,
+  TransactionAndChainId,
+  MultiTransaction,
+  Hash,
+  Address,
+  TransactionFeeCharged,
+  ResourceTokenCharged
+} = coreRootProto;
 
 export const getFee = (base64Str, type = 'TransactionFeeCharged') => {
   if (['ResourceTokenCharged', 'TransactionFeeCharged'].indexOf(type) === -1) {
@@ -182,17 +190,12 @@ export const getTransaction = (from, to, methodName, params) => {
   return Transaction.create(txn);
 };
 
-export const getMultiTransaction = (from, to, methodName, params, chainIds) => {
-  const txn = {
-    from: getAddressFromRep(from),
-    to: getAddressFromRep(to),
-    methodName,
-    params
+export const getTransactionAndChainId = (from, to, methodName, params, chainId) => {
+  const txn = getTransaction(from, to, methodName, params);
+  return {
+    ...txn,
+    chainId
   };
-  return chainIds.map(ele => ({
-    transaction: Transaction.create(txn),
-    chainId: ele
-  }));
 };
 
 const deserializeIndexedAndNonIndexed = (serializedData, dataType) => {

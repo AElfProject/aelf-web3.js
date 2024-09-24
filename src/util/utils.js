@@ -325,6 +325,12 @@ export const uint8ArrayToHex = uint8Array => {
   return string;
 };
 
+export function byteStringToHex(byteString) {
+  return Array.from(byteString)
+    .map(byte => byte.charCodeAt(0).toString(16).padStart(2, '0'))
+    .join('');
+}
+
 /**
  * empty function
  */

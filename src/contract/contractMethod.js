@@ -2,8 +2,15 @@
  * @file contract method
  * @author atom-yang
  */
+import { CHAIN_MAP } from '../common/constants';
 import HttpProvider from '../util/httpProvider';
-import { getMultiTransaction, getTransaction, Transaction } from '../util/proto';
+import {
+  getTransactionAndChainId,
+  getTransaction,
+  Transaction,
+  TransactionAndChainId,
+  MultiTransaction
+} from '../util/proto';
 import {
   transformArrayToMap,
   transformMapToArray,
@@ -19,16 +26,16 @@ export default class ContractMethod {
     this._chain = chain;
     this._method = method;
     this._option = option || {};
-    this.chainIds = option.chainIds || ['', ''];
-    this.gatewayUrl = option.gatewayUrl;
+    this.chainIds = this._option.chainIds.map(ele => CHAIN_MAP[ele]);
+    this.gatewayUrl = this._option.gatewayUrl;
     const { resolvedRequestType, resolvedResponseType } = method;
     this._inputType = resolvedRequestType;
     this._outputType = resolvedResponseType;
     this._name = method.name;
     this._contractAddress = contractAddress;
     this._wallet = walletInstance;
-
     this.sendTransaction = this.sendTransaction.bind(this);
+    this.sendMultiTransactionToGateway = this.sendMultiTransactionToGateway.bind(this);
     this.unpackPackedInput = this.unpackPackedInput.bind(this);
     this.packInput = this.packInput.bind(this);
     this.unpackOutput = this.unpackOutput.bind(this);
@@ -88,7 +95,25 @@ export default class ContractMethod {
     return this._outputType.encode(message).finish();
   }
 
-  handleRawTx(rawTx) {
+  handleTransaction(height, hash, encoded) {
+    console.log(encoded, 'encoded');
+    if (Array.isArray(encoded)) {
+      const rawTxs = encoded.map((ele, index) => this.getRawTx(height, hash, ele, this.chainIds?.[index]));
+      console.log(rawTxs, 'rawTxs');
+      const multiTx = { transactions: [] };
+      rawTxs.forEach(rawTx => {
+        const handledTx = wallet.signTransaction(rawTx, this._wallet.keyPair);
+        const item = { transaction: handledTx, chainId: rawTx.chainId };
+        const transactionAndChainId = TransactionAndChainId.create(item);
+        multiTx.transactions.push(transactionAndChainId);
+      });
+      const tx = MultiTransaction.encode(multiTx).finish();
+      if (tx instanceof Buffer) {
+        return tx.toString('hex');
+      }
+      return uint8ArrayToHex(tx);
+    }
+    const rawTx = this.getRawTx(height, hash, encoded);
     let tx = wallet.signTransaction(rawTx, this._wallet.keyPair);
     tx = Transaction.encode(tx).finish();
     // jest environment just go into Buffer branch
@@ -99,23 +124,14 @@ export default class ContractMethod {
     return uint8ArrayToHex(tx);
   }
 
-  handleTransaction(height, hash, encoded) {
-    if (Array.isArray(this.chainIds)) {
-      const rawTxs = this.getMultiRawTx(height, hash, encoded);
-      const txs = [];
-      rawTxs.forEach(rawTx => {
-        const handledTx = this.handleRawTx(rawTx);
-        txs.push({ [rawTx.chainId]: handledTx });
-      });
-      return txs;
-    }
-    const rawTx = this.getRawTx(height, hash, encoded);
-    return this.handleRawTx(rawTx);
-  }
-
   prepareParametersAsync(args, isView) {
     const filterArgs = args.filter(arg => !isFunction(arg) && !isBoolean(arg.sync));
-    const encoded = this.packInput(filterArgs[0]);
+    let encoded;
+    if (Array.isArray(filterArgs[0])) {
+      encoded = filterArgs[0].map(ele => this.packInput(ele));
+    } else {
+      encoded = this.packInput(filterArgs[0]);
+    }
 
     if (isView) {
       return Promise.resolve(this.handleTransaction('', '', encoded));
@@ -232,6 +248,7 @@ export default class ContractMethod {
     }
     // eslint-disable-next-line arrow-body-style
     return this.prepareParametersAsync(args).then(params => {
+      console.log(params, 'params');
       const result = httpProvider.sendAsync({
         url,
         method: 'POST',
@@ -296,8 +313,14 @@ export default class ContractMethod {
     return this.prepareParameters(args);
   }
 
-  getRawTx(blockHeightInput, blockHashInput, packedInput) {
-    const rawTx = getTransaction(this._wallet.address, this._contractAddress, this._name, packedInput);
+  getRawTx(blockHeightInput, blockHashInput, packedInput, chainId) {
+    let rawTx;
+    if (chainId) {
+      // multi
+      rawTx = getTransactionAndChainId(this._wallet.address, this._contractAddress, this._name, packedInput, chainId);
+    } else {
+      rawTx = getTransaction(this._wallet.address, this._contractAddress, this._name, packedInput);
+    }
     if (blockHeightInput) {
       rawTx.refBlockNumber = blockHeightInput;
     }
@@ -308,29 +331,25 @@ export default class ContractMethod {
     return rawTx;
   }
 
-  getMultiRawTx(blockHeightInput, blockHashInput, packedInput) {
-    const rawTx = getMultiTransaction(
-      this._wallet.address,
-      this._contractAddress,
-      this._name,
-      packedInput,
-      this.chainIds
-    );
-    if (blockHeightInput) {
-      rawTx.forEach(ele => {
-        // eslint-disable-next-line no-param-reassign
-        ele.refBlockNumber = blockHeightInput;
-      });
-    }
-    if (blockHashInput) {
-      const blockHash = blockHashInput.match(/^0x/) ? blockHashInput.substring(2) : blockHashInput;
-      rawTx.forEach(ele => {
-        // eslint-disable-next-line no-param-reassign
-        ele.refBlockPrefix = Buffer.from(blockHash, 'hex').slice(0, 4);
-      });
-    }
-    return rawTx;
-  }
+  // getMultiRawTx(blockHeightInput, blockHashInput, packedInput, chainId) {
+  //   const rawTx = getTransactionAndChainId(
+  //     this._wallet.address,
+  //     this._contractAddress,
+  //     this._name,
+  //     packedInput,
+  //     chainId
+  //   );
+  //   if (blockHeightInput) {
+  //     // eslint-disable-next-line no-param-reassign
+  //     rawTx.refBlockNumber = blockHeightInput;
+  //   }
+  //   if (blockHashInput) {
+  //     const blockHash = blockHashInput.match(/^0x/) ? blockHashInput.substring(2) : blockHashInput;
+  //     // eslint-disable-next-line no-param-reassign
+  //     rawTx.refBlockPrefix = Buffer.from(blockHash, 'hex').slice(0, 4);
+  //   }
+  //   return rawTx;
+  // }
 
   request(...args) {
     const { callback } = this.extractArgumentsIntoObject(args);
