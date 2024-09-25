@@ -33,17 +33,18 @@ class Contract {
 }
 
 export default class ContractFactory {
-  constructor(chain, fileDescriptorSet, wallet) {
+  constructor(chain, fileDescriptorSet, wallet, options) {
     this.chain = chain;
     this.services = getServicesFromFileDescriptors(fileDescriptorSet);
     this.wallet = wallet;
+    this._options = options;
   }
 
   static bindMethodsToContract(contract, wallet) {
     contract.services.forEach(service => {
       Object.keys(service.methods).forEach(key => {
         const method = service.methods[key].resolve();
-        const contractMethod = new ContractMethod(contract._chain, method, contract.address, wallet);
+        const contractMethod = new ContractMethod(contract._chain, method, contract.address, wallet, this._options);
         contractMethod.bindMethodToContract(contract);
       });
     });

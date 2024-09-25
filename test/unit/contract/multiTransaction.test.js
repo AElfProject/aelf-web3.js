@@ -11,11 +11,19 @@ describe('multi transaction', () => {
     sync: true
   });
   const factory = new ContractFactory(chain, fds, wallet);
-  // console.log(factory.services[2].methods, 'methods');
   const method = factory.services[2].methods['Transfer'].resolve();
-  // console.log(method, 'method');
+
   const contractMethod = new ContractMethod(chain, method, address, wallet, {
-    chainIds: ['AELF', 'tDVW'],
+    multi: {
+      AELF: {
+        chainUrl: 'https://aelf-test-node.aelf.io/',
+        contractAddress: 'JRmBduh4nXWi1aXgdUsj5gJrzeZb2LxmrAbf7W99faZSvoAaE'
+      },
+      tDVW: {
+        chainUrl: 'https://tdvw-test-node.aelf.io/',
+        contractAddress: 'ASh2Wt7nSEmYqnGxPPzp4pnVDU4uhj1XW9Se5VeZcX2UDdyjx'
+      }
+    },
     gatewayUrl: 'https://gateway-test.aelf.io'
   });
   // test('test handle transaction', async () => {
@@ -35,18 +43,18 @@ describe('multi transaction', () => {
   //   expect(typeof results).toBe('string');
   // });
   test('send multi transaction to gateway', async () => {
-    const result = await contractMethod.sendMultiTransactionToGateway([
-      {
+    const result = await contractMethod.sendMultiTransactionToGateway({
+      AELF: {
         symbol: 'ELF',
         amount: '100000000',
         to: 'GyQX6t18kpwaD9XHXe1ToKxfov8mSeTLE9q9NwUAeTE8tULZk'
       },
-      {
+      tDVW: {
         symbol: 'ELF',
         amount: '150000000',
         to: 'GyQX6t18kpwaD9XHXe1ToKxfov8mSeTLE9q9NwUAeTE8tULZk'
       }
-    ]);
+    });
     console.log(result);
   });
 });

@@ -52,13 +52,13 @@ export default class Chain {
    * @returns
    */
   contractAt(address, wallet, ...args) {
-    const { callback, isSync, refBlockNumberStrategy } = this.extractArgumentsIntoObject(args);
+    const { callback, isSync, ...options } = this.extractArgumentsIntoObject(args);
     if (isSync) {
       const fds = this.getContractFileDescriptorSet(address, {
         sync: true
       });
       if (fds && fds.file && fds.file.length > 0) {
-        const factory = new ContractFactory(this, fds, wallet, { refBlockNumberStrategy });
+        const factory = new ContractFactory(this, fds, wallet, { ...options });
         return factory.at(address);
       }
       throw new Error('no such contract');
@@ -66,7 +66,7 @@ export default class Chain {
     // eslint-disable-next-line consistent-return
     return this.getContractFileDescriptorSet(address).then(fds => {
       if (fds && fds.file && fds.file.length > 0) {
-        const factory = new ContractFactory(this, fds, wallet, { refBlockNumberStrategy });
+        const factory = new ContractFactory(this, fds, wallet, { ...options });
         const result = factory.at(address);
         callback(null, result);
         return result;

@@ -191,6 +191,7 @@ export const getTransaction = (from, to, methodName, params) => {
 };
 
 export const getTransactionAndChainId = (from, to, methodName, params, chainId) => {
+  console.log(to, 'to====');
   const txn = getTransaction(from, to, methodName, params);
   return {
     ...txn,

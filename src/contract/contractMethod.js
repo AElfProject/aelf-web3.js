@@ -18,7 +18,15 @@ import {
   INPUT_TRANSFORMERS,
   OUTPUT_TRANSFORMERS
 } from '../util/transform';
-import { isBoolean, isFunction, isNumber, noop, uint8ArrayToHex, unpackSpecifiedTypeData } from '../util/utils';
+import {
+  isBoolean,
+  isFunction,
+  isNumber,
+  isObject,
+  noop,
+  uint8ArrayToHex,
+  unpackSpecifiedTypeData
+} from '../util/utils';
 import wallet from '../wallet';
 
 export default class ContractMethod {
@@ -26,8 +34,10 @@ export default class ContractMethod {
     this._chain = chain;
     this._method = method;
     this._option = option || {};
-    this.chainIds = this._option.chainIds.map(ele => CHAIN_MAP[ele]);
-    this.gatewayUrl = this._option.gatewayUrl;
+    this._gatewayUrl = this._option.gatewayUrl;
+    this._multiOptions = this._option.multi || {};
+    // multi chainId ['AELF', 'tDVW']
+    this._chainIds = Object.keys(this._multiOptions);
     const { resolvedRequestType, resolvedResponseType } = method;
     this._inputType = resolvedRequestType;
     this._outputType = resolvedResponseType;
@@ -96,23 +106,6 @@ export default class ContractMethod {
   }
 
   handleTransaction(height, hash, encoded) {
-    console.log(encoded, 'encoded');
-    if (Array.isArray(encoded)) {
-      const rawTxs = encoded.map((ele, index) => this.getRawTx(height, hash, ele, this.chainIds?.[index]));
-      console.log(rawTxs, 'rawTxs');
-      const multiTx = { transactions: [] };
-      rawTxs.forEach(rawTx => {
-        const handledTx = wallet.signTransaction(rawTx, this._wallet.keyPair);
-        const item = { transaction: handledTx, chainId: rawTx.chainId };
-        const transactionAndChainId = TransactionAndChainId.create(item);
-        multiTx.transactions.push(transactionAndChainId);
-      });
-      const tx = MultiTransaction.encode(multiTx).finish();
-      if (tx instanceof Buffer) {
-        return tx.toString('hex');
-      }
-      return uint8ArrayToHex(tx);
-    }
     const rawTx = this.getRawTx(height, hash, encoded);
     let tx = wallet.signTransaction(rawTx, this._wallet.keyPair);
     tx = Transaction.encode(tx).finish();
@@ -124,36 +117,44 @@ export default class ContractMethod {
     return uint8ArrayToHex(tx);
   }
 
+  validateRefBlockNumberStrategy(args) {
+    function validateItem(item) {
+      // eslint-disable-next-line max-len
+      if (typeof item !== 'number') {
+        throw new Error('Invalid type, refBlockNumberStrategy must be number');
+      }
+      if (item > 0) {
+        throw new Error('refBlockNumberStrategy must be less than 0');
+      }
+    }
+    let { refBlockNumberStrategy } = this._option;
+    args.forEach(arg => {
+      if (arg.refBlockNumberStrategy) {
+        if (isObject(arg.refBlockNumberStrategy)) {
+          const keys = Object.keys(arg.refBlockNumberStrategy);
+          for (let i = 0; i < keys.length; i++) {
+            validateItem(arg.refBlockNumberStrategy(keys[i]));
+            refBlockNumberStrategy[keys[i]] = arg.refBlockNumberStrategy[keys[i]];
+          }
+        } else {
+          validateItem(arg.refBlockNumberStrategy);
+          refBlockNumberStrategy = arg.refBlockNumberStrategy;
+        }
+      }
+    });
+    return refBlockNumberStrategy;
+  }
+
   prepareParametersAsync(args, isView) {
     const filterArgs = args.filter(arg => !isFunction(arg) && !isBoolean(arg.sync));
-    let encoded;
-    if (Array.isArray(filterArgs[0])) {
-      encoded = filterArgs[0].map(ele => this.packInput(ele));
-    } else {
-      encoded = this.packInput(filterArgs[0]);
-    }
+    const encoded = this.packInput(filterArgs[0]);
 
     if (isView) {
       return Promise.resolve(this.handleTransaction('', '', encoded));
     }
     return this._chain.getChainStatus().then(status => {
       let { BestChainHeight, BestChainHash } = status;
-
-      let { refBlockNumberStrategy } = this._option || {};
-
-      args.forEach(arg => {
-        if (arg.refBlockNumberStrategy) {
-          // eslint-disable-next-line max-len
-          if (typeof arg.refBlockNumberStrategy !== 'number') {
-            throw new Error('Invalid type, refBlockNumberStrategy must be number');
-          }
-          if (arg.refBlockNumberStrategy > 0) {
-            throw new Error('refBlockNumberStrategy must be less than 0');
-          }
-          refBlockNumberStrategy = arg.refBlockNumberStrategy;
-        }
-      });
-
+      const refBlockNumberStrategy = this.validateRefBlockNumberStrategy(args);
       if (refBlockNumberStrategy) {
         BestChainHeight += refBlockNumberStrategy;
         const block = this._chain.getBlockByHeight(BestChainHeight, true, {
@@ -174,32 +175,14 @@ export default class ContractMethod {
   prepareParameters(args, isView) {
     const filterArgs = args.filter(arg => !isFunction(arg) && !isBoolean(arg.sync));
     const encoded = this.packInput(filterArgs[0]);
-
     if (isView) {
       return this.handleTransaction('', '', encoded);
     }
-
-    let { refBlockNumberStrategy } = this._option;
-
-    args.forEach(arg => {
-      if (arg.refBlockNumberStrategy) {
-        // eslint-disable-next-line max-len
-        if (typeof arg.refBlockNumberStrategy !== 'number') {
-          throw new Error('Invalid type, refBlockNumberStrategy must be number');
-        }
-        if (arg.refBlockNumberStrategy > 0) {
-          throw new Error('refBlockNumberStrategy must be less than 0');
-        }
-        refBlockNumberStrategy = arg.refBlockNumberStrategy;
-      }
-    });
-
     const statusRes = this._chain.getChainStatus({
       sync: true
     });
-
     let { BestChainHeight, BestChainHash } = statusRes;
-
+    const refBlockNumberStrategy = this.validateRefBlockNumberStrategy(args);
     if (refBlockNumberStrategy) {
       BestChainHeight += refBlockNumberStrategy;
       const block = this._chain.getBlockByHeight(BestChainHeight, true, {
@@ -234,12 +217,115 @@ export default class ContractMethod {
     });
   }
 
+  handleMultiTransaction(height, hash, encoded) {
+    const rawTxs = this._chainIds.map(ele => this.getRawTx(height[ele] || '', hash[ele] || '', encoded[ele], ele));
+
+    const multiTx = { transactions: [] };
+    rawTxs.forEach(rawTx => {
+      const handledTx = wallet.signTransaction(rawTx, this._wallet.keyPair);
+      const tx = Transaction.encode(handledTx).finish();
+      console.log(tx.toString('hex'), '======', rawTx.chainId);
+      const item = { transaction: handledTx, chainId: rawTx.chainId };
+      const transactionAndChainId = TransactionAndChainId.create(item);
+      multiTx.transactions.push(transactionAndChainId);
+    });
+    const tx = MultiTransaction.encode(multiTx).finish();
+    if (tx instanceof Buffer) {
+      return tx.toString('hex');
+    }
+    return uint8ArrayToHex(tx);
+  }
+
+  multiPrepareParameters(args) {
+    const filterArgs = args.filter(arg => !isFunction(arg) && !isBoolean(arg.sync));
+    // encoded -> params object
+    const encoded = {};
+    this._chainIds.forEach(ele => {
+      encoded[ele] = this.packInput(filterArgs[0][ele]);
+    });
+    // if (isView) {
+    //   return this.handleMultiTransaction({}, {}, encoded);
+    // }
+    const refBlockNumberStrategy = this.validateRefBlockNumberStrategy(args);
+    const chainHeight = {};
+    const chainHash = {};
+    this._chainIds.forEach(chainId => {
+      // get chain height and hash
+      const httpProvider = new HttpProvider(this._multiOptions[chainId].chainUrl);
+      const url = 'api/blockChain/chainStatus';
+      const statusRes = httpProvider.send({
+        url,
+        method: 'GET'
+      });
+      let { BestChainHeight, BestChainHash } = statusRes;
+      if (refBlockNumberStrategy[chainId]) {
+        BestChainHeight += refBlockNumberStrategy[chainId];
+        const block = this._chain.getBlockByHeight(BestChainHeight, true, {
+          sync: true
+        });
+        BestChainHash = block.BlockHash;
+      }
+      chainHeight[chainId] = BestChainHeight;
+      chainHash[chainId] = BestChainHash;
+    });
+    return this.handleMultiTransaction(chainHeight, chainHash, encoded);
+  }
+
+  async multiPrepareParametersAsync(args) {
+    const filterArgs = args.filter(arg => !isFunction(arg) && !isBoolean(arg.sync));
+
+    // encoded -> params object
+    const encoded = {};
+    this._chainIds.forEach(ele => {
+      encoded[ele] = this.packInput(filterArgs[0][ele]);
+    });
+
+    // if (isView) {
+    //   return this.handleMultiTransaction({}, {}, encoded);
+    // }
+
+    const refBlockNumberStrategy = this.validateRefBlockNumberStrategy(args);
+    // console.log(refBlockNumberStrategy, 'refBlockNumberStrategy');
+    const chainHeight = {};
+    const chainHash = {};
+
+    await Promise.all(
+      this._chainIds.map(async chainId => {
+        const httpProvider = new HttpProvider(this._multiOptions[chainId].chainUrl);
+        const url = 'api/blockChain/chainStatus';
+
+        try {
+          const statusRes = await httpProvider.send({
+            url,
+            method: 'GET'
+          });
+
+          let { BestChainHeight, BestChainHash } = statusRes;
+          if (refBlockNumberStrategy?.[chainId]) {
+            BestChainHeight += refBlockNumberStrategy[chainId];
+            const block = this._chain.getBlockByHeight(BestChainHeight, true, {
+              sync: true
+            });
+            BestChainHash = block.BlockHash;
+          }
+
+          chainHeight[chainId] = BestChainHeight;
+          chainHash[chainId] = BestChainHash;
+        } catch (error) {
+          console.error(`Error fetching status for chain ${chainId}:`, error);
+          throw error;
+        }
+      })
+    );
+    return this.handleMultiTransaction(chainHeight, chainHash, encoded);
+  }
+
   sendMultiTransactionToGateway(...args) {
     const argsObject = this.extractArgumentsIntoObject(args);
-    const httpProvider = new HttpProvider(this.gatewayUrl);
+    const httpProvider = new HttpProvider(this._gatewayUrl);
     const url = 'api/gateway/sendUserSignedMultiTransaction';
     if (argsObject.isSync) {
-      const params = this.prepareParameters(args);
+      const params = this.multiPrepareParameters(args);
       return httpProvider.send({
         url,
         method: 'POST',
@@ -247,7 +333,7 @@ export default class ContractMethod {
       });
     }
     // eslint-disable-next-line arrow-body-style
-    return this.prepareParametersAsync(args).then(params => {
+    return this.multiPrepareParametersAsync(args).then(params => {
       console.log(params, 'params');
       const result = httpProvider.sendAsync({
         url,
@@ -317,7 +403,13 @@ export default class ContractMethod {
     let rawTx;
     if (chainId) {
       // multi
-      rawTx = getTransactionAndChainId(this._wallet.address, this._contractAddress, this._name, packedInput, chainId);
+      rawTx = getTransactionAndChainId(
+        this._wallet.address,
+        this._multiOptions[chainId]?.contractAddress,
+        this._name,
+        packedInput,
+        CHAIN_MAP[chainId]
+      );
     } else {
       rawTx = getTransaction(this._wallet.address, this._contractAddress, this._name, packedInput);
     }
@@ -330,26 +422,6 @@ export default class ContractMethod {
     }
     return rawTx;
   }
-
-  // getMultiRawTx(blockHeightInput, blockHashInput, packedInput, chainId) {
-  //   const rawTx = getTransactionAndChainId(
-  //     this._wallet.address,
-  //     this._contractAddress,
-  //     this._name,
-  //     packedInput,
-  //     chainId
-  //   );
-  //   if (blockHeightInput) {
-  //     // eslint-disable-next-line no-param-reassign
-  //     rawTx.refBlockNumber = blockHeightInput;
-  //   }
-  //   if (blockHashInput) {
-  //     const blockHash = blockHashInput.match(/^0x/) ? blockHashInput.substring(2) : blockHashInput;
-  //     // eslint-disable-next-line no-param-reassign
-  //     rawTx.refBlockPrefix = Buffer.from(blockHash, 'hex').slice(0, 4);
-  //   }
-  //   return rawTx;
-  // }
 
   request(...args) {
     const { callback } = this.extractArgumentsIntoObject(args);
@@ -378,6 +450,7 @@ export default class ContractMethod {
     run.packInput = this.packInput;
     run.packOutput = this.packOutput.bind(this);
     run.sendTransaction = this.sendTransaction;
+    run.sendMultiTransactionToGateway = this.sendMultiTransactionToGateway;
     run.getSignedTx = this.getSignedTx;
     run.getRawTx = this.getRawTx;
     run.unpackOutput = this.unpackOutput;
