@@ -2,7 +2,6 @@
  * @file contract method
  * @author atom-yang
  */
-import { CHAIN_MAP } from '../common/constants';
 import HttpProvider from '../util/httpProvider';
 import {
   getTransactionAndChainId,
@@ -329,11 +328,7 @@ export default class ContractMethod {
           RawMultiTransaction: params
         }
       });
-      const updatedData = {};
-      this._chainIds.forEach(chainId => {
-        updatedData[chainId] = data[CHAIN_MAP[chainId]];
-      });
-      return updatedData;
+      return data;
     }
     // eslint-disable-next-line arrow-body-style
     return this.multiPrepareParametersAsync(args).then(async params => {
@@ -344,12 +339,8 @@ export default class ContractMethod {
           RawMultiTransaction: params
         }
       });
-      const updatedData = {};
-      this._chainIds.forEach(chainId => {
-        updatedData[chainId] = data[CHAIN_MAP[chainId]];
-      });
-      argsObject.callback(updatedData);
-      return updatedData;
+      argsObject.callback(data);
+      return data;
     });
   }
 
@@ -417,7 +408,7 @@ export default class ContractMethod {
         this._multiOptions[chainId]?.contractAddress,
         this._name,
         packedInput,
-        CHAIN_MAP[chainId]
+        chainId
       );
     } else {
       rawTx = getTransaction(this._wallet.address, this._contractAddress, this._name, packedInput);

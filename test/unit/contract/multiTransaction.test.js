@@ -1,8 +1,14 @@
-import { CHAIN_MAP } from '../../../src/common/constants';
 import ContractMethod from '../../../src/contract/contractMethod';
 import ContractFactory from '../../../src/contract/index';
 import AElf from '../../../src/index';
 const stageEndpoint = 'https://tdvw-test-node.aelf.io/';
+
+// CHAIN_MAP = {
+//   AELF: 9992731,
+//   tDVV: 1866392,
+//   tDVW: 1931928
+// };
+
 describe('multi transaction', () => {
   const aelf = new AElf(new AElf.providers.HttpProvider(stageEndpoint));
   const wallet = AElf.wallet.getWalletByPrivateKey('943df6d39fd1e1cc6ae9813e54f7b9988cf952814f9c31e37744b52594cb4096');
@@ -15,11 +21,11 @@ describe('multi transaction', () => {
   const method = factory.services[2].methods['Transfer'].resolve();
   const contractMethod = new ContractMethod(chain, method, address, wallet, {
     multi: {
-      AELF: {
+      9992731: {
         chainUrl: 'https://aelf-test-node.aelf.io/',
         contractAddress: 'JRmBduh4nXWi1aXgdUsj5gJrzeZb2LxmrAbf7W99faZSvoAaE'
       },
-      tDVW: {
+      1931928: {
         chainUrl: 'https://tdvw-test-node.aelf.io/',
         contractAddress: 'ASh2Wt7nSEmYqnGxPPzp4pnVDU4uhj1XW9Se5VeZcX2UDdyjx'
       }
@@ -29,12 +35,12 @@ describe('multi transaction', () => {
   test('test handle transaction', async () => {
     const chainStatus = await chain.getChainStatus();
     const results = contractMethod.handleMultiTransaction(chainStatus?.BestChainHeight, chainStatus?.BestChainHash, {
-      AELF: {
+      9992731: {
         symbol: 'ELF',
         amount: '100000000',
         to: 'GyQX6t18kpwaD9XHXe1ToKxfov8mSeTLE9q9NwUAeTE8tULZk'
       },
-      tDVW: {
+      1931928: {
         symbol: 'ELF',
         amount: '150000000',
         to: 'GyQX6t18kpwaD9XHXe1ToKxfov8mSeTLE9q9NwUAeTE8tULZk'
@@ -43,14 +49,14 @@ describe('multi transaction', () => {
     expect(typeof results).toBe('string');
   });
   test('send multi transaction to gateway', async () => {
-    const expectedKeys = ['AELF', 'tDVW'];
+    const expectedKeys = ['1931928', '9992731'];
     const result = await contractMethod.sendMultiTransactionToGateway({
-      AELF: {
+      9992731: {
         symbol: 'ELF',
         amount: '100000000',
         to: 'GyQX6t18kpwaD9XHXe1ToKxfov8mSeTLE9q9NwUAeTE8tULZk'
       },
-      tDVW: {
+      1931928: {
         symbol: 'ELF',
         amount: '150000000',
         to: 'GyQX6t18kpwaD9XHXe1ToKxfov8mSeTLE9q9NwUAeTE8tULZk'

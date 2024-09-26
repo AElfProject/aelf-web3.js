@@ -202,9 +202,3 @@ export const KEY_STORE_ERRORS = {
     errorMessage: 'Not a V1 key store'
   }
 };
-
-export const CHAIN_MAP = {
-  AELF: 9992731,
-  tDVV: 1866392,
-  tDVW: 1931928
-};
