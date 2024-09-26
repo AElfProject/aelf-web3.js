@@ -35,7 +35,6 @@ export default class ContractMethod {
     this._option = option || {};
     this._gatewayUrl = this._option.gatewayUrl;
     this._multiOptions = this._option.multi || {};
-    // multi chainId ['AELF', 'tDVW']
     this._chainIds = Object.keys(this._multiOptions);
     const { resolvedRequestType, resolvedResponseType } = method;
     this._inputType = resolvedRequestType;
@@ -126,13 +125,14 @@ export default class ContractMethod {
         throw new Error('refBlockNumberStrategy must be less than 0');
       }
     }
-    let { refBlockNumberStrategy } = this._option;
+    // if _chainIds is empty, init refBlockNumberStrategy to undefined
+    let { refBlockNumberStrategy = this._chainIds.length ? {} : undefined } = this._option;
     args.forEach(arg => {
       if (arg.refBlockNumberStrategy) {
         if (isObject(arg.refBlockNumberStrategy)) {
           const keys = Object.keys(arg.refBlockNumberStrategy);
           for (let i = 0; i < keys.length; i++) {
-            validateItem(arg.refBlockNumberStrategy(keys[i]));
+            validateItem(arg.refBlockNumberStrategy[keys[i]]);
             refBlockNumberStrategy[keys[i]] = arg.refBlockNumberStrategy[keys[i]];
           }
         } else {
@@ -239,30 +239,37 @@ export default class ContractMethod {
     this._chainIds.forEach(ele => {
       encoded[ele] = this.packInput(filterArgs[0][ele]);
     });
-    // if (isView) {
-    //   return this.handleMultiTransaction({}, {}, encoded);
-    // }
     const refBlockNumberStrategy = this.validateRefBlockNumberStrategy(args);
     const chainHeight = {};
     const chainHash = {};
     this._chainIds.forEach(chainId => {
       // get chain height and hash
       const httpProvider = new HttpProvider(this._multiOptions[chainId].chainUrl);
-      const url = 'api/blockChain/chainStatus';
-      const statusRes = httpProvider.send({
-        url,
-        method: 'GET'
-      });
-      let { BestChainHeight, BestChainHash } = statusRes;
-      if (refBlockNumberStrategy[chainId]) {
-        BestChainHeight += refBlockNumberStrategy[chainId];
-        const block = this._chain.getBlockByHeight(BestChainHeight, true, {
-          sync: true
+      const url = 'blockChain/chainStatus';
+      try {
+        const statusRes = httpProvider.send({
+          url,
+          method: 'GET'
         });
-        BestChainHash = block.BlockHash;
+        let { BestChainHeight, BestChainHash } = statusRes;
+        if (refBlockNumberStrategy?.[chainId]) {
+          BestChainHeight += refBlockNumberStrategy[chainId];
+          const blockUrl = 'blockChain/blockByHeight';
+          const block = httpProvider.send({
+            url: blockUrl,
+            method: 'GET',
+            params: {
+              blockHeight: BestChainHeight
+            }
+          });
+          BestChainHash = block.BlockHash;
+        }
+        chainHeight[chainId] = BestChainHeight;
+        chainHash[chainId] = BestChainHash;
+      } catch (error) {
+        console.error(`Error fetching status for chain ${chainId}:`, error);
+        throw error;
       }
-      chainHeight[chainId] = BestChainHeight;
-      chainHash[chainId] = BestChainHash;
     });
     return this.handleMultiTransaction(chainHeight, chainHash, encoded);
   }
@@ -275,21 +282,13 @@ export default class ContractMethod {
     this._chainIds.forEach(ele => {
       encoded[ele] = this.packInput(filterArgs[0][ele]);
     });
-
-    // if (isView) {
-    //   return this.handleMultiTransaction({}, {}, encoded);
-    // }
-
     const refBlockNumberStrategy = this.validateRefBlockNumberStrategy(args);
-    // console.log(refBlockNumberStrategy, 'refBlockNumberStrategy');
     const chainHeight = {};
     const chainHash = {};
-
     await Promise.all(
       this._chainIds.map(async chainId => {
-        const httpProvider = new HttpProvider(this._multiOptions[chainId].chainUrl);
+        const httpProvider = new HttpProvider(this._multiOptions[chainId]?.chainUrl);
         const url = 'blockChain/chainStatus';
-
         try {
           const statusRes = await httpProvider.sendAsync({
             url,
@@ -298,12 +297,16 @@ export default class ContractMethod {
           let { BestChainHeight, BestChainHash } = statusRes;
           if (refBlockNumberStrategy?.[chainId]) {
             BestChainHeight += refBlockNumberStrategy[chainId];
-            const block = this._chain.getBlockByHeight(BestChainHeight, true, {
-              sync: true
+            const blockUrl = 'blockChain/blockByHeight';
+            const block = await httpProvider.sendAsync({
+              url: blockUrl,
+              method: 'GET',
+              params: {
+                blockHeight: BestChainHeight
+              }
             });
             BestChainHash = block.BlockHash;
           }
-
           chainHeight[chainId] = BestChainHeight;
           chainHash[chainId] = BestChainHash;
         } catch (error) {
