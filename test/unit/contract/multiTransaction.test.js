@@ -1,3 +1,4 @@
+import { CHAIN_MAP } from '../../../src/common/constants';
 import ContractMethod from '../../../src/contract/contractMethod';
 import ContractFactory from '../../../src/contract/index';
 import AElf from '../../../src/index';
@@ -26,23 +27,24 @@ describe('multi transaction', () => {
     },
     gatewayUrl: 'https://gateway-test.aelf.io'
   });
-  // test('test handle transaction', async () => {
-  //   const chainStatus = await chain.getChainStatus();
-  //   const results = contractMethod.handleTransaction(chainStatus?.BestChainHeight, chainStatus?.BestChainHash, [
-  //     {
-  //       symbol: 'ELF',
-  //       amount: '100000000',
-  //       to: 'GyQX6t18kpwaD9XHXe1ToKxfov8mSeTLE9q9NwUAeTE8tULZk'
-  //     },
-  //     {
-  //       symbol: 'ELF',
-  //       amount: '150000000',
-  //       to: 'GyQX6t18kpwaD9XHXe1ToKxfov8mSeTLE9q9NwUAeTE8tULZk'
-  //     }
-  //   ]);
-  //   expect(typeof results).toBe('string');
-  // });
+  test('test handle transaction', async () => {
+    const chainStatus = await chain.getChainStatus();
+    const results = contractMethod.handleMultiTransaction(chainStatus?.BestChainHeight, chainStatus?.BestChainHash, {
+      AELF: {
+        symbol: 'ELF',
+        amount: '100000000',
+        to: 'GyQX6t18kpwaD9XHXe1ToKxfov8mSeTLE9q9NwUAeTE8tULZk'
+      },
+      tDVW: {
+        symbol: 'ELF',
+        amount: '150000000',
+        to: 'GyQX6t18kpwaD9XHXe1ToKxfov8mSeTLE9q9NwUAeTE8tULZk'
+      }
+    });
+    expect(typeof results).toBe('string');
+  });
   test('send multi transaction to gateway', async () => {
+    const expectedKeys = [CHAIN_MAP['tDVW'].toString(), CHAIN_MAP['AELF'].toString()];
     const result = await contractMethod.sendMultiTransactionToGateway({
       AELF: {
         symbol: 'ELF',
@@ -55,6 +57,12 @@ describe('multi transaction', () => {
         to: 'GyQX6t18kpwaD9XHXe1ToKxfov8mSeTLE9q9NwUAeTE8tULZk'
       }
     });
-    console.log(result);
+    expect(Object.keys(result)).toEqual(expectedKeys);
+    expectedKeys.forEach(key => {
+      expect(Array.isArray(result[key])).toBe(true);
+      result[key].forEach(value => {
+        expect(typeof value).toBe('string');
+      });
+    });
   });
 });

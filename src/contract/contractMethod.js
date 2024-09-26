@@ -219,12 +219,9 @@ export default class ContractMethod {
 
   handleMultiTransaction(height, hash, encoded) {
     const rawTxs = this._chainIds.map(ele => this.getRawTx(height[ele] || '', hash[ele] || '', encoded[ele], ele));
-
     const multiTx = { transactions: [] };
     rawTxs.forEach(rawTx => {
       const handledTx = wallet.signTransaction(rawTx, this._wallet.keyPair);
-      const tx = Transaction.encode(handledTx).finish();
-      console.log(tx.toString('hex'), '======', rawTx.chainId);
       const item = { transaction: handledTx, chainId: rawTx.chainId };
       const transactionAndChainId = TransactionAndChainId.create(item);
       multiTx.transactions.push(transactionAndChainId);
@@ -292,14 +289,13 @@ export default class ContractMethod {
     await Promise.all(
       this._chainIds.map(async chainId => {
         const httpProvider = new HttpProvider(this._multiOptions[chainId].chainUrl);
-        const url = 'api/blockChain/chainStatus';
+        const url = 'blockChain/chainStatus';
 
         try {
-          const statusRes = await httpProvider.send({
+          const statusRes = await httpProvider.sendAsync({
             url,
             method: 'GET'
           });
-
           let { BestChainHeight, BestChainHash } = statusRes;
           if (refBlockNumberStrategy?.[chainId]) {
             BestChainHeight += refBlockNumberStrategy[chainId];
@@ -323,24 +319,29 @@ export default class ContractMethod {
   sendMultiTransactionToGateway(...args) {
     const argsObject = this.extractArgumentsIntoObject(args);
     const httpProvider = new HttpProvider(this._gatewayUrl);
-    const url = 'api/gateway/sendUserSignedMultiTransaction';
+    const url = 'gateway/sendUserSignedMultiTransaction';
     if (argsObject.isSync) {
       const params = this.multiPrepareParameters(args);
-      return httpProvider.send({
+      const { data } = httpProvider.send({
         url,
         method: 'POST',
-        params
+        params: {
+          RawMultiTransaction: params
+        }
       });
+      return data;
     }
     // eslint-disable-next-line arrow-body-style
-    return this.multiPrepareParametersAsync(args).then(params => {
-      console.log(params, 'params');
-      const result = httpProvider.sendAsync({
+    return this.multiPrepareParametersAsync(args).then(async params => {
+      const { data } = await httpProvider.sendAsync({
         url,
         method: 'POST',
-        params
+        params: {
+          RawMultiTransaction: params
+        }
       });
-      return argsObject.callback(result);
+      argsObject.callback(data);
+      return data;
     });
   }
 
