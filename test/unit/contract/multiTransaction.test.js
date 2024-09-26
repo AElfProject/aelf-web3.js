@@ -13,7 +13,6 @@ describe('multi transaction', () => {
   });
   const factory = new ContractFactory(chain, fds, wallet);
   const method = factory.services[2].methods['Transfer'].resolve();
-
   const contractMethod = new ContractMethod(chain, method, address, wallet, {
     multi: {
       AELF: {

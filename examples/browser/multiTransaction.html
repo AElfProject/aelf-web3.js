@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Hello AElf</title>
+</head>
+
+<body>
+  <p>Hello AElf.</p>
+
+  <script type="text/javascript" src="../../dist/aelf.umd.js"></script>
+  <script type="text/javascript">
+    const AElf = window.AElf;
+    const Wallet = AElf.wallet;
+    const sha256 = AElf.utils.sha256;
+    const wallet = AElf.wallet.getWalletByPrivateKey('943df6d39fd1e1cc6ae9813e54f7b9988cf952814f9c31e37744b52594cb4096');
+    // link to Blockchain
+    const aelf = new AElf(
+      new AElf.providers.HttpProvider("https://explorer-test.aelf.io/chain")
+    );
+    // the contract you want to query
+    const tokenContractName = "AElf.ContractNames.Token";
+    aelf.chain
+      .getChainStatus()
+      .then((info) => {
+        const {
+          // directly accessible information
+          GenesisContractAddress,
+        } = info;
+        console.log(GenesisContractAddress,"GenesisContractAddress===");
+        aelf.chain
+          .contractAt(GenesisContractAddress,wallet)
+          .then((zeroC) => {
+            // return contract's address which you query by contract's name
+            return zeroC.GetContractAddressByName.call(
+              sha256(tokenContractName)
+            );
+          })
+          .then((tokenContractAddress) => {
+            console.log("GetTokenInfo",tokenContractAddress);
+            // return contract's instance and you can call the methods on this instance
+            return aelf.chain.contractAt(tokenContractAddress,wallet,{
+              refBlockNumberStrategy: {
+                AELF: -8,
+                tDVW: -8
+              },
+              multi: {
+                AELF: {
+                  chainUrl: 'https://aelf-test-node.aelf.io/',
+                  contractAddress: 'JRmBduh4nXWi1aXgdUsj5gJrzeZb2LxmrAbf7W99faZSvoAaE'
+                },
+                tDVW: {
+                  chainUrl: 'https://tdvw-test-node.aelf.io/',
+                  contractAddress: 'ASh2Wt7nSEmYqnGxPPzp4pnVDU4uhj1XW9Se5VeZcX2UDdyjx'
+                }
+              },
+              gatewayUrl: 'https://gateway-test.aelf.io'
+            });
+          })
+          .then(async (tokenContract) => {
+            console.log(tokenContract,'tokenContract')
+            const result = await tokenContract.Transfer.sendMultiTransactionToGateway({
+              AELF: {
+                symbol: 'ELF',
+                amount: '100000000',
+                to: 'GyQX6t18kpwaD9XHXe1ToKxfov8mSeTLE9q9NwUAeTE8tULZk'
+              },
+              tDVW: {
+                symbol: 'ELF',
+                amount: '150000000',
+                to: 'GyQX6t18kpwaD9XHXe1ToKxfov8mSeTLE9q9NwUAeTE8tULZk'
+              }
+            })
+            return result;
+          })
+          .then((res) => {
+            console.log(res,'multiTransaction');
+          });
+      })
+      .catch((err) => {
+        console.error(err,"error");
+      });
+  </script>
+</body>
+
+</html>

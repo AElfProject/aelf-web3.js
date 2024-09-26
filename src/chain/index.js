@@ -37,6 +37,19 @@ export default class Chain {
       if (isBoolean(arg?.sync)) {
         result.isSync = arg.sync;
       }
+      if (arg?.multi) {
+        result.multi = arg.multi;
+        result.gatewayUrl = arg.gatewayUrl;
+        const refBlockNumberStrategy = {};
+        Object.keys(arg.refBlockNumberStrategy).forEach(key => {
+          if (typeof arg.refBlockNumberStrategy[key] === 'number') {
+            refBlockNumberStrategy[key] = arg.refBlockNumberStrategy[key];
+          } else {
+            refBlockNumberStrategy[key] = 0;
+          }
+        });
+        result.refBlockNumberStrategy = refBlockNumberStrategy;
+      }
       if (typeof arg?.refBlockNumberStrategy === 'number') {
         result.refBlockNumberStrategy = arg.refBlockNumberStrategy;
       }
