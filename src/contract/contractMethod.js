@@ -329,7 +329,11 @@ export default class ContractMethod {
           RawMultiTransaction: params
         }
       });
-      return data;
+      const updatedData = {};
+      this._chainIds.forEach(chainId => {
+        updatedData[chainId] = data[CHAIN_MAP[chainId]];
+      });
+      return updatedData;
     }
     // eslint-disable-next-line arrow-body-style
     return this.multiPrepareParametersAsync(args).then(async params => {
@@ -340,8 +344,12 @@ export default class ContractMethod {
           RawMultiTransaction: params
         }
       });
-      argsObject.callback(data);
-      return data;
+      const updatedData = {};
+      this._chainIds.forEach(chainId => {
+        updatedData[chainId] = data[CHAIN_MAP[chainId]];
+      });
+      argsObject.callback(updatedData);
+      return updatedData;
     });
   }
 

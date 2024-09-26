@@ -43,7 +43,7 @@ describe('multi transaction', () => {
     expect(typeof results).toBe('string');
   });
   test('send multi transaction to gateway', async () => {
-    const expectedKeys = [CHAIN_MAP['tDVW'].toString(), CHAIN_MAP['AELF'].toString()];
+    const expectedKeys = ['AELF', 'tDVW'];
     const result = await contractMethod.sendMultiTransactionToGateway({
       AELF: {
         symbol: 'ELF',
