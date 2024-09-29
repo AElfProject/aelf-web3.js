@@ -40,11 +40,11 @@
             console.log("GetTokenInfo",tokenContractAddress);
             // return contract's instance and you can call the methods on this instance
             return aelf.chain.contractAt(tokenContractAddress,wallet,{
-              refBlockNumberStrategy: {
-                9992731: -8,
-                1931928: -8
-              },
-              multi1: {
+              // refBlockNumberStrategy: {
+              //   9992731: -8,
+              //   1931928: -8
+              // },
+              multi: {
                 9992731: {
                   chainUrl: 'https://aelf-test-node.aelf.io/',
                   contractAddress: 'JRmBduh4nXWi1aXgdUsj5gJrzeZb2LxmrAbf7W99faZSvoAaE'
