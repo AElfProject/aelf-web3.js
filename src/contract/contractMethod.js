@@ -328,26 +328,32 @@ export default class ContractMethod {
     const url = 'gateway/sendUserSignedMultiTransaction';
     if (argsObject.isSync) {
       const params = this.multiPrepareParameters(args);
-      const { data } = httpProvider.send({
+      const { data, message, code } = httpProvider.send({
         url,
         method: 'POST',
         params: {
           RawMultiTransaction: params
         }
       });
-      return data;
+      if (data != null && code === 200) {
+        return data;
+      }
+      throw new Error(message);
     }
     // eslint-disable-next-line arrow-body-style
     return this.multiPrepareParametersAsync(args).then(async params => {
-      const { data } = await httpProvider.sendAsync({
+      const { data, message, code } = await httpProvider.sendAsync({
         url,
         method: 'POST',
         params: {
           RawMultiTransaction: params
         }
       });
-      argsObject.callback(data);
-      return data;
+      if (data != null && code === 200) {
+        argsObject.callback(data);
+        return data;
+      }
+      throw new Error(message);
     });
   }
 
