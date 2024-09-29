@@ -24,7 +24,8 @@ import {
   isObject,
   noop,
   uint8ArrayToHex,
-  unpackSpecifiedTypeData
+  unpackSpecifiedTypeData,
+  validateMulti
 } from '../util/utils';
 import wallet from '../wallet';
 
@@ -319,6 +320,9 @@ export default class ContractMethod {
   }
 
   sendMultiTransactionToGateway(...args) {
+    if (!validateMulti(this._multiOptions)) {
+      throw new Error('Please set the chainInfo in option multi');
+    }
     const argsObject = this.extractArgumentsIntoObject(args);
     const httpProvider = new HttpProvider(this._gatewayUrl);
     const url = 'gateway/sendUserSignedMultiTransaction';

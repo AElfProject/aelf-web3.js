@@ -33,19 +33,25 @@ describe('multi transaction', () => {
     gatewayUrl: 'https://gateway-test.aelf.io'
   });
   test('test handle transaction', async () => {
-    const chainStatus = await chain.getChainStatus();
-    const results = contractMethod.handleMultiTransaction(chainStatus?.BestChainHeight, chainStatus?.BestChainHash, {
-      9992731: {
-        symbol: 'ELF',
-        amount: '100000000',
-        to: 'GyQX6t18kpwaD9XHXe1ToKxfov8mSeTLE9q9NwUAeTE8tULZk'
+    const results = contractMethod.handleMultiTransaction(
+      { 1931928: 141225232, 9992731: 241674886 },
+      {
+        1931928: '2567d4a16b55bff617fe93a9440bdb4e0873fffaceddd34d81aa8904aed90e61',
+        9992731: 'cbeea55b9b0a49dfa402e203c794cd4678d4806c372af5670acea266ce0be7e6'
       },
-      1931928: {
-        symbol: 'ELF',
-        amount: '150000000',
-        to: 'GyQX6t18kpwaD9XHXe1ToKxfov8mSeTLE9q9NwUAeTE8tULZk'
+      {
+        9992731: {
+          symbol: 'ELF',
+          amount: '100000000',
+          to: 'GyQX6t18kpwaD9XHXe1ToKxfov8mSeTLE9q9NwUAeTE8tULZk'
+        },
+        1931928: {
+          symbol: 'ELF',
+          amount: '150000000',
+          to: 'GyQX6t18kpwaD9XHXe1ToKxfov8mSeTLE9q9NwUAeTE8tULZk'
+        }
       }
-    });
+    );
     expect(typeof results).toBe('string');
   });
   test('send multi transaction to gateway', async () => {
@@ -232,5 +238,36 @@ describe('multi transaction with refBlockNumberStrategy', () => {
         expect(typeof value).toBe('string');
       });
     });
+  });
+});
+
+describe('multi transaction with invalid multi options', () => {
+  const aelf = new AElf(new AElf.providers.HttpProvider(stageEndpoint));
+  const wallet = AElf.wallet.getWalletByPrivateKey('943df6d39fd1e1cc6ae9813e54f7b9988cf952814f9c31e37744b52594cb4096');
+  const chain = aelf.chain;
+  const address = 'ASh2Wt7nSEmYqnGxPPzp4pnVDU4uhj1XW9Se5VeZcX2UDdyjx';
+  const fds = chain.getContractFileDescriptorSet(address, {
+    sync: true
+  });
+  const factory = new ContractFactory(chain, fds, wallet);
+  const method = factory.services[2].methods['Transfer'].resolve();
+  const contractMethod = new ContractMethod(chain, method, address, wallet, {
+    gatewayUrl: 'https://gateway-test.aelf.io'
+  });
+  test('test handle transaction', async () => {
+    expect(() =>
+      contractMethod.sendMultiTransactionToGateway({
+        9992731: {
+          symbol: 'ELF',
+          amount: '100000000',
+          to: 'GyQX6t18kpwaD9XHXe1ToKxfov8mSeTLE9q9NwUAeTE8tULZk'
+        },
+        1931928: {
+          symbol: 'ELF',
+          amount: '150000000',
+          to: 'GyQX6t18kpwaD9XHXe1ToKxfov8mSeTLE9q9NwUAeTE8tULZk'
+        }
+      })
+    ).toThrow('Please set the chainInfo in option multi');
   });
 });

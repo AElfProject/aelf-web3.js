@@ -4,8 +4,8 @@ import { TAddress } from './proto';
 
 export type TGenericFunction = (...args: any[]) => any;
 export interface IBase58 {
-  encode(data: ArrayBuffer | SharedArrayBuffer, encoding?: number): string;
-  decode(str: string, encoding?: string): Buffer;
+  encode(data: ArrayBuffer | SharedArrayBuffer,encoding?: number): string;
+  decode(str: string,encoding?: string): Buffer;
 }
 export interface IChainIdConvertor {
   chainIdToBase58(chainId: string): string;
@@ -50,7 +50,7 @@ export declare function toTwosComplement(
 export declare function uint8ArrayToHex(uint8Array: Uint8Array): string;
 
 export declare function noop(): void;
-export declare function setPath(obj: any, path: string, value: any): void;
+export declare function setPath(obj: any,path: string,value: any): void;
 interface IUnpackSpecifiedParams {
   data: ArrayBuffer | SharedArrayBuffer;
   dataType: protobuf.Type;
@@ -69,3 +69,8 @@ export declare function getAuthorization(
   userName: string,
   password: string
 ): string;
+interface ValidationObject {
+  chainUrl: string;
+  contractAddress: string;
+}
+export declare function validateMulti(obj: Record<string,ValidationObject>): boolean;
