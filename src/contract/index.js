@@ -7,6 +7,7 @@ import * as protobuf from '@aelfqueen/protobufjs';
 import ContractMethod from './contractMethod';
 import { noop } from '../util/utils';
 import { deserializeLog } from '../util/proto';
+import ContractMultiTransaction from './contractMultiTransaction';
 
 const getServicesFromFileDescriptors = descriptors => {
   const root = protobuf.Root.fromDescriptor(descriptors, 'proto3').resolveAll();
@@ -48,6 +49,9 @@ export default class ContractFactory {
         contractMethod.bindMethodToContract(contract);
       });
     });
+    const contractMultiTransaction = new ContractMultiTransaction(contract, wallet, options);
+    // eslint-disable-next-line no-param-reassign
+    contract.sendMultiTransactionToGateway = contractMultiTransaction.sendMultiTransactionToGateway;
   }
 
   at(address, callback = noop) {

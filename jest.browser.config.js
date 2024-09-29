@@ -179,6 +179,7 @@ module.exports = {
   testMatch: [
     // '**/test/unit/chain/index.test.js'
     // '**/test/unit/**/multiTransaction.test.js'
+    // '**/test/unit/**/contractMultiTransaction.test.js'
     '**/test/unit/**/?(*.)+(test).[jt]s?(x)',
     '**/test/unit/util/httpProvider.browser-test.js'
     // "**/?(*.)+(spec|test).[tj]s?(x)"

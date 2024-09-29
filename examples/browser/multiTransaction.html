@@ -59,16 +59,22 @@
           })
           .then(async (tokenContract) => {
             console.log(tokenContract,'tokenContract')
-            const result = await tokenContract.Transfer.sendMultiTransactionToGateway({
+            const result = await tokenContract.sendMultiTransactionToGateway({
               9992731: {
-                symbol: 'ELF',
-                amount: '100000000',
-                to: 'GyQX6t18kpwaD9XHXe1ToKxfov8mSeTLE9q9NwUAeTE8tULZk'
+                method: 'Transfer',
+                params: {
+                  symbol: 'ELF',
+                  amount: '100000000',
+                  to: 'GyQX6t18kpwaD9XHXe1ToKxfov8mSeTLE9q9NwUAeTE8tULZk'
+                }
               },
               1931928: {
-                symbol: 'ELF',
-                amount: '150000000',
-                to: 'GyQX6t18kpwaD9XHXe1ToKxfov8mSeTLE9q9NwUAeTE8tULZk'
+                method: 'Transfer',// or any other method, no need to be same as main chain
+                params: {
+                  symbol: 'ELF',
+                  amount: '100000000',
+                  to: 'GyQX6t18kpwaD9XHXe1ToKxfov8mSeTLE9q9NwUAeTE8tULZk'
+                }
               }
             })
             return result;
