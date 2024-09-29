@@ -325,6 +325,12 @@ export const uint8ArrayToHex = uint8Array => {
   return string;
 };
 
+export function byteStringToHex(byteString) {
+  return Array.from(byteString)
+    .map(byte => byte.charCodeAt(0).toString(16).padStart(2, '0'))
+    .join('');
+}
+
 /**
  * empty function
  */
@@ -424,6 +430,19 @@ export function getTransactionId(rawTx) {
   return sha256(encode);
 }
 
+export function validateMulti(obj) {
+  if (Object.keys(obj).length !== 2) {
+    return false;
+  }
+
+  // check if every item has chainUrl and contractAddress
+  return Object.values(obj).every(
+    value =>
+      // eslint-disable-next-line operator-linebreak
+      Object.prototype.hasOwnProperty.call(value, 'chainUrl') &&
+      Object.prototype.hasOwnProperty.call(value, 'contractAddress')
+  );
+}
 // /**
 //  * Converts value to it's hex representation
 //  *

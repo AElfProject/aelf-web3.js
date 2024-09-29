@@ -11,7 +11,15 @@ import VirtualTransactionDescriptor from '../../proto/virtual_transaction.proto.
 // We cannot use loadSync because it's not supoort browsers
 // https://github.com/protobufjs/protobuf.js/issues/1648
 export const coreRootProto = protobuf.Root.fromJSON(coreDescriptor).nested.aelf;
-export const { Transaction, Hash, Address, TransactionFeeCharged, ResourceTokenCharged } = coreRootProto;
+export const {
+  Transaction,
+  TransactionAndChainId,
+  MultiTransaction,
+  Hash,
+  Address,
+  TransactionFeeCharged,
+  ResourceTokenCharged
+} = coreRootProto;
 
 export const getFee = (base64Str, type = 'TransactionFeeCharged') => {
   if (['ResourceTokenCharged', 'TransactionFeeCharged'].indexOf(type) === -1) {
@@ -48,7 +56,8 @@ export const getResourceFee = (Logs = []) => {
     return [];
   }
   return Logs.filter(log => log.Name === 'ResourceTokenCharged').map(v =>
-    getFee(getSerializedDataFromLog(v), 'ResourceTokenCharged'));
+    getFee(getSerializedDataFromLog(v), 'ResourceTokenCharged')
+  );
 };
 
 export const getTransactionFee = (Logs = []) => {
@@ -56,7 +65,8 @@ export const getTransactionFee = (Logs = []) => {
     return [];
   }
   return Logs.filter(log => log.Name === 'TransactionFeeCharged').map(v =>
-    getFee(getSerializedDataFromLog(v), 'TransactionFeeCharged'));
+    getFee(getSerializedDataFromLog(v), 'TransactionFeeCharged')
+  );
 };
 
 /**
@@ -178,6 +188,14 @@ export const getTransaction = (from, to, methodName, params) => {
     params
   };
   return Transaction.create(txn);
+};
+
+export const getTransactionAndChainId = (from, to, methodName, params, chainId) => {
+  const txn = getTransaction(from, to, methodName, params);
+  return {
+    ...txn,
+    chainId
+  };
 };
 
 const deserializeIndexedAndNonIndexed = (serializedData, dataType) => {
