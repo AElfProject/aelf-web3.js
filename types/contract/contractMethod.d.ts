@@ -46,7 +46,18 @@ interface IContractMethod {
     | Promise<{ TransactionId: TTransactionId }>;
   callReadOnly(...args: Array<any>): any;
   extractArgumentsIntoObject(...args: Array<any>): IExtractArgumentsIntoObject;
-
+  handleMultiTransaction(
+    height: { [key in string]: TBlockHeight },
+    hash: { [key in string]: TBlockHash },
+    encoded: { [key in string]: any }
+  ): string;
+  multiPrepareParameters(args: Array<any>): string;
+  multiPrepareParametersAsync(args: Array<any>): Promise<string>;
+  sendMultiTransactionToGateway(
+    ...args: Array<any>
+  ):
+    | { TransactionId: TTransactionId }
+    | Promise<{ TransactionId: TTransactionId }>;
   getSignedTx(...args: Array<any>): string;
   getRawTx(
     blockHeightInput: TBlockHeight,
@@ -83,6 +94,18 @@ declare class ContractMethod implements IContractMethod {
   public prepareParameters(args: Array<any>): string;
   public prepareParametersWithBlockInfo(args: Array<any>): string;
   public sendTransaction(
+    ...args: Array<any>
+  ):
+    | { TransactionId: TTransactionId }
+    | Promise<{ TransactionId: TTransactionId }>;
+  public handleMultiTransaction(
+    height: { [key in string]: TBlockHeight },
+    hash: { [key in string]: TBlockHash },
+    encoded: { [key in string]: any }
+  ): string;
+  public multiPrepareParameters(args: Array<any>): string;
+  public multiPrepareParametersAsync(args: Array<any>): Promise<string>;
+  public sendMultiTransactionToGateway(
     ...args: Array<any>
   ):
     | { TransactionId: TTransactionId }

@@ -55,6 +55,27 @@ describe('token contract with transfer method', () => {
     });
     expect(contractMethod.unpackPackedInput()).toEqual(null);
   });
+  test('test send transaction', async () => {
+    const result = await contractMethod.sendTransaction({
+      symbol: 'ELF',
+      amount: '10000000',
+      owner: 'ASh2Wt7nSEmYqnGxPPzp4pnVDU4uhj1XW9Se5VeZcX2UDdyjx'
+    });
+    expect(typeof result.TransactionId).toBe('string');
+  });
+  test('test send transaction sync', async () => {
+    const result = contractMethod.sendTransaction(
+      {
+        symbol: 'ELF',
+        amount: '10000000',
+        owner: 'ASh2Wt7nSEmYqnGxPPzp4pnVDU4uhj1XW9Se5VeZcX2UDdyjx'
+      },
+      {
+        sync: true
+      }
+    );
+    expect(typeof result.TransactionId).toBe('string');
+  });
 });
 describe('token contract with GetBalance method', () => {
   const aelf = new AElf(new AElf.providers.HttpProvider(stageEndpoint));
@@ -127,25 +148,6 @@ describe('token contract with GetBalance method', () => {
     expect(result).toBe(
       '0a220a209af13552202a457f0d77465a41b5bd55821e1f889ac7b530587100d422fa294412220a201570fb47b3c791f467e1f9840ef1c237eee16f65c3d0d8007315e362431c72e618ddbaea172204ec8ac1d82a0a47657442616c616e636532290a03454c4612220a207356a44986bbf671cfa3214fe4b65928c0102d6a1f36d0d16173a98b9cb1359082f104410b80d69ea94d5484fb3c857b57ccd06d95f1b8d503fbfced80dae64f9ac1522a4c006055ede758555bae4ee359894b49d58338729d184cfcf675e80430c991a601'
     );
-  });
-  test('test send transaction', async () => {
-    const result = await contractMethod.sendTransaction({
-      symbol: 'ELF',
-      owner: 'soAcchsFZGEsFeaEsk9tyMnFauPgJfMyZMRrfcntGjrtC7YvE'
-    });
-    expect(typeof result.TransactionId).toBe('string');
-  });
-  test('test send transaction sync', async () => {
-    const result = contractMethod.sendTransaction(
-      {
-        symbol: 'ELF',
-        owner: 'soAcchsFZGEsFeaEsk9tyMnFauPgJfMyZMRrfcntGjrtC7YvE'
-      },
-      {
-        sync: true
-      }
-    );
-    expect(typeof result.TransactionId).toBe('string');
   });
   test('test call read only', async () => {
     const result = await contractMethod.callReadOnly({

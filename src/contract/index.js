@@ -7,6 +7,7 @@ import * as protobuf from '@aelfqueen/protobufjs';
 import ContractMethod from './contractMethod';
 import { noop } from '../util/utils';
 import { deserializeLog } from '../util/proto';
+import ContractMultiTransaction from './contractMultiTransaction';
 
 const getServicesFromFileDescriptors = descriptors => {
   const root = protobuf.Root.fromDescriptor(descriptors, 'proto3').resolveAll();
@@ -33,25 +34,29 @@ class Contract {
 }
 
 export default class ContractFactory {
-  constructor(chain, fileDescriptorSet, wallet) {
+  constructor(chain, fileDescriptorSet, wallet, options) {
     this.chain = chain;
     this.services = getServicesFromFileDescriptors(fileDescriptorSet);
     this.wallet = wallet;
+    this._options = options;
   }
 
-  static bindMethodsToContract(contract, wallet) {
+  static bindMethodsToContract(contract, wallet, options) {
     contract.services.forEach(service => {
       Object.keys(service.methods).forEach(key => {
         const method = service.methods[key].resolve();
-        const contractMethod = new ContractMethod(contract._chain, method, contract.address, wallet);
+        const contractMethod = new ContractMethod(contract._chain, method, contract.address, wallet, options);
         contractMethod.bindMethodToContract(contract);
       });
     });
+    const contractMultiTransaction = new ContractMultiTransaction(contract, wallet, options);
+    // eslint-disable-next-line no-param-reassign
+    contract.sendMultiTransactionToGateway = contractMultiTransaction.sendMultiTransactionToGateway;
   }
 
   at(address, callback = noop) {
     const contractInstance = new Contract(this.chain, this.services, address);
-    ContractFactory.bindMethodsToContract(contractInstance, this.wallet);
+    ContractFactory.bindMethodsToContract(contractInstance, this.wallet, this._options);
     callback(null, contractInstance);
     return contractInstance;
   }
