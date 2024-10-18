@@ -14,6 +14,7 @@ export interface ITransactionObject {
   to: IAddressObject;
   methodName: string;
   params: string;
+  chainId?: TChainId;
 }
 
 export const coreRootProto: protobuf.Root;

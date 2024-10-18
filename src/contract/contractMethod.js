@@ -12,8 +12,30 @@ import {
 } from '../util/transform';
 import { isBoolean, isFunction, isNumber, noop, uint8ArrayToHex, unpackSpecifiedTypeData } from '../util/utils';
 import wallet from '../wallet';
-
+/**
+ * @typedef {import('../../types/chain').default} Chain
+ * @typedef {import('../../types/util/proto').TAddress} TAddress
+ * @typedef {import('../../types/util/proto').TBlockHash} TBlockHash
+ * @typedef {import('../../types/util/proto').TBlockHeight} TBlockHeight
+ * @typedef {import('../../types/util/proto').TTransactionId} TTransactionId
+ * @typedef {import('../../types/contract/contractMethod').IExtractArgumentsIntoObject} IExtractArgumentsIntoObject
+ * @typedef {import('../../types/contract/contractMethod').TRawTx} TRawTx
+ * @typedef {import('../../types/contract/contractMethod').IRequestResult} IRequestResult
+ * @typedef {import('../../types/contract/index').Contract} Contract
+ * @typedef {import('../../types/wallet').IWalletInfo} IWalletInfo
+ * @typedef {import('@aelfqueen/protobufjs')} protobuf
+ */
 export default class ContractMethod {
+  /**
+   * Creates an instance of ContractMethod.
+   *
+   * @param {Chain} chain - The blockchain instance.
+   * @param {protobuf.Method} method - The protobuf method object defining input/output types.
+   * @param {TAddress} contractAddress - The address of the contract.
+   * @param {IWalletInfo} walletInstance - The wallet instance containing keys and addresses.
+   * @param {Object.<string, any>} option - Additional options for the method.
+   */
+
   constructor(chain, method, contractAddress, walletInstance, option) {
     this._chain = chain;
     this._method = method;
@@ -36,6 +58,12 @@ export default class ContractMethod {
     this.getSignedTx = this.getSignedTx.bind(this);
     this.getRawTx = this.getRawTx.bind(this);
   }
+  /**
+   * Packs input data into a Buffer for the blockchain transaction.
+   *
+   * @param {any} input - The input data for the method.
+   * @returns {Buffer|null} - Packed input data or null if no input is provided.
+   */
 
   packInput(input) {
     if (!input) {
@@ -46,6 +74,12 @@ export default class ContractMethod {
     const message = this._inputType.fromObject(params);
     return this._inputType.encode(message).finish();
   }
+  /**
+   * Unpacks a packed input into its original form.
+   *
+   * @param {ArrayBuffer|SharedArrayBuffer|null} inputPacked - The packed input data.
+   * @returns {any} - The unpacked input data.
+   */
 
   unpackPackedInput(inputPacked) {
     if (!inputPacked) {
@@ -59,6 +93,12 @@ export default class ContractMethod {
     params = transformArrayToMap(this._inputType, params);
     return params;
   }
+  /**
+   * Unpacks output data from a blockchain response.
+   *
+   * @param {ArrayBuffer|SharedArrayBuffer|null} output - The packed output data.
+   * @returns {any} - The unpacked output data.
+   */
 
   unpackOutput(output) {
     if (!output) {
@@ -72,6 +112,12 @@ export default class ContractMethod {
     result = transformArrayToMap(this._outputType, result);
     return result;
   }
+  /**
+   * Packs output data into a Buffer.
+   *
+   * @param {any} result - The result data to be packed.
+   * @returns {Buffer|null} - Packed result data or null if no result is provided.
+   */
 
   packOutput(result) {
     if (!result) {
@@ -84,6 +130,14 @@ export default class ContractMethod {
     const message = this._outputType.fromObject(params);
     return this._outputType.encode(message).finish();
   }
+  /**
+   * Handles transaction creation by signing the transaction and encoding it.
+   *
+   * @param {TBlockHeight} height - The block height reference.
+   * @param {TBlockHash} hash - The block hash reference.
+   * @param {any} encoded - The encoded input data.
+   * @returns {string} - The signed transaction in hexadecimal format.
+   */
 
   handleTransaction(height, hash, encoded) {
     const rawTx = this.getRawTx(height, hash, encoded);
@@ -98,6 +152,13 @@ export default class ContractMethod {
     }
     return uint8ArrayToHex(tx);
   }
+  /**
+   * Prepares parameters for asynchronous transaction execution.
+   *
+   * @param {Array<any>} args - The method arguments.
+   * @param {boolean} [isView=false] - Whether the method is a view method.
+   * @returns {Promise<string>} - The prepared transaction data.
+   */
 
   prepareParametersAsync(args, isView) {
     const filterArgs = args.filter(arg => !isFunction(arg) && !isBoolean(arg.sync));
@@ -137,10 +198,13 @@ export default class ContractMethod {
   }
 
   /**
-   * @param {Array} args - argument
-   * @param {boolean} isView - view method
-   * @returns any
+   * Prepares parameters for synchronous transaction execution.
+   *
+   * @param {Array<any>} args - The method arguments.
+   * @param {boolean} isView - Whether the method is a view method.
+   * @returns {string} - The prepared transaction data.
    */
+
   prepareParameters(args, isView) {
     const filterArgs = args.filter(arg => !isFunction(arg) && !isBoolean(arg.sync));
     const encoded = this.packInput(filterArgs[0]);
@@ -181,6 +245,14 @@ export default class ContractMethod {
     return this.handleTransaction(BestChainHeight, BestChainHash, encoded);
   }
 
+  /**
+   * Prepares the parameters for a transaction with block information.
+   *
+   * @param {Array<any>} args - The method arguments. The first argument is the input data,
+   * and the second argument contains the block height and hash.
+   * @returns {string} - The signed transaction.
+   */
+
   prepareParametersWithBlockInfo(args) {
     const filterArgs = args.filter(arg => !isFunction(arg) && !isBoolean(arg.sync));
     const encoded = this.packInput(filterArgs[0]);
@@ -189,6 +261,12 @@ export default class ContractMethod {
 
     return this.handleTransaction(height, hash, encoded);
   }
+  /**
+   * Sends a transaction to the blockchain.
+   *
+   * @param {...Array<any>} args - The method arguments. The last argument can be a callback function.
+   * @returns {Promise<TTransactionId>|TTransactionId} - If async, returns a Promise that resolves with the transaction result, otherwise returns the result directly.
+   */
 
   sendTransaction(...args) {
     const argsObject = this.extractArgumentsIntoObject(args);
@@ -203,6 +281,12 @@ export default class ContractMethod {
       return this._chain.sendTransaction(parameters, argsObject.callback);
     });
   }
+  /**
+   * Calls a read-only method on the blockchain.
+   *
+   * @param {Array<any>} args - The method arguments. The last argument can be a callback function.
+   * @returns {Promise<any>|any} - If async, returns a Promise that resolves with the unpacked output, otherwise returns the result directly.
+   */
 
   callReadOnly(...args) {
     const argsObject = this.extractArgumentsIntoObject(args);
@@ -223,6 +307,13 @@ export default class ContractMethod {
         .then(this.unpackOutput);
     });
   }
+  /**
+   * Extracts arguments into an object, detecting if the call is synchronous or asynchronous,
+   * and capturing any callback functions.
+   *
+   * @param {Array<any>} args - The method arguments.
+   * @returns {IExtractArgumentsIntoObject} - An object with `callback` and `isSync` properties.
+   */
 
   extractArgumentsIntoObject(args) {
     const result = {
@@ -244,7 +335,14 @@ export default class ContractMethod {
     return result;
   }
 
-  // getData(...args) {
+  /**
+   * Prepares a signed transaction, with optional block information.
+   *
+   * @param {...Array<any>} args - The method arguments. The second argument can be the block height and hash.
+   * @returns {string} - The signed transaction data.
+   * @throws {Error} - If the block information is incomplete.
+   */
+
   getSignedTx(...args) {
     const filterArgs = args.filter(arg => !isFunction(arg) && !isBoolean(arg.sync));
 
@@ -258,6 +356,14 @@ export default class ContractMethod {
 
     return this.prepareParameters(args);
   }
+  /**
+   * Constructs the raw transaction data.
+   *
+   * @param {TBlockHeight} blockHeightInput - The block height for the transaction.
+   * @param {TBlockHash} blockHashInput - The block hash for the transaction.
+   * @param {any} packedInput - The packed input data.
+   * @returns {TRawTx} - The raw transaction object.
+   */
 
   getRawTx(blockHeightInput, blockHashInput, packedInput) {
     const rawTx = getTransaction(this._wallet.address, this._contractAddress, this._name, packedInput);
@@ -270,6 +376,12 @@ export default class ContractMethod {
     }
     return rawTx;
   }
+  /**
+   * Prepares a request to be sent to the blockchain.
+   *
+   * @param {...Array<any>} args - The method arguments. The last argument can be a callback function.
+   * @returns {IRequestResult} - An object containing the request method, callback, parameters, and format function.
+   */
 
   request(...args) {
     const { callback } = this.extractArgumentsIntoObject(args);
@@ -281,10 +393,21 @@ export default class ContractMethod {
       format: this.unpackOutput
     };
   }
+  /**
+   * Runs a transaction on the blockchain.
+   *
+   * @param {...Array<any>} args - The method arguments. The last argument can be a callback function.
+   * @returns {{ TransactionId: TTransactionId } | Promise<{ TransactionId: TTransactionId }>} - If async, returns a Promise that resolves with the transaction result, otherwise returns the result directly.
+   */
 
   run(...args) {
     return this.sendTransaction(...args);
   }
+  /**
+   * Binds this contract method to a specific contract instance.
+   *
+   * @param {Contract} contract - The contract instance to bind the method to.
+   */
 
   bindMethodToContract(contract) {
     const { run } = this;

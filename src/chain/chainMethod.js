@@ -3,16 +3,27 @@
  * @author atom-yang
  */
 import { isFunction, noop, isBoolean } from '../util/utils';
-
+/**
+ * @typedef {import('../../types/util/requestManage').RequestManager } RequestManager
+ * @typedef {import('../../types/chain/chainMethod').ExtractArg} ExtractArg
+ * @typedef {import('../../types/chain/chainMethod').ExtractArgumentsIntoObjectResult}
+ */
+/**
+ * @typedef {Object} ChainMethodParams
+ * @property {string} name - The name of the chain method.
+ * @property {string} call - The blockchain method to be called.
+ * @property {string} [method] - HTTP method used for the request.
+ * @property {Array<string>} [params] - List of parameter names expected by the method.
+ * @property {Array<Function>} [inputFormatter] - Functions to format the input parameters.
+ * @property {Function|null} [outputFormatter] - Function to format the output of the request.
+ */
 export default class ChainMethod {
-  constructor({
-    name,
-    call,
-    method = 'GET',
-    params = [],
-    inputFormatter = [],
-    outputFormatter = null,
-  }) {
+  /**
+   * Constructs a new ChainMethod instance.
+   * @param {ChainMethodParams} params - Parameters to initialize the chain method.
+   */
+
+  constructor({ name, call, method = 'GET', params = [], inputFormatter = [], outputFormatter = null }) {
     this.name = name;
     this.call = call;
     this.requestMethod = method;
@@ -22,6 +33,11 @@ export default class ChainMethod {
     this.requestManager = null;
     this.run = this.run.bind(this);
   }
+  /**
+   * Formats the input parameters using the provided input formatters.
+   * @param {Array<any>} args - Arguments to be formatted.
+   * @returns {Array<any>} - The formatted arguments.
+   */
 
   formatInput(args) {
     if (!this.inputFormatter || this.inputFormatter.length === 0) {
@@ -33,16 +49,29 @@ export default class ChainMethod {
       return formatter ? formatter(arg) : arg;
     });
   }
+  /**
+   * Sets the request manager responsible for sending blockchain requests.
+   * @param {RequestManager} manager - The request manager to handle the requests.
+   */
 
   setRequestManager(manager) {
     this.requestManager = manager;
   }
+  /**
+   * Formats the output result using the specified output formatter.
+   * @param {any} result - The result from the blockchain call.
+   * @returns {any} - The formatted result.
+   */
 
   formatOutput(result) {
-    return this.outputFormatter && result
-      ? this.outputFormatter(result)
-      : result;
+    return this.outputFormatter && result ? this.outputFormatter(result) : result;
   }
+  /**
+   * Extracts the arguments into an object that contains the method name, parameters, and other metadata.
+   * @param {ExtractArg[]} args - The arguments to be processed.
+   * @returns {ExtractArgumentsIntoObjectResult} - The processed arguments in a standardized object format.
+   * @throws {Error} If not enough parameters are supplied.
+   */
 
   extractArgumentsIntoObject(args) {
     if (args.length < this.params.length) {
@@ -53,7 +82,7 @@ export default class ChainMethod {
       requestMethod: this.requestMethod,
       isSync: false,
       callback: noop,
-      params: {},
+      params: {}
     };
     this.formatInput(args).forEach((arg, index) => {
       if (index > this.params.length - 1) {
@@ -73,6 +102,11 @@ export default class ChainMethod {
     });
     return result;
   }
+  /**
+   * Executes the blockchain method, either synchronously or asynchronously based on the arguments.
+   * @param  {ExtractArg[]} args - Arguments for the method.
+   * @returns {Object.<string, any> | Promise<Object.<string, any>>}} - The result of the method call, either as a value (sync) or a Promise (async).
+   */
 
   run(...args) {
     const argsObj = this.extractArgumentsIntoObject(args);

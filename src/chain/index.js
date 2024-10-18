@@ -9,7 +9,18 @@ import * as merkleTree from '../util/merkleTree';
 
 import ContractFactory from '../contract';
 
+/**
+ * @typedef {import('../../types/util/requestManage').RequestManager } RequestManager
+ * @typedef {import('../../types/chain/chainMethod').ExtractArg} ExtractArg
+ * @typedef {import('../../types/chain/chainMethod').ExtractArgumentsIntoObjectResult} ExtractArgumentsIntoObjectResult
+ * @typedef {import('../../types/util/proto').TBlockHeight} TBlockHeight
+ */
 export default class Chain {
+  /**
+   * Constructs a Chain instance and dynamically sets up methods from CHAIN_METHODS.
+   *
+   * @param {RequestManager} requestManager - Manager to handle requests to the blockchain.
+   */
   constructor(requestManager) {
     Object.keys(CHAIN_METHODS).forEach(key => {
       const methodConfig = CHAIN_METHODS[key];
@@ -19,6 +30,12 @@ export default class Chain {
       setPath(this, name, method.run);
     });
   }
+  /**
+   * Extracts function arguments into a standardized object format.
+   *
+   * @param {ExtractArg[]} args - The array of arguments to be processed.
+   * @returns {ExtractArgumentsIntoObjectResult} The extracted arguments as an object.
+   */
 
   extractArgumentsIntoObject(args) {
     const result = {
@@ -94,6 +111,14 @@ export default class Chain {
     });
   }
 
+  /**
+   * Retrieves the Merkle path for a given transaction ID at a specific block height.
+   *
+   * @param {string} txId - The transaction ID.
+   * @param {TBlockHeight} height - The block height.
+   * @param  {Object.<string, any>[]} args - Additional arguments, including sync options.
+   * @returns {any[] | null | Promise<any[] | null>} The Merkle path for the transaction or a promise resolving to it.
+   */
   getMerklePath(txId, height, ...args) {
     const { isSync } = this.extractArgumentsIntoObject(args);
     if (isSync) {

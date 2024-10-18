@@ -1,14 +1,34 @@
 /**
- * @file contract method
- * @author atom-yang
+ * @file contract multi transaction method
+ * @author abigail
  */
 import HttpProvider from '../util/httpProvider';
 import { getTransactionAndChainId, TransactionAndChainId, MultiTransaction } from '../util/proto';
 import { transformMapToArray, transform, INPUT_TRANSFORMERS } from '../util/transform';
 import { isBoolean, isFunction, isObject, noop, uint8ArrayToHex, validateMulti } from '../util/utils';
 import wallet from '../wallet';
-
+/**
+ * @typedef {import('../../types/chain').default} Chain
+ * @typedef {import('../../types/util/proto').TAddress} TAddress
+ * @typedef {import('../../types/util/proto').TBlockHash} TBlockHash
+ * @typedef {import('../../types/util/proto').TBlockHeight} TBlockHeight
+ * @typedef {import('../../types/util/proto').TTransactionId} TTransactionId
+ * @typedef {import('../../types/util/proto').TChainId} TChainId
+ * @typedef {import('../../types/contract/contractMethod').IExtractArgumentsIntoObject} IExtractArgumentsIntoObject
+ * @typedef {import('../../types/contract/contractMethod').TRawTx} TRawTx
+ * @typedef {import('../../types/contract/contractMethod').IRequestResult} IRequestResult
+ * @typedef {import('../../types/contract/index').Contract} Contract
+ * @typedef {import('../../types/wallet').IWalletInfo} IWalletInfo
+ */
 export default class ContractMultiTransaction {
+  /**
+   * Creates an instance of ContractMultiTransaction.
+   *
+   * @param {Contract} contract - The contract instance.
+   * @param {IWalletInfo} walletInstance - The wallet instance.
+   * @param {Object.<string, any>} option - Configuration options for the contract.
+   */
+
   constructor(contract, walletInstance, option) {
     this._contract = contract;
     this._services = contract.services;
@@ -20,6 +40,14 @@ export default class ContractMultiTransaction {
     this._chainIds = Object.keys(this._multiOptions);
     this.sendMultiTransactionToGateway = this.sendMultiTransactionToGateway.bind(this);
   }
+  /**
+   * Packs the input for a given method.
+   *
+   * @param {string} method - The method name to pack input for.
+   * @param {any} input - The input parameters for the method.
+   * @returns {Buffer|null} - The packed input as a Buffer, or null if input is not provided.
+   * @throws {Error} - If the method is not found.
+   */
 
   packInput(method, input) {
     let methodInstance;
@@ -42,6 +70,13 @@ export default class ContractMultiTransaction {
     const message = resolvedRequestType.fromObject(params);
     return resolvedRequestType.encode(message).finish();
   }
+  /**
+   * Validates the reference block number strategy provided in the arguments.
+   *
+   * @param {Array<any>} args - The method arguments.
+   * @returns {Object.<string, any>} - The validated reference block number strategy.
+   * @throws {Error} - If the strategy is invalid.
+   */
 
   validateRefBlockNumberStrategy(args) {
     function validateItem(item) {
@@ -68,6 +103,13 @@ export default class ContractMultiTransaction {
     });
     return refBlockNumberStrategy;
   }
+  /**
+   * Extracts arguments into an object, detecting if the call is synchronous or asynchronous,
+   * and capturing any callback functions.
+   *
+   * @param {Array<any>} args - The method arguments.
+   * @returns {IExtractArgumentsIntoObject} - An object with `callback` and `isSync` properties.
+   */
 
   extractArgumentsIntoObject(args) {
     const result = {
@@ -87,6 +129,14 @@ export default class ContractMultiTransaction {
     });
     return result;
   }
+  /**
+   * Handles the multi-transaction process, signing transactions and encoding them into a multi-transaction format.
+   *
+   * @param {Object.<string, TBlockHeight>} height - An object containing chain heights indexed by chain IDs.
+   * @param {Object.<string, TBlockHash>} hash - An object containing chain hashes indexed by chain IDs.
+   * @param {Object.<string, any>} encoded - An object containing encoded transaction inputs indexed by chain IDs.
+   * @returns {string} - The encoded multi-transaction as a hexadecimal string.
+   */
 
   handleMultiTransaction(height, hash, encoded) {
     const rawTxs = this._chainIds.map(ele => this.getRawTx(height[ele] || '', hash[ele] || '', encoded[ele], ele));
@@ -103,6 +153,12 @@ export default class ContractMultiTransaction {
     }
     return uint8ArrayToHex(tx);
   }
+  /**
+   * Prepares parameters for a multi-transaction synchronously.
+   *
+   * @param {Array<any>} args - The method arguments.
+   * @returns {string} - The raw multi-transaction data.
+   */
 
   multiPrepareParameters(args) {
     const filterArgs = args.filter(arg => !isFunction(arg) && !isBoolean(arg.sync));
@@ -147,6 +203,12 @@ export default class ContractMultiTransaction {
     });
     return this.handleMultiTransaction(chainHeight, chainHash, encoded);
   }
+  /**
+   * Prepares parameters for a multi-transaction asynchronously.
+   *
+   * @param {Array<any>} args - The method arguments.
+   * @returns {Promise<string>} - A Promise that resolves to the raw multi-transaction data.
+   */
 
   async multiPrepareParametersAsync(args) {
     const filterArgs = args.filter(arg => !isFunction(arg) && !isBoolean(arg.sync));
@@ -192,6 +254,13 @@ export default class ContractMultiTransaction {
     );
     return this.handleMultiTransaction(chainHeight, chainHash, encoded);
   }
+  /**
+   * Sends a multi-transaction to the gateway.
+   *
+   * @param {...Array<any>} args - The arguments for the transaction, including options and callbacks.
+   * @returns {Promise<any>} - A Promise that resolves to the response data from the gateway.
+   * @throws {Error} - Throws an error if the multi options are not set or if the response is not successful.
+   */
 
   sendMultiTransactionToGateway(...args) {
     if (!validateMulti(this._multiOptions)) {
@@ -230,6 +299,15 @@ export default class ContractMultiTransaction {
       throw new Error(message);
     });
   }
+  /**
+   * Gets the raw transaction data for a multi-transaction.
+   *
+   * @param {TBlockHeight} blockHeightInput - The height of the block for reference.
+   * @param {TBlockHash} blockHashInput - The hash of the block for reference.
+   * @param {Buffer} packedInput - The packed input data for the transaction.
+   * @param {TChainId} chainId - The chain ID for the transaction.
+   * @returns {TRawTx} - The raw transaction object containing all relevant information.
+   */
 
   getRawTx(blockHeightInput, blockHashInput, packedInput, chainId) {
     // multi

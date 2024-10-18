@@ -16,11 +16,11 @@ export type TRawTx = ITransactionObject & {
   refBlockPrefix: string;
 };
 
-interface IExtractArgumentsIntoObject {
+export interface IExtractArgumentsIntoObject {
   callback: TGenericFunction;
   isSync: boolean;
 }
-interface IRequestResult {
+export interface IRequestResult {
   method: string;
   callback: TGenericFunction;
   params: string;
@@ -36,15 +36,15 @@ interface IContractMethod {
     hash: TBlockHash,
     encoded: any
   ): string;
-  prepareParametersAsync(args: Array<any>): Promise<string>;
-  prepareParameters(args: Array<any>): string;
+  prepareParametersAsync(args: Array<any>,isView: boolean): Promise<string>;
+  prepareParameters(args: Array<any>,isView: boolean): string;
   prepareParametersWithBlockInfo(args: Array<any>): string;
   sendTransaction(
     ...args: Array<any>
   ):
     | { TransactionId: TTransactionId }
     | Promise<{ TransactionId: TTransactionId }>;
-  callReadOnly(...args: Array<any>): any;
+  callReadOnly(...args: Array<any>): Promise<any> | any;
   extractArgumentsIntoObject(...args: Array<any>): IExtractArgumentsIntoObject;
   handleMultiTransaction(
     height: { [key in string]: TBlockHeight },
@@ -90,8 +90,8 @@ declare class ContractMethod implements IContractMethod {
     hash: TBlockHash,
     encoded: any
   ): string;
-  public prepareParametersAsync(args: Array<any>): Promise<string>;
-  public prepareParameters(args: Array<any>): string;
+  public prepareParametersAsync(args: Array<any>,isView: boolean): Promise<string>;
+  public prepareParameters(args: Array<any>,isView: boolean): string;
   public prepareParametersWithBlockInfo(args: Array<any>): string;
   public sendTransaction(
     ...args: Array<any>

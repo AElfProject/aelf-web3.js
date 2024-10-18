@@ -1,6 +1,6 @@
 import * as protobuf from '@aelfqueen/protobufjs/light';
 import { RequestManager } from '../util/requestManage';
-import { GenericFunction } from '../util/utils';
+import { TGenericFunction } from '../util/utils';
 type InputAddressFormatter = (address: any) => string;
 interface ChainMethodParams {
   name: string;
@@ -12,18 +12,18 @@ interface ChainMethodParams {
 }
 
 export type ExtractArg =
-  | GenericFunction
+  | TGenericFunction
   | {
-      isSync: boolean;
-      callback?: GenericFunction;
-      [k: string]: any;
-    };
+    isSync: boolean;
+    callback?: TGenericFunction;
+    [k: string]: any;
+  };
 
 export interface ExtractArgumentsIntoObjectResult {
-  method?: GenericFunction;
+  method?: TGenericFunction;
   requestMethod?: string;
   isSync: boolean;
-  callback: GenericFunction;
+  callback: TGenericFunction;
   params?: { [k in string]: any };
 }
 
