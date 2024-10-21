@@ -4,9 +4,9 @@
  * @author Fabian Vogelsteller <fabian@ethdev.com>
  * @date 2015
  */
-import descriptor from '@aelfqueen/protobufjs/ext/descriptor';
+import descriptor from '@aelfqueen/protobufjs/ext/descriptor/index.js';
 import bs58 from 'bs58';
-import { base58 } from './utils';
+import { base58 } from './utils.js';
 
 const getByteCountByAddress = base58Str => {
   // convert a Base58 string to a binary array and get its byte count

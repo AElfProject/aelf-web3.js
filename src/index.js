@@ -2,17 +2,17 @@
  * @file AElf-sdk index export
  * @author atom-yang
  */
-import * as protobuf from '@aelfqueen/protobufjs/light';
-import * as bloom from './util/bloom';
-import Chain from './chain';
-import RequestManager from './util/requestManage';
-import HttpProvider from './util/httpProvider';
-import wallet from './wallet';
-import * as utils from './util/utils';
-import * as proto from './util/proto';
-import * as transform from './util/transform';
-import Settings from './util/settings';
-import sha256 from './util/sha256';
+import * as protobuf from '@aelfqueen/protobufjs/light.js';
+import * as bloom from './util/bloom.js';
+import Chain from './chain/index.js';
+import RequestManager from './util/requestManage.js';
+import HttpProvider from './util/httpProvider.js';
+import wallet from './wallet/index.js';
+import * as utils from './util/utils.js';
+import * as proto from './util/proto.js';
+import * as transform from './util/transform.js';
+import Settings from './util/settings.js';
+import sha256 from './util/sha256.js';
 
 /* eslint-disable no-underscore-dangle */
 export default class AElf {

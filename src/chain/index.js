@@ -2,12 +2,12 @@
  * @file chain
  * @author atom-yang
  */
-import { isBoolean, isFunction, noop, setPath } from '../util/utils';
-import { CHAIN_METHODS } from '../common/constants';
-import ChainMethod from './chainMethod';
-import * as merkleTree from '../util/merkleTree';
+import { isBoolean, isFunction, noop, setPath } from '../util/utils.js';
+import { CHAIN_METHODS } from '../common/constants.js';
+import ChainMethod from './chainMethod.js';
+import * as merkleTree from '../util/merkleTree.js';
 
-import ContractFactory from '../contract';
+import ContractFactory from '../contract/index.js';
 
 export default class Chain {
   constructor(requestManager) {

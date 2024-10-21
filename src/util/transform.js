@@ -2,8 +2,8 @@
  * @file transform protobuf
  * @author atom-yang
  */
-import { base58, decodeAddressRep } from './utils';
-import { inputAddressFormatter } from './formatters';
+import { base58, decodeAddressRep } from './utils.js';
+import { inputAddressFormatter } from './formatters.js';
 
 const isWrappedBytes = (resolvedType, name) => {
   if (!resolvedType.name || resolvedType.name !== name) {
@@ -33,11 +33,7 @@ export function transform(inputType, origin, transformers = []) {
   }
   // eslint-disable-next-line no-restricted-syntax
   Object.keys(inputType.fields).forEach(field => {
-    const {
-      rule,
-      name,
-      resolvedType
-    } = inputType.fields[field];
+    const { rule, name, resolvedType } = inputType.fields[field];
     if (resolvedType) {
       if (rule && rule === 'repeated') {
         let value = origin[name];
@@ -53,8 +49,10 @@ export function transform(inputType, origin, transformers = []) {
       } else {
         result = {
           ...result,
-          [name]: origin[name] !== null && origin[name] !== undefined
-            ? transform(resolvedType, origin[name], transformers) : origin[name]
+          [name]:
+            origin[name] !== null && origin[name] !== undefined
+              ? transform(resolvedType, origin[name], transformers)
+              : origin[name]
         };
       }
     }
@@ -75,19 +73,13 @@ export function transformMapToArray(inputType, origin) {
   // if (isAddress(inputType) || isHash(inputType)) {
   //   return origin;
   // }
-  const {
-    fields,
-    options = {}
-  } = inputType;
+  const { fields, options = {} } = inputType;
   if (fieldsLength === 2 && fields.value && fields.key && options.map_entry === true) {
     return Object.keys(origin).map(key => ({ key, value: origin[key] }));
   }
   // eslint-disable-next-line no-restricted-syntax
   Object.keys(inputType.fields).forEach(field => {
-    const {
-      name,
-      resolvedType
-    } = inputType.fields[field];
+    const { name, resolvedType } = inputType.fields[field];
     if (resolvedType) {
       if (origin[name] && Array.isArray(origin[name])) {
         let value = origin[name];
@@ -110,10 +102,7 @@ export function transformMapToArray(inputType, origin) {
 export function transformArrayToMap(inputType, origin) {
   const fieldsLength = (inputType.fieldsArray || []).length;
   let result = origin;
-  if (
-    fieldsLength === 0
-    || (fieldsLength === 1 && !inputType.fieldsArray[0].resolvedType)
-  ) {
+  if (fieldsLength === 0 || (fieldsLength === 1 && !inputType.fieldsArray[0].resolvedType)) {
     return origin;
   }
   // Params which satisfy address or hash format satisfy above first.
@@ -121,16 +110,11 @@ export function transformArrayToMap(inputType, origin) {
   //   return origin;
   // }
   const { fields, options = {} } = inputType;
-  if (
-    fieldsLength === 2
-    && fields.value
-    && fields.key
-    && options.map_entry === true
-  ) {
+  if (fieldsLength === 2 && fields.value && fields.key && options.map_entry === true) {
     return origin.reduce(
       (acc, v) => ({
         ...acc,
-        [v.key]: v.value,
+        [v.key]: v.value
       }),
       {}
     );
@@ -140,40 +124,36 @@ export function transformArrayToMap(inputType, origin) {
     const { name, resolvedType } = fields[field];
     if (resolvedType && origin !== null && origin !== undefined) {
       if (origin[name] && Array.isArray(origin[name])) {
-        const {
-          fieldsArray = [],
-          fields: resolvedFields,
-          options: resolvedOptions = {},
-        } = resolvedType;
+        const { fieldsArray = [], fields: resolvedFields, options: resolvedOptions = {} } = resolvedType;
         // eslint-disable-next-line max-len
         if (
-          fieldsArray.length === 2
-          && resolvedFields.value
-          && resolvedFields.key
-          && resolvedOptions.map_entry === true
+          fieldsArray.length === 2 &&
+          resolvedFields.value &&
+          resolvedFields.key &&
+          resolvedOptions.map_entry === true
         ) {
           result = {
             ...result,
             [name]: origin[name].reduce(
               (acc, v) => ({
                 ...acc,
-                [v.key]: v.value,
+                [v.key]: v.value
               }),
               {}
-            ),
+            )
           };
         } else {
           let value = origin[name];
           value = value.map(item => transformArrayToMap(resolvedType, item));
           result = {
             ...result,
-            [name]: value,
+            [name]: value
           };
         }
       } else {
         result = {
           ...result,
-          [name]: transformArrayToMap(resolvedType, origin[name]),
+          [name]: transformArrayToMap(resolvedType, origin[name])
         };
       }
     }
@@ -215,7 +195,7 @@ export const INPUT_TRANSFORMERS = [
       }
       return result;
     }
-  },
+  }
 ];
 
 export function encodeAddress(str) {
@@ -247,5 +227,5 @@ export const OUTPUT_TRANSFORMERS = [
       }
       return result;
     }
-  },
+  }
 ];

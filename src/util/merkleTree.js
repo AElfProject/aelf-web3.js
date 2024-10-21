@@ -1,4 +1,4 @@
-import sha256 from './sha256';
+import sha256 from './sha256.js';
 
 const fromTwoBuffers = data => {
   if (data.length !== 2) throw new TypeError('Wrong data size.');
@@ -18,7 +18,9 @@ const generateMerkleTree = data => {
     return null;
   }
 
-  if (data.length % 2 === 1) { data.push(data[data.length - 1]); }
+  if (data.length % 2 === 1) {
+    data.push(data[data.length - 1]);
+  }
   let nodeToAdd = data.length / 2;
   let newAdded = 0;
   let i = 0;

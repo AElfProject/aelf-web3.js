@@ -3,11 +3,8 @@
  * @author joshstevens19
  * @link https://github.com/joshstevens19/ethereum-bloom-filters
  */
-import sha256 from './sha256';
-import {
-  Address,
-  getAddressObjectFromRep
-} from './proto';
+import sha256 from './sha256.js';
+import { Address, getAddressObjectFromRep } from './proto.js';
 /**
  * @deprecated Use the new Bloom instead
  */
@@ -19,10 +16,7 @@ function isBloom(bloom) {
   //   return false;
   // }
 
-  if (
-    /^(0x)?[0-9a-f]{512}$/.test(bloom)
-    || /^(0x)?[0-9A-F]{512}$/.test(bloom)
-  ) {
+  if (/^(0x)?[0-9a-f]{512}$/.test(bloom) || /^(0x)?[0-9A-F]{512}$/.test(bloom)) {
     return true;
   }
   return false;
@@ -62,14 +56,10 @@ export function isInBloom(bloom, hash) {
   }
   for (let i = 0; i < 12; i += 4) {
     // calculate bit position in bloom filter that must be active
-    const bitpos = ((parseInt(hash.substr(i, 2), 16) << 8)
-      + parseInt(hash.substr(i + 2, 2), 16))
-      & 2047;
+    const bitpos = ((parseInt(hash.substr(i, 2), 16) << 8) + parseInt(hash.substr(i + 2, 2), 16)) & 2047;
 
     // test if bitpos in bloom is active
-    const code = codePointToInt(
-      bloom.charCodeAt(bloom.length - 1 - Math.floor(bitpos / 4)),
-    );
+    const code = codePointToInt(bloom.charCodeAt(bloom.length - 1 - Math.floor(bitpos / 4)));
     const offset = 1 << bitpos % 4;
 
     if ((code & offset) !== offset) {

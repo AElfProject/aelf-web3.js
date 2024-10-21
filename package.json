@@ -1,15 +1,24 @@
 {
   "name": "aelf-sdk",
-  "version": "3.4.16",
+  "version": "3.4.17-alpha.0",
   "description": "aelf-sdk js library",
+  "type": "module",
   "main": "dist/aelf.cjs.js",
+  "module": "dist/aelf.esm.js",
   "browser": "dist/aelf.umd.js",
   "unpkg": "dist/aelf.umd.js",
   "jsdelivr": "dist/aelf.umd.js",
+  "exports": {
+    ".": {
+      "import": "./dist/aelf.esm.js",
+      "require": "./dist/aelf.cjs.js"
+    }
+  },
   "scripts": {
-    "build": "npm run clean && npm run build:browser && npm run build:node && npm run copy-ts",
+    "build": "npm run clean && npm run build:browser && npm run build:node && npm run build:esm && npm run copy-ts",
     "build:browser": "cross-env RUNTIME_ENV=browser webpack --progress --color --config ./build/webpack.browser.js",
     "build:node": "cross-env RUNTIME_ENV=node webpack --progress --color --config ./build/webpack.node.js",
+    "build:esm": "cross-env --es-module-specifier-resolution=node webpack --progress --color --config ./build/webpack.esModule.js",
     "analyze:node": "npm run clean && cross-env RUNTIME_ENV=node webpack --config ./build/webpack.analyze.js",
     "analyze:browser": "npm run clean && cross-env RUNTIME_ENV=browser webpack --config ./build/webpack.analyze.js",
     "clean": "rimraf dist/*",

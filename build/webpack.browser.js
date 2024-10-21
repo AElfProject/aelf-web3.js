@@ -3,11 +3,13 @@
  * @author atom-yang
  */
 
-/* eslint-env node */
-const { merge } = require('webpack-merge');
-const webpack = require('webpack');
-const baseConfig = require('./webpack.common');
-const { OUTPUT_PATH } = require('./utils');
+import { merge } from 'webpack-merge';
+import webpack from 'webpack';
+import baseConfig from './webpack.common.js';
+import { OUTPUT_PATH } from './utils.js';
+import { createRequire } from 'module';
+
+const require = createRequire(import.meta.url);
 
 const browserConfig = {
   mode: 'production',
@@ -63,11 +65,10 @@ const browserConfig = {
     new webpack.ProvidePlugin({
       Buffer: ['buffer', 'Buffer']
     }),
-    // fix "process is not defined" error:
     new webpack.ProvidePlugin({
       process: 'process/browser'
     })
   ]
 };
 
-module.exports = merge(baseConfig, browserConfig);
+export default merge(baseConfig, browserConfig);

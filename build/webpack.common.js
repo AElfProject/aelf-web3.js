@@ -1,13 +1,11 @@
-/**
- * @file common config
- * @author atom-yang
- */
-
 /* eslint-env node */
-const path = require('path');
-const webpack = require('webpack');
-const { ROOT } = require('./utils');
-const { version, name } = require(path.resolve(ROOT, './package.json'));
+import path from 'path';
+import webpack from 'webpack';
+import { ROOT } from './utils.js';
+const pkg = await import(path.resolve(ROOT, './package.json'), {
+  assert: { type: 'json' }
+});
+const { version, name } = pkg;
 
 const banner = `${name}.js v${version} \n(c) 2019-${new Date().getFullYear()} AElf \nReleased under MIT License`;
 
@@ -43,4 +41,4 @@ const baseConfig = {
   }
 };
 
-module.exports = baseConfig;
+export default baseConfig;
