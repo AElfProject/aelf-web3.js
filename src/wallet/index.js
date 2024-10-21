@@ -15,7 +15,12 @@ import { Transaction } from '../util/proto';
 
 // eslint-disable-next-line new-cap
 const ellipticEc = new elliptic.ec('secp256k1');
-
+/**
+ * @typedef {import('elliptic').curve.base.BasePoint} BasePoint
+ * @typedef {import('elliptic').ec.KeyPair} KeyPair
+ * @typedef {import('../../types/wallet').IWalletInfo} IWalletInfo
+ * @typedef {import('../../types/util/proto').TRawTransaction} TRawTransaction
+ */
 /**
  * Advanced Encryption Standard need crypto-js
  *
@@ -53,7 +58,7 @@ const AESDecrypt = (input, password) => AES.decrypt(input, password).toString(en
  * the same as in C#
  *
  * @alias module:AElf/wallet
- * @param {Object} pubKey get the pubKey you want through keyPair
+ * @param {BasePoint} pubKey get the pubKey you want through keyPair
  * @return {string} address encoded address
  *
  * @Example
@@ -67,6 +72,16 @@ const getAddressFromPubKey = pubKey => {
   return encodeAddressRep(hash);
 };
 
+/**
+ * Creates a wallet based on the specified type.
+ *
+ * @param {string} type - The type of wallet to create.
+ * @param {string} value - The value used to create the wallet (e.g., mnemonic or private key).
+ * @param {string} [BIP44Path="m/44'/1616'/0'/0/0"] - The BIP44 path.
+ * @param {boolean} [seedWithBuffer=true] - Whether to use a buffer for the seed.
+ * @returns {IWalletInfo} - The wallet information including mnemonic, BIP44Path, childWallet, keyPair, privateKey, and address.
+ * @throws {Error} - Throws an error if the method type is invalid.
+ */
 const _getWallet = (type, value, BIP44Path = "m/44'/1616'/0'/0/0", seedWithBuffer = true) => {
   // m/purpose'/coin_type'/account'/change/address_index
   // "m/44'/1616'/0'/0/0"
@@ -122,8 +137,8 @@ const _getWallet = (type, value, BIP44Path = "m/44'/1616'/0'/0/0", seedWithBuffe
 
 /**
  * get signature
- * @param bytesToBeSign
- * @param keyPair
+ * @param {string} bytesToBeSign
+ * @param {KeyPair} keyPair
  * @returns {Buffer}
  */
 const getSignature = (bytesToBeSign, keyPair) => {
@@ -143,7 +158,7 @@ const getSignature = (bytesToBeSign, keyPair) => {
  *
  * @alias module:AElf/wallet
  * @param {string} BIP44Path
- * @return {Object} wallet
+ * @return {IWalletInfo} wallet
  *
  * @Example
  * const wallet = aelf.wallet.createNewWallet();
@@ -166,7 +181,7 @@ const createNewWallet = (BIP44Path = "m/44'/1616'/0'/0/0", seedWithBuffer = true
  * @alias module:AElf/wallet
  * @param {string} mnemonic base on bip39
  * @param {string} BIP44Path
- * @return {Object} wallet
+ * @return {IWalletInfo} wallet
  *
  * @Example
  *
@@ -184,7 +199,7 @@ const getWalletByMnemonic = (mnemonic, BIP44Path = "m/44'/1616'/0'/0/0", seedWit
  *
  * @alias module:AElf/wallet
  * @param {string} privateKey privateKey
- * @return {Object} wallet
+ * @return {IWalletInfo} wallet
  *
  * @Example
  * const privateKeyWallet = aelf.wallet.getWalletByPrivateKey('123');
@@ -196,9 +211,9 @@ const getWalletByPrivateKey = privateKey => _getWallet('getWalletByPrivateKey', 
  * sign a transaction
  *
  * @alias module:AElf/wallet
- * @param {Object} rawTxn rawTxn
- * @param {Object} keyPair Any standard key pair
- * @return {Object} wallet
+ * @param {TRawTransaction} rawTxn rawTxn
+ * @param {KeyPair} keyPair Any standard key pair
+ * @return {IWalletInfo} wallet
  *
  * @Example
  * const rawTxn = proto.getTransaction(
@@ -233,7 +248,7 @@ const signTransaction = (rawTxn, keyPair) => {
  *
  * @alias module:AElf/wallet
  * @param {string} hexString hex string
- * @param {Object} keyPair Any standard key pair
+ * @param {IWalletInfo} keyPair Any standard key pair
  * @return {Buffer} Buffer.from(hex, 'hex')
  *
  * @Example
@@ -248,6 +263,13 @@ const sign = (hexString, keyPair) => {
   const bytesToBeSign = Buffer.from(hexString.replace('0x', ''), 'hex');
   return getSignature(bytesToBeSign, keyPair);
 };
+
+/**
+ * Converts a hexadecimal string to a decimal string.
+ *
+ * @param {string} x - The hexadecimal string.
+ * @return {string} The decimal representation of the input.
+ */
 
 const hexToDecimal = x => ellipticEc.keyFromPrivate(x, 'hex').getPrivate().toString(10);
 

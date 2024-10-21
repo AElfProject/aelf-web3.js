@@ -27,14 +27,9 @@ import {
   setPath,
   unpackSpecifiedTypeData,
   deserializeTransaction,
-  getAuthorization,
+  getAuthorization
 } from './util/utils';
-import {
-  isInBloom,
-  isEventInBloom,
-  isIndexedInBloom,
-  isAddressInBloom,
-} from './util/bloom';
+import { isInBloom, isEventInBloom, isIndexedInBloom, isAddressInBloom } from './util/bloom';
 
 import Settings from './util/settings';
 import Chain from './chain';
@@ -73,7 +68,7 @@ interface IBloom {
   isIndexedInBloom: typeof isIndexedInBloom;
   isAddressInBloom: typeof isAddressInBloom;
 }
-type TUtilsType = IUtils &
+export type TUtilsType = IUtils &
   IBloom & {
     sha256: typeof sha256;
   } & {
