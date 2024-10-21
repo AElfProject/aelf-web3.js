@@ -1,4 +1,9 @@
 const createKeccakHash = require('keccak');
+/**
+ * Generates a keccak hash of the given string or hex-encoded string.
+ * @param {string} str - The input string or hex-encoded string (with '0x' prefix).
+ * @returns {string} The keccak hash of the input as a hex-encoded string prefixed with '0x'.
+ */
 
 const keccak = bits => str => {
   let msg;

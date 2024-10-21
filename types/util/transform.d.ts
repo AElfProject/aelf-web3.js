@@ -1,11 +1,11 @@
 import * as protobuf from '@aelfqueen/protobufjs';
-interface IInTransformer {
+export interface IInTransformer {
   filter: (resolvedType: protobuf.Type) => boolean;
   transformer: (origin: string | Array<string>) => {
     value: string | Array<string>;
   };
 }
-interface IOutTransformer {
+export interface IOutTransformer {
   filter: (resolvedType: protobuf.Type) => boolean;
   transformer: (origin: string | Array<string>) => string | Array<string>;
 }

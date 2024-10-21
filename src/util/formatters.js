@@ -7,7 +7,10 @@
 import descriptor from '@aelfqueen/protobufjs/ext/descriptor';
 import bs58 from 'bs58';
 import { base58 } from './utils';
-
+/**
+ * @typedef {import('../../types/util/proto').IAddressObject} IAddressObject
+ * @typedef {import('../../types/util/proto').TAddress} TAddress
+ */
 const getByteCountByAddress = base58Str => {
   // convert a Base58 string to a binary array and get its byte count
   const buffer = bs58.decode(base58Str);
@@ -16,6 +19,14 @@ const getByteCountByAddress = base58Str => {
   // last four digits are the checksum
   return byteCount;
 };
+
+/**
+ * Formats the input address to a standardized address string.
+ *
+ * @param {TAddress | IAddressObject} address - The address object or string to be formatted.
+ * @returns {string} The formatted address string.
+ * @throws {Error} Throws an error if the address is invalid.
+ */
 
 export const inputAddressFormatter = address => {
   let realAddress = address;
@@ -39,7 +50,7 @@ export const inputAddressFormatter = address => {
 
 /**
  * @param {String} result base64 representation of serialized FileDescriptorSet
- * @returns {FileDescriptorSet} decoded FileDescriptorSet message
+ * @returns {Message<{}>} decoded FileDescriptorSet message
  */
 export const outputFileDescriptorSetFormatter = result => {
   const buffer = Buffer.from(result, 'base64');

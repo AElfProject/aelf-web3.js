@@ -9,8 +9,21 @@ import { UNIT_MAP, UNSIGNED_256_INT } from '../common/constants';
 import { Transaction } from './proto';
 import { OUTPUT_TRANSFORMERS, encodeAddress, transform, transformArrayToMap } from './transform';
 import sha256 from './sha256';
-
+/**
+ * @typedef {import('../../types/util/proto').TAddress} TAddress
+ * @typedef {import('../../types/util/utils').IUnpackSpecifiedParams} IUnpackSpecifiedParams
+ * @typedef {import('../../types/util/utils').ValidationObject} ValidationObject
+ * @typedef {import('@aelfqueen/protobufjs/light')} protobuf
+ */
 export const base58 = {
+  /**
+   * Encodes data to Base58 format.
+   * @param {ArrayBuffer | SharedArrayBuffer | string} data - The data to encode.
+   * @param {string} [encoding='hex'] - The encoding of the input data.
+   * @returns {string} The Base58 encoded string.
+   * @throws {TypeError} If the data is not a Buffer.
+   */
+
   encode(data, encoding = 'hex') {
     let result = data;
     if (typeof data === 'string') {
@@ -25,6 +38,14 @@ export const base58 = {
     hash = Buffer.from(result.toString('hex') + hash.slice(0, 4).toString('hex'), 'hex');
     return bs58.encode(hash);
   },
+  /**
+   * Decodes a Base58 encoded string.
+   * @param {string} str - The Base58 encoded string.
+   * @param {string} [encoding] - The encoding of the output data.
+   * @returns {Buffer | ArrayBuffer | SharedArrayBuffer} The decoded data.
+   * @throws {Error} If the checksum is invalid.
+   */
+
   decode(str, encoding) {
     const buffer = Buffer.from(bs58.decode(str));
     let data = buffer.slice(0, -4);
@@ -44,20 +65,43 @@ export const base58 = {
 };
 
 export const chainIdConvertor = {
-  // chainIdToBase58 (int32 chainId)
+  /**
+   * Converts a chain ID to a Base58 encoded string.
+   * @param {string} chainId - The chain ID to convert.
+   * @returns {string} The Base58 encoded string.
+   */
+
   chainIdToBase58(chainId) {
     const bufferTemp = Buffer.alloc(4);
     bufferTemp.writeInt32LE(`0x${chainId.toString('16')}`, 0);
     const bytes = Buffer.concat([bufferTemp], 3);
     return bs58.encode(bytes);
   },
+  /**
+   * Converts a Base58 encoded string to a chain ID.
+   * @param {string} base58String - The Base58 encoded string.
+   * @returns {Buffer} The corresponding chain ID.
+   */
+
   base58ToChainId(base58String) {
     return Buffer.concat([bs58.decode(base58String)], 4).readInt32LE(0);
   }
 };
 
+/**
+ * Converts an ArrayBuffer to a hex string.
+ * @param {ArrayBuffer} arrayBuffer - The input ArrayBuffer.
+ * @returns {string} The hex representation.
+ */
+
 const arrayBufferToHex = arrayBuffer =>
   Array.prototype.map.call(new Uint8Array(arrayBuffer), n => `0${n.toString(16)}`.slice(-2)).join('');
+
+/**
+ * Converts various value types to hex.
+ * @param {Buffer | ArrayBuffer} value - The value to convert.
+ * @returns {string} The hex representation.
+ */
 
 export const arrayToHex = value => {
   let hex = '';
@@ -71,13 +115,11 @@ export const arrayToHex = value => {
 };
 
 /**
- * Should be called to pad string to expected length
- *
- * @method padLeft
- * @param {String} string to be padded
- * @param {Number} charLen that result string should have
- * @param {String} sign, by default 0
- * @returns {String} right aligned string
+ * Pads a string on the left to a specified length.
+ * @param {string} string - The string to pad.
+ * @param {number} charLen - The desired length of the padded string.
+ * @param {string} [sign='0'] - The character to pad with.
+ * @returns {string} The padded string.
  */
 export const padLeft = (string, charLen, sign) => {
   const length = charLen - string.length + 1;
@@ -85,13 +127,11 @@ export const padLeft = (string, charLen, sign) => {
 };
 
 /**
- * Should be called to pad string to expected length
- *
- * @method padRight
- * @param {String} string to be padded
- * @param {Number} charLen that result string should have
- * @param {String} sign, by default 0
- * @returns {String} right aligned string
+ * Pads a string on the right to a specified length.
+ * @param {string} string - The string to pad.
+ * @param {number} charLen - The desired length of the padded string.
+ * @param {string} [sign='0'] - The character to pad with.
+ * @returns {string} The padded string.
  */
 export const padRight = (string, charLen, sign) => {
   const length = charLen - string.length + 1;
@@ -99,11 +139,9 @@ export const padRight = (string, charLen, sign) => {
 };
 
 /**
- * Returns a hex rep from the encoded address
- *
- * @method decodeAddressRep
- * @param {String} address
- * @return {String}
+ * Decodes an address representation to its hex representation.
+ * @param {TAddress} address - The address to decode.
+ * @returns {string} The hex representation of the address.
  */
 export const decodeAddressRep = address => {
   if (address.indexOf('_') > -1) {
@@ -115,11 +153,9 @@ export const decodeAddressRep = address => {
 };
 
 /**
- * Returns a encoded address from the hex rep
- *
- * @method encodeAddressRep
- * @param {String} hex
- * @return {String}
+ * Encodes a hex representation to an address.
+ * @param {string} hex - The hex representation.
+ * @returns {string} The encoded address.
  */
 export const encodeAddressRep = hex => {
   const buf = Buffer.from(hex.replace('0x', ''), 'hex');
@@ -127,58 +163,46 @@ export const encodeAddressRep = hex => {
 };
 
 /**
- * Returns true if object is BigNumber, otherwise false
- *
- * @method isBigNumber
- * @param {Object} object
- * @return {Boolean}
+ * Checks if the given object is an instance of BigNumber.
+ * @param {number | string | BigNumber} object - The object to check.
+ * @returns {boolean} True if the object is a BigNumber, otherwise false.
  */
 export const isBigNumber = object =>
   object instanceof BigNumber || (object && object.constructor && object.constructor.name === 'BigNumber');
 
 /**
- * Returns true if object is string, otherwise false
- *
- * @method isString
- * @param {Object} object
- * @return {Boolean}
+ * Checks if the given object is a string.
+ * @param {any} object - The object to check.
+ * @returns {boolean} True if the object is a string, otherwise false.
  */
 export const isString = object =>
   typeof object === 'string' || (object && object.constructor && object.constructor.name === 'String');
 
 /**
- * Returns true if object is function, otherwise false
- *
- * @method isFunction
- * @param {Object} object
- * @return {Boolean}
+ * Checks if the given object is a function.
+ * @param {any} object - The object to check.
+ * @returns {boolean} True if the object is a function, otherwise false.
  */
 export const isFunction = object => typeof object === 'function';
 
 /**
- * Returns true if object is Object, otherwise false
- *
- * @method isObject
- * @param {Object} object
- * @return {Boolean}
+ * Checks if the given object is an object (not an array).
+ * @param {any} object - The object to check.
+ * @returns {boolean} True if the object is an object, otherwise false.
  */
 export const isObject = object => object !== null && !Array.isArray(object) && typeof object === 'object';
 
 /**
- * Returns true if object is boolean, otherwise false
- *
- * @method isBoolean
- * @param {Object} object
- * @return {Boolean}
+ * Checks if the given object is a boolean.
+ * @param {any} object - The object to check.
+ * @returns {boolean} True if the object is a boolean, otherwise false.
  */
 export const isBoolean = object => typeof object === 'boolean';
 
 /**
- * Returns true if given string is valid json object
- *
- * @method isJson
- * @param {String} str
- * @return {Boolean}
+ * Checks if the given string is valid JSON.
+ * @param {string} str - The string to check.
+ * @returns {boolean} True if the string is valid JSON, otherwise false.
  */
 export const isJson = str => {
   try {
@@ -189,20 +213,16 @@ export const isJson = str => {
 };
 
 /**
- * Returns true if given number is valid number
- *
- * @method isNumber
- * @param {Number} number
- * @return {Boolean}
+ * Checks if the given value is a valid number.
+ * @param {number} number - The value to check.
+ * @returns {boolean} True if the value is a valid number, otherwise false.
  */
 export const isNumber = number => number === +number;
 
 /**
- * Takes an input and transforms it into an bignumber
- *
- * @method toBigNumber
- * @param {Number|String|BigNumber} number, a number, string, HEX string or BigNumber
- * @return {BigNumber} BigNumber
+ * Converts an input to a BigNumber.
+ * @param {number | string | BigNumber} number - The input value.
+ * @returns {BigNumber} The BigNumber representation.
  */
 export const toBigNumber = number => {
   const num = number || 0;
@@ -218,12 +238,10 @@ export const toBigNumber = number => {
 };
 
 /**
- * Returns value of unit in Wei
- *
- * @method getValueOfUnit
- * @param {String} unit the unit to convert to, default ether
- * @returns {BigNumber} value of the unit (in Wei)
- * @throws error if the unit is not correct:w
+ * Returns the value of a unit in Wei.
+ * @param {string} unit - The unit to convert to (default: 'ether').
+ * @returns {BigNumber} The value of the unit in Wei.
+ * @throws {Error} If the unit does not exist.
  */
 export const getValueOfUnit = unit => {
   const unitValue = UNIT_MAP[unit ? unit.toLowerCase() : 'ether'];
@@ -253,9 +271,9 @@ export const getValueOfUnit = unit => {
  * - tether
  *
  * @method fromWei
- * @param {Number|String} number can be a number, number string or a HEX of a decimal
- * @param {String} unit the unit to convert to, default ether
- * @return {String|Object} When given a BigNumber object it returns one as well, otherwise a number
+ * @param {number | string} number - The number in Wei.
+ * @param {string} unit - The unit to convert to.
+ * @returns {string | BigNumber} The converted value.
  */
 export const fromWei = (number, unit) => {
   const returnValue = toBigNumber(number).dividedBy(getValueOfUnit(unit));
@@ -280,9 +298,9 @@ export const fromWei = (number, unit) => {
  * - tether
  *
  * @method toWei
- * @param {Number|String|BigNumber} number can be a number, number string or a HEX of a decimal
- * @param {String} unit the unit to convert from, default ether
- * @return {String|Object} When given a BigNumber object it returns one as well, otherwise a number
+ * @param {number | string | BigNumber} number - The number in the specified unit.
+ * @param {string} unit - The unit to convert from.
+ * @returns {string | BigNumber} The value in Wei.
  */
 export const toWei = (number, unit) => {
   const returnValue = toBigNumber(number).times(getValueOfUnit(unit));
@@ -295,8 +313,8 @@ export const toWei = (number, unit) => {
  * bignumber.js get rid of round + floor in 6.0 https://github.com/MikeMcl/bignumber.js/issues/139
  * the method lessThan was named isLessThan after 6.0 https://github.com/MikeMcl/bignumber.js/issues/152
  * @method toTwosComplement
- * @param {Number|String|BigNumber} number
- * @return {BigNumber}
+ * @param {number | string | BigNumber} number - The input number.
+ * @returns {BigNumber} The two's complement representation.
  */
 export const toTwosComplement = number => {
   const bigNumber = toBigNumber(number).integerValue();
@@ -307,11 +325,9 @@ export const toTwosComplement = number => {
 };
 
 /**
- * Returns hex
- *
- * @method uint8ArrayToHex
- * @param {Array} uint8Array
- * @return {String}
+ * Converts a Uint8Array to its hex representation.
+ * @param {Uint8Array} uint8Array - The input Uint8Array.
+ * @returns {string} The hex representation.
  */
 export const uint8ArrayToHex = uint8Array => {
   let string = '';
@@ -361,6 +377,12 @@ export const setPath = (obj, path, value) => {
   }, obj);
 };
 
+/**
+ * Unpacks specified type data from raw data.
+ * @param {IUnpackSpecifiedParams} params - The parameters for unpacking.
+ * @returns {Object.<string, any>} The unpacked data.
+ */
+
 export const unpackSpecifiedTypeData = ({ data, dataType, encoding = 'hex' }) => {
   const buffer = Buffer.from(data, encoding);
   const decoded = dataType.decode(buffer);
@@ -375,7 +397,12 @@ export const unpackSpecifiedTypeData = ({ data, dataType, encoding = 'hex' }) =>
   });
   return result;
 };
-
+/**
+ * Deserializes a transaction from a raw transaction string.
+ * @param {ArrayBuffer | SharedArrayBuffer} rawTx - The raw transaction data.
+ * @param {protobuf.Type} paramsDataType - The data type for parameters.
+ * @returns {Object.<string, any>} The deserialized transaction object.
+ */
 export function deserializeTransaction(rawTx, paramsDataType) {
   const { from, to, params, refBlockPrefix, signature, ...rest } = unpackSpecifiedTypeData({
     data: rawTx,
@@ -400,9 +427,9 @@ export function deserializeTransaction(rawTx, paramsDataType) {
 }
 /**
  *
- * @param {String} userName Username
- * @param {String} password Password
- * @return {any} Authorization information
+ * @param {string} userName Username
+ * @param {string} password Password
+ * @return {string} Authorization information
  *
  * const authorization = getAuthorization('test','pass')
  * console.log(authorization)
@@ -415,8 +442,8 @@ export function getAuthorization(userName, password) {
 /**
  *
  * Use rawTransaction to get transaction id
- * @param {String} rawTx rawTransaction
- * @return {String} string
+ * @param {string} rawTx rawTransaction
+ * @return {string} string
  *
  * const txId = getTransactionId('0a220a2071a4dc8cdf109bd72913c90c3fc666c78d080cdda0da7f3abbc7105c6b651fd512220a2089ac786c8ad3b56f63a6f2767369a5273f801de2415b613c783cad3d148ce3ab18d5d3bb35220491cf6ba12a18537761704578616374546f6b656e73466f72546f6b656e73325008c0f7f27110bbe5947c1a09534752544553542d311a03454c4622220a2071a4dc8cdf109bd72913c90c3fc666c78d080cdda0da7f3abbc7105c6b651fd52a08088996ceb0061000320631323334353682f10441ec6ad50c4b210976ba0ba5c287ab6fabd0c444839e2505ecb1b5f52838095b290cb245ec1c97dade3bde6ac14c6892e526569e9b71240d3c120b1a6c8e41afba00');
  * console.log(txId);
@@ -429,7 +456,14 @@ export function getTransactionId(rawTx) {
   const encode = Transaction.encode(decode).finish();
   return sha256(encode);
 }
-
+/**
+ * Validates an object to ensure it has exactly two entries,
+ * and that each entry contains the properties `chainUrl` and `contractAddress`.
+ *
+ * @param {Record<string, ValidationObject>} obj - The object to validate.
+ * @returns {boolean} - Returns true if the object has exactly two entries
+ * and each entry contains `chainUrl` and `contractAddress`, otherwise false.
+ */
 export function validateMulti(obj) {
   if (Object.keys(obj).length !== 2) {
     return false;
@@ -443,43 +477,3 @@ export function validateMulti(obj) {
       Object.prototype.hasOwnProperty.call(value, 'contractAddress')
   );
 }
-// /**
-//  * Converts value to it's hex representation
-//  *
-//  * @method fromDecimal
-//  * @param {String|Number|BigNumber}
-//  * @return {String}
-//  */
-// export const fromDecimal = value => {
-//   const number = toBigNumber(value);
-//   const result = number.toString(16);
-//
-//   return number.lessThan(0) ? `-0x${result.substr(1)}` : `0x${result}`;
-// };
-//
-// /**
-//  * Should be called to get hex representation (prefixed by 0x) of utf8 string
-//  *
-//  * @method fromUtf8
-//  * @param {String} string
-//  * @param {Boolean} allowZero to convert code point zero to 00 instead of end of string
-//  * @returns {String} hex representation of input string
-//  */
-// export const fromUtf8 = (str, allowZero) => {
-//   const encodeStr = utf8.encode(str);
-//   let hex = '';
-//   for (let i = 0; i < encodeStr.length; i++) {
-//     const code = encodeStr.charCodeAt(i);
-//     if (code === 0) {
-//       if (allowZero) {
-//         hex += '00';
-//       } else {
-//         break;
-//       }
-//     } else {
-//       const n = code.toString(16);
-//       hex += n.length < 2 ? `0${n}` : n;
-//     }
-//   }
-//   return `0x${hex}`;
-// };

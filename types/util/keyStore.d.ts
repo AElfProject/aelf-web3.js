@@ -1,7 +1,7 @@
 import { IWalletInfo } from '../wallet';
 import { TAddress } from './proto';
 
-interface IOptions {
+export interface IOptions {
   dklen: number;
   n: number;
   r: number;
@@ -15,7 +15,7 @@ interface IKdfparams {
   p: number;
   salt: string;
 }
-type TWalletInfoObject = IWalletInfo & {
+export type TWalletInfoObject = IWalletInfo & {
   nickName?: string;
 };
 interface ICipherparams {
@@ -30,7 +30,7 @@ interface ICrypto {
   mac: string;
   mnemonicEncrypted: string;
 }
-interface IkeyStore {
+export interface IkeyStore {
   version: number;
   type: string;
   nickName?: string;
@@ -42,11 +42,5 @@ export declare function getKeystore(
   password: string,
   option?: IOptions & Record<string, any>
 ): IkeyStore;
-export declare function unlockKeystore(
-  keyStoreInput: IkeyStore,
-  password: string
-): TWalletInfoObject;
-export declare function checkPassword(
-  keyStoreInput: IkeyStore,
-  password: string
-): boolean;
+export declare function unlockKeystore(keyStoreInput: IkeyStore, password: string): TWalletInfoObject;
+export declare function checkPassword(keyStoreInput: IkeyStore, password: string): boolean;

@@ -23,37 +23,24 @@ export const Hash: protobuf.Type;
 export const AddressProtobuf: protobuf.Type;
 export const TransactionFeeCharged: protobuf.Type;
 export const ResourceTokenCharged: protobuf.Type;
-export function getFee(
-  base64Str: string,
-  type?: string
-): { [k: string]: any } | undefined | null;
+export function getFee(base64Str: string, type?: string): { [k: string]: any } | undefined | null;
 
-interface ILog {
+export interface ILog {
   Address: TAddress;
   Name: string;
   Indexed: Array<string> | null;
   NonIndexed: string;
 }
 export function getSerializedDataFromLog(log: ILog): string;
-export function getResourceFee(
-  Logs?: Array<ILog>
-): Array<{ [k: string]: any } | undefined | null>;
-export function getTransactionFee(
-  Logs?: Array<ILog>
-): Array<{ [k: string]: any } | undefined | null>;
+export function getResourceFee(Logs?: Array<ILog>): Array<{ [k: string]: any } | undefined | null>;
+export function getTransactionFee(Logs?: Array<ILog>): Array<{ [k: string]: any } | undefined | null>;
 
 export function arrayBufferToHex(arrayBuffer: Buffer): string;
 export function getRepForAddress(address: { [k: string]: any }): string;
-export function getAddressFromRep(
-  rep: string
-): protobuf.Message<{ value: string }>;
+export function getAddressFromRep(rep: string): protobuf.Message<{ value: string }>;
 export function getAddressObjectFromRep(rep: string): { [k: string]: any };
-export function getRepForHash(
-  hash: protobuf.Message<{ value: string }>
-): string;
-export function getHashFromHex(
-  hex: string
-): protobuf.Message<{ value: string }>;
+export function getRepForHash(hash: protobuf.Message<{ value: string }>): string;
+export function getHashFromHex(hex: string): protobuf.Message<{ value: string }>;
 export function getHashObjectFromHex(hex: string): { [k: string]: any };
 export function encodeTransaction(tx: { [k: string]: any }): Uint8Array;
 export function getTransaction(
@@ -66,4 +53,23 @@ export function getTransaction(
   to: protobuf.Message<{ value: string }>;
   methodName: string;
   params: any;
+}>;
+export function getTransactionAndChainId(
+  from: TAddress,
+  to: TAddress,
+  methodName: string,
+  params: any,
+  chainId: string
+): protobuf.Message<{
+  from: protobuf.Message<{ value: string }>;
+  to: protobuf.Message<{ value: string }>;
+  methodName: string;
+  params: any;
+  chainId: string;
+}>;
+export function deserializeLog(
+  logs: Array<ILog>,
+  services: Array<any>
+): Array<{
+  [key: string]: any;
 }>;

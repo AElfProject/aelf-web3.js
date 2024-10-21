@@ -36,8 +36,22 @@ if (process.env.RUNTIME_ENV === 'browser') {
   NodeHeaders = NodeFetch.Headers;
   isFetch = true;
 }
-
+/**
+ * @typedef {import('../../types/util/httpProvider').IHttpHeaders} IHttpHeaders
+ * @typedef {import('../../types/util/httpProvider').IFormatResponseTextRes} IFormatResponseTextRes
+ * @typedef {import('../../types/util/httpProvider').ITimeoutResolve} ITimeoutResolve
+ * @typedef {import('../../types/util/httpProvider').TRequestConfig} TRequestConfig
+ */
 export default class HttpProvider {
+  /**
+   * Creates an instance of HttpProvider.
+   *
+   * @param {string} [host='http://localhost:8545'] - The RPC server host.
+   * @param {number} [timeout=8000] - Timeout for the request in milliseconds.
+   * @param {IHttpHeaders} [headers=defaultHeaders] - HTTP headers for the request.
+   * @param {RequestInit} [options={}] - Additional fetch options for Node.js environment.
+   */
+
   constructor(
     host = 'http://localhost:8545',
     timeout = 8000,
@@ -64,6 +78,12 @@ export default class HttpProvider {
       };
     }
   }
+  /**
+   * Formats the response from the server.
+   *
+   * @param {string} response - The raw server response.
+   * @returns {Object.<string, any>} Parsed JSON response or raw response if parsing fails.
+   */
 
   static formatResponse(response) {
     let result;
@@ -74,6 +94,13 @@ export default class HttpProvider {
     }
     return result;
   }
+
+  /**
+   * Formats the response for XMLHttpRequest.
+   *
+   * @param {XMLHttpRequest} request - The XMLHttpRequest object.
+   * @returns {IFormatResponseTextRes} The formatted response including status and error message.
+   */
 
   static formatResponseText(request) {
     let result;
@@ -92,6 +119,12 @@ export default class HttpProvider {
     }
     return result;
   }
+  /**
+   * Creates a promise that resolves with a timeout error after a specified delay.
+   *
+   * @param {number} delay - Timeout duration in milliseconds.
+   * @returns {Promise<ITimeoutResolve>} Promise that resolves when timeout occurs.
+   */
 
   static timeoutPromise(delay) {
     return new Promise(_resolve => {
@@ -102,6 +135,13 @@ export default class HttpProvider {
       }, delay);
     });
   }
+  /**
+   * Sends an HTTP request using Fetch API.
+   *
+   * @param {TRequestConfig} requestConfig - The configuration for the request.
+   * @param {(input: RequestInfo | URL, init?: RequestInit) => Promise<Response>} request - The fetch request function.
+   * @returns {Promise<Response>} The fetch response.
+   */
 
   requestSendByFetch(requestConfig, request) {
     const { url, method = 'POST', params = {}, signal } = requestConfig;
@@ -124,6 +164,13 @@ export default class HttpProvider {
       signal
     });
   }
+
+  /**
+   * Sends an asynchronous request using Fetch API.
+   *
+   * @param {TRequestConfig} requestConfig - The configuration for the request.
+   * @returns {Promise<Response>} The parsed JSON response.
+   */
 
   sendAsyncByFetch(requestConfig) {
     const request = RequestLibrary;
@@ -161,6 +208,12 @@ export default class HttpProvider {
         })
     );
   }
+  /**
+   * Sends an HTTP request using XMLHttpRequest.
+   * @param {TRequestConfig} requestConfig - The configuration for the request.
+   * @param {XMLHttpRequest} request - The XMLHttpRequest instance.
+   * @param {boolean} [isAsync=false] - Whether the request is asynchronous.
+   */
 
   requestSend(requestConfig, request, isAsync = false) {
     const { url, method = 'POST', params = {} } = requestConfig;
@@ -179,6 +232,12 @@ export default class HttpProvider {
       request.send(JSON.stringify(params));
     }
   }
+  /**
+   * Sends an HTTP request and waits for the response (synchronous for XMLHttpRequest).
+   * @param {TRequestConfig} requestConfig - The configuration for the request.
+   * @throws Will throw an error if there is a problem with the request.
+   * @returns {Object.<string, any>} The parsed response from the request.
+   */
 
   send(requestConfig) {
     let request;
@@ -203,10 +262,22 @@ export default class HttpProvider {
     return result;
   }
 
+  /**
+   * Sends an asynchronous HTTP request.
+   * @param {TRequestConfig} requestConfig - The configuration for the request.
+   * @returns {Promise<Object.<string, any>>} A promise that resolves to the response object.
+   */
+
   sendAsync(requestConfig) {
     if (isFetch) return this.sendAsyncByFetch(requestConfig);
     return this.sendAsyncByXMLHttp(requestConfig);
   }
+
+  /**
+   * Sends an asynchronous HTTP request using XMLHttpRequest.
+   * @param {TRequestConfig} requestConfig - The configuration for the request.
+   * @returns {Promise<Object.<string, any>>} A promise that resolves to the response object.
+   */
 
   sendAsyncByXMLHttp(requestConfig) {
     const request = RequestLibraryXMLOnly ? new RequestLibraryXMLOnly() : new RequestLibrary();
@@ -240,6 +311,10 @@ export default class HttpProvider {
       };
     });
   }
+  /**
+   * Checks if the HTTP provider is connected synchronously by sending a GET request to the chain status.
+   * @returns {boolean} Returns `true` if connected, `false` otherwise.
+   */
 
   isConnected() {
     try {
@@ -252,6 +327,11 @@ export default class HttpProvider {
       return false;
     }
   }
+
+  /**
+   * Checks if the HTTP provider is connected asynchronously by sending a GET request to the chain status.
+   * @returns {Promise<boolean>} A promise that resolves to `true` if connected, `false` otherwise.
+   */
 
   async isConnectedAsync() {
     try {

@@ -209,13 +209,19 @@ const defaultOptions = {
 };
 
 /**
+ * @typedef {import('../../types/util/keyStore').TWalletInfoObject} TWalletInfoObject
+ * @typedef {import('../../types/util/keyStore').IkeyStore} IkeyStore
+ * @typedef {import('../../types/util/keyStore').IOptions} IOptions
+ */
+
+/**
  * getKeyStore
  *
  * @method getKeyStore
- * @param {Object} walletInfoInput  walletInfo
+ * @param {TWalletInfoObject} walletInfoInput  walletInfo
  * @param {string} password password
- * @param {Object} option option
- * @return {Object} keyStore
+ * @param {IOptions & Object.<string, any>} option option
+ * @return {IkeyStore} keyStore
  */
 export function getKeystore({ mnemonic, privateKey, nickName = '', address = '' }, password, option = defaultOptions) {
   const opt = {
@@ -269,9 +275,9 @@ export function getKeystore({ mnemonic, privateKey, nickName = '', address = '' 
  * unlock AElf key store
  *
  * @method unlockKeystore
- * @param {Object} keyStoreInput  key store input
+ * @param {IkeyStore} keyStoreInput  key store input
  * @param {string} password password
- * @return {Object} walletInfo
+ * @return {TWalletInfoObject} walletInfo
  */
 export function unlockKeystore({ crypto, nickName = '', address = '' }, password) {
   let error = null;
@@ -319,7 +325,7 @@ export function unlockKeystore({ crypto, nickName = '', address = '' }, password
  * checkPassword
  *
  * @method checkPassword
- * @param {Object} keyStoreInput  keyStoreInput
+ * @param {IkeyStore} keyStoreInput  keyStoreInput
  * @param {string} password password
  * @return {boolean} true or false
  */

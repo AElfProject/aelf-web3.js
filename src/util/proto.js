@@ -20,6 +20,19 @@ export const {
   TransactionFeeCharged,
   ResourceTokenCharged
 } = coreRootProto;
+/**
+ * @typedef {import('../../types/util/proto').ILog} ILog
+ * @typedef {import('../../types/util/proto').TAddress} TAddress
+ * @typedef {import('@aelfqueen/protobufjs')} protobuf
+ */
+
+/**
+ * Decodes a base64 encoded string into a protobuf object of the specified type.
+ * @param {string} base64Str - The base64 encoded string to decode.
+ * @param {string} [type='TransactionFeeCharged'] - The type to decode into. Must be either 'ResourceTokenCharged' or 'TransactionFeeCharged'.
+ * @throws {Error} Throws an error if the type is not valid.
+ * @return {Object.<string, any> | undefined | null } The deserialized protobuf object.
+ */
 
 export const getFee = (base64Str, type = 'TransactionFeeCharged') => {
   if (['ResourceTokenCharged', 'TransactionFeeCharged'].indexOf(type) === -1) {
@@ -41,6 +54,11 @@ export const getFee = (base64Str, type = 'TransactionFeeCharged') => {
   deserializeLogResult = transformArrayToMap(dataType, deserializeLogResult);
   return deserializeLogResult;
 };
+/**
+ * Serializes log data into a string.
+ * @param {ILog} log - The log object containing NonIndexed and Indexed fields.
+ * @return {string} The serialized log data.
+ */
 
 export const getSerializedDataFromLog = log => {
   const { NonIndexed, Indexed = [] } = log;
@@ -50,6 +68,11 @@ export const getSerializedDataFromLog = log => {
   }
   return serializedData.join('');
 };
+/**
+ * Retrieves an array of resource fees from logs.
+ * @param {Array<ILog>} [Logs=[]] - The array of log objects.
+ * @return {Array<ILog>} The array of deserialized resource fee objects.
+ */
 
 export const getResourceFee = (Logs = []) => {
   if (!Array.isArray(Logs) || Logs.length === 0) {
@@ -59,7 +82,11 @@ export const getResourceFee = (Logs = []) => {
     getFee(getSerializedDataFromLog(v), 'ResourceTokenCharged')
   );
 };
-
+/**
+ * Retrieves an array of transaction fees from logs.
+ * @param {Array<ILog>} [Logs=[]] - The array of log objects.
+ * @return {Array<ILog>} The array of deserialized transaction fee objects.
+ */
 export const getTransactionFee = (Logs = []) => {
   if (!Array.isArray(Logs) || Logs.length === 0) {
     return [];
@@ -103,7 +130,7 @@ export const getRepForAddress = address => {
  *
  * @alias module:AElf/pbUtils
  * @param {string} rep address
- * @return {protobuf} address kernel.Address
+ * @return {protobuf.Message<{ value: string }>} address kernel.Address
  */
 export const getAddressFromRep = rep => {
   const hex = utils.decodeAddressRep(rep);
@@ -117,7 +144,7 @@ export const getAddressFromRep = rep => {
  *
  * @alias module:AElf/pbUtils
  * @param {string} rep address
- * @return {protobuf} address kernel.Address
+ * @return {Object.<string, any>} address kernel.Address
  */
 export const getAddressObjectFromRep = rep => Address.toObject(getAddressFromRep(rep));
 
@@ -125,7 +152,7 @@ export const getAddressObjectFromRep = rep => Address.toObject(getAddressFromRep
  * get hex rep From hash
  *
  * @alias module:AElf/pbUtils
- * @param {protobuf} hash kernel.Hash
+ * @param {protobuf.Message<{ value: string }>} hash kernel.Hash
  * @return {string} hex rep
  */
 export const getRepForHash = hash => {
@@ -145,7 +172,7 @@ export const getRepForHash = hash => {
  *
  * @alias module:AElf/pbUtils
  * @param {string} hex string
- * @return {protobuf} kernel.Hash
+ * @return {protobuf.Message<{ value: string }>} kernel.Hash
  */
 export const getHashFromHex = hex =>
   Hash.create({
@@ -157,7 +184,7 @@ export const getHashFromHex = hex =>
  *
  * @alias module:AElf/pbUtils
  * @param {string} hex string
- * @return {Object} kernel.Hash Hash ot Object
+ * @return {Object.<string, any>} kernel.Hash Hash ot Object
  */
 export const getHashObjectFromHex = hex => Hash.toObject(getHashFromHex(hex));
 
@@ -165,8 +192,8 @@ export const getHashObjectFromHex = hex => Hash.toObject(getHashFromHex(hex));
  * encode Transaction to protobuf type
  *
  * @alias module:AElf/pbUtils
- * @param {Object} tx object
- * @return {protobuf} kernel.Transaction
+ * @param {Object.<string, any>} tx object
+ * @return {Uint8Array} kernel.Transaction
  */
 export const encodeTransaction = tx => Transaction.encode(tx).finish();
 
@@ -174,11 +201,11 @@ export const encodeTransaction = tx => Transaction.encode(tx).finish();
  * get Transaction
  *
  * @alias module:AElf/pbUtils
- * @param {string} from
- * @param {string} to
+ * @param {TAddress} from
+ * @param {TAddress} to
  * @param {string} methodName
- * @param {string} params
- * @return {protobuf} kernel.Transaction
+ * @param {any} params
+ * @return {protobuf.Message<{from: protobuf.Message<{ value: string }>;to: protobuf.Message<{ value: string }>;methodName: string;params: any;}>} kernel.Transaction
  */
 export const getTransaction = (from, to, methodName, params) => {
   const txn = {
@@ -189,7 +216,15 @@ export const getTransaction = (from, to, methodName, params) => {
   };
   return Transaction.create(txn);
 };
-
+/**
+ * Constructs a transaction with a chain ID.
+ * @param {TAddress} from
+ * @param {TAddress} to
+ * @param {string} methodName
+ * @param {any} params
+ * @param {string} chainId - The chain ID.
+ * @return {protobuf.Message<{from: protobuf.Message<{ value: string }>;to: protobuf.Message<{ value: string }>;methodName: string;params: any;chainId: string;}>} The transaction with chain ID.
+ */
 export const getTransactionAndChainId = (from, to, methodName, params, chainId) => {
   const txn = getTransaction(from, to, methodName, params);
   return {
@@ -197,7 +232,12 @@ export const getTransactionAndChainId = (from, to, methodName, params, chainId) 
     chainId
   };
 };
-
+/**
+ * Deserializes indexed and non-indexed log data.
+ * @param {Array<string>} serializedData - The serialized log data.
+ * @param {protobuf.Type} dataType - The protobuf type to deserialize into.
+ * @return {Object.<string, any>} The deserialized log result.
+ */
 const deserializeIndexedAndNonIndexed = (serializedData, dataType) => {
   let deserializeLogResult = serializedData.reduce((acc, v) => {
     let deserialize = dataType.decode(Buffer.from(v, 'base64'));
@@ -220,9 +260,16 @@ const deserializeIndexedAndNonIndexed = (serializedData, dataType) => {
   deserializeLogResult = transformArrayToMap(dataType, deserializeLogResult);
   return deserializeLogResult;
 };
+/**
+ * Deserializes logs using the provided services and root.
+ * @param {Array<ILog>} logs - The logs to deserialize.
+ * @param {Array<Object.<string, any>>} services - The services used for deserialization.
+ * @param {protobuf.Root} Root - The protobuf root descriptor.
+ * @return {Array<Object.<string, any>>} The deserialized log results.
+ */
 const deserializeWithServicesAndRoot = (logs, services, Root) => {
   // filter by address and name
-  if (logs.length === 0) {
+  if (!logs || logs.length === 0) {
     return [];
   }
   const results = logs.map(item => {
@@ -265,11 +312,11 @@ const deserializeWithServicesAndRoot = (logs, services, Root) => {
  * deserialize logs
  *
  * @alias module:AElf/pbUtils
- * @param {array} logs array of log which enclude Address,Name,Indexed and NonIndexed.
- * @param {array} services array of service which got from getContractFileDescriptorSet
- * @return {array} deserializeLogResult
+ * @param {Array<ILog>} logs array of log which enclude Address,Name,Indexed and NonIndexed.
+ * @param {Array<Object.<string, any>>} services array of service which got from getContractFileDescriptorSet
+ * @return {Array<Object.<string, any>>} deserializeLogResult
  */
-export const deserializeLog = (logs = [], services) => {
+export const deserializeLog = (logs, services) => {
   const Root = protobuf.Root.fromJSON(VirtualTransactionDescriptor);
   return deserializeWithServicesAndRoot(logs, services, Root);
 };

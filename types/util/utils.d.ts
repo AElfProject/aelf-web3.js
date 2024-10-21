@@ -4,24 +4,16 @@ import { TAddress } from './proto';
 
 export type TGenericFunction = (...args: any[]) => any;
 export interface IBase58 {
-  encode(data: ArrayBuffer | SharedArrayBuffer,encoding?: number): string;
-  decode(str: string,encoding?: string): Buffer;
+  encode(data: ArrayBuffer | SharedArrayBuffer | string, encoding?: string): string;
+  decode(str: string, encoding?: string): Buffer;
 }
 export interface IChainIdConvertor {
   chainIdToBase58(chainId: string): string;
   base58ToChainId(base58String: string): Buffer;
 }
-export declare function arrayToHex(value: any): string;
-export declare function padLeft(
-  string: string,
-  charLen: number,
-  sign?: string
-): string;
-export declare function padRight(
-  string: string,
-  charLen: number,
-  sign?: string
-): string;
+export declare function arrayToHex(value: Buffer | ArrayBuffer): string;
+export declare function padLeft(string: string, charLen: number, sign?: string): string;
+export declare function padRight(string: string, charLen: number, sign?: string): string;
 export declare function decodeAddressRep(address: TAddress): string;
 export declare function encodeAddressRep(hex: string): string;
 export declare function isBigNumber(object: any): boolean;
@@ -31,46 +23,32 @@ export declare function isObject(object: any): boolean;
 export declare function isBoolean(object: any): boolean;
 export declare function isJson(str: string): boolean;
 
-export declare function toBigNumber(
-  number: number | string | BigNumber
-): BigNumber;
+export declare function toBigNumber(number: number | string | BigNumber): BigNumber;
 export declare function getValueOfUnit(unit: string): BigNumber;
 
-export declare function fromWei(
-  number: number | string,
-  unit: string
-): string | BigNumber;
-export declare function toWei(
-  number: number | string | BigNumber,
-  unit: string
-): string | BigNumber;
-export declare function toTwosComplement(
-  number: number | string | BigNumber
-): BigNumber;
+export declare function fromWei(number: number | string, unit: string): string | BigNumber;
+export declare function toWei(number: number | string | BigNumber, unit: string): string | BigNumber;
+export declare function toTwosComplement(number: number | string | BigNumber): BigNumber;
 export declare function uint8ArrayToHex(uint8Array: Uint8Array): string;
 
 export declare function noop(): void;
-export declare function setPath(obj: any,path: string,value: any): void;
-interface IUnpackSpecifiedParams {
+export declare function setPath(obj: any, path: string, value: any): void;
+export interface IUnpackSpecifiedParams {
   data: ArrayBuffer | SharedArrayBuffer;
   dataType: protobuf.Type;
   encoding?: string;
 }
-export declare function unpackSpecifiedTypeData({
-  data,
-  dataType,
-  encoding,
-}: IUnpackSpecifiedParams): { [k: string]: any };
+export declare function unpackSpecifiedTypeData({ data, dataType, encoding }: IUnpackSpecifiedParams): {
+  [k: string]: any;
+};
 export declare function deserializeTransaction(
   rawTx: ArrayBuffer | SharedArrayBuffer,
   paramsDataType: protobuf.Type
 ): { [k: string]: any };
-export declare function getAuthorization(
-  userName: string,
-  password: string
-): string;
-interface ValidationObject {
+export declare function getAuthorization(userName: string, password: string): string;
+export interface ValidationObject {
   chainUrl: string;
   contractAddress: string;
 }
-export declare function validateMulti(obj: Record<string,ValidationObject>): boolean;
+export declare function getTransactionId(rawTx: string): string;
+export declare function validateMulti(obj: Record<string, ValidationObject>): boolean;

@@ -1,5 +1,7 @@
 import sha256 from './sha256';
-
+/**
+ * @typedef {import('../../types/util/merkleTree').TMessage} TMessage
+ */
 const fromTwoBuffers = data => {
   if (data.length !== 2) throw new TypeError('Wrong data size.');
 
@@ -18,7 +20,9 @@ const generateMerkleTree = data => {
     return null;
   }
 
-  if (data.length % 2 === 1) { data.push(data[data.length - 1]); }
+  if (data.length % 2 === 1) {
+    data.push(data[data.length - 1]);
+  }
   let nodeToAdd = data.length / 2;
   let newAdded = 0;
   let i = 0;
@@ -58,16 +62,37 @@ const generateMerklePath = (indexArg, leafCount, tree) => {
   }
   return path;
 };
+/**
+ * Compute the Merkle root of an array of buffers.
+ *
+ * @param {Buffer[]} data - The input data to generate the Merkle root from.
+ * @returns {Buffer | null} - The Merkle root buffer, or null if the input is empty.
+ */
 
 export const computeRoot = data => {
   const merkleTree = generateMerkleTree(data);
   return merkleTree[merkleTree.length - 1];
 };
 
+/**
+ * Get the Merkle proof path for a specific leaf node in the tree.
+ *
+ * @param {number} index - The index of the leaf node.
+ * @param {Buffer[]} data - The input data to generate the Merkle path from.
+ * @returns {Buffer[] | null} - The Merkle proof path as an array of buffers, or null if no path exists.
+ */
+
 export const getMerklePath = (index, data) => {
   const leafCount = data.length;
   const merkleTree = generateMerkleTree(data);
   return generateMerklePath(index, leafCount, merkleTree);
 };
+
+/**
+ * Compute the SHA-256 hash of a buffer and return it.
+ *
+ * @param {TMessage} buffer - The input data to hash (string, array, or buffer).
+ * @returns {Buffer} - The hashed buffer.
+ */
 
 export const node = buffer => Buffer.from(sha256(buffer), 'hex');

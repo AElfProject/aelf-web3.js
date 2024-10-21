@@ -1,14 +1,14 @@
-interface ITimeoutResolve {
+export interface ITimeoutResolve {
   type: 'timeout';
 }
-type TRequestConfig = {
+export type TRequestConfig = {
   url: RequestInfo | URL;
   params?: Record<string, any>;
 } & RequestInit;
 interface IErrorMessage {
   message: string;
 }
-interface IFormatResponseTextRes {
+export interface IFormatResponseTextRes {
   status: number;
   error: number;
   Error: IErrorMessage;
@@ -23,16 +23,10 @@ interface IHttpProvider {
     request: (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>
   ): Response;
   sendAsyncByFetch(requestConfig: TRequestConfig): Promise<Response>;
-  requestSend(
-    requestConfig: TRequestConfig,
-    request: XMLHttpRequest,
-    isAsync?: boolean
-  ): void;
+  requestSend(requestConfig: TRequestConfig, request: XMLHttpRequest, isAsync?: boolean): void;
   send(requestConfig: TRequestConfig): { [k: string]: any };
   sendAsync(requestConfig: TRequestConfig): Promise<{ [k: string]: any }>;
-  sendAsyncByXMLHttp(
-    requestConfig: TRequestConfig
-  ): Promise<{ [k: string]: any }>;
+  sendAsyncByXMLHttp(requestConfig: TRequestConfig): Promise<{ [k: string]: any }>;
   isConnected(): boolean;
   isConnectedAsync(): boolean;
 }
@@ -51,18 +45,10 @@ declare class HttpProvider implements IHttpProvider {
     request: (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>
   ): Response;
   public sendAsyncByFetch(requestConfig: TRequestConfig): Promise<Response>;
-  public requestSend(
-    requestConfig: TRequestConfig,
-    request: XMLHttpRequest,
-    isAsync?: boolean
-  ): void;
+  public requestSend(requestConfig: TRequestConfig, request: XMLHttpRequest, isAsync?: boolean): void;
   public send(requestConfig: TRequestConfig): { [k: string]: any };
-  public sendAsync(
-    requestConfig: TRequestConfig
-  ): Promise<{ [k: string]: any }>;
-  public sendAsyncByXMLHttp(
-    requestConfig: TRequestConfig
-  ): Promise<{ [k: string]: any }>;
+  public sendAsync(requestConfig: TRequestConfig): Promise<{ [k: string]: any }>;
+  public sendAsyncByXMLHttp(requestConfig: TRequestConfig): Promise<{ [k: string]: any }>;
   public isConnected(): boolean;
   public isConnectedAsync(): boolean;
 }
