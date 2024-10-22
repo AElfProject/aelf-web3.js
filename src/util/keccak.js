@@ -1,4 +1,4 @@
-const createKeccakHash = require('keccak');
+import createKeccakHash from 'keccak';
 
 const keccak = bits => str => {
   let msg;

@@ -22,7 +22,12 @@ const nodeConfig = {
     alias: {},
     fallback: {
       crypto: 'crypto-browserify',
-      stream: 'stream-browserify'
+      stream: 'stream-browserify',
+      https: false,
+      http: false,
+      child_process: false,
+      fs: false,
+      url: false
     }
   }
 };

@@ -1,6 +1,6 @@
 {
   "name": "aelf-sdk",
-  "version": "3.4.17-alpha.0",
+  "version": "3.4.17-alpha.1",
   "description": "aelf-sdk js library",
   "type": "module",
   "main": "dist/aelf.cjs.js",
@@ -28,12 +28,12 @@
     "release": "standard-version -a",
     "pre-commit": "lint-staged",
     "test": "yarn test:browser && yarn test:node",
-    "test:browser": "jest --config=jest.browser.config.js",
-    "test:browser:watch": "jest --config=jest.browser.config.js --watch",
-    "test:node": "jest --config=jest.node.config.js",
-    "test:node:watch": "jest --config=jest.node.config.js --watch",
-    "test:coverage": "jest --config=jest.browser.config.js --coverage",
-    "test:coverageNode": "jest --config=jest.node.config.js --coverage",
+    "test:browser": "jest --config=jest.browser.config.cjs",
+    "test:browser:watch": "jest --config=jest.browser.config.cjs --watch",
+    "test:node": "jest --config=jest.node.config.cjs",
+    "test:node:watch": "jest --config=jest.node.config.cjs --watch",
+    "test:coverage": "jest --config=jest.browser.config.cjs --coverage",
+    "test:coverageNode": "jest --config=jest.node.config.cjs --coverage",
     "prepare": "husky install",
     "copy-ts": "cpx \"types/**/*.ts\" dist/"
   },
@@ -87,6 +87,7 @@
     "scryptsy": "^2.1.0",
     "stream-browserify": "^3.0.0",
     "typescript": "^5.0.4",
+    "xhr2": "^0.2.1",
     "xmlhttprequest": "^1.8.0"
   },
   "lint-staged": {

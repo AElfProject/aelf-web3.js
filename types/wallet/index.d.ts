@@ -1,4 +1,4 @@
-import HDNode = require('hdkey');
+import HDNode from 'hdkey';
 import * as Bip39 from 'bip39';
 import { ec, curve } from 'elliptic';
 import { TRawTransaction, TAddress } from '../util/proto';
@@ -34,10 +34,7 @@ interface IWallet {
   createNewWallet(BIP44Path?: BIP44Path): IWalletInfo;
   getWalletByMnemonic(mnemonic: Mnemonic, BIP44Path: BIP44Path): IWalletInfo;
   getWalletByPrivateKey(privateKey: PrivateKey): IWalletInfo;
-  signTransaction(
-    rawTxn: TRawTransaction,
-    keyPair: ec.KeyPair
-  ): SignTransaction;
+  signTransaction(rawTxn: TRawTransaction, keyPair: ec.KeyPair): SignTransaction;
   sign(hexString: string, keyPair: ec.KeyPair): Buffer;
 }
 export declare class Wallet implements IWallet {
@@ -52,10 +49,7 @@ export declare class Wallet implements IWallet {
   createNewWallet(BIP44Path?: BIP44Path): IWalletInfo;
   getWalletByMnemonic(mnemonic: Mnemonic, BIP44Path: BIP44Path): IWalletInfo;
   getWalletByPrivateKey(privateKey: PrivateKey): IWalletInfo;
-  signTransaction(
-    rawTxn: TRawTransaction,
-    keyPair: ec.KeyPair
-  ): SignTransaction;
+  signTransaction(rawTxn: TRawTransaction, keyPair: ec.KeyPair): SignTransaction;
   sign(hexString: string, keyPair: ec.KeyPair): Buffer;
 }
 export default Wallet;
