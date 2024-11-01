@@ -12,19 +12,23 @@ const nodeConfig = {
   mode: 'production',
   output: {
     path: OUTPUT_PATH,
-    filename: 'aelf.cjs.js',
-    library: {
-      type: 'commonjs2'
-    },
-    libraryExport: 'default'
+    filename: 'aelf.esm.js',
+    libraryTarget: 'module'
   },
-  target: 'node',
-  optimization: {
-    removeEmptyChunks: true,
-    chunkIds: 'total-size',
-    moduleIds: 'size',
-    sideEffects: true,
-    minimize: false
+  experiments: {
+    outputModule: true
+  },
+  resolve: {
+    alias: {},
+    fallback: {
+      crypto: 'crypto-browserify',
+      stream: 'stream-browserify',
+      https: false,
+      http: false,
+      child_process: false,
+      fs: false,
+      url: false
+    }
   }
 };
 

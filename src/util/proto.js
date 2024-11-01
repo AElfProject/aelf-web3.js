@@ -3,8 +3,8 @@
  * @author atom-yang
  */
 import * as protobuf from '@aelfqueen/protobufjs';
-import * as utils from './utils';
-import { transform, OUTPUT_TRANSFORMERS, transformArrayToMap } from './transform';
+import * as utils from './utils.js';
+import { transform, OUTPUT_TRANSFORMERS, transformArrayToMap } from './transform.js';
 import coreDescriptor from '../../proto/transaction_fee.proto.json';
 import VirtualTransactionDescriptor from '../../proto/virtual_transaction.proto.json';
 

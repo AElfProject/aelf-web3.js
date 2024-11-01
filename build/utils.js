@@ -1,10 +1,5 @@
-/**
- * @file utils
- * @author atom-yang
- * @date 2019-06-28
- */
-const path = require('path');
+import path from 'path';
 
-module.exports.ROOT = path.resolve(__dirname, '..');
+export const ROOT = path.resolve(process.cwd(), '.');
 
-module.exports.OUTPUT_PATH = path.resolve(__dirname, '..', 'dist/');
+export const OUTPUT_PATH = path.resolve(process.cwd(), '.', 'dist/');

@@ -2,11 +2,11 @@
  * @file contract method
  * @author atom-yang
  */
-import HttpProvider from '../util/httpProvider';
-import { getTransactionAndChainId, TransactionAndChainId, MultiTransaction } from '../util/proto';
-import { transformMapToArray, transform, INPUT_TRANSFORMERS } from '../util/transform';
-import { isBoolean, isFunction, isObject, noop, uint8ArrayToHex, validateMulti } from '../util/utils';
-import wallet from '../wallet';
+import HttpProvider from '../util/httpProvider.js';
+import { getTransactionAndChainId, TransactionAndChainId, MultiTransaction } from '../util/proto.js';
+import { transformMapToArray, transform, INPUT_TRANSFORMERS } from '../util/transform.js';
+import { isBoolean, isFunction, isObject, noop, uint8ArrayToHex, validateMulti } from '../util/utils.js';
+import wallet from '../wallet/index.js';
 
 export default class ContractMultiTransaction {
   constructor(contract, walletInstance, option) {

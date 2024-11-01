@@ -3,6 +3,8 @@
  * @author atom-yang
  */
 import { stringify } from 'query-string';
+import NodeFetch, { Headers } from 'node-fetch';
+import { XMLHttpRequest as XHR } from 'xmlhttprequest';
 
 const defaultHeaders = {
   Accept: 'text/plain;v=1.0',
@@ -28,11 +30,8 @@ if (process.env.RUNTIME_ENV === 'browser') {
   }
 } else {
   // For node use xmlhttprequest
-  // eslint-disable-next-line global-require
-  RequestLibraryXMLOnly = require('xmlhttprequest').XMLHttpRequest;
-  // eslint-disable-next-line global-require
-  const NodeFetch = require('node-fetch');
-  RequestLibrary = NodeFetch.default;
+  RequestLibraryXMLOnly = XHR;
+  RequestLibrary = NodeFetch;
   NodeHeaders = NodeFetch.Headers;
   isFetch = true;
 }

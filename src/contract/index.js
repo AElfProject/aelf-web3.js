@@ -4,10 +4,10 @@
  */
 // eslint-disable-next-line max-classes-per-file
 import * as protobuf from '@aelfqueen/protobufjs';
-import ContractMethod from './contractMethod';
-import { noop } from '../util/utils';
-import { deserializeLog } from '../util/proto';
-import ContractMultiTransaction from './contractMultiTransaction';
+import ContractMethod from './contractMethod.js';
+import { noop } from '../util/utils.js';
+import { deserializeLog } from '../util/proto.js';
+import ContractMultiTransaction from './contractMultiTransaction.js';
 
 const getServicesFromFileDescriptors = descriptors => {
   const root = protobuf.Root.fromDescriptor(descriptors, 'proto3').resolveAll();

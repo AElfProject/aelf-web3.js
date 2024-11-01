@@ -2,7 +2,7 @@
  * @file AElf-sdk constants
  * @author atom-yang
  */
-import { inputAddressFormatter, outputFileDescriptorSetFormatter } from '../util/formatters';
+import { inputAddressFormatter, outputFileDescriptorSetFormatter } from '../util/formatters.js';
 
 /**
  * unsigned 256 int

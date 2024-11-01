@@ -5,13 +5,13 @@
 import elliptic from 'elliptic';
 import * as bip39 from 'bip39';
 import hdkey from 'hdkey';
-import AES from 'crypto-js/aes';
-import encUTF8 from 'crypto-js/enc-utf8';
+import AES from 'crypto-js/aes.js';
+import encUTF8 from 'crypto-js/enc-utf8.js';
 import BN from 'bn.js';
-import sha256 from '../util/sha256';
-import * as keyStore from '../util/keyStore';
-import { encodeAddressRep, padLeft } from '../util/utils';
-import { Transaction } from '../util/proto';
+import sha256 from '../util/sha256.js';
+import * as keyStore from '../util/keyStore.js';
+import { encodeAddressRep, padLeft } from '../util/utils.js';
+import { Transaction } from '../util/proto.js';
 
 // eslint-disable-next-line new-cap
 const ellipticEc = new elliptic.ec('secp256k1');

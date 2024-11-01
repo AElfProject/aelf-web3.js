@@ -2,17 +2,10 @@
  * @file method on chain
  * @author atom-yang
  */
-import { isFunction, noop, isBoolean } from '../util/utils';
+import { isFunction, noop, isBoolean } from '../util/utils.js';
 
 export default class ChainMethod {
-  constructor({
-    name,
-    call,
-    method = 'GET',
-    params = [],
-    inputFormatter = [],
-    outputFormatter = null,
-  }) {
+  constructor({ name, call, method = 'GET', params = [], inputFormatter = [], outputFormatter = null }) {
     this.name = name;
     this.call = call;
     this.requestMethod = method;
@@ -39,9 +32,7 @@ export default class ChainMethod {
   }
 
   formatOutput(result) {
-    return this.outputFormatter && result
-      ? this.outputFormatter(result)
-      : result;
+    return this.outputFormatter && result ? this.outputFormatter(result) : result;
   }
 
   extractArgumentsIntoObject(args) {
@@ -53,7 +44,7 @@ export default class ChainMethod {
       requestMethod: this.requestMethod,
       isSync: false,
       callback: noop,
-      params: {},
+      params: {}
     };
     this.formatInput(args).forEach((arg, index) => {
       if (index > this.params.length - 1) {

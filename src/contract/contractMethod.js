@@ -2,16 +2,16 @@
  * @file contract method
  * @author atom-yang
  */
-import { getTransaction, Transaction } from '../util/proto';
+import { getTransaction, Transaction } from '../util/proto.js';
 import {
   transformArrayToMap,
   transformMapToArray,
   transform,
   INPUT_TRANSFORMERS,
   OUTPUT_TRANSFORMERS
-} from '../util/transform';
-import { isBoolean, isFunction, isNumber, noop, uint8ArrayToHex, unpackSpecifiedTypeData } from '../util/utils';
-import wallet from '../wallet';
+} from '../util/transform.js';
+import { isBoolean, isFunction, isNumber, noop, uint8ArrayToHex, unpackSpecifiedTypeData } from '../util/utils.js';
+import wallet from '../wallet/index.js';
 
 export default class ContractMethod {
   constructor(chain, method, contractAddress, walletInstance, option) {

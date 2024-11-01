@@ -5,10 +5,10 @@
 
 import BigNumber from 'bignumber.js';
 import bs58 from 'bs58';
-import { UNIT_MAP, UNSIGNED_256_INT } from '../common/constants';
-import { Transaction } from './proto';
-import { OUTPUT_TRANSFORMERS, encodeAddress, transform, transformArrayToMap } from './transform';
-import sha256 from './sha256';
+import { UNIT_MAP, UNSIGNED_256_INT } from '../common/constants.js';
+import { Transaction } from './proto.js';
+import { OUTPUT_TRANSFORMERS, encodeAddress, transform, transformArrayToMap } from './transform.js';
+import sha256 from './sha256.js';
 
 export const base58 = {
   encode(data, encoding = 'hex') {
