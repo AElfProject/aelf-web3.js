@@ -356,6 +356,8 @@ describe('test httpProvider', () => {
       }
     });
     const xhr = window.XMLHttpRequest;
+    const _fetch = window.fetch;
+    window.fetch = undefined;
     window.XMLHttpRequest = jest.fn().mockImplementation(xhrMockClass);
     const NewHttpProvider = require('../../../src/util/httpProvider').default;
     const httpProvider = new NewHttpProvider(tdvwEndPoint);
@@ -370,6 +372,8 @@ describe('test httpProvider', () => {
       });
     } catch (e) {
       expect(e).toEqual({ Error: 'error xhr' });
+    } finally {
+      window.fetch = _fetch;
     }
   });
   test('test send async by fetch method', async () => {

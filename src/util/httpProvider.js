@@ -21,12 +21,12 @@ if (process.env.RUNTIME_ENV === 'browser') {
   // eslint-disable-next-line no-restricted-globals
   const _self = typeof self === 'object' ? self : {};
   const _window = typeof window === 'object' ? window : _self;
-  if (typeof _window.XMLHttpRequest !== 'undefined') {
-    RequestLibrary = _window.XMLHttpRequest;
-    isFetch = false;
-  } else if (typeof _window.fetch !== 'undefined') {
+  if (typeof _window.fetch !== 'undefined') {
     RequestLibrary = _window.fetch;
     isFetch = true;
+  } else if (typeof _window.XMLHttpRequest !== 'undefined') {
+    RequestLibrary = _window.XMLHttpRequest;
+    isFetch = false;
   }
 } else {
   // For node use xmlhttprequest
@@ -128,7 +128,7 @@ export default class HttpProvider {
     const request = RequestLibrary;
     const { timeout } = this;
     const control = typeof AbortController === 'function' ? new AbortController() : {};
-    const config = { ...requestConfig, signal: control.signal, credentials: 'omit' };
+    const config = { ...requestConfig, signal: control.signal, credentials: 'include' };
     // Simulation timeout
     return Promise.race([this.requestSendByFetch(config, request), HttpProvider.timeoutPromise(timeout)]).then(
       result =>
@@ -191,7 +191,7 @@ export default class HttpProvider {
     } else {
       request = new RequestLibrary();
     }
-    request.withCredentials = false;
+    // request.withCredentials = false;
     this.requestSend(requestConfig, request);
     let result = request.responseText;
 
@@ -209,7 +209,7 @@ export default class HttpProvider {
 
   sendAsyncByXMLHttp(requestConfig) {
     const request = RequestLibraryXMLOnly ? new RequestLibraryXMLOnly() : new RequestLibrary();
-    request.withCredentials = false;
+    // request.withCredentials = false;
     request.timeout = this.timeout;
     this.requestSend(requestConfig, request, true);
     return new Promise((resolve, reject) => {
