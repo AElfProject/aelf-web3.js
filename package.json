@@ -51,7 +51,7 @@
   "author": "hzz780",
   "license": "MIT",
   "devEngines": {
-    "node": "16.x || 18.x || 20.x"
+    "node": "18.x || 20.x"
   },
   "engines": {
     "node": ">=18.18.0"
