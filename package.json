@@ -1,9 +1,9 @@
 {
   "name": "aelf-sdk",
-  "version": "3.4.17",
+  "version": "3.4.18",
   "description": "aelf-sdk js library",
   "type": "module",
-  "main": "dist/aelf.cjs.js",
+  "main": "dist/aelf.cjs",
   "module": "dist/aelf.esm.js",
   "browser": "dist/aelf.umd.js",
   "unpkg": "dist/aelf.umd.js",
@@ -11,7 +11,7 @@
   "exports": {
     ".": {
       "import": "./dist/aelf.esm.js",
-      "require": "./dist/aelf.cjs.js"
+      "require": "./dist/aelf.cjs"
     }
   },
   "scripts": {
@@ -51,7 +51,7 @@
   "author": "hzz780",
   "license": "MIT",
   "devEngines": {
-    "node": "16.x || 18.x || 20.x"
+    "node": "18.x || 20.x"
   },
   "engines": {
     "node": ">=18.18.0"

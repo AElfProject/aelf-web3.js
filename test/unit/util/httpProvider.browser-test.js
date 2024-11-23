@@ -276,6 +276,33 @@ describe('test httpProvider', () => {
       })
     ).rejects.toEqual('failed when result is not ok');
   });
+  test('test send async by fetch with credentials', async () => {
+    const xhr = window.XMLHttpRequest;
+    delete window.XMLHttpRequest;
+    const originFetch = fetch;
+    window.fetch = jest.fn(() =>
+      Promise.resolve({
+        ok: true,
+        status: 200,
+        text: () => Promise.resolve('Success')
+      })
+    );
+    const NewHttpProvider = require('../../../src/util/httpProvider').default;
+    const httpProvider = new NewHttpProvider(tdvwEndPoint, 8000, { credentials: 'include' });
+    window.XMLHttpRequest = xhr;
+    await httpProvider.sendAsyncByFetch({
+      url: 'blockChain/blockHeight',
+      method: 'GET'
+    });
+
+    const sentHeaders = window.fetch.mock.calls[0][1].headers;
+    // headers is symbol map not object, so we cannot use objectContaining
+    const credentialsHeaderValue = sentHeaders.get('credentials');
+    expect(credentialsHeaderValue).toEqual('include');
+
+    window.fetch = originFetch;
+  });
+
   test('test get request send by xhr', () => {
     const httpProvider = new HttpProvider(tdvwEndPoint);
     const RequestLibrary = window.XMLHttpRequest;
@@ -372,6 +399,32 @@ describe('test httpProvider', () => {
       expect(e).toEqual({ Error: 'error xhr' });
     }
   });
+
+  test('test send by xhr with credentials', async () => {
+    const headers = {
+      credentials: 'include'
+    };
+    const mockXHR = {
+      send: jest.fn(),
+      withCredentials: undefined,
+      responseText: 'Success'
+    };
+    window.XMLHttpRequest = jest.fn(() => mockXHR);
+    const NewHttpProvider = require('../../../src/util/httpProvider').default;
+    const httpProvider = new NewHttpProvider(tdvwEndPoint, 8000, headers);
+    httpProvider.requestSend = jest.fn((config, request) => {
+      // Verify withCredentials setting
+      expect(request.withCredentials).toBe(true);
+      return request.responseText;
+    });
+    const requestConfig = {
+      url: 'blockChain/executeTransaction',
+      method: 'POST'
+    };
+    const result = httpProvider.send(requestConfig);
+    expect(result).toEqual('Success');
+  });
+
   test('test send async by fetch method', async () => {
     const xhr = window.XMLHttpRequest;
     delete window.XMLHttpRequest;

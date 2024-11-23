@@ -14,7 +14,6 @@ const defaultHeaders = {
 let RequestLibrary = {};
 let RequestLibraryXMLOnly = null;
 let isFetch = false;
-let NodeHeaders;
 if (process.env.RUNTIME_ENV === 'browser') {
   // For browsers use DOM Api XMLHttpRequest
   // serviceworker without window and document, only with self
@@ -32,7 +31,6 @@ if (process.env.RUNTIME_ENV === 'browser') {
   // For node use xmlhttprequest
   RequestLibraryXMLOnly = XHR;
   RequestLibrary = NodeFetch;
-  NodeHeaders = NodeFetch.Headers;
   isFetch = true;
 }
 
@@ -106,7 +104,7 @@ export default class HttpProvider {
     const { url, method = 'POST', params = {}, signal } = requestConfig;
     const path = `/api/${url}`.replace(/\/\//g, '/');
     let uri = `${this.host}${path}`.replace();
-    const myHeaders = process.env.RUNTIME_ENV === 'browser' ? new Headers() : new NodeHeaders();
+    const myHeaders = new Headers();
     let body = JSON.stringify(params);
     if (method.toUpperCase() === 'GET' || method.toUpperCase() === 'DELETE') {
       uri = Object.keys(params).length > 0 ? `${uri}?${stringify(params)}` : uri;
@@ -128,7 +126,11 @@ export default class HttpProvider {
     const request = RequestLibrary;
     const { timeout } = this;
     const control = typeof AbortController === 'function' ? new AbortController() : {};
-    const config = { ...requestConfig, signal: control.signal, credentials: 'omit' };
+    const config = {
+      ...requestConfig,
+      signal: control.signal,
+      credentials: this.headers.credentials || 'omit'
+    };
     // Simulation timeout
     return Promise.race([this.requestSendByFetch(config, request), HttpProvider.timeoutPromise(timeout)]).then(
       result =>
@@ -191,7 +193,7 @@ export default class HttpProvider {
     } else {
       request = new RequestLibrary();
     }
-    request.withCredentials = false;
+    request.withCredentials = this.headers.credentials === 'include' || this.headers.credentials === 'same-origin';
     this.requestSend(requestConfig, request);
     let result = request.responseText;
 
@@ -209,7 +211,7 @@ export default class HttpProvider {
 
   sendAsyncByXMLHttp(requestConfig) {
     const request = RequestLibraryXMLOnly ? new RequestLibraryXMLOnly() : new RequestLibrary();
-    request.withCredentials = false;
+    request.withCredentials = this.headers.credentials === 'include' || this.headers.credentials === 'same-origin';
     request.timeout = this.timeout;
     this.requestSend(requestConfig, request, true);
     return new Promise((resolve, reject) => {

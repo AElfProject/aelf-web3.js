@@ -12,7 +12,7 @@ const nodeConfig = {
   mode: 'production',
   output: {
     path: OUTPUT_PATH,
-    filename: 'aelf.cjs.js',
+    filename: 'aelf.cjs',
     library: {
       type: 'commonjs2'
     },

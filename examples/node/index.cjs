@@ -9,7 +9,12 @@ const defaultPrivateKey = 'bdb3b39ef4cd18c2697a920eb6d9e8c3cf1a930570beb37d04fb5
 // const walletCreatedByMethod = Wallet.createNewWallet();
 const wallet = Wallet.getWalletByPrivateKey(defaultPrivateKey);
 // link to Blockchain
-const aelf = new AElf(new AElf.providers.HttpProvider('https://tdvw-test-node.aelf.io/'));
+const aelf = new AElf(
+  new AElf.providers.HttpProvider('https://tdvw-test-node.aelf.io/', 8000, {
+    // cookie: '123',
+    credential: 'omit'
+  })
+);
 
 if (!aelf.isConnected()) {
   console.log('Blockchain Node is not running.');

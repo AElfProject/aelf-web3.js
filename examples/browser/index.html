@@ -22,7 +22,11 @@
     console.log(walletGotByMn);
     // link to Blockchain
     const aelf = new AElf(new AElf.providers.HttpProvider(
-      'https://tdvw-test-node.aelf.io/'
+      'https://tdvw-test-node.aelf.io/',
+      // 8000,
+      // {
+      //   credentials: 'include'
+      // }
     ));
 
     if (!aelf.isConnected()) {
