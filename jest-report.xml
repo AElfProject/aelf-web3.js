@@ -1,87 +1,87 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="240" failures="0" errors="0" time="33.925">
-  <testsuite name="test utils" errors="0" failures="0" skipped="0" timestamp="2024-11-21T04:11:53" time="3.914" tests="19">
-    <testcase classname="test utils test padLeft" name="test utils test padLeft" time="0.009">
+<testsuites name="jest tests" tests="242" failures="0" errors="0" time="33.421">
+  <testsuite name="test utils" errors="0" failures="0" skipped="0" timestamp="2024-11-23T04:48:43" time="3.838" tests="19">
+    <testcase classname="test utils test padLeft" name="test utils test padLeft" time="0.023">
     </testcase>
     <testcase classname="test utils test padRight" name="test utils test padRight" time="0.001">
     </testcase>
-    <testcase classname="test utils test base58 decode and encode" name="test utils test base58 decode and encode" time="0.061">
+    <testcase classname="test utils test base58 decode and encode" name="test utils test base58 decode and encode" time="0.055">
     </testcase>
-    <testcase classname="test utils test chainId convertor chainIdToBase58 and base58ToChainId" name="test utils test chainId convertor chainIdToBase58 and base58ToChainId" time="0.001">
+    <testcase classname="test utils test chainId convertor chainIdToBase58 and base58ToChainId" name="test utils test chainId convertor chainIdToBase58 and base58ToChainId" time="0.002">
     </testcase>
-    <testcase classname="test utils test array to hex" name="test utils test array to hex" time="0.007">
+    <testcase classname="test utils test array to hex" name="test utils test array to hex" time="0.002">
     </testcase>
-    <testcase classname="test utils decode and encode address hex represent" name="test utils decode and encode address hex represent" time="0.003">
+    <testcase classname="test utils decode and encode address hex represent" name="test utils decode and encode address hex represent" time="0.002">
     </testcase>
-    <testcase classname="test utils is bigNumBer" name="test utils is bigNumBer" time="0.001">
+    <testcase classname="test utils is bigNumBer" name="test utils is bigNumBer" time="0.048">
     </testcase>
-    <testcase classname="test utils is string" name="test utils is string" time="0.013">
+    <testcase classname="test utils is string" name="test utils is string" time="0.016">
     </testcase>
-    <testcase classname="test utils is function" name="test utils is function" time="0.001">
+    <testcase classname="test utils is function" name="test utils is function" time="0.006">
     </testcase>
-    <testcase classname="test utils is object" name="test utils is object" time="0">
+    <testcase classname="test utils is object" name="test utils is object" time="0.002">
     </testcase>
-    <testcase classname="test utils is boolean" name="test utils is boolean" time="0.001">
+    <testcase classname="test utils is boolean" name="test utils is boolean" time="0.002">
     </testcase>
-    <testcase classname="test utils is JSON" name="test utils is JSON" time="0.001">
+    <testcase classname="test utils is JSON" name="test utils is JSON" time="0.006">
     </testcase>
-    <testcase classname="test utils transform into bigNumber" name="test utils transform into bigNumber" time="0.004">
+    <testcase classname="test utils transform into bigNumber" name="test utils transform into bigNumber" time="0.008">
     </testcase>
-    <testcase classname="test utils convert to the unit" name="test utils convert to the unit" time="0.002">
+    <testcase classname="test utils convert to the unit" name="test utils convert to the unit" time="0.004">
     </testcase>
     <testcase classname="test utils takes a number of wei and converts it to any other ether unit, takes a number of a unit and converts it to wei" name="test utils takes a number of wei and converts it to any other ether unit, takes a number of a unit and converts it to wei" time="0.002">
     </testcase>
-    <testcase classname="test utils uint array into hex string" name="test utils uint array into hex string" time="0">
+    <testcase classname="test utils uint array into hex string" name="test utils uint array into hex string" time="0.001">
     </testcase>
-    <testcase classname="test utils set path in dot way" name="test utils set path in dot way" time="0">
+    <testcase classname="test utils set path in dot way" name="test utils set path in dot way" time="0.001">
     </testcase>
-    <testcase classname="test utils converts a negative numer into a two’s complement." name="test utils converts a negative numer into a two’s complement." time="0.005">
+    <testcase classname="test utils converts a negative numer into a two’s complement." name="test utils converts a negative numer into a two’s complement." time="0.007">
     </testcase>
-    <testcase classname="test utils test getTransactionId" name="test utils test getTransactionId" time="0.007">
-    </testcase>
-  </testsuite>
-  <testsuite name="test wallet" errors="0" failures="0" skipped="0" timestamp="2024-11-21T04:11:53" time="5.599" tests="9">
-    <testcase classname="test wallet test create new wallet" name="test wallet test create new wallet" time="0.144">
-    </testcase>
-    <testcase classname="test wallet test get wallet by mnemonic" name="test wallet test get wallet by mnemonic" time="0.084">
-    </testcase>
-    <testcase classname="test wallet test get wallet by private key" name="test wallet test get wallet by private key" time="0.078">
-    </testcase>
-    <testcase classname="test wallet test get address from pubKey" name="test wallet test get address from pubKey" time="0.041">
-    </testcase>
-    <testcase classname="test wallet test sign transaction" name="test wallet test sign transaction" time="0.158">
-    </testcase>
-    <testcase classname="test wallet test sign" name="test wallet test sign" time="0.063">
-    </testcase>
-    <testcase classname="test wallet test AESEncrypt and AESDecrypt" name="test wallet test AESEncrypt and AESDecrypt" time="0.011">
-    </testcase>
-    <testcase classname="test wallet test get wallet with error" name="test wallet test get wallet with error" time="0.046">
-    </testcase>
-    <testcase classname="test wallet test verify" name="test wallet test verify" time="0.446">
+    <testcase classname="test utils test getTransactionId" name="test utils test getTransactionId" time="0.006">
     </testcase>
   </testsuite>
-  <testsuite name="test httpProvider" errors="0" failures="0" skipped="0" timestamp="2024-11-21T04:11:53" time="6.535" tests="31">
-    <testcase classname="test httpProvider test transform with fieldsArray" name="test httpProvider test transform with fieldsArray" time="0.027">
+  <testsuite name="test wallet" errors="0" failures="0" skipped="0" timestamp="2024-11-23T04:48:43" time="7.07" tests="9">
+    <testcase classname="test wallet test create new wallet" name="test wallet test create new wallet" time="0.306">
     </testcase>
-    <testcase classname="test httpProvider test transform with empty inputType fieldsArray" name="test httpProvider test transform with empty inputType fieldsArray" time="0">
+    <testcase classname="test wallet test get wallet by mnemonic" name="test wallet test get wallet by mnemonic" time="0.129">
+    </testcase>
+    <testcase classname="test wallet test get wallet by private key" name="test wallet test get wallet by private key" time="0.146">
+    </testcase>
+    <testcase classname="test wallet test get address from pubKey" name="test wallet test get address from pubKey" time="0.07">
+    </testcase>
+    <testcase classname="test wallet test sign transaction" name="test wallet test sign transaction" time="0.245">
+    </testcase>
+    <testcase classname="test wallet test sign" name="test wallet test sign" time="0.069">
+    </testcase>
+    <testcase classname="test wallet test AESEncrypt and AESDecrypt" name="test wallet test AESEncrypt and AESDecrypt" time="0.02">
+    </testcase>
+    <testcase classname="test wallet test get wallet with error" name="test wallet test get wallet with error" time="0.075">
+    </testcase>
+    <testcase classname="test wallet test verify" name="test wallet test verify" time="0.571">
+    </testcase>
+  </testsuite>
+  <testsuite name="test httpProvider" errors="0" failures="0" skipped="0" timestamp="2024-11-23T04:48:43" time="7.814" tests="31">
+    <testcase classname="test httpProvider test transform with fieldsArray" name="test httpProvider test transform with fieldsArray" time="0.011">
+    </testcase>
+    <testcase classname="test httpProvider test transform with empty inputType fieldsArray" name="test httpProvider test transform with empty inputType fieldsArray" time="0.004">
     </testcase>
     <testcase classname="test httpProvider test transform without field params" name="test httpProvider test transform without field params" time="0.002">
     </testcase>
-    <testcase classname="test httpProvider test transform with fieldsArray which has repeated rule " name="test httpProvider test transform with fieldsArray which has repeated rule " time="0.002">
+    <testcase classname="test httpProvider test transform with fieldsArray which has repeated rule " name="test httpProvider test transform with fieldsArray which has repeated rule " time="0.003">
     </testcase>
-    <testcase classname="test httpProvider test transform with empty fieldsArray" name="test httpProvider test transform with empty fieldsArray" time="0.004">
+    <testcase classname="test httpProvider test transform with empty fieldsArray" name="test httpProvider test transform with empty fieldsArray" time="0.003">
     </testcase>
-    <testcase classname="test httpProvider test transformMapToArray without inputType fieldsArray" name="test httpProvider test transformMapToArray without inputType fieldsArray" time="0.001">
+    <testcase classname="test httpProvider test transformMapToArray without inputType fieldsArray" name="test httpProvider test transformMapToArray without inputType fieldsArray" time="0">
     </testcase>
-    <testcase classname="test httpProvider test transformMapToArray without origin" name="test httpProvider test transformMapToArray without origin" time="0">
+    <testcase classname="test httpProvider test transformMapToArray without origin" name="test httpProvider test transformMapToArray without origin" time="0.001">
     </testcase>
-    <testcase classname="test httpProvider test transformMapToArray with only one field and has not been resolved" name="test httpProvider test transformMapToArray with only one field and has not been resolved" time="0.001">
+    <testcase classname="test httpProvider test transformMapToArray with only one field and has not been resolved" name="test httpProvider test transformMapToArray with only one field and has not been resolved" time="0">
     </testcase>
-    <testcase classname="test httpProvider test transformMapToArray with resolvedType" name="test httpProvider test transformMapToArray with resolvedType" time="0.002">
+    <testcase classname="test httpProvider test transformMapToArray with resolvedType" name="test httpProvider test transformMapToArray with resolvedType" time="0.001">
     </testcase>
-    <testcase classname="test httpProvider test transformMapToArray with fieldsArray which has resolvedType" name="test httpProvider test transformMapToArray with fieldsArray which has resolvedType" time="0.001">
+    <testcase classname="test httpProvider test transformMapToArray with fieldsArray which has resolvedType" name="test httpProvider test transformMapToArray with fieldsArray which has resolvedType" time="0.002">
     </testcase>
-    <testcase classname="test httpProvider test transformMapToArray with map_entry option" name="test httpProvider test transformMapToArray with map_entry option" time="0.002">
+    <testcase classname="test httpProvider test transformMapToArray with map_entry option" name="test httpProvider test transformMapToArray with map_entry option" time="0.003">
     </testcase>
     <testcase classname="test httpProvider test transformMapToArray without inputType fieldsArray" name="test httpProvider test transformMapToArray without inputType fieldsArray" time="0.001">
     </testcase>
@@ -89,189 +89,157 @@
     </testcase>
     <testcase classname="test httpProvider test transformArrayToMap with only one field and has not been resolved" name="test httpProvider test transformArrayToMap with only one field and has not been resolved" time="0.001">
     </testcase>
-    <testcase classname="test httpProvider test transformArrayToMap with resolvedType" name="test httpProvider test transformArrayToMap with resolvedType" time="0.006">
+    <testcase classname="test httpProvider test transformArrayToMap with resolvedType" name="test httpProvider test transformArrayToMap with resolvedType" time="0">
     </testcase>
-    <testcase classname="test httpProvider test transformArrayToMap with fieldsArray which has resolvedType" name="test httpProvider test transformArrayToMap with fieldsArray which has resolvedType" time="0.004">
+    <testcase classname="test httpProvider test transformArrayToMap with fieldsArray which has resolvedType" name="test httpProvider test transformArrayToMap with fieldsArray which has resolvedType" time="0.001">
     </testcase>
-    <testcase classname="test httpProvider test transformArrayToMap with map_entry option" name="test httpProvider test transformArrayToMap with map_entry option" time="0.003">
+    <testcase classname="test httpProvider test transformArrayToMap with map_entry option" name="test httpProvider test transformArrayToMap with map_entry option" time="0.001">
     </testcase>
-    <testcase classname="test httpProvider test transformArrayToMap with map_entry and repeated options" name="test httpProvider test transformArrayToMap with map_entry and repeated options" time="0">
+    <testcase classname="test httpProvider test transformArrayToMap with map_entry and repeated options" name="test httpProvider test transformArrayToMap with map_entry and repeated options" time="0.001">
     </testcase>
     <testcase classname="test httpProvider test transformArrayToMap with Enum Array" name="test httpProvider test transformArrayToMap with Enum Array" time="0.001">
     </testcase>
-    <testcase classname="test httpProvider test encode address" name="test httpProvider test encode address" time="0.004">
+    <testcase classname="test httpProvider test encode address" name="test httpProvider test encode address" time="0.003">
     </testcase>
-    <testcase classname="test httpProvider test input address filter with Address format" name="test httpProvider test input address filter with Address format" time="0">
+    <testcase classname="test httpProvider test input address filter with Address format" name="test httpProvider test input address filter with Address format" time="0.001">
     </testcase>
-    <testcase classname="test httpProvider test input address transformer with string origin" name="test httpProvider test input address transformer with string origin" time="0.002">
+    <testcase classname="test httpProvider test input address transformer with string origin" name="test httpProvider test input address transformer with string origin" time="0.001">
     </testcase>
-    <testcase classname="test httpProvider test input address transformer with array origin" name="test httpProvider test input address transformer with array origin" time="0.001">
+    <testcase classname="test httpProvider test input address transformer with array origin" name="test httpProvider test input address transformer with array origin" time="0.003">
     </testcase>
     <testcase classname="test httpProvider test input hash transformer with string origin" name="test httpProvider test input hash transformer with string origin" time="0">
     </testcase>
-    <testcase classname="test httpProvider test input hash transformer with array origin" name="test httpProvider test input hash transformer with array origin" time="0.001">
+    <testcase classname="test httpProvider test input hash transformer with array origin" name="test httpProvider test input hash transformer with array origin" time="0">
     </testcase>
     <testcase classname="test httpProvider test output address transformer with string origin" name="test httpProvider test output address transformer with string origin" time="0">
     </testcase>
-    <testcase classname="test httpProvider test output address transformer with object origin" name="test httpProvider test output address transformer with object origin" time="0">
+    <testcase classname="test httpProvider test output address transformer with object origin" name="test httpProvider test output address transformer with object origin" time="0.002">
     </testcase>
-    <testcase classname="test httpProvider test output address transformer with array object origin" name="test httpProvider test output address transformer with array object origin" time="0">
+    <testcase classname="test httpProvider test output address transformer with array object origin" name="test httpProvider test output address transformer with array object origin" time="0.001">
     </testcase>
-    <testcase classname="test httpProvider test output hash transformer with string origin" name="test httpProvider test output hash transformer with string origin" time="0">
+    <testcase classname="test httpProvider test output hash transformer with string origin" name="test httpProvider test output hash transformer with string origin" time="0.001">
     </testcase>
-    <testcase classname="test httpProvider test output hash transformer with array object origin" name="test httpProvider test output hash transformer with array object origin" time="0.001">
+    <testcase classname="test httpProvider test output hash transformer with array object origin" name="test httpProvider test output hash transformer with array object origin" time="0">
     </testcase>
     <testcase classname="test httpProvider test output address transformer with object origin" name="test httpProvider test output address transformer with object origin" time="0">
     </testcase>
   </testsuite>
-  <testsuite name="test bloom" errors="0" failures="0" skipped="0" timestamp="2024-11-21T04:12:00" time="0.37" tests="8">
-    <testcase classname="test bloom test is in" name="test bloom test is in" time="0.028">
+  <testsuite name="test bloom" errors="0" failures="0" skipped="0" timestamp="2024-11-23T04:48:51" time="0.253" tests="8">
+    <testcase classname="test bloom test is in" name="test bloom test is in" time="0.022">
     </testcase>
-    <testcase classname="test bloom should return true if value is in bloom passing in hex string" name="test bloom should return true if value is in bloom passing in hex string" time="0.003">
+    <testcase classname="test bloom should return true if value is in bloom passing in hex string" name="test bloom should return true if value is in bloom passing in hex string" time="0.002">
     </testcase>
     <testcase classname="test bloom should return false if value is not in bloom" name="test bloom should return false if value is not in bloom" time="0">
     </testcase>
-    <testcase classname="test bloom should throw error if value is not valid bloom" name="test bloom should throw error if value is not valid bloom" time="0.003">
+    <testcase classname="test bloom should throw error if value is not valid bloom" name="test bloom should throw error if value is not valid bloom" time="0.002">
     </testcase>
     <testcase classname="test bloom code point to int" name="test bloom code point to int" time="0.001">
     </testcase>
     <testcase classname="test bloom test is event in" name="test bloom test is event in" time="0.003">
     </testcase>
-    <testcase classname="test bloom test is address in" name="test bloom test is address in" time="0.005">
+    <testcase classname="test bloom test is address in" name="test bloom test is address in" time="0.008">
     </testcase>
     <testcase classname="test bloom test is indexed in" name="test bloom test is indexed in" time="0.001">
     </testcase>
   </testsuite>
-  <testsuite name="test merkleTree" errors="0" failures="0" skipped="0" timestamp="2024-11-21T04:12:01" time="0.199" tests="8">
-    <testcase classname="test merkleTree test compute root" name="test merkleTree test compute root" time="0.004">
+  <testsuite name="test requestManage" errors="0" failures="0" skipped="0" timestamp="2024-11-23T04:48:47" time="4.261" tests="7">
+    <testcase classname="test requestManage test prepare request with lower case" name="test requestManage test prepare request with lower case" time="0.005">
     </testcase>
-    <testcase classname="test merkleTree generate merkle tree with no data" name="test merkleTree generate merkle tree with no data" time="0">
-    </testcase>
-    <testcase classname="test merkleTree test get merkle path" name="test merkleTree test get merkle path" time="0.002">
-    </testcase>
-    <testcase classname="test merkleTree test get merkle path with reverse sequence" name="test merkleTree test get merkle path with reverse sequence" time="0.001">
-    </testcase>
-    <testcase classname="test merkleTree test get merkle path with long sequence" name="test merkleTree test get merkle path with long sequence" time="0.003">
-    </testcase>
-    <testcase classname="test merkleTree test get merkle path" name="test merkleTree test get merkle path" time="0.001">
-    </testcase>
-    <testcase classname="test merkleTree test node" name="test merkleTree test node" time="0">
-    </testcase>
-    <testcase classname="test merkleTree should throw error if get more than two params" name="test merkleTree should throw error if get more than two params" time="0.019">
-    </testcase>
-  </testsuite>
-  <testsuite name="test deserializing transaction" errors="0" failures="0" skipped="0" timestamp="2024-11-21T04:12:01" time="0.327" tests="3">
-    <testcase classname="test deserializing transaction deserialize transaction" name="test deserializing transaction deserialize transaction" time="0.01">
-    </testcase>
-    <testcase classname="test deserializing transaction unpack specified type data" name="test deserializing transaction unpack specified type data" time="0.001">
-    </testcase>
-    <testcase classname="test deserializing transaction authorization information" name="test deserializing transaction authorization information" time="0">
-    </testcase>
-  </testsuite>
-  <testsuite name="test requestManage" errors="0" failures="0" skipped="0" timestamp="2024-11-21T04:11:57" time="3.79" tests="7">
-    <testcase classname="test requestManage test prepare request with lower case" name="test requestManage test prepare request with lower case" time="0.004">
-    </testcase>
-    <testcase classname="test requestManage test prepare request with empty params" name="test requestManage test prepare request with empty params" time="0.001">
+    <testcase classname="test requestManage test prepare request with empty params" name="test requestManage test prepare request with empty params" time="0">
     </testcase>
     <testcase classname="test requestManage test set provider" name="test requestManage test set provider" time="0.001">
     </testcase>
-    <testcase classname="test requestManage test send with provider" name="test requestManage test send with provider" time="1.943">
+    <testcase classname="test requestManage test send with provider" name="test requestManage test send with provider" time="1.952">
     </testcase>
-    <testcase classname="test requestManage test send without provider" name="test requestManage test send without provider" time="0.001">
+    <testcase classname="test requestManage test send without provider" name="test requestManage test send without provider" time="0.004">
     </testcase>
-    <testcase classname="test requestManage test send async with provider" name="test requestManage test send async with provider" time="0.927">
+    <testcase classname="test requestManage test send async with provider" name="test requestManage test send async with provider" time="0.882">
     </testcase>
-    <testcase classname="test requestManage test send async without provider" name="test requestManage test send async without provider" time="0">
+    <testcase classname="test requestManage test send async without provider" name="test requestManage test send async without provider" time="0.001">
     </testcase>
   </testsuite>
-  <testsuite name="test hash" errors="0" failures="0" skipped="0" timestamp="2024-11-21T04:12:01" time="0.183" tests="2">
-    <testcase classname="test hash test keccak256" name="test hash test keccak256" time="0.003">
+  <testsuite name="test merkleTree" errors="0" failures="0" skipped="0" timestamp="2024-11-23T04:48:51" time="0.229" tests="8">
+    <testcase classname="test merkleTree test compute root" name="test merkleTree test compute root" time="0.009">
+    </testcase>
+    <testcase classname="test merkleTree generate merkle tree with no data" name="test merkleTree generate merkle tree with no data" time="0">
+    </testcase>
+    <testcase classname="test merkleTree test get merkle path" name="test merkleTree test get merkle path" time="0.001">
+    </testcase>
+    <testcase classname="test merkleTree test get merkle path with reverse sequence" name="test merkleTree test get merkle path with reverse sequence" time="0.005">
+    </testcase>
+    <testcase classname="test merkleTree test get merkle path with long sequence" name="test merkleTree test get merkle path with long sequence" time="0.002">
+    </testcase>
+    <testcase classname="test merkleTree test get merkle path" name="test merkleTree test get merkle path" time="0.002">
+    </testcase>
+    <testcase classname="test merkleTree test node" name="test merkleTree test node" time="0">
+    </testcase>
+    <testcase classname="test merkleTree should throw error if get more than two params" name="test merkleTree should throw error if get more than two params" time="0.021">
+    </testcase>
+  </testsuite>
+  <testsuite name="chainMethod should work" errors="0" failures="0" skipped="0" timestamp="2024-11-23T04:48:43" time="8.398" tests="12">
+    <testcase classname="chainMethod should work test format input params with no inputFormatter" name="chainMethod should work test format input params with no inputFormatter" time="0.012">
+    </testcase>
+    <testcase classname="chainMethod should work test format input params with inputFormatter" name="chainMethod should work test format input params with inputFormatter" time="0.017">
+    </testcase>
+    <testcase classname="chainMethod should work test manager is on ChainMethod" name="chainMethod should work test manager is on ChainMethod" time="0.001">
+    </testcase>
+    <testcase classname="chainMethod should work test format input params with no outputFormatter" name="chainMethod should work test format input params with no outputFormatter" time="0.001">
+    </testcase>
+    <testcase classname="chainMethod should work test format input params with outputFormatter" name="chainMethod should work test format input params with outputFormatter" time="0.111">
+    </testcase>
+    <testcase classname="chainMethod should work test not enough parameters" name="chainMethod should work test not enough parameters" time="0.105">
+    </testcase>
+    <testcase classname="chainMethod should work test fn argument into object" name="chainMethod should work test fn argument into object" time="0.003">
+    </testcase>
+    <testcase classname="chainMethod should work test sync argument into object" name="chainMethod should work test sync argument into object" time="0.001">
+    </testcase>
+    <testcase classname="chainMethod should work test index is less than or equal to params.length" name="chainMethod should work test index is less than or equal to params.length" time="0.003">
+    </testcase>
+    <testcase classname="chainMethod should work test sync argument" name="chainMethod should work test sync argument" time="1.84">
+    </testcase>
+    <testcase classname="chainMethod should work test fn argument when async" name="chainMethod should work test fn argument when async" time="0.865">
+    </testcase>
+    <testcase classname="chainMethod should work test run error when async" name="chainMethod should work test run error when async" time="0.002">
+    </testcase>
+  </testsuite>
+  <testsuite name="test hash" errors="0" failures="0" skipped="0" timestamp="2024-11-23T04:48:51" time="0.231" tests="2">
+    <testcase classname="test hash test keccak256" name="test hash test keccak256" time="0.004">
     </testcase>
     <testcase classname="test hash test keccak512" name="test hash test keccak512" time="0.001">
     </testcase>
   </testsuite>
-  <testsuite name="chainMethod should work" errors="0" failures="0" skipped="0" timestamp="2024-11-21T04:11:54" time="8.268" tests="12">
-    <testcase classname="chainMethod should work test format input params with no inputFormatter" name="chainMethod should work test format input params with no inputFormatter" time="0.003">
+  <testsuite name="test proto" errors="0" failures="0" skipped="0" timestamp="2024-11-23T04:48:43" time="8.926" tests="25">
+    <testcase classname="test proto deserialize fee" name="test proto deserialize fee" time="0.084">
     </testcase>
-    <testcase classname="chainMethod should work test format input params with inputFormatter" name="chainMethod should work test format input params with inputFormatter" time="0.013">
+    <testcase classname="test proto test fee with TransactionFeeCharged type" name="test proto test fee with TransactionFeeCharged type" time="0.002">
     </testcase>
-    <testcase classname="chainMethod should work test manager is on ChainMethod" name="chainMethod should work test manager is on ChainMethod" time="0">
+    <testcase classname="test proto test fee with ResourceTokenCharged type" name="test proto test fee with ResourceTokenCharged type" time="0.003">
     </testcase>
-    <testcase classname="chainMethod should work test format input params with no outputFormatter" name="chainMethod should work test format input params with no outputFormatter" time="0">
+    <testcase classname="test proto test fee with wrong type" name="test proto test fee with wrong type" time="0.003">
     </testcase>
-    <testcase classname="chainMethod should work test format input params with outputFormatter" name="chainMethod should work test format input params with outputFormatter" time="0.023">
-    </testcase>
-    <testcase classname="chainMethod should work test not enough parameters" name="chainMethod should work test not enough parameters" time="0.035">
-    </testcase>
-    <testcase classname="chainMethod should work test fn argument into object" name="chainMethod should work test fn argument into object" time="0.001">
-    </testcase>
-    <testcase classname="chainMethod should work test sync argument into object" name="chainMethod should work test sync argument into object" time="0.003">
-    </testcase>
-    <testcase classname="chainMethod should work test index is less than or equal to params.length" name="chainMethod should work test index is less than or equal to params.length" time="0">
-    </testcase>
-    <testcase classname="chainMethod should work test sync argument" name="chainMethod should work test sync argument" time="1.62">
-    </testcase>
-    <testcase classname="chainMethod should work test fn argument when async" name="chainMethod should work test fn argument when async" time="1.975">
-    </testcase>
-    <testcase classname="chainMethod should work test run error when async" name="chainMethod should work test run error when async" time="0.004">
-    </testcase>
-  </testsuite>
-  <testsuite name="test formatter" errors="0" failures="0" skipped="0" timestamp="2024-11-21T04:12:01" time="0.353" tests="2">
-    <testcase classname="test formatter test input address formatter" name="test formatter test input address formatter" time="0.055">
-    </testcase>
-    <testcase classname="test formatter test output file descriptor set formatter" name="test formatter test output file descriptor set formatter" time="0.033">
-    </testcase>
-  </testsuite>
-  <testsuite name="test errors" errors="0" failures="0" skipped="0" timestamp="2024-11-21T04:12:02" time="0.272" tests="5">
-    <testcase classname="test errors test throws an error when invalid number of input parameters" name="test errors test throws an error when invalid number of input parameters" time="0.003">
-    </testcase>
-    <testcase classname="test errors test throws an error when connection is invalid" name="test errors test throws an error when connection is invalid" time="0">
-    </testcase>
-    <testcase classname="test errors test throws an error when provider is invalid" name="test errors test throws an error when provider is invalid" time="0.001">
-    </testcase>
-    <testcase classname="test errors test throws an error when response is invalid" name="test errors test throws an error when response is invalid" time="0">
-    </testcase>
-    <testcase classname="test errors test throws an error when connection timeout" name="test errors test throws an error when connection timeout" time="0.001">
-    </testcase>
-  </testsuite>
-  <testsuite name="test sha256" errors="0" failures="0" skipped="0" timestamp="2024-11-21T04:12:02" time="0.146" tests="2">
-    <testcase classname="test sha256 test sha256 function" name="test sha256 test sha256 function" time="0.003">
-    </testcase>
-    <testcase classname="test sha256 test sha256 array" name="test sha256 test sha256 array" time="0.002">
-    </testcase>
-  </testsuite>
-  <testsuite name="test proto" errors="0" failures="0" skipped="0" timestamp="2024-11-21T04:11:53" time="8.813" tests="25">
-    <testcase classname="test proto deserialize fee" name="test proto deserialize fee" time="0.078">
-    </testcase>
-    <testcase classname="test proto test fee with TransactionFeeCharged type" name="test proto test fee with TransactionFeeCharged type" time="0.004">
-    </testcase>
-    <testcase classname="test proto test fee with ResourceTokenCharged type" name="test proto test fee with ResourceTokenCharged type" time="0.004">
-    </testcase>
-    <testcase classname="test proto test fee with wrong type" name="test proto test fee with wrong type" time="0.002">
-    </testcase>
-    <testcase classname="test proto test get serialized data from log" name="test proto test get serialized data from log" time="0.004">
+    <testcase classname="test proto test get serialized data from log" name="test proto test get serialized data from log" time="0.003">
     </testcase>
     <testcase classname="test proto test get serialized data from log when Indexed is null" name="test proto test get serialized data from log when Indexed is null" time="0.003">
     </testcase>
     <testcase classname="test proto test get resource fee" name="test proto test get resource fee" time="0.001">
     </testcase>
-    <testcase classname="test proto test get resource fee without ResourceTokenCharged type" name="test proto test get resource fee without ResourceTokenCharged type" time="0.002">
+    <testcase classname="test proto test get resource fee without ResourceTokenCharged type" name="test proto test get resource fee without ResourceTokenCharged type" time="0">
     </testcase>
-    <testcase classname="test proto test get resource fee with empty input" name="test proto test get resource fee with empty input" time="0.002">
+    <testcase classname="test proto test get resource fee with empty input" name="test proto test get resource fee with empty input" time="0.001">
     </testcase>
     <testcase classname="test proto test get transaction fee" name="test proto test get transaction fee" time="0.003">
     </testcase>
     <testcase classname="test proto test get transaction fee without TransactionFeeCharged type" name="test proto test get transaction fee without TransactionFeeCharged type" time="0.001">
     </testcase>
-    <testcase classname="test proto test get transaction fee with empty input" name="test proto test get transaction fee with empty input" time="0.005">
+    <testcase classname="test proto test get transaction fee with empty input" name="test proto test get transaction fee with empty input" time="0.001">
     </testcase>
-    <testcase classname="test proto test arrayBuffer to Hex" name="test proto test arrayBuffer to Hex" time="0.001">
+    <testcase classname="test proto test arrayBuffer to Hex" name="test proto test arrayBuffer to Hex" time="0">
     </testcase>
-    <testcase classname="test proto test get rep from address" name="test proto test get rep from address" time="0.004">
+    <testcase classname="test proto test get rep from address" name="test proto test get rep from address" time="0.006">
     </testcase>
-    <testcase classname="test proto test get rep from address with invalid params" name="test proto test get rep from address with invalid params" time="0.002">
+    <testcase classname="test proto test get rep from address with invalid params" name="test proto test get rep from address with invalid params" time="0.001">
     </testcase>
-    <testcase classname="test proto test get address from rep" name="test proto test get address from rep" time="0.004">
+    <testcase classname="test proto test get address from rep" name="test proto test get address from rep" time="0.003">
     </testcase>
     <testcase classname="test proto test get address object from rep" name="test proto test get address object from rep" time="0.003">
     </testcase>
@@ -281,245 +249,281 @@
     </testcase>
     <testcase classname="test proto test get hash from hex" name="test proto test get hash from hex" time="0.001">
     </testcase>
-    <testcase classname="test proto test get hash object from hex" name="test proto test get hash object from hex" time="0.001">
+    <testcase classname="test proto test get hash object from hex" name="test proto test get hash object from hex" time="0.002">
     </testcase>
     <testcase classname="test proto test encode transaction to protobuf type" name="test proto test encode transaction to protobuf type" time="0.003">
     </testcase>
     <testcase classname="test proto test get transaction" name="test proto test get transaction" time="0.003">
     </testcase>
-    <testcase classname="test proto test deserialize logs with unsupported dataType" name="test proto test deserialize logs with unsupported dataType" time="0.006">
+    <testcase classname="test proto test deserialize logs with unsupported dataType" name="test proto test deserialize logs with unsupported dataType" time="0.005">
     </testcase>
-    <testcase classname="test proto test deserialize logs with empty logs" name="test proto test deserialize logs with empty logs" time="0.003">
+    <testcase classname="test proto test deserialize logs with empty logs" name="test proto test deserialize logs with empty logs" time="0.001">
     </testcase>
   </testsuite>
-  <testsuite name="test settings" errors="0" failures="0" skipped="0" timestamp="2024-11-21T04:12:02" time="0.159" tests="1">
+  <testsuite name="test formatter" errors="0" failures="0" skipped="0" timestamp="2024-11-23T04:48:52" time="0.301" tests="2">
+    <testcase classname="test formatter test input address formatter" name="test formatter test input address formatter" time="0.07">
+    </testcase>
+    <testcase classname="test formatter test output file descriptor set formatter" name="test formatter test output file descriptor set formatter" time="0.021">
+    </testcase>
+  </testsuite>
+  <testsuite name="test errors" errors="0" failures="0" skipped="0" timestamp="2024-11-23T04:48:52" time="0.23" tests="5">
+    <testcase classname="test errors test throws an error when invalid number of input parameters" name="test errors test throws an error when invalid number of input parameters" time="0.001">
+    </testcase>
+    <testcase classname="test errors test throws an error when connection is invalid" name="test errors test throws an error when connection is invalid" time="0.001">
+    </testcase>
+    <testcase classname="test errors test throws an error when provider is invalid" name="test errors test throws an error when provider is invalid" time="0">
+    </testcase>
+    <testcase classname="test errors test throws an error when response is invalid" name="test errors test throws an error when response is invalid" time="0.003">
+    </testcase>
+    <testcase classname="test errors test throws an error when connection timeout" name="test errors test throws an error when connection timeout" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="test sha256" errors="0" failures="0" skipped="0" timestamp="2024-11-23T04:48:52" time="0.145" tests="2">
+    <testcase classname="test sha256 test sha256 function" name="test sha256 test sha256 function" time="0.002">
+    </testcase>
+    <testcase classname="test sha256 test sha256 array" name="test sha256 test sha256 array" time="0.002">
+    </testcase>
+  </testsuite>
+  <testsuite name="test settings" errors="0" failures="0" skipped="0" timestamp="2024-11-23T04:48:52" time="0.124" tests="1">
     <testcase classname="test settings test constructor" name="test settings test constructor" time="0.002">
     </testcase>
   </testsuite>
-  <testsuite name="contract factory" errors="0" failures="0" skipped="0" timestamp="2024-11-21T04:11:59" time="3.632" tests="7">
-    <testcase classname="contract factory constrcutor" name="contract factory constrcutor" time="0.004">
+  <testsuite name="test deserializing transaction" errors="0" failures="0" skipped="0" timestamp="2024-11-23T04:48:51" time="1.881" tests="3">
+    <testcase classname="test deserializing transaction deserialize transaction" name="test deserializing transaction deserialize transaction" time="0.012">
     </testcase>
-    <testcase classname="contract factory test contract instance" name="contract factory test contract instance" time="0.005">
+    <testcase classname="test deserializing transaction unpack specified type data" name="test deserializing transaction unpack specified type data" time="0.001">
     </testcase>
-    <testcase classname="contract factory test deserialize log" name="contract factory test deserialize log" time="0.015">
-    </testcase>
-    <testcase classname="contract factory test deserialize log with VirtualTransactionCreated" name="contract factory test deserialize log with VirtualTransactionCreated" time="0.018">
-    </testcase>
-    <testcase classname="contract factory test deserialize log with normal contract which has a method called VirtualTransactionCreated" name="contract factory test deserialize log with normal contract which has a method called VirtualTransactionCreated" time="0.056">
-    </testcase>
-    <testcase classname="contract factory test deserialize log with empty logs" name="contract factory test deserialize log with empty logs" time="0.002">
-    </testcase>
-    <testcase classname="contract factory test deserialize log with empty NonIndexed" name="contract factory test deserialize log with empty NonIndexed" time="0.003">
+    <testcase classname="test deserializing transaction authorization information" name="test deserializing transaction authorization information" time="0">
     </testcase>
   </testsuite>
-  <testsuite name="test keyStore" errors="0" failures="0" skipped="0" timestamp="2024-11-21T04:12:01" time="3.157" tests="7">
-    <testcase classname="test keyStore test get keyStore" name="test keyStore test get keyStore" time="0.786">
+  <testsuite name="contract factory" errors="0" failures="0" skipped="0" timestamp="2024-11-23T04:48:50" time="3.529" tests="7">
+    <testcase classname="contract factory constrcutor" name="contract factory constrcutor" time="0.003">
     </testcase>
-    <testcase classname="test keyStore test get keyStore without kdfparams dklen" name="test keyStore test get keyStore without kdfparams dklen" time="0.57">
+    <testcase classname="contract factory test contract instance" name="contract factory test contract instance" time="0.003">
     </testcase>
-    <testcase classname="test keyStore test get keyStore with default cipher" name="test keyStore test get keyStore with default cipher" time="0.477">
+    <testcase classname="contract factory test deserialize log" name="contract factory test deserialize log" time="0.005">
     </testcase>
-    <testcase classname="test keyStore test get keyStore with no exist cipher" name="test keyStore test get keyStore with no exist cipher" time="0.243">
+    <testcase classname="contract factory test deserialize log with VirtualTransactionCreated" name="contract factory test deserialize log with VirtualTransactionCreated" time="0.01">
     </testcase>
-    <testcase classname="test keyStore test get keyStore with undefined cipher" name="test keyStore test get keyStore with undefined cipher" time="0.247">
+    <testcase classname="contract factory test deserialize log with normal contract which has a method called VirtualTransactionCreated" name="contract factory test deserialize log with normal contract which has a method called VirtualTransactionCreated" time="0.043">
     </testcase>
-    <testcase classname="test keyStore test check password" name="test keyStore test check password" time="0.276">
+    <testcase classname="contract factory test deserialize log with empty logs" name="contract factory test deserialize log with empty logs" time="0.001">
     </testcase>
-    <testcase classname="test keyStore test wrong  password" name="test keyStore test wrong  password" time="0.231">
+    <testcase classname="contract factory test deserialize log with empty NonIndexed" name="contract factory test deserialize log with empty NonIndexed" time="0.002">
     </testcase>
   </testsuite>
-  <testsuite name="test AElf" errors="0" failures="0" skipped="0" timestamp="2024-11-21T04:12:02" time="3.017" tests="2">
-    <testcase classname="test AElf test AElf is connected" name="test AElf test AElf is connected" time="1.514">
+  <testsuite name="test AElf" errors="0" failures="0" skipped="0" timestamp="2024-11-23T04:48:52" time="2.631" tests="2">
+    <testcase classname="test AElf test AElf is connected" name="test AElf test AElf is connected" time="1.271">
     </testcase>
     <testcase classname="test AElf test AElf set provider" name="test AElf test AElf set provider" time="0.001">
     </testcase>
   </testsuite>
-  <testsuite name="test httpProvider" errors="0" failures="0" skipped="0" timestamp="2024-11-21T04:11:53" time="15.728" tests="33">
-    <testcase classname="test httpProvider test host default" name="test httpProvider test host default" time="0.004">
+  <testsuite name="test keyStore" errors="0" failures="0" skipped="0" timestamp="2024-11-23T04:48:51" time="3.311" tests="7">
+    <testcase classname="test keyStore test get keyStore" name="test keyStore test get keyStore" time="0.859">
     </testcase>
-    <testcase classname="test httpProvider test headers are Array" name="test httpProvider test headers are Array" time="0">
+    <testcase classname="test keyStore test get keyStore without kdfparams dklen" name="test keyStore test get keyStore without kdfparams dklen" time="0.501">
     </testcase>
-    <testcase classname="test httpProvider test headers are Object" name="test httpProvider test headers are Object" time="0.002">
+    <testcase classname="test keyStore test get keyStore with default cipher" name="test keyStore test get keyStore with default cipher" time="0.492">
     </testcase>
-    <testcase classname="test httpProvider test format response when can parse to JSON" name="test httpProvider test format response when can parse to JSON" time="0.001">
+    <testcase classname="test keyStore test get keyStore with no exist cipher" name="test keyStore test get keyStore with no exist cipher" time="0.249">
     </testcase>
-    <testcase classname="test httpProvider test format response when cannot parse to JSON" name="test httpProvider test format response when cannot parse to JSON" time="0.001">
+    <testcase classname="test keyStore test get keyStore with undefined cipher" name="test keyStore test get keyStore with undefined cipher" time="0.238">
+    </testcase>
+    <testcase classname="test keyStore test check password" name="test keyStore test check password" time="0.243">
+    </testcase>
+    <testcase classname="test keyStore test wrong  password" name="test keyStore test wrong  password" time="0.241">
+    </testcase>
+  </testsuite>
+  <testsuite name="test httpProvider" errors="0" failures="0" skipped="0" timestamp="2024-11-23T04:48:43" time="15.934" tests="35">
+    <testcase classname="test httpProvider test host default" name="test httpProvider test host default" time="0.005">
+    </testcase>
+    <testcase classname="test httpProvider test headers are Array" name="test httpProvider test headers are Array" time="0.002">
+    </testcase>
+    <testcase classname="test httpProvider test headers are Object" name="test httpProvider test headers are Object" time="0.004">
+    </testcase>
+    <testcase classname="test httpProvider test format response when can parse to JSON" name="test httpProvider test format response when can parse to JSON" time="0.004">
+    </testcase>
+    <testcase classname="test httpProvider test format response when cannot parse to JSON" name="test httpProvider test format response when cannot parse to JSON" time="0.003">
     </testcase>
     <testcase classname="test httpProvider test format response text with status and statusText" name="test httpProvider test format response text with status and statusText" time="0.002">
     </testcase>
-    <testcase classname="test httpProvider test format response text with status 200" name="test httpProvider test format response text with status 200" time="0.003">
+    <testcase classname="test httpProvider test format response text with status 200" name="test httpProvider test format response text with status 200" time="0.001">
     </testcase>
-    <testcase classname="test httpProvider test format response text when param is not object" name="test httpProvider test format response text when param is not object" time="0.003">
+    <testcase classname="test httpProvider test format response text when param is not object" name="test httpProvider test format response text when param is not object" time="0.001">
     </testcase>
     <testcase classname="test httpProvider test format response text when error" name="test httpProvider test format response text when error" time="0.001">
     </testcase>
-    <testcase classname="test httpProvider test timeout" name="test httpProvider test timeout" time="0.004">
+    <testcase classname="test httpProvider test timeout" name="test httpProvider test timeout" time="0.003">
     </testcase>
-    <testcase classname="test httpProvider test get request send by fetch" name="test httpProvider test get request send by fetch" time="0.89">
+    <testcase classname="test httpProvider test get request send by fetch" name="test httpProvider test get request send by fetch" time="0.97">
     </testcase>
-    <testcase classname="test httpProvider test post request send by fetch" name="test httpProvider test post request send by fetch" time="0.328">
+    <testcase classname="test httpProvider test post request send by fetch" name="test httpProvider test post request send by fetch" time="0.357">
     </testcase>
-    <testcase classname="test httpProvider test send async by fetch" name="test httpProvider test send async by fetch" time="0.442">
+    <testcase classname="test httpProvider test send async by fetch" name="test httpProvider test send async by fetch" time="0.395">
     </testcase>
-    <testcase classname="test httpProvider test send async by fetch when no AbortController" name="test httpProvider test send async by fetch when no AbortController" time="0.075">
+    <testcase classname="test httpProvider test send async by fetch when no AbortController" name="test httpProvider test send async by fetch when no AbortController" time="0.092">
     </testcase>
-    <testcase classname="test httpProvider test send async by fetch when error" name="test httpProvider test send async by fetch when error" time="0.797">
+    <testcase classname="test httpProvider test send async by fetch when error" name="test httpProvider test send async by fetch when error" time="0.461">
     </testcase>
-    <testcase classname="test httpProvider test send async by fetch without result.text" name="test httpProvider test send async by fetch without result.text" time="0.075">
+    <testcase classname="test httpProvider test send async by fetch without result.text" name="test httpProvider test send async by fetch without result.text" time="0.147">
     </testcase>
-    <testcase classname="test httpProvider test send async by fetch when reject" name="test httpProvider test send async by fetch when reject" time="0.11">
+    <testcase classname="test httpProvider test send async by fetch when reject" name="test httpProvider test send async by fetch when reject" time="0.126">
     </testcase>
-    <testcase classname="test httpProvider test send async by fetch when timeout" name="test httpProvider test send async by fetch when timeout" time="0.185">
+    <testcase classname="test httpProvider test send async by fetch when timeout" name="test httpProvider test send async by fetch when timeout" time="0.101">
     </testcase>
-    <testcase classname="test httpProvider test send async by fetch when status is not 200" name="test httpProvider test send async by fetch when status is not 200" time="0.08">
+    <testcase classname="test httpProvider test send async by fetch when status is not 200" name="test httpProvider test send async by fetch when status is not 200" time="0.086">
     </testcase>
-    <testcase classname="test httpProvider test send async by fetch when result is not ok" name="test httpProvider test send async by fetch when result is not ok" time="0.08">
+    <testcase classname="test httpProvider test send async by fetch when result is not ok" name="test httpProvider test send async by fetch when result is not ok" time="0.18">
     </testcase>
-    <testcase classname="test httpProvider test get request send by xhr" name="test httpProvider test get request send by xhr" time="1.544">
+    <testcase classname="test httpProvider test send async by fetch with credentials" name="test httpProvider test send async by fetch with credentials" time="0.092">
     </testcase>
-    <testcase classname="test httpProvider test post request send by xhr" name="test httpProvider test post request send by xhr" time="1.635">
+    <testcase classname="test httpProvider test get request send by xhr" name="test httpProvider test get request send by xhr" time="1.673">
     </testcase>
-    <testcase classname="test httpProvider test send by fetch" name="test httpProvider test send by fetch" time="0.054">
+    <testcase classname="test httpProvider test post request send by xhr" name="test httpProvider test post request send by xhr" time="1.35">
     </testcase>
-    <testcase classname="test httpProvider test send by xhr" name="test httpProvider test send by xhr" time="1.24">
+    <testcase classname="test httpProvider test send by fetch" name="test httpProvider test send by fetch" time="0.089">
     </testcase>
-    <testcase classname="test httpProvider test send by xhr when error" name="test httpProvider test send by xhr when error" time="0.041">
+    <testcase classname="test httpProvider test send by xhr" name="test httpProvider test send by xhr" time="1.401">
     </testcase>
-    <testcase classname="test httpProvider test send async by fetch method" name="test httpProvider test send async by fetch method" time="0.367">
+    <testcase classname="test httpProvider test send by xhr when error" name="test httpProvider test send by xhr when error" time="0.042">
     </testcase>
-    <testcase classname="test httpProvider test send async by xhr method" name="test httpProvider test send async by xhr method" time="0.779">
+    <testcase classname="test httpProvider test send by xhr with credentials" name="test httpProvider test send by xhr with credentials" time="0.042">
     </testcase>
-    <testcase classname="test httpProvider test send async by xhr" name="test httpProvider test send async by xhr" time="0.823">
+    <testcase classname="test httpProvider test send async by fetch method" name="test httpProvider test send async by fetch method" time="0.379">
     </testcase>
-    <testcase classname="test httpProvider test send async by xhr when error" name="test httpProvider test send async by xhr when error" time="0.81">
+    <testcase classname="test httpProvider test send async by xhr method" name="test httpProvider test send async by xhr method" time="0.775">
     </testcase>
-    <testcase classname="test httpProvider test is connected" name="test httpProvider test is connected" time="1.27">
+    <testcase classname="test httpProvider test send async by xhr" name="test httpProvider test send async by xhr" time="0.776">
     </testcase>
-    <testcase classname="test httpProvider test is not connected" name="test httpProvider test is not connected" time="0.406">
+    <testcase classname="test httpProvider test send async by xhr when error" name="test httpProvider test send async by xhr when error" time="0.818">
     </testcase>
-    <testcase classname="test httpProvider test is connected when async" name="test httpProvider test is connected when async" time="0.368">
+    <testcase classname="test httpProvider test is connected" name="test httpProvider test is connected" time="1.576">
+    </testcase>
+    <testcase classname="test httpProvider test is not connected" name="test httpProvider test is not connected" time="0.408">
+    </testcase>
+    <testcase classname="test httpProvider test is connected when async" name="test httpProvider test is connected when async" time="0.406">
     </testcase>
     <testcase classname="test httpProvider test is not connected when async" name="test httpProvider test is not connected when async" time="0.001">
     </testcase>
   </testsuite>
-  <testsuite name="chain should work" errors="0" failures="0" skipped="0" timestamp="2024-11-21T04:11:53" time="25.866" tests="16">
-    <testcase classname="chain should work test is chain method on object" name="chain should work test is chain method on object" time="0.008">
+  <testsuite name="chain should work" errors="0" failures="0" skipped="0" timestamp="2024-11-23T04:48:43" time="25.876" tests="16">
+    <testcase classname="chain should work test is chain method on object" name="chain should work test is chain method on object" time="0.018">
     </testcase>
-    <testcase classname="chain should work test fn argument into object " name="chain should work test fn argument into object " time="0.001">
+    <testcase classname="chain should work test fn argument into object " name="chain should work test fn argument into object " time="0.003">
     </testcase>
-    <testcase classname="chain should work test undefined argument into object " name="chain should work test undefined argument into object " time="0.001">
+    <testcase classname="chain should work test undefined argument into object " name="chain should work test undefined argument into object " time="0.055">
     </testcase>
-    <testcase classname="chain should work test sync argument into object" name="chain should work test sync argument into object" time="0.004">
+    <testcase classname="chain should work test sync argument into object" name="chain should work test sync argument into object" time="0.003">
     </testcase>
     <testcase classname="chain should work test refBlockNumberStrategy argument into object" name="chain should work test refBlockNumberStrategy argument into object" time="0.001">
     </testcase>
-    <testcase classname="chain should work test is concrete contract when sync" name="chain should work test is concrete contract when sync" time="2.38">
+    <testcase classname="chain should work test is concrete contract when sync" name="chain should work test is concrete contract when sync" time="2.462">
     </testcase>
-    <testcase classname="chain should work test is invalid contract when sync" name="chain should work test is invalid contract when sync" time="0.063">
+    <testcase classname="chain should work test is invalid contract when sync" name="chain should work test is invalid contract when sync" time="0.036">
     </testcase>
-    <testcase classname="chain should work test is concrete contract when async" name="chain should work test is concrete contract when async" time="1.536">
+    <testcase classname="chain should work test is concrete contract when async" name="chain should work test is concrete contract when async" time="1.553">
     </testcase>
     <testcase classname="chain should work test is invalid contract when async" name="chain should work test is invalid contract when async" time="0.002">
     </testcase>
     <testcase classname="chain should work test is invalid contract with noop callback" name="chain should work test is invalid contract with noop callback" time="0.001">
     </testcase>
-    <testcase classname="chain should work test txId has corresponding transaction in the block with height when sync" name="chain should work test txId has corresponding transaction in the block with height when sync" time="5.764">
+    <testcase classname="chain should work test txId has corresponding transaction in the block with height when sync" name="chain should work test txId has corresponding transaction in the block with height when sync" time="5.102">
     </testcase>
-    <testcase classname="chain should work test txId has no corresponding transaction in the block with height when sync" name="chain should work test txId has no corresponding transaction in the block with height when sync" time="2.01">
+    <testcase classname="chain should work test txId has no corresponding transaction in the block with height when sync" name="chain should work test txId has no corresponding transaction in the block with height when sync" time="2.088">
     </testcase>
-    <testcase classname="chain should work test txId has corresponding transaction in the block with height when async" name="chain should work test txId has corresponding transaction in the block with height when async" time="3.818">
+    <testcase classname="chain should work test txId has corresponding transaction in the block with height when async" name="chain should work test txId has corresponding transaction in the block with height when async" time="3.632">
     </testcase>
-    <testcase classname="chain should work test txId has no corresponding transaction in the block with height when async" name="chain should work test txId has no corresponding transaction in the block with height when async" time="1.871">
+    <testcase classname="chain should work test txId has no corresponding transaction in the block with height when async" name="chain should work test txId has no corresponding transaction in the block with height when async" time="1.901">
     </testcase>
-    <testcase classname="test multi transaction multi transaction option with number object refBlockNumberStrategy" name="test multi transaction multi transaction option with number object refBlockNumberStrategy" time="1.105">
+    <testcase classname="test multi transaction multi transaction option with number object refBlockNumberStrategy" name="test multi transaction multi transaction option with number object refBlockNumberStrategy" time="0.792">
     </testcase>
-    <testcase classname="test multi transaction multi transaction option without number object refBlockNumberStrategy" name="test multi transaction multi transaction option without number object refBlockNumberStrategy" time="0.894">
-    </testcase>
-  </testsuite>
-  <testsuite name="contract multi transaction" errors="0" failures="0" skipped="0" timestamp="2024-11-21T04:11:53" time="32.363" tests="11">
-    <testcase classname="contract multi transaction send multi transaction to gateway" name="contract multi transaction send multi transaction to gateway" time="1.968">
-    </testcase>
-    <testcase classname="contract multi transaction send multi transaction to gateway with invalid method" name="contract multi transaction send multi transaction to gateway with invalid method" time="0.001">
-    </testcase>
-    <testcase classname="contract multi transaction send multi transaction to gateway with invalid input" name="contract multi transaction send multi transaction to gateway with invalid input" time="0.815">
-    </testcase>
-    <testcase classname="contract multi transaction send multi transaction to gateway with callback" name="contract multi transaction send multi transaction to gateway with callback" time="1.765">
-    </testcase>
-    <testcase classname="contract multi transaction send multi transaction to gateway with refBlockNumberStrategy" name="contract multi transaction send multi transaction to gateway with refBlockNumberStrategy" time="3.039">
-    </testcase>
-    <testcase classname="contract multi transaction sync send multi transaction to gateway" name="contract multi transaction sync send multi transaction to gateway" time="4.296">
-    </testcase>
-    <testcase classname="multi transaction with refBlockNumberStrategy send multi transaction to gateway" name="multi transaction with refBlockNumberStrategy send multi transaction to gateway" time="2.941">
-    </testcase>
-    <testcase classname="multi transaction with refBlockNumberStrategy sync send multi transaction to gateway" name="multi transaction with refBlockNumberStrategy sync send multi transaction to gateway" time="6.824">
-    </testcase>
-    <testcase classname="multi transaction with invalid multi options test handle transaction" name="multi transaction with invalid multi options test handle transaction" time="0.053">
-    </testcase>
-    <testcase classname="multi transaction with invalid refBlockNumberStrategy options test handle transaction with refBlockNumberStrategy which is bigger than 0" name="multi transaction with invalid refBlockNumberStrategy options test handle transaction with refBlockNumberStrategy which is bigger than 0" time="0.002">
-    </testcase>
-    <testcase classname="multi transaction with invalid refBlockNumberStrategy options test handle transaction with refBlockNumberStrategy which is not number" name="multi transaction with invalid refBlockNumberStrategy options test handle transaction with refBlockNumberStrategy which is not number" time="0.001">
+    <testcase classname="test multi transaction multi transaction option without number object refBlockNumberStrategy" name="test multi transaction multi transaction option without number object refBlockNumberStrategy" time="0.774">
     </testcase>
   </testsuite>
-  <testsuite name="token contract with transfer method" errors="0" failures="0" skipped="0" timestamp="2024-11-21T04:11:54" time="32.991" tests="30">
-    <testcase classname="token contract with transfer method test constructor" name="token contract with transfer method test constructor" time="0.01">
+  <testsuite name="token contract with transfer method" errors="0" failures="0" skipped="0" timestamp="2024-11-23T04:48:43" time="32.562" tests="30">
+    <testcase classname="token contract with transfer method test constructor" name="token contract with transfer method test constructor" time="0.008">
     </testcase>
     <testcase classname="token contract with transfer method test pack input" name="token contract with transfer method test pack input" time="0.004">
     </testcase>
-    <testcase classname="token contract with transfer method test unpack packed input" name="token contract with transfer method test unpack packed input" time="0.004">
+    <testcase classname="token contract with transfer method test unpack packed input" name="token contract with transfer method test unpack packed input" time="0.003">
     </testcase>
-    <testcase classname="token contract with transfer method test send transaction" name="token contract with transfer method test send transaction" time="2.227">
+    <testcase classname="token contract with transfer method test send transaction" name="token contract with transfer method test send transaction" time="1.922">
     </testcase>
-    <testcase classname="token contract with transfer method test send transaction sync" name="token contract with transfer method test send transaction sync" time="2.807">
+    <testcase classname="token contract with transfer method test send transaction sync" name="token contract with transfer method test send transaction sync" time="2.546">
     </testcase>
-    <testcase classname="token contract with GetBalance method test unpack output" name="token contract with GetBalance method test unpack output" time="0.003">
+    <testcase classname="token contract with GetBalance method test unpack output" name="token contract with GetBalance method test unpack output" time="0.002">
     </testcase>
-    <testcase classname="token contract with GetBalance method test output" name="token contract with GetBalance method test output" time="0.003">
+    <testcase classname="token contract with GetBalance method test output" name="token contract with GetBalance method test output" time="0.002">
     </testcase>
-    <testcase classname="token contract with GetBalance method test handle transaction" name="token contract with GetBalance method test handle transaction" time="0.773">
+    <testcase classname="token contract with GetBalance method test handle transaction" name="token contract with GetBalance method test handle transaction" time="0.798">
     </testcase>
-    <testcase classname="token contract with GetBalance method test prepare parameters async" name="token contract with GetBalance method test prepare parameters async" time="0.81">
+    <testcase classname="token contract with GetBalance method test prepare parameters async" name="token contract with GetBalance method test prepare parameters async" time="0.792">
     </testcase>
-    <testcase classname="token contract with GetBalance method test prepare parameters sync" name="token contract with GetBalance method test prepare parameters sync" time="1.298">
+    <testcase classname="token contract with GetBalance method test prepare parameters sync" name="token contract with GetBalance method test prepare parameters sync" time="1.284">
     </testcase>
-    <testcase classname="token contract with GetBalance method test prepare parameters with block info" name="token contract with GetBalance method test prepare parameters with block info" time="0.024">
+    <testcase classname="token contract with GetBalance method test prepare parameters with block info" name="token contract with GetBalance method test prepare parameters with block info" time="0.026">
     </testcase>
-    <testcase classname="token contract with GetBalance method test call read only" name="token contract with GetBalance method test call read only" time="2.119">
+    <testcase classname="token contract with GetBalance method test call read only" name="token contract with GetBalance method test call read only" time="2.25">
     </testcase>
-    <testcase classname="token contract with GetBalance method test extract arguments into object" name="token contract with GetBalance method test extract arguments into object" time="0.001">
+    <testcase classname="token contract with GetBalance method test extract arguments into object" name="token contract with GetBalance method test extract arguments into object" time="0.002">
     </testcase>
-    <testcase classname="token contract with GetBalance method test extract arguments into object with empty args" name="token contract with GetBalance method test extract arguments into object with empty args" time="0">
+    <testcase classname="token contract with GetBalance method test extract arguments into object with empty args" name="token contract with GetBalance method test extract arguments into object with empty args" time="0.001">
     </testcase>
-    <testcase classname="token contract with GetBalance method test get signed tx" name="token contract with GetBalance method test get signed tx" time="0.024">
+    <testcase classname="token contract with GetBalance method test get signed tx" name="token contract with GetBalance method test get signed tx" time="0.025">
     </testcase>
-    <testcase classname="token contract with GetBalance method test get signed tx with only one param" name="token contract with GetBalance method test get signed tx with only one param" time="1.544">
+    <testcase classname="token contract with GetBalance method test get signed tx with only one param" name="token contract with GetBalance method test get signed tx with only one param" time="1.221">
     </testcase>
-    <testcase classname="token contract with GetBalance method test get signed tx without hash or height" name="token contract with GetBalance method test get signed tx without hash or height" time="0.046">
+    <testcase classname="token contract with GetBalance method test get signed tx without hash or height" name="token contract with GetBalance method test get signed tx without hash or height" time="0.042">
     </testcase>
-    <testcase classname="token contract with GetBalance method test get raw tx" name="token contract with GetBalance method test get raw tx" time="0.009">
+    <testcase classname="token contract with GetBalance method test get raw tx" name="token contract with GetBalance method test get raw tx" time="0.003">
     </testcase>
-    <testcase classname="token contract with GetBalance method test get raw tx with hex hashInput" name="token contract with GetBalance method test get raw tx with hex hashInput" time="0.003">
+    <testcase classname="token contract with GetBalance method test get raw tx with hex hashInput" name="token contract with GetBalance method test get raw tx with hex hashInput" time="0.002">
     </testcase>
-    <testcase classname="token contract with GetBalance method test request" name="token contract with GetBalance method test request" time="1.266">
+    <testcase classname="token contract with GetBalance method test request" name="token contract with GetBalance method test request" time="1.251">
     </testcase>
-    <testcase classname="token contract with GetBalance method test run" name="token contract with GetBalance method test run" time="1.878">
+    <testcase classname="token contract with GetBalance method test run" name="token contract with GetBalance method test run" time="1.6">
     </testcase>
-    <testcase classname="token contract with GetBalance method test bind method to contract" name="token contract with GetBalance method test bind method to contract" time="0.002">
+    <testcase classname="token contract with GetBalance method test bind method to contract" name="token contract with GetBalance method test bind method to contract" time="0.004">
     </testcase>
-    <testcase classname="token contract with GetBalance method test prepareParametersAsync with valid refBlockNumberStrategy" name="token contract with GetBalance method test prepareParametersAsync with valid refBlockNumberStrategy" time="2.031">
+    <testcase classname="token contract with GetBalance method test prepareParametersAsync with valid refBlockNumberStrategy" name="token contract with GetBalance method test prepareParametersAsync with valid refBlockNumberStrategy" time="2.078">
     </testcase>
-    <testcase classname="token contract with GetBalance method test prepareParametersAsync with invalid refBlockNumberStrategy type" name="token contract with GetBalance method test prepareParametersAsync with invalid refBlockNumberStrategy type" time="0.778">
+    <testcase classname="token contract with GetBalance method test prepareParametersAsync with invalid refBlockNumberStrategy type" name="token contract with GetBalance method test prepareParametersAsync with invalid refBlockNumberStrategy type" time="0.766">
     </testcase>
-    <testcase classname="token contract with GetBalance method test prepareParametersAsync with positive refBlockNumberStrategy" name="token contract with GetBalance method test prepareParametersAsync with positive refBlockNumberStrategy" time="0.761">
+    <testcase classname="token contract with GetBalance method test prepareParametersAsync with positive refBlockNumberStrategy" name="token contract with GetBalance method test prepareParametersAsync with positive refBlockNumberStrategy" time="0.77">
     </testcase>
-    <testcase classname="token contract with GetBalance method test prepareParametersAsync without refBlockNumberStrategy" name="token contract with GetBalance method test prepareParametersAsync without refBlockNumberStrategy" time="0.82">
+    <testcase classname="token contract with GetBalance method test prepareParametersAsync without refBlockNumberStrategy" name="token contract with GetBalance method test prepareParametersAsync without refBlockNumberStrategy" time="0.794">
     </testcase>
-    <testcase classname="token contract with GetBalance method test prepareParameters with valid refBlockNumberStrategy" name="token contract with GetBalance method test prepareParameters with valid refBlockNumberStrategy" time="2.485">
+    <testcase classname="token contract with GetBalance method test prepareParameters with valid refBlockNumberStrategy" name="token contract with GetBalance method test prepareParameters with valid refBlockNumberStrategy" time="2.519">
     </testcase>
-    <testcase classname="token contract with GetBalance method test prepareParameters with invalid refBlockNumberStrategy type" name="token contract with GetBalance method test prepareParameters with invalid refBlockNumberStrategy type" time="0.001">
+    <testcase classname="token contract with GetBalance method test prepareParameters with invalid refBlockNumberStrategy type" name="token contract with GetBalance method test prepareParameters with invalid refBlockNumberStrategy type" time="0.004">
     </testcase>
-    <testcase classname="token contract with GetBalance method test prepareParameters with refBlockNumberStrategy greater than 0" name="token contract with GetBalance method test prepareParameters with refBlockNumberStrategy greater than 0" time="0.001">
+    <testcase classname="token contract with GetBalance method test prepareParameters with refBlockNumberStrategy greater than 0" name="token contract with GetBalance method test prepareParameters with refBlockNumberStrategy greater than 0" time="0.003">
     </testcase>
-    <testcase classname="token contract with GetBalance method test prepareParameters without refBlockNumberStrategy" name="token contract with GetBalance method test prepareParameters without refBlockNumberStrategy" time="1.261">
+    <testcase classname="token contract with GetBalance method test prepareParameters without refBlockNumberStrategy" name="token contract with GetBalance method test prepareParameters without refBlockNumberStrategy" time="1.215">
+    </testcase>
+  </testsuite>
+  <testsuite name="contract multi transaction" errors="0" failures="0" skipped="0" timestamp="2024-11-23T04:48:43" time="32.579" tests="11">
+    <testcase classname="contract multi transaction send multi transaction to gateway" name="contract multi transaction send multi transaction to gateway" time="2.64">
+    </testcase>
+    <testcase classname="contract multi transaction send multi transaction to gateway with invalid method" name="contract multi transaction send multi transaction to gateway with invalid method" time="0.001">
+    </testcase>
+    <testcase classname="contract multi transaction send multi transaction to gateway with invalid input" name="contract multi transaction send multi transaction to gateway with invalid input" time="0.757">
+    </testcase>
+    <testcase classname="contract multi transaction send multi transaction to gateway with callback" name="contract multi transaction send multi transaction to gateway with callback" time="1.791">
+    </testcase>
+    <testcase classname="contract multi transaction send multi transaction to gateway with refBlockNumberStrategy" name="contract multi transaction send multi transaction to gateway with refBlockNumberStrategy" time="2.869">
+    </testcase>
+    <testcase classname="contract multi transaction sync send multi transaction to gateway" name="contract multi transaction sync send multi transaction to gateway" time="3.928">
+    </testcase>
+    <testcase classname="multi transaction with refBlockNumberStrategy send multi transaction to gateway" name="multi transaction with refBlockNumberStrategy send multi transaction to gateway" time="2.808">
+    </testcase>
+    <testcase classname="multi transaction with refBlockNumberStrategy sync send multi transaction to gateway" name="multi transaction with refBlockNumberStrategy sync send multi transaction to gateway" time="6.334">
+    </testcase>
+    <testcase classname="multi transaction with invalid multi options test handle transaction" name="multi transaction with invalid multi options test handle transaction" time="0.044">
+    </testcase>
+    <testcase classname="multi transaction with invalid refBlockNumberStrategy options test handle transaction with refBlockNumberStrategy which is bigger than 0" name="multi transaction with invalid refBlockNumberStrategy options test handle transaction with refBlockNumberStrategy which is bigger than 0" time="0.003">
+    </testcase>
+    <testcase classname="multi transaction with invalid refBlockNumberStrategy options test handle transaction with refBlockNumberStrategy which is not number" name="multi transaction with invalid refBlockNumberStrategy options test handle transaction with refBlockNumberStrategy which is not number" time="0.001">
     </testcase>
   </testsuite>
 </testsuites>

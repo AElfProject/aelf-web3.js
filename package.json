@@ -3,7 +3,7 @@
   "version": "3.4.18",
   "description": "aelf-sdk js library",
   "type": "module",
-  "main": "dist/aelf.cjs.js",
+  "main": "dist/aelf.cjs",
   "module": "dist/aelf.esm.js",
   "browser": "dist/aelf.umd.js",
   "unpkg": "dist/aelf.umd.js",
@@ -11,7 +11,7 @@
   "exports": {
     ".": {
       "import": "./dist/aelf.esm.js",
-      "require": "./dist/aelf.cjs.js"
+      "require": "./dist/aelf.cjs"
     }
   },
   "scripts": {
