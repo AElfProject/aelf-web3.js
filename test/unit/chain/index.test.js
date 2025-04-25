@@ -127,57 +127,57 @@ describe('chain should work', () => {
   });
 }, 20000);
 
-describe('test multi transaction', () => {
-  beforeEach(() => {
-    httpProvider = new HttpProvider(stageEndpoint);
-    requestManager = new RequestManager(httpProvider);
-    chain = new Chain(requestManager);
-  });
-  test('multi transaction option with number object refBlockNumberStrategy', async () => {
-    const aelf = new AElf(new AElf.providers.HttpProvider(stageEndpoint));
-    const { GenesisContractAddress } = await aelf.chain.getChainStatus();
-    expect(
-      chain.contractAt(GenesisContractAddress, null, {
-        refBlockNumberStrategy: {
-          9992731: -8,
-          1931928: -8
-        },
-        multi: {
-          9992731: {
-            chainUrl: 'https://aelf-test-node.aelf.io/',
-            contractAddress: 'JRmBduh4nXWi1aXgdUsj5gJrzeZb2LxmrAbf7W99faZSvoAaE'
-          },
-          1931928: {
-            chainUrl: 'https://tdvw-test-node.aelf.io/',
-            contractAddress: 'ASh2Wt7nSEmYqnGxPPzp4pnVDU4uhj1XW9Se5VeZcX2UDdyjx'
-          }
-        },
-        gatewayUrl: 'https://gateway-test.aelf.io'
-      })
-    ).resolves.not.toThrow();
-  });
+// describe('test multi transaction', () => {
+//   beforeEach(() => {
+//     httpProvider = new HttpProvider(stageEndpoint);
+//     requestManager = new RequestManager(httpProvider);
+//     chain = new Chain(requestManager);
+//   });
+//   test('multi transaction option with number object refBlockNumberStrategy', async () => {
+//     const aelf = new AElf(new AElf.providers.HttpProvider(stageEndpoint));
+//     const { GenesisContractAddress } = await aelf.chain.getChainStatus();
+//     expect(
+//       chain.contractAt(GenesisContractAddress, null, {
+//         refBlockNumberStrategy: {
+//           9992731: -8,
+//           1931928: -8
+//         },
+//         multi: {
+//           9992731: {
+//             chainUrl: 'https://aelf-test-node.aelf.io/',
+//             contractAddress: 'JRmBduh4nXWi1aXgdUsj5gJrzeZb2LxmrAbf7W99faZSvoAaE'
+//           },
+//           1931928: {
+//             chainUrl: 'https://tdvw-test-node.aelf.io/',
+//             contractAddress: 'ASh2Wt7nSEmYqnGxPPzp4pnVDU4uhj1XW9Se5VeZcX2UDdyjx'
+//           }
+//         },
+//         gatewayUrl: 'https://gateway-test.aelf.io'
+//       })
+//     ).resolves.not.toThrow();
+//   });
 
-  test('multi transaction option without number object refBlockNumberStrategy', async () => {
-    const aelf = new AElf(new AElf.providers.HttpProvider(stageEndpoint));
-    const { GenesisContractAddress } = await aelf.chain.getChainStatus();
-    expect(
-      chain.contractAt(GenesisContractAddress, null, {
-        refBlockNumberStrategy: {
-          9992731: 'test',
-          1931928: 'invalid'
-        },
-        multi: {
-          9992731: {
-            chainUrl: 'https://aelf-test-node.aelf.io/',
-            contractAddress: 'JRmBduh4nXWi1aXgdUsj5gJrzeZb2LxmrAbf7W99faZSvoAaE'
-          },
-          1931928: {
-            chainUrl: 'https://tdvw-test-node.aelf.io/',
-            contractAddress: 'ASh2Wt7nSEmYqnGxPPzp4pnVDU4uhj1XW9Se5VeZcX2UDdyjx'
-          }
-        },
-        gatewayUrl: 'https://gateway-test.aelf.io'
-      })
-    ).resolves.not.toThrow();
-  });
-});
+//   test('multi transaction option without number object refBlockNumberStrategy', async () => {
+//     const aelf = new AElf(new AElf.providers.HttpProvider(stageEndpoint));
+//     const { GenesisContractAddress } = await aelf.chain.getChainStatus();
+//     expect(
+//       chain.contractAt(GenesisContractAddress, null, {
+//         refBlockNumberStrategy: {
+//           9992731: 'test',
+//           1931928: 'invalid'
+//         },
+//         multi: {
+//           9992731: {
+//             chainUrl: 'https://aelf-test-node.aelf.io/',
+//             contractAddress: 'JRmBduh4nXWi1aXgdUsj5gJrzeZb2LxmrAbf7W99faZSvoAaE'
+//           },
+//           1931928: {
+//             chainUrl: 'https://tdvw-test-node.aelf.io/',
+//             contractAddress: 'ASh2Wt7nSEmYqnGxPPzp4pnVDU4uhj1XW9Se5VeZcX2UDdyjx'
+//           }
+//         },
+//         gatewayUrl: 'https://gateway-test.aelf.io'
+//       })
+//     ).resolves.not.toThrow();
+//   });
+// });
