@@ -1,6 +1,6 @@
 {
   "name": "aelf-sdk",
-  "version": "3.4.18",
+  "version": "3.4.19",
   "description": "aelf-sdk js library",
   "type": "module",
   "main": "dist/aelf.cjs",

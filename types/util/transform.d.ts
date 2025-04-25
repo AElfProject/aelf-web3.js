@@ -24,6 +24,6 @@ export function transformArrayToMap(
   inputType: protobuf.Type,
   origin?: { [k: string]: any } | Array<{ [k: string]: any }>
 ): { [k: string]: any } | undefined | null;
-export const INPUT_TRANSFORMERS: IInTransformer;
+export const INPUT_TRANSFORMERS: IInTransformer[];
 export function encodeAddress(str: string): string;
 export const OUTPUT_TRANSFORMERS: IOutTransformer[];
