@@ -466,7 +466,7 @@ describe('test httpProvider', () => {
   test('test send async by xhr when error', async () => {
     // use stageEndPoint may cause:
     // Cross origin http://localhost forbidden
-    const httpProvider = new HttpProvider('https://explorer-test.aelf.io/chain');
+    const httpProvider = new HttpProvider('https://aelf-test-node.aelf.io');
     await expect(
       httpProvider.sendAsyncByXMLHttp({
         url: 'blockChain/executeTransaction',

@@ -2,18 +2,31 @@
 # yarn lockfile v1
 
 
-"@aelfqueen/protobufjs@^6.8.9":
-  version "6.8.9"
-  resolved "https://registry.npmjs.org/@aelfqueen/protobufjs/-/protobufjs-6.8.9.tgz#5eb0e6f2d649994501eb472d98052958e237fbfb"
-  integrity sha512-xa8i/rsC/Dj6Wh0DWpgr4eODVu8tVktyTENJU0QGjwmu317PCyp/8p7rEcvplljAteoQ31cFxUCrnzFQ0iLG1g==
+"@aelfqueen/fetch@^1.1.2":
+  version "1.1.2"
+  resolved "https://registry.npmjs.org/@aelfqueen/fetch/-/fetch-1.1.2.tgz#4012a24b724ab8f9cf680c345e0b01aa9719cda1"
+  integrity sha512-7ugCsVZB+wt2A5pc5VtuiDO1tZJJlKuphV+kNtSqQYY1NhZqS8RfxJDS4baa5QT8Wm8Gde4vttIY05SykizAtg==
   dependencies:
+    "@aelfqueen/inquire" "^1.1.1"
+    "@protobufjs/aspromise" "^1.1.1"
+
+"@aelfqueen/inquire@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.npmjs.org/@aelfqueen/inquire/-/inquire-1.1.1.tgz#c25ecdd9ab35e054925e01937280235a6c2cb589"
+  integrity sha512-mGM34yOV5L7WE6yh0WyVGtPvzmvOmn7DKNbuFAcuSaBWoZq4pzSh1V5VoPLSLpbdXWHkrQ4q+XJ5hRqSbGSRxw==
+
+"@aelfqueen/protobufjs@^6.8.11":
+  version "6.8.11"
+  resolved "https://registry.npmjs.org/@aelfqueen/protobufjs/-/protobufjs-6.8.11.tgz#03d602cb0f2b94a0e79649b03729397c966dff96"
+  integrity sha512-vYwMWliBIcwB1P75LHmiXQAizun3iDPxylr1MszRE0wpNR0GuctSb8cZwDnV+JNm7OQX7Z+g7ZeEpJoz+beQHw==
+  dependencies:
+    "@aelfqueen/fetch" "^1.1.2"
+    "@aelfqueen/inquire" "^1.1.1"
     "@protobufjs/aspromise" "^1.1.2"
     "@protobufjs/base64" "^1.1.2"
     "@protobufjs/codegen" "^2.0.4"
     "@protobufjs/eventemitter" "^1.1.0"
-    "@protobufjs/fetch" "^1.1.0"
     "@protobufjs/float" "^1.0.2"
-    "@protobufjs/inquire" "^1.1.0"
     "@protobufjs/path" "^1.1.2"
     "@protobufjs/pool" "^1.1.0"
     "@protobufjs/utf8" "^1.1.0"
@@ -1687,23 +1700,10 @@
   resolved "https://registry.npmjs.org/@protobufjs/eventemitter/-/eventemitter-1.1.0.tgz#355cbc98bafad5978f9ed095f397621f1d066b70"
   integrity sha512-j9ednRT81vYJ9OfVuXG6ERSTdEL1xVsNgqpkxMsbIabzSo3goCjDIveeGv5d03om39ML71RdmrGNjG5SReBP/Q==
 
-"@protobufjs/fetch@^1.1.0":
-  version "1.1.0"
-  resolved "https://registry.npmjs.org/@protobufjs/fetch/-/fetch-1.1.0.tgz#ba99fb598614af65700c1619ff06d454b0d84c45"
-  integrity sha512-lljVXpqXebpsijW71PZaCYeIcE5on1w5DlQy5WH6GLbFryLUrBD4932W/E2BSpfRJWseIL4v/KPgBFxDOIdKpQ==
-  dependencies:
-    "@protobufjs/aspromise" "^1.1.1"
-    "@protobufjs/inquire" "^1.1.0"
-
 "@protobufjs/float@^1.0.2":
   version "1.0.2"
   resolved "https://registry.npmjs.org/@protobufjs/float/-/float-1.0.2.tgz#5e9e1abdcb73fc0a7cb8b291df78c8cbd97b87d1"
   integrity sha512-Ddb+kVXlXst9d+R9PfTIxh1EdNkgoRe5tOX6t01f1lYWOvJnSPDBlG241QLzcyPdoNTsblLUdujGSE4RzrTZGQ==
-
-"@protobufjs/inquire@^1.1.0":
-  version "1.1.0"
-  resolved "https://registry.npmjs.org/@protobufjs/inquire/-/inquire-1.1.0.tgz#ff200e3e7cf2429e2dcafc1140828e8cc638f089"
-  integrity sha512-kdSefcPdruJiFMVSbn801t4vFK7KB/5gd2fYvrxhuJYg8ILrmn9SKSX2tZdV6V+ksulWqS7aXjBcRXl3wHoD9Q==
 
 "@protobufjs/path@^1.1.2":
   version "1.1.2"
