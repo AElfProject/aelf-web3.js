@@ -5,6 +5,7 @@
 
 /* eslint-env node */
 import { merge } from 'webpack-merge';
+import webpack from 'webpack';
 import baseConfig from './webpack.common.js';
 import { OUTPUT_PATH } from './utils.js';
 
@@ -21,6 +22,7 @@ const nodeConfig = {
   resolve: {
     alias: {},
     fallback: {
+      buffer: 'buffer',
       crypto: 'crypto-browserify',
       stream: 'stream-browserify',
       https: false,
@@ -29,7 +31,12 @@ const nodeConfig = {
       fs: false,
       url: false
     }
-  }
+  },
+  plugins: [
+    new webpack.ProvidePlugin({
+      Buffer: ['buffer', 'Buffer']
+    })
+  ]
 };
 
 export default merge(baseConfig, nodeConfig);
