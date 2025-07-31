@@ -3,7 +3,7 @@
  * @author atom-yang
  */
 import { stringify } from 'query-string';
-import NodeFetch, { Headers } from 'node-fetch';
+import NodeFetch, { Headers as NodeHeaders } from 'node-fetch';
 import { XMLHttpRequest as XHR } from 'xmlhttprequest';
 
 const defaultHeaders = {
@@ -14,12 +14,14 @@ const defaultHeaders = {
 let RequestLibrary = {};
 let RequestLibraryXMLOnly = null;
 let isFetch = false;
+let HeadersClass = null;
 if (process.env.RUNTIME_ENV === 'browser') {
   // For browsers use DOM Api XMLHttpRequest
   // serviceworker without window and document, only with self
   // eslint-disable-next-line no-restricted-globals
   const _self = typeof self === 'object' ? self : {};
   const _window = typeof window === 'object' ? window : _self;
+  HeadersClass = _window.Headers || null;
   if (typeof _window.XMLHttpRequest !== 'undefined') {
     RequestLibrary = _window.XMLHttpRequest;
     isFetch = false;
@@ -31,6 +33,7 @@ if (process.env.RUNTIME_ENV === 'browser') {
   // For node use xmlhttprequest
   RequestLibraryXMLOnly = XHR;
   RequestLibrary = NodeFetch;
+  HeadersClass = NodeHeaders;
   isFetch = true;
 }
 
@@ -104,7 +107,7 @@ export default class HttpProvider {
     const { url, method = 'POST', params = {}, signal } = requestConfig;
     const path = `/api/${url}`.replace(/\/\//g, '/');
     let uri = `${this.host}${path}`.replace();
-    const myHeaders = new Headers();
+    const myHeaders = HeadersClass ? new HeadersClass() : {};
     let body = JSON.stringify(params);
     if (method.toUpperCase() === 'GET' || method.toUpperCase() === 'DELETE') {
       uri = Object.keys(params).length > 0 ? `${uri}?${stringify(params)}` : uri;
