@@ -11,7 +11,6 @@ import BN from 'bn.js';
 import sha256 from '../util/sha256.js';
 import * as keyStore from '../util/keyStore.js';
 import { encodeAddressRep, padLeft } from '../util/utils.js';
-import { Transaction } from '../util/proto.js';
 
 // eslint-disable-next-line new-cap
 const ellipticEc = new elliptic.ec('secp256k1');
@@ -77,29 +76,29 @@ const _getWallet = (type, value, BIP44Path = "m/44'/1616'/0'/0/0", seedWithBuffe
   let keyPair = '';
   let hdWallet;
   switch (type) {
-    case 'createNewWallet':
-      mnemonic = bip39.generateMnemonic();
-      rootSeed = bip39.mnemonicToSeedSync(mnemonic).toString('hex');
-      hdWallet = hdkey.fromMasterSeed(seedWithBuffer ? Buffer.from(rootSeed, 'hex') : rootSeed);
-      childWallet = hdWallet.derive(BIP44Path);
-      keyPair = ellipticEc.keyFromPrivate(childWallet.privateKey);
-      break;
-    case 'getWalletByMnemonic':
-      mnemonic = value;
-      rootSeed = bip39.mnemonicToSeedSync(mnemonic).toString('hex');
-      hdWallet = hdkey.fromMasterSeed(seedWithBuffer ? Buffer.from(rootSeed, 'hex') : rootSeed);
-      childWallet = hdWallet.derive(BIP44Path);
-      keyPair = ellipticEc.keyFromPrivate(childWallet.privateKey);
-      break;
-    case 'getWalletByPrivateKey':
-      if (typeof value === 'string') {
-        keyPair = ellipticEc.keyFromPrivate(padLeft(value, 64, '0'));
-      } else {
-        keyPair = ellipticEc.keyFromPrivate(value);
-      }
-      break;
-    default:
-      throw new Error('not a valid method');
+  case 'createNewWallet':
+    mnemonic = bip39.generateMnemonic();
+    rootSeed = bip39.mnemonicToSeedSync(mnemonic).toString('hex');
+    hdWallet = hdkey.fromMasterSeed(seedWithBuffer ? Buffer.from(rootSeed, 'hex') : rootSeed);
+    childWallet = hdWallet.derive(BIP44Path);
+    keyPair = ellipticEc.keyFromPrivate(childWallet.privateKey);
+    break;
+  case 'getWalletByMnemonic':
+    mnemonic = value;
+    rootSeed = bip39.mnemonicToSeedSync(mnemonic).toString('hex');
+    hdWallet = hdkey.fromMasterSeed(seedWithBuffer ? Buffer.from(rootSeed, 'hex') : rootSeed);
+    childWallet = hdWallet.derive(BIP44Path);
+    keyPair = ellipticEc.keyFromPrivate(childWallet.privateKey);
+    break;
+  case 'getWalletByPrivateKey':
+    if (typeof value === 'string') {
+      keyPair = ellipticEc.keyFromPrivate(padLeft(value, 64, '0'));
+    } else {
+      keyPair = ellipticEc.keyFromPrivate(value);
+    }
+    break;
+  default:
+    throw new Error('not a valid method');
   }
   // let mnemonic = bip39.generateMnemonic();
   // let rootSeed = bip39.mnemonicToSeedHex(mnemonic);
@@ -209,22 +208,28 @@ const getWalletByPrivateKey = privateKey => _getWallet('getWalletByPrivateKey', 
  * );
  * const signWallet = aelf.wallet.signTransaction(rawTxn, wallet.keyPair);
  */
+// eslint-disable-next-line no-unused-vars
 const signTransaction = (rawTxn, keyPair) => {
-  let { params } = rawTxn;
-  if (params.length === 0) {
-    params = null;
-  }
-  // proto in proto.Transaction use proto2, but C# use proto3
-  // proto3 will remove the default value key.
-  // The differences between proto2 and proto3:
-  // https://blog.csdn.net/huanggang982/article/details/77944174
-  const ser = Transaction.encode(rawTxn).finish();
-  const sig = getSignature(ser, keyPair);
-  return {
-    ...rawTxn,
-    params,
-    signature: sig
-  };
+  // let { params } = rawTxn;
+  // if (params.length === 0) {
+  //   params = null;
+  // }
+  // // proto in proto.Transaction use proto2, but C# use proto3
+  // // proto3 will remove the default value key.
+  // // The differences between proto2 and proto3:
+  // // https://blog.csdn.net/huanggang982/article/details/77944174
+  // const ser = Transaction.encode(rawTxn).finish();
+  // const sig = getSignature(ser, keyPair);
+  // return {
+  //   ...rawTxn,
+  //   params,
+  //   signature: sig
+  // };
+  console.error(
+    `deprecated method (>=3.5.0),
+    please use aelf.wallet.sign instead,
+    or use utils/transaction.js signTransaction`
+  );
 };
 
 /**
@@ -281,6 +286,7 @@ export default {
   sign,
   verify,
   signTransaction,
+  getSignature,
   createNewWallet,
   getWalletByMnemonic,
   getWalletByPrivateKey,

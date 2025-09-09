@@ -1,5 +1,6 @@
 import { getTransaction } from '../../../src/util/proto';
 import Wallet from '../../../src/wallet/index';
+import { signTransaction } from '../../../src/util/transaction.js';
 describe('test wallet', () => {
   test('test create new wallet', () => {
     const result = Wallet.createNewWallet();
@@ -42,7 +43,7 @@ describe('test wallet', () => {
     );
     const privateKey = '03bd0cea9730bcfc8045248fd7f4841ea19315995c44801a3dfede0ca872f808';
     const wallet = Wallet.getWalletByPrivateKey(privateKey);
-    const signWallet = Wallet.signTransaction(rawTxn, wallet.keyPair);
+    const signWallet = signTransaction(rawTxn, wallet.keyPair);
     expect(signWallet).toHaveProperty('signature');
     expect(signWallet.signature).toBeInstanceOf(Buffer);
     expect(signWallet.signature.toString('hex')).toBe(
@@ -56,7 +57,7 @@ describe('test wallet', () => {
     );
     const privateKeyNullParams = '03bd0cea9730bcfc8045248fd7f4841ea19315995c44801a3dfede0ca872f808';
     const walletNullParams = Wallet.getWalletByPrivateKey(privateKeyNullParams);
-    const signWalletNullParams = Wallet.signTransaction(rawTxnNullParams, walletNullParams.keyPair);
+    const signWalletNullParams = signTransaction(rawTxnNullParams, walletNullParams.keyPair);
     expect(signWalletNullParams).toHaveProperty('signature');
     expect(signWalletNullParams.signature).toBeInstanceOf(Buffer);
     expect(signWalletNullParams.signature.toString('hex')).toBe(

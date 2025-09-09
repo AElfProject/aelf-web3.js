@@ -11,7 +11,7 @@ import {
   OUTPUT_TRANSFORMERS
 } from '../util/transform.js';
 import { isBoolean, isFunction, isNumber, noop, uint8ArrayToHex, unpackSpecifiedTypeData } from '../util/utils.js';
-import wallet from '../wallet/index.js';
+import { signTransaction } from '../util/transaction.js';
 
 export default class ContractMethod {
   constructor(chain, method, contractAddress, walletInstance, option) {
@@ -88,7 +88,7 @@ export default class ContractMethod {
   handleTransaction(height, hash, encoded) {
     const rawTx = this.getRawTx(height, hash, encoded);
 
-    let tx = wallet.signTransaction(rawTx, this._wallet.keyPair);
+    let tx = signTransaction(rawTx, this._wallet.keyPair);
 
     tx = Transaction.encode(tx).finish();
     // jest environment just go into Buffer branch
