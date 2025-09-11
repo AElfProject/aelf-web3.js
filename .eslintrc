@@ -19,6 +19,7 @@
   "extends": ["eslint-config-airbnb-base"],
   "globals": {},
   "rules": {
+    "indent": ["error", 2],
     "function-paren-newline": "off",
     "no-console": ["warn"],
     "no-useless-escape": 0,

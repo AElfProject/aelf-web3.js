@@ -1,6 +1,6 @@
 {
   "name": "aelf-sdk",
-  "version": "3.4.21",
+  "version": "3.5.0",
   "description": "aelf-sdk js library",
   "type": "module",
   "main": "dist/aelf.cjs",
@@ -12,6 +12,34 @@
     ".": {
       "import": "./dist/aelf.esm.js",
       "require": "./dist/aelf.cjs"
+    },
+    "./src/*": {
+      "import": "./src/*",
+      "require": "./src/*"
+    },
+    "./wallet": {
+      "import": "./src/wallet/index.js",
+      "require": "./src/wallet/index.js"
+    },
+    "./utils": {
+      "import": "./src/util/utils.js",
+      "require": "./src/util/utils.js"
+    },
+    "./chain": {
+      "import": "./src/chain/index.js",
+      "require": "./src/chain/index.js"
+    },
+    "./sha256": {
+      "import": "./src/util/sha256.js",
+      "require": "./src/util/sha256.js"
+    },
+    "./keyStore": {
+      "import": "./src/util/keyStore.js",
+      "require": "./src/util/keyStore.js"
+    },
+    "./AElf": {
+      "import": "./src/AElf.js",
+      "require": "./src/AElf.js"
     }
   },
   "scripts": {
@@ -50,9 +78,6 @@
   ],
   "author": "hzz780",
   "license": "MIT",
-  "devEngines": {
-    "node": "18.x || 20.x"
-  },
   "engines": {
     "node": ">=18.18.0"
   },
@@ -64,7 +89,6 @@
     "@babel/plugin-proposal-optional-chaining": "^7.21.0",
     "@babel/runtime": "^7.4.5",
     "@typescript-eslint/parser": "^5.47.1",
-    "assert": "^2.0.0",
     "babel-plugin-rewire": "^1.2.0",
     "bignumber.js": "^9.0.0",
     "bip39": "^3.0.2",
@@ -138,9 +162,7 @@
     "rimraf": "^5.0.0",
     "size-limit": "^8.1.2",
     "standard-version": "^9.5.0",
-    "unused-files-webpack-plugin": "^3.4.0",
     "webpack": "^5.80.0",
-    "webpack-bundle-analyzer": "^4.8.0",
     "webpack-cli": "^5.0.2",
     "webpack-deadcode-plugin": "^0.1.17",
     "webpack-merge": "^5.8.0"

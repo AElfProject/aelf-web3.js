@@ -5,9 +5,7 @@
 
 import BigNumber from 'bignumber.js';
 import bs58 from 'bs58';
-import { UNIT_MAP, UNSIGNED_256_INT } from '../common/constants.js';
-import { Transaction } from './proto.js';
-import { OUTPUT_TRANSFORMERS, encodeAddress, transform, transformArrayToMap } from './transform.js';
+import { UNIT_MAP, UNSIGNED_256_INT } from '../common/unitConstants.js';
 import sha256 from './sha256.js';
 
 export const base58 = {
@@ -376,27 +374,12 @@ export const unpackSpecifiedTypeData = ({ data, dataType, encoding = 'hex' }) =>
   return result;
 };
 
+// eslint-disable-next-line no-unused-vars
 export function deserializeTransaction(rawTx, paramsDataType) {
-  const { from, to, params, refBlockPrefix, signature, ...rest } = unpackSpecifiedTypeData({
-    data: rawTx,
-    dataType: Transaction
-  });
-  let methodParameters = unpackSpecifiedTypeData({
-    data: params,
-    encoding: 'base64',
-    dataType: paramsDataType
-  });
-  methodParameters = transform(paramsDataType, methodParameters, OUTPUT_TRANSFORMERS);
-  methodParameters = transformArrayToMap(paramsDataType, methodParameters);
-
-  return {
-    from: encodeAddress(from.value),
-    to: encodeAddress(to.value),
-    params: methodParameters,
-    refBlockPrefix: Buffer.from(refBlockPrefix, 'base64').toString('hex'),
-    signature: Buffer.from(signature, 'base64').toString('hex'),
-    ...rest
-  };
+  console.error(
+    `deprecated method (>=3.5.0),
+    please use use utils/transaction.js deserializeTransaction`
+  );
 }
 /**
  *
@@ -422,12 +405,12 @@ export function getAuthorization(userName, password) {
  * console.log(txId);
  * // => cf564f3169012cb173efcf5543b2a71b030b16fad3ddefe3e04a5c1e1bc0047d
  */
+// eslint-disable-next-line no-unused-vars
 export function getTransactionId(rawTx) {
-  const hash = Buffer.from(rawTx.replace('0x', ''), 'hex');
-  const decode = Transaction.decode(hash);
-  decode.signature = null;
-  const encode = Transaction.encode(decode).finish();
-  return sha256(encode);
+  console.error(
+    `deprecated method (>=3.5.0),
+    please use utils/transaction.js getTransactionId`
+  );
 }
 
 export function validateMulti(obj) {

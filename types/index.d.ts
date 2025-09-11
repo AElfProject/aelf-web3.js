@@ -5,6 +5,7 @@ import * as proto from './util/proto';
 import * as utils from './util/utils';
 import sha256 from './util/sha256';
 import * as transform from './util/transform';
+import * as transaction from './util/transaction';
 import {
   arrayToHex,
   padLeft,
@@ -78,6 +79,8 @@ type TUtilsType = IUtils &
     sha256: typeof sha256;
   } & {
     transform: typeof transform;
+  } & {
+    transaction: typeof transaction;
   };
 interface IVersion {
   api?: string;
@@ -110,4 +113,5 @@ declare class AElf {
   currentProvider: HttpProvider;
   chain: Chain;
 }
+
 export default AElf;

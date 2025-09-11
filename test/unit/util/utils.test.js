@@ -21,7 +21,13 @@ import {
   toTwosComplement,
   uint8ArrayToHex,
   setPath,
-  getTransactionId
+  deserializeTransaction,
+  getTransactionId,
+  getAuthorization,
+  validateMulti,
+  byteStringToHex,
+  noop,
+  unpackSpecifiedTypeData,
 } from '../../../src/util/utils';
 
 describe('test utils', () => {
@@ -190,10 +196,115 @@ describe('test utils', () => {
       new BigNumber('0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff1')
     );
   });
-  test('test getTransactionId', () => {
-    const txId = getTransactionId(
-      '0a220a2071a4dc8cdf109bd72913c90c3fc666c78d080cdda0da7f3abbc7105c6b651fd512220a2089ac786c8ad3b56f63a6f2767369a5273f801de2415b613c783cad3d148ce3ab18d5d3bb35220491cf6ba12a18537761704578616374546f6b656e73466f72546f6b656e73325008c0f7f27110bbe5947c1a09534752544553542d311a03454c4622220a2071a4dc8cdf109bd72913c90c3fc666c78d080cdda0da7f3abbc7105c6b651fd52a08088996ceb0061000320631323334353682f10441ec6ad50c4b210976ba0ba5c287ab6fabd0c444839e2505ecb1b5f52838095b290cb245ec1c97dade3bde6ac14c6892e526569e9b71240d3c120b1a6c8e41afba00'
+
+  test('test deprecated deserializeTransaction function', () => {
+    const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    
+    deserializeTransaction('rawTx', 'paramsDataType');
+    
+    expect(consoleSpy).toHaveBeenCalledWith(
+      'deprecated method (>=3.5.0),\n    please use use utils/transaction.js deserializeTransaction'
     );
-    expect(txId).toEqual('cf564f3169012cb173efcf5543b2a71b030b16fad3ddefe3e04a5c1e1bc0047d');
+    
+    consoleSpy.mockRestore();
+  });
+
+  test('test deprecated getTransactionId function', () => {
+    const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    
+    getTransactionId('rawTx');
+    
+    expect(consoleSpy).toHaveBeenCalledWith(
+      'deprecated method (>=3.5.0),\n    please use utils/transaction.js getTransactionId'
+    );
+    
+    consoleSpy.mockRestore();
+  });
+
+  test('test getAuthorization function', () => {
+    const result = getAuthorization('test', 'pass');
+    expect(result).toBe('Basic dGVzdDpwYXNz');
+    
+    const result2 = getAuthorization('user', 'password');
+    expect(result2).toBe('Basic dXNlcjpwYXNzd29yZA==');
+  });
+
+  test('test validateMulti function', () => {
+    const validObj = {
+      chain1: { chainUrl: 'http://test1.com', contractAddress: '0x123' },
+      chain2: { chainUrl: 'http://test2.com', contractAddress: '0x456' }
+    };
+    expect(validateMulti(validObj)).toBe(true);
+    
+    const invalidObj1 = {
+      chain1: { chainUrl: 'http://test1.com', contractAddress: '0x123' }
+    };
+    expect(validateMulti(invalidObj1)).toBe(false);
+    
+    const invalidObj2 = {
+      chain1: { chainUrl: 'http://test1.com', contractAddress: '0x123' },
+      chain2: { chainUrl: 'http://test2.com', contractAddress: '0x456' },
+      chain3: { chainUrl: 'http://test3.com', contractAddress: '0x789' }
+    };
+    expect(validateMulti(invalidObj2)).toBe(false);
+    
+    const invalidObj3 = {
+      chain1: { chainUrl: 'http://test1.com' },
+      chain2: { chainUrl: 'http://test2.com', contractAddress: '0x456' }
+    };
+    expect(validateMulti(invalidObj3)).toBe(false);
+  });
+
+  test('test byteStringToHex function', () => {
+    const result = byteStringToHex('hello');
+    expect(result).toBe('68656c6c6f');
+    
+    const result2 = byteStringToHex('test');
+    expect(result2).toBe('74657374');
+    
+    const result3 = byteStringToHex('');
+    expect(result3).toBe('');
+  });
+
+  test('test noop function', () => {
+    expect(noop()).toBeUndefined();
+    expect(typeof noop).toBe('function');
+  });
+
+  test('test unpackSpecifiedTypeData function', () => {
+    // Mock dataType with decode and toObject methods
+    const mockDataType = {
+      decode: jest.fn().mockReturnValue({ mockDecoded: true }),
+      toObject: jest.fn().mockReturnValue({ mockObject: true })
+    };
+    
+    const result = unpackSpecifiedTypeData({
+      data: 'testdata',
+      dataType: mockDataType,
+      encoding: 'utf8'
+    });
+    
+    expect(mockDataType.decode).toHaveBeenCalledWith(Buffer.from('testdata', 'utf8'));
+    expect(mockDataType.toObject).toHaveBeenCalledWith(
+      { mockDecoded: true },
+      {
+        enums: String,
+        longs: String,
+        bytes: String,
+        defaults: true,
+        arrays: true,
+        objects: true,
+        oneofs: true
+      }
+    );
+    expect(result).toEqual({ mockObject: true });
+    
+    // Test with default encoding
+    const result2 = unpackSpecifiedTypeData({
+      data: 'testdata',
+      dataType: mockDataType
+    });
+    
+    expect(mockDataType.decode).toHaveBeenCalledWith(Buffer.from('testdata', 'hex'));
   });
 });

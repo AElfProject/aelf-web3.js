@@ -53,7 +53,8 @@ You can skip 2.2 as 2.1 is enough now.
 In our dist directory, we supply two kinds of packages for different platforms, such as Node and Browser.
 
 | packages         | usage                                                        |
-| ---------------- | ------------------------------------------------------------ |
+|------------------| ------------------------------------------------------------ |
+| dist/aelf.esm.js | built as an ES Module, optimized for modern bundlers and tree-shaking. Designed for use in modern JavaScript environments like webpack, Rollup, and Vite. |
 | dist/aelf.cjs.js | built for node, remove node built-in modules such as crypto. |
 | dist/aelf.umd.js | built for browser, add some node built-in modules by webpack |
 
@@ -69,6 +70,19 @@ if you are new to FrontEnd, you can use `AElf-sdk` by add a script tag in your h
 if you want to use a bundle system such as webpack or rollup, and build your applications for Node.js and Browsers, just import the specified version of package files.
 
 #### For browser usage and use UMD
+
+ESM
+```javascript
+// ✅ Recommended: Use "exports" to enable Tree Shaking
+import wallet from 'aelf-sdk/wallet';
+
+// ✅ Also supported: Directly import from the "src" directory
+import wallet from 'aelf-sdk/src/wallet/index.js';
+
+// ✅ Backward compatibility: Traditional import method
+import AElf from 'aelf-sdk';
+const { wallet } = AElf;
+```
 
 Webpack:
 
