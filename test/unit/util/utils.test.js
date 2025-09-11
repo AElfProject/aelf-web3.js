@@ -21,6 +21,13 @@ import {
   toTwosComplement,
   uint8ArrayToHex,
   setPath,
+  deserializeTransaction,
+  getTransactionId,
+  getAuthorization,
+  validateMulti,
+  byteStringToHex,
+  noop,
+  unpackSpecifiedTypeData,
 } from '../../../src/util/utils';
 
 describe('test utils', () => {
@@ -188,5 +195,116 @@ describe('test utils', () => {
     expect(toTwosComplement(new BigNumber(-15))).toEqual(
       new BigNumber('0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff1')
     );
+  });
+
+  test('test deprecated deserializeTransaction function', () => {
+    const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    
+    deserializeTransaction('rawTx', 'paramsDataType');
+    
+    expect(consoleSpy).toHaveBeenCalledWith(
+      'deprecated method (>=3.5.0),\n    please use use utils/transaction.js deserializeTransaction'
+    );
+    
+    consoleSpy.mockRestore();
+  });
+
+  test('test deprecated getTransactionId function', () => {
+    const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    
+    getTransactionId('rawTx');
+    
+    expect(consoleSpy).toHaveBeenCalledWith(
+      'deprecated method (>=3.5.0),\n    please use utils/transaction.js getTransactionId'
+    );
+    
+    consoleSpy.mockRestore();
+  });
+
+  test('test getAuthorization function', () => {
+    const result = getAuthorization('test', 'pass');
+    expect(result).toBe('Basic dGVzdDpwYXNz');
+    
+    const result2 = getAuthorization('user', 'password');
+    expect(result2).toBe('Basic dXNlcjpwYXNzd29yZA==');
+  });
+
+  test('test validateMulti function', () => {
+    const validObj = {
+      chain1: { chainUrl: 'http://test1.com', contractAddress: '0x123' },
+      chain2: { chainUrl: 'http://test2.com', contractAddress: '0x456' }
+    };
+    expect(validateMulti(validObj)).toBe(true);
+    
+    const invalidObj1 = {
+      chain1: { chainUrl: 'http://test1.com', contractAddress: '0x123' }
+    };
+    expect(validateMulti(invalidObj1)).toBe(false);
+    
+    const invalidObj2 = {
+      chain1: { chainUrl: 'http://test1.com', contractAddress: '0x123' },
+      chain2: { chainUrl: 'http://test2.com', contractAddress: '0x456' },
+      chain3: { chainUrl: 'http://test3.com', contractAddress: '0x789' }
+    };
+    expect(validateMulti(invalidObj2)).toBe(false);
+    
+    const invalidObj3 = {
+      chain1: { chainUrl: 'http://test1.com' },
+      chain2: { chainUrl: 'http://test2.com', contractAddress: '0x456' }
+    };
+    expect(validateMulti(invalidObj3)).toBe(false);
+  });
+
+  test('test byteStringToHex function', () => {
+    const result = byteStringToHex('hello');
+    expect(result).toBe('68656c6c6f');
+    
+    const result2 = byteStringToHex('test');
+    expect(result2).toBe('74657374');
+    
+    const result3 = byteStringToHex('');
+    expect(result3).toBe('');
+  });
+
+  test('test noop function', () => {
+    expect(noop()).toBeUndefined();
+    expect(typeof noop).toBe('function');
+  });
+
+  test('test unpackSpecifiedTypeData function', () => {
+    // Mock dataType with decode and toObject methods
+    const mockDataType = {
+      decode: jest.fn().mockReturnValue({ mockDecoded: true }),
+      toObject: jest.fn().mockReturnValue({ mockObject: true })
+    };
+    
+    const result = unpackSpecifiedTypeData({
+      data: 'testdata',
+      dataType: mockDataType,
+      encoding: 'utf8'
+    });
+    
+    expect(mockDataType.decode).toHaveBeenCalledWith(Buffer.from('testdata', 'utf8'));
+    expect(mockDataType.toObject).toHaveBeenCalledWith(
+      { mockDecoded: true },
+      {
+        enums: String,
+        longs: String,
+        bytes: String,
+        defaults: true,
+        arrays: true,
+        objects: true,
+        oneofs: true
+      }
+    );
+    expect(result).toEqual({ mockObject: true });
+    
+    // Test with default encoding
+    const result2 = unpackSpecifiedTypeData({
+      data: 'testdata',
+      dataType: mockDataType
+    });
+    
+    expect(mockDataType.decode).toHaveBeenCalledWith(Buffer.from('testdata', 'hex'));
   });
 });

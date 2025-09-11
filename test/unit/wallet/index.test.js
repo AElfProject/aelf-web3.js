@@ -96,4 +96,61 @@ describe('test wallet', () => {
     const isValidNoPubKey = Wallet.verify(signature.toString('hex'), msgHash);
     expect(isValidNoPubKey).toBe(true);
   });
+
+  test('test deprecated signTransaction function', () => {
+    const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    
+    const rawTxn = getTransaction(
+      'ELF_65dDNxzcd35jESiidFXN5JV8Z7pCwaFnepuYQToNefSgqk9',
+      'ELF_65dDNxzcd35jESiidFXN5JV8Z7pCwaFnepuYQToNefSgqk9',
+      'test',
+      ['hello', 'world']
+    );
+    const privateKey = '03bd0cea9730bcfc8045248fd7f4841ea19315995c44801a3dfede0ca872f808';
+    const wallet = Wallet.getWalletByPrivateKey(privateKey);
+    
+    Wallet.signTransaction(rawTxn, wallet.keyPair);
+    
+    expect(consoleSpy).toHaveBeenCalledWith(
+      'deprecated method (>=3.5.0),\n    please use aelf.wallet.sign instead,\n    or use utils/transaction.js signTransaction'
+    );
+    
+    consoleSpy.mockRestore();
+  });
+
+  test('test deprecated keyStore.getKeystore function', () => {
+    const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    
+    Wallet.keyStore.getKeystore();
+    
+    expect(consoleSpy).toHaveBeenCalledWith(
+      'deprecated method (>=3.5.0), please use utils/keyStore.js getKeystore'
+    );
+    
+    consoleSpy.mockRestore();
+  });
+
+  test('test deprecated keyStore.unlockKeystore function', () => {
+    const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    
+    Wallet.keyStore.unlockKeystore();
+    
+    expect(consoleSpy).toHaveBeenCalledWith(
+      'deprecated method (>=3.5.0), please use utils/keyStore.js unlockKeystore'
+    );
+    
+    consoleSpy.mockRestore();
+  });
+
+  test('test deprecated keyStore.checkPassword function', () => {
+    const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    
+    Wallet.keyStore.checkPassword();
+    
+    expect(consoleSpy).toHaveBeenCalledWith(
+      'deprecated method (>=3.5.0), please use utils/keyStore.js checkPassword'
+    );
+    
+    consoleSpy.mockRestore();
+  });
 });
