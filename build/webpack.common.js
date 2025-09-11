@@ -1,10 +1,11 @@
 /* eslint-env node */
 import path from 'path';
 import webpack from 'webpack';
+import { createRequire } from 'module';
 import { ROOT } from './utils.js';
-const pkg = await import(path.resolve(ROOT, './package.json'), {
-  assert: { type: 'json' }
-});
+
+const require = createRequire(import.meta.url);
+const pkg = require(path.resolve(ROOT, './package.json'));
 const { version, name } = pkg;
 
 const banner = `${name}.js v${version} \n(c) 2019-${new Date().getFullYear()} AElf \nReleased under MIT License`;
