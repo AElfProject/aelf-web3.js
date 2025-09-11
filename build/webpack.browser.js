@@ -26,7 +26,7 @@ const browserConfig = {
     alias: {},
     fallback: {
       process: false,
-      assert: require.resolve('assert'),
+      assert: require.resolve('minimalistic-assert'),
       buffer: require.resolve('buffer'),
       crypto: require.resolve('crypto-browserify'),
       stream: require.resolve('stream-browserify'),
