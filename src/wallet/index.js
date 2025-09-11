@@ -9,7 +9,6 @@ import AES from 'crypto-js/aes.js';
 import encUTF8 from 'crypto-js/enc-utf8.js';
 import BN from 'bn.js';
 import sha256 from '../util/sha256.js';
-import * as keyStore from '../util/keyStore.js';
 import { encodeAddressRep, padLeft } from '../util/utils.js';
 
 // eslint-disable-next-line new-cap
@@ -294,5 +293,21 @@ export default {
   ellipticEc,
   AESEncrypt,
   AESDecrypt,
-  keyStore
+  keyStore: {
+    getKeystore: () => {
+      console.error(
+        'deprecated method (>=3.5.0), please use utils/keyStore.js getKeystore'
+      );
+    },
+    unlockKeystore: () => {
+      console.error(
+        'deprecated method (>=3.5.0), please use utils/keyStore.js unlockKeystore'
+      );
+    },
+    checkPassword: () => {
+      console.error(
+        'deprecated method (>=3.5.0), please use utils/keyStore.js checkPassword'
+      );
+    }
+  }
 };

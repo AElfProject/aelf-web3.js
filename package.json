@@ -33,6 +33,10 @@
       "import": "./src/util/sha256.js",
       "require": "./src/util/sha256.js"
     },
+    "./keyStore": {
+      "import": "./src/util/keyStore.js",
+      "require": "./src/util/keyStore.js"
+    },
     "./AElf": {
       "import": "./src/AElf.js",
       "require": "./src/AElf.js"
