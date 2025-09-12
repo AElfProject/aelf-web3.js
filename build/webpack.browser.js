@@ -8,6 +8,7 @@ import webpack from 'webpack';
 import baseConfig from './webpack.common.js';
 import { OUTPUT_PATH } from './utils.js';
 import { createRequire } from 'module';
+import FunctionReplacerPlugin from './webpack.function-replacer.js';
 
 const require = createRequire(import.meta.url);
 
@@ -67,7 +68,8 @@ const browserConfig = {
     }),
     new webpack.ProvidePlugin({
       process: 'process/browser'
-    })
+    }),
+    new FunctionReplacerPlugin()
   ]
 };
 
