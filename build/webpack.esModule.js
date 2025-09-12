@@ -27,7 +27,7 @@ const nodeConfig = {
       buffer: 'buffer',
       crypto: 'crypto-browserify',
       stream: 'stream-browserify',
-      assert: 'assert',
+      assert: false,
       vm: false,
       path: false,
       zlib: false,

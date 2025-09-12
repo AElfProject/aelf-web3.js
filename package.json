@@ -137,7 +137,6 @@
     "@babel/preset-env": "7.21.4",
     "@types/elliptic": "^6.4.14",
     "@types/hdkey": "^2.0.1",
-    "assert": "^2.1.0",
     "babel-eslint": "^10.0.2",
     "babel-loader": "^8.0.6",
     "bundle-analyzer": "^0.0.6",

@@ -26,15 +26,19 @@ const browserConfig = {
   resolve: {
     alias: {},
     fallback: {
+      buffer: 'buffer',
+      crypto: 'crypto-browserify',
+      stream: 'stream-browserify',
+      assert: 'minimalistic-assert',
+      vm: false,
+      path: false,
+      zlib: false,
       process: false,
-      assert: require.resolve('minimalistic-assert'),
-      buffer: require.resolve('buffer'),
-      crypto: require.resolve('crypto-browserify'),
-      stream: require.resolve('stream-browserify'),
-      fs: false,
-      http: false,
       https: false,
-      child_process: false
+      http: false,
+      child_process: false,
+      fs: false,
+      url: false
     }
   },
   externals: {
@@ -59,7 +63,8 @@ const browserConfig = {
     removeEmptyChunks: true,
     chunkIds: 'total-size',
     moduleIds: 'size',
-    sideEffects: true,
+    sideEffects: false,
+    usedExports: true,
     minimize: false
   },
   plugins: [
