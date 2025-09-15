@@ -22,8 +22,9 @@ const nodeConfig = {
   resolve: {
     alias: {},
     fallback: {
+      assert: 'minimalistic-assert',
       buffer: 'buffer',
-      crypto: 'crypto-browserify',
+      // crypto: 'crypto-browserify',
       stream: 'stream-browserify',
       https: false,
       http: false,

@@ -28,7 +28,7 @@ const browserConfig = {
       process: false,
       assert: require.resolve('minimalistic-assert'),
       buffer: require.resolve('buffer'),
-      crypto: require.resolve('crypto-browserify'),
+      // crypto: require.resolve('crypto-browserify'),
       stream: require.resolve('stream-browserify'),
       fs: false,
       http: false,
