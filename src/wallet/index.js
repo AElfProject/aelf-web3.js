@@ -78,14 +78,14 @@ const _getWallet = (type, value, BIP44Path = "m/44'/1616'/0'/0/0") => {
     mnemonic = bip39.generateMnemonic();
     rootSeed = bip39.mnemonicToSeedSync(mnemonic); // .toString('hex');
     // hdWallet = hdkey.fromMasterSeed(seedWithBuffer ? Buffer.from(rootSeed, 'hex') : rootSeed);
-    hdWallet = hdkey.fromMasterSeed(rootSeed);
+    hdWallet = hdkey.fromMasterSeed(new Uint8Array(rootSeed));
     childWallet = hdWallet.derive(BIP44Path);
     keyPair = ellipticEc.keyFromPrivate(childWallet.privateKey);
     break;
   case 'getWalletByMnemonic':
     mnemonic = value;
     rootSeed = bip39.mnemonicToSeedSync(mnemonic);
-    hdWallet = hdkey.fromMasterSeed(rootSeed);
+    hdWallet = hdkey.fromMasterSeed(new Uint8Array(rootSeed));
     childWallet = hdWallet.derive(BIP44Path);
     keyPair = ellipticEc.keyFromPrivate(childWallet.privateKey);
     break;

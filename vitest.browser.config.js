@@ -4,16 +4,23 @@ import path from 'path';
 
 export default defineConfig({
   test: {
-    // 基础配置
+    // 浏览器环境配置
     globals: true,
-    environment: 'node',
+    environment: 'jsdom',
     testTimeout: 5000,
+
+    // 设置环境变量
+    env: {
+      RUNTIME_ENV: 'browser'
+    },
+
+    // 设置全局变量
+    setupFiles: [],
 
     // 测试文件匹配
     include: [
       'test/unit/**/?(*.)+(test).[jt]s?(x)',
-      'test/unit/util/httpProvider.node-test.js',
-      'test/unit/util/httpProvider.fetch.node-test.js'
+      'test/unit/util/httpProvider.browser-test.js'
     ],
 
     // 覆盖率配置
@@ -35,8 +42,7 @@ export default defineConfig({
         'examples/**',
         'dist/**',
         'scripts/**',
-        'build/**',
-        'src/scrypt-polyfill.js'
+        'build/**'
       ],
       thresholds: {
         global: {
@@ -46,13 +52,13 @@ export default defineConfig({
           statements: 80
         }
       },
-      reportOnFailure: true
+      reportOnFailure: true,
     },
 
     // 模块解析
     resolve: {
       alias: {
-        '^scryptsy$': path.resolve('src/scrypt-polyfill.js')
+        '^randombytes$': path.resolve('node_modules/randombytes/index.js')
       }
     }
   }
