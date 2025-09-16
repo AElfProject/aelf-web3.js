@@ -2,7 +2,8 @@ import {
   computeRoot,
   getMerklePath,
   node,
-  __RewireAPI__ as MerkleTreeModuleRewireAPI,
+  generateMerkleTree,
+  fromTwoBuffers,
 } from '../../../src/util/merkleTree';
 import { keccak256 } from '../../../src/util/keccak';
 import { arrayBufferToHex } from '../../../src/util/proto';
@@ -19,8 +20,6 @@ describe('test merkleTree', () => {
     );
   });
   test('generate merkle tree with no data',() => {
-    const generateMerkleTree =
-      MerkleTreeModuleRewireAPI.__get__('generateMerkleTree');
     expect(generateMerkleTree([])).toEqual(null);
   });
   test('test get merkle path', () => {
@@ -99,7 +98,6 @@ describe('test merkleTree', () => {
     );
   });
   test('should throw error if get more than two params',() => {
-    const fromTwoBuffers = MerkleTreeModuleRewireAPI.__get__('fromTwoBuffers');
     const params = [Buffer.from('1'),Buffer.from('2'),Buffer.from('3')];
     expect(() => fromTwoBuffers(params)).toThrow('Wrong data size.');
   });

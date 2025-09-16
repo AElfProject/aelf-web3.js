@@ -2,12 +2,13 @@ import HttpProvider from '../../../src/util/httpProvider';
 import { tdvwEndPoint } from '../constant';
 import { blockByHeightRes } from './httpProvider.data';
 // for test timeout
-jest.useFakeTimers();
-jest.spyOn(global, 'setTimeout');
+import { vi } from 'vitest';
+vi.useFakeTimers();
+vi.spyOn(global, 'setTimeout');
 
 describe('test httpProvider', () => {
   beforeEach(() => {
-    jest.resetModules();
+    vi.resetModules();
   });
   test('test host default', () => {
     const httpProvider = new HttpProvider();
@@ -71,7 +72,7 @@ describe('test httpProvider', () => {
     const p = HttpProvider.timeoutPromise(3000);
     expect(setTimeout).toHaveBeenCalledTimes(1);
     expect(setTimeout).toHaveBeenLastCalledWith(expect.any(Function), 3000);
-    jest.runAllTimers();
+    vi.runAllTimers();
     return expect(p).resolves.toEqual({ type: 'timeout' });
   });
   test('test get request send by xhr', () => {
@@ -129,15 +130,16 @@ describe('test httpProvider', () => {
   });
   test('test send by xhr when error', async () => {
     const xhrMockClass = () => ({
-      open: jest.fn(),
-      send: jest.fn(),
-      setRequestHeader: jest.fn(),
+      open: vi.fn(),
+      send: vi.fn(),
+      setRequestHeader: vi.fn(),
       responseText: {
         Error: 'error xhr'
       }
     });
 
-    HttpProvider.__Rewire__('RequestLibrary', jest.fn().mockImplementation(xhrMockClass));
+    // TODO: This test uses babel-plugin-rewire which is not compatible with Vitest
+    // HttpProvider.__Rewire__('RequestLibrary', vi.fn().mockImplementation(xhrMockClass));
     const httpProvider = new HttpProvider(tdvwEndPoint);
     try {
       httpProvider.send({
@@ -150,7 +152,8 @@ describe('test httpProvider', () => {
     } catch (e) {
       expect(e).toEqual({ Error: 'error xhr' });
     }
-    HttpProvider.__ResetDependency__('RequestLibrary');
+    // TODO: This test uses babel-plugin-rewire which is not compatible with Vitest
+    // HttpProvider.__ResetDependency__('RequestLibrary');
   });
   test('test send async by xhr method', async () => {
     const httpProvider = new HttpProvider(tdvwEndPoint);

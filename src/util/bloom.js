@@ -26,7 +26,7 @@ function isBloom(bloom) {
  * @param codePoint
  * @return {number}
  */
-function codePointToInt(codePoint) {
+export function codePointToInt(codePoint) {
   if (codePoint >= 48 && codePoint <= 57) {
     /* ['0'..'9'] -> [0..9] */
     return codePoint - 48;

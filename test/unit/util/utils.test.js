@@ -198,7 +198,7 @@ describe('test utils', () => {
   });
 
   test('test deprecated deserializeTransaction function', () => {
-    const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
     
     deserializeTransaction('rawTx', 'paramsDataType');
     
@@ -210,7 +210,7 @@ describe('test utils', () => {
   });
 
   test('test deprecated getTransactionId function', () => {
-    const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
     
     getTransactionId('rawTx');
     
@@ -274,8 +274,8 @@ describe('test utils', () => {
   test('test unpackSpecifiedTypeData function', () => {
     // Mock dataType with decode and toObject methods
     const mockDataType = {
-      decode: jest.fn().mockReturnValue({ mockDecoded: true }),
-      toObject: jest.fn().mockReturnValue({ mockObject: true })
+      decode: vi.fn().mockReturnValue({ mockDecoded: true }),
+      toObject: vi.fn().mockReturnValue({ mockObject: true })
     };
     
     const result = unpackSpecifiedTypeData({

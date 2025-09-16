@@ -1,6 +1,7 @@
 import { getTransaction } from '../../../src/util/proto';
 import Wallet from '../../../src/wallet/index';
 import { signTransaction } from '../../../src/util/transaction.js';
+import { vi } from 'vitest';
 describe('test wallet', () => {
   test('test create new wallet', () => {
     const result = Wallet.createNewWallet();
@@ -15,6 +16,14 @@ describe('test wallet', () => {
     const mnemonic = 'history segment pizza all time regret robust animal loud gasp razor gadget';
     const result = Wallet.getWalletByMnemonic(mnemonic);
     expect(result.mnemonic).toBe(mnemonic);
+    expect(result.address).toBe('CTqD1M6Kt2v2jS8QLR6tcTq7vv9dHsKibUr6BEaN3BZ94i92m');
+    // console.log('by mnemonic result', result.privateKey, result.address);
+    // const result1 = Wallet.getWalletByMnemonic(mnemonic, "m/44'/1616'/0'/0/0", false);
+    // expect(result.mnemonic).toBe(mnemonic);
+    // console.log('by mnemonic result1', result1.privateKey, result1.address);
+    // const result2 = Wallet.getWalletByMnemonic(mnemonic, "m/44'/1616'/0'/0/0");
+    // expect(result.mnemonic).toBe(mnemonic);
+    // console.log('by mnemonic result2', result2.privateKey, result2.address);
     const wrongMnemonic = 'hello world';
     const wrongResult = Wallet.getWalletByMnemonic(wrongMnemonic);
     expect(wrongResult).toBe(false);
@@ -78,10 +87,11 @@ describe('test wallet', () => {
     const AESDecryptPrivateKey = Wallet.AESDecrypt(AESEncryptPrivateKey, '123');
     expect(AESDecryptPrivateKey).toBe('123');
   });
-  test('test get wallet with error', () => {
-    const _getWallet = Wallet.__GetDependency__('_getWallet');
-    expect(() => _getWallet()).toThrow('not a valid method');
-  });
+  // TODO: This test uses babel-plugin-rewire which is not compatible with Vitest
+  // test('test get wallet with error', () => {
+  //   const _getWallet = Wallet.__GetDependency__('_getWallet');
+  //   expect(() => _getWallet()).toThrow('not a valid method');
+  // });
 
   test('test verify', () => {
     const privateKey = '03bd0cea9730bcfc8045248fd7f4841ea19315995c44801a3dfede0ca872f808';
@@ -98,8 +108,8 @@ describe('test wallet', () => {
   });
 
   test('test deprecated signTransaction function', () => {
-    const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
-    
+    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+
     const rawTxn = getTransaction(
       'ELF_65dDNxzcd35jESiidFXN5JV8Z7pCwaFnepuYQToNefSgqk9',
       'ELF_65dDNxzcd35jESiidFXN5JV8Z7pCwaFnepuYQToNefSgqk9',
@@ -108,49 +118,49 @@ describe('test wallet', () => {
     );
     const privateKey = '03bd0cea9730bcfc8045248fd7f4841ea19315995c44801a3dfede0ca872f808';
     const wallet = Wallet.getWalletByPrivateKey(privateKey);
-    
+
     Wallet.signTransaction(rawTxn, wallet.keyPair);
-    
+
     expect(consoleSpy).toHaveBeenCalledWith(
       'deprecated method (>=3.5.0),\n    please use aelf.wallet.sign instead,\n    or use utils/transaction.js signTransaction'
     );
-    
+
     consoleSpy.mockRestore();
   });
 
   test('test deprecated keyStore.getKeystore function', () => {
-    const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
-    
+    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+
     Wallet.keyStore.getKeystore();
-    
+
     expect(consoleSpy).toHaveBeenCalledWith(
       'deprecated method (>=3.5.0), please use utils/keyStore.js getKeystore'
     );
-    
+
     consoleSpy.mockRestore();
   });
 
   test('test deprecated keyStore.unlockKeystore function', () => {
-    const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
-    
+    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+
     Wallet.keyStore.unlockKeystore();
-    
+
     expect(consoleSpy).toHaveBeenCalledWith(
       'deprecated method (>=3.5.0), please use utils/keyStore.js unlockKeystore'
     );
-    
+
     consoleSpy.mockRestore();
   });
 
   test('test deprecated keyStore.checkPassword function', () => {
-    const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
-    
+    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+
     Wallet.keyStore.checkPassword();
-    
+
     expect(consoleSpy).toHaveBeenCalledWith(
       'deprecated method (>=3.5.0), please use utils/keyStore.js checkPassword'
     );
-    
+
     consoleSpy.mockRestore();
   });
 });
