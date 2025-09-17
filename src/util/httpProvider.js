@@ -249,7 +249,7 @@ export default class HttpProvider {
     try {
       this.send({
         method: 'GET',
-        url: '/api/blockChain/chainStatus'
+        url: '/blockChain/chainStatus'
       });
       return true;
     } catch (e) {
@@ -262,7 +262,7 @@ export default class HttpProvider {
     try {
       return await this.sendAsyncByFetch({
         method: 'GET',
-        url: '/api/blockChain/chainStatus'
+        url: '/blockChain/chainStatus'
       });
     } catch (e) {
       return false;
