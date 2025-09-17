@@ -314,6 +314,116 @@ describe('AElf ESM Build Artifact E2E Tests', () => {
             // expect(typeof descriptorSet).toBe('string');
             expect(typeof descriptorSet).toBe('object');
         }, 10000);
+
+        test('should initialize token contract and get contract addresses', async () => {
+            const tokenContractName = 'AElf.ContractNames.Token';
+            
+            // Get chain status to get Genesis contract address
+            const { GenesisContractAddress } = await aelf.chain.getChainStatus();
+            expect(GenesisContractAddress).toBeDefined();
+            expect(typeof GenesisContractAddress).toBe('string');
+
+            // Get Genesis contract (Zero contract)
+            const zeroContract = await aelf.chain.contractAt(GenesisContractAddress, wallet);
+            expect(zeroContract).toBeDefined();
+            expect(typeof zeroContract).toBe('object');
+
+            // Get token contract address by name
+            const tokenContractAddress = await zeroContract.GetContractAddressByName.call(
+                AElf.utils.sha256(tokenContractName)
+            );
+            expect(tokenContractAddress).toBeDefined();
+            expect(typeof tokenContractAddress).toBe('string');
+
+            // Get token contract instance
+            const tokenContract = await aelf.chain.contractAt(tokenContractAddress, wallet);
+            expect(tokenContract).toBeDefined();
+            expect(typeof tokenContract).toBe('object');
+
+            // Return the same structure as React Demo
+            const result = {
+                tokenContract,
+                tokenContractAddress,
+                GenesisContractAddress
+            };
+
+            expect(result.tokenContract).toBeDefined();
+            expect(result.tokenContractAddress).toBeDefined();
+            expect(result.GenesisContractAddress).toBeDefined();
+        }, 20000);
+
+        test('should get token information from contract', async () => {
+            const tokenContractName = 'AElf.ContractNames.Token';
+            
+            // Initialize token contract (same as previous test)
+            const { GenesisContractAddress } = await aelf.chain.getChainStatus();
+            const zeroContract = await aelf.chain.contractAt(GenesisContractAddress, wallet);
+            const tokenContractAddress = await zeroContract.GetContractAddressByName.call(
+                AElf.utils.sha256(tokenContractName)
+            );
+            const tokenContract = await aelf.chain.contractAt(tokenContractAddress, wallet);
+
+            // Get token info for ELF token (same as React Demo)
+            const tokenInfo = await tokenContract.GetTokenInfo.call({ symbol: 'ELF' });
+            
+            expect(tokenInfo).toBeDefined();
+            expect(typeof tokenInfo).toBe('object');
+            
+            // Verify token info structure
+            expect(tokenInfo.symbol).toBeDefined();
+            expect(tokenInfo.tokenName).toBeDefined();
+            expect(tokenInfo.supply).toBeDefined();
+            expect(tokenInfo.totalSupply).toBeDefined();
+            expect(tokenInfo.decimals).toBeDefined();
+            expect(tokenInfo.issuer).toBeDefined();
+            expect(tokenInfo.isBurnable).toBeDefined();
+            
+            // Verify ELF token specific properties
+            expect(tokenInfo.symbol).toBe('ELF');
+            expect(typeof tokenInfo.tokenName).toBe('string');
+            expect(typeof tokenInfo.supply).toBe('string');
+            expect(typeof tokenInfo.totalSupply).toBe('string');
+            expect(typeof tokenInfo.decimals).toBe('number');
+            expect(typeof tokenInfo.issuer).toBe('string');
+            expect(typeof tokenInfo.isBurnable).toBe('boolean');
+        }, 20000);
+
+        test('should complete token contract workflow from initialization to data retrieval', async () => {
+            const tokenContractName = 'AElf.ContractNames.Token';
+            
+            // Step 1: Initialize token contract
+            const { tokenContract, tokenContractAddress, GenesisContractAddress } = await (async () => {
+                const { GenesisContractAddress } = await aelf.chain.getChainStatus();
+                const zeroContract = await aelf.chain.contractAt(GenesisContractAddress, wallet);
+                const tokenContractAddress = await zeroContract.GetContractAddressByName.call(
+                    AElf.utils.sha256(tokenContractName)
+                );
+                const tokenContract = await aelf.chain.contractAt(tokenContractAddress, wallet);
+                return {
+                    tokenContract,
+                    tokenContractAddress,
+                    GenesisContractAddress
+                };
+            })();
+
+            // Verify initialization results
+            expect(tokenContract).toBeDefined();
+            expect(tokenContractAddress).toBeDefined();
+            expect(GenesisContractAddress).toBeDefined();
+
+            // Step 2: Get token info
+            const tokenInfo = await tokenContract.GetTokenInfo.call({ symbol: 'ELF' });
+            
+            // Verify token info
+            expect(tokenInfo).toBeDefined();
+            expect(tokenInfo.symbol).toBe('ELF');
+            expect(typeof tokenInfo).toBe('object');
+
+            // This demonstrates the complete token contract workflow
+            console.log('GenesisContractAddress:', GenesisContractAddress);
+            console.log('TokenContractAddress:', tokenContractAddress);
+            console.log('TokenInfo:', JSON.stringify(tokenInfo, null, 2));
+        }, 25000);
     });
 
     describe('Provider Management', () => {

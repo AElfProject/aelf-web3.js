@@ -221,6 +221,27 @@ describe('AElf ESM Build Artifact Basic Tests', () => {
         });
     });
 
+    describe('Contract Functionality (Basic)', () => {
+        test('should create AElf instance and verify contract methods are available', () => {
+            const provider = new AElf.providers.HttpProvider('http://localhost:8545');
+            const aelf = new AElf(provider);
+
+            expect(aelf.chain).toBeDefined();
+            expect(aelf.chain.contractAt).toBeDefined();
+            expect(aelf.chain.getChainStatus).toBeDefined();
+            expect(aelf.chain.getContractFileDescriptorSet).toBeDefined();
+        });
+
+        test('should generate hash for token contract name', () => {
+            const tokenContractName = 'AElf.ContractNames.Token';
+            const hash = AElf.utils.sha256(tokenContractName);
+            
+            expect(hash).toBeDefined();
+            expect(typeof hash).toBe('string');
+            expect(hash.length).toBe(64); // SHA256 produces 64 character hex string
+        });
+    });
+
     describe('Error Handling', () => {
         test('should handle invalid mnemonic', () => {
             const result = AElf.wallet.getWalletByMnemonic('invalid mnemonic');
