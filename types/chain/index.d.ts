@@ -146,7 +146,8 @@ interface IChain {
   ): any[] | null | Promise<any[] | null>;
   getChainStatus(): Promise<IChainStatus & IError>;
   getChainState(blockHash: string): Promise<ChainState & IError>;
-  getContractFileDescriptorSet(address: string): Promise<string & IError>;
+  // getContractFileDescriptorSet(address: string): Promise<string & IError>;
+  getContractFileDescriptorSet(address: string): Promise<object & IError>;
   getBlockHeight(): TBlockHeight;
   getBlock(blockHash: TBlockHash, includeTransactions: boolean): Promise<Block & IError>;
   getBlockByHeight(blockHeight: TBlockHeight, includeTransactions?: boolean): Promise<Block & IError>;
@@ -182,7 +183,8 @@ declare class Chain implements IChain {
   ): any[] | null | Promise<any[] | null>;
   getChainStatus(): Promise<IChainStatus & IError>;
   getChainState(blockHash: string): Promise<ChainState & IError>;
-  getContractFileDescriptorSet(address: string): Promise<string & IError>;
+  // getContractFileDescriptorSet(address: string): Promise<string & IError>;
+  getContractFileDescriptorSet(address: string): Promise<object & IError>;
   getBlockHeight(): TBlockHeight;
   getBlock(blockHash: TBlockHash, includeTransactions: boolean): Promise<Block & IError>;
   getBlockByHeight(blockHeight: TBlockHeight, includeTransactions?: boolean): Promise<Block & IError>;

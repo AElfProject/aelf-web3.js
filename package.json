@@ -62,6 +62,9 @@
     "test:node:watch": "vitest --config=vitest.config.js",
     "test:coverage": "vitest run --config=vitest.browser.config.js --coverage",
     "test:coverageNode": "vitest run --config=vitest.config.js --coverage",
+    "test:e2e": "vitest run --config=vitest.e2e.config.js",
+    "test:e2e:watch": "vitest --config=vitest.e2e.config.js",
+    "test:all": "yarn test && yarn test:e2e",
     "prepare": "husky install",
     "copy-ts": "cpx \"types/**/*.ts\" dist/"
   },
