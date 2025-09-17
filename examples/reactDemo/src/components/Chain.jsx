@@ -4,7 +4,7 @@ import { CONFIG, createAElfInstance } from '../config';
 
 export default function ChainComponent() {
   const [aelf, setAelf] = useState(null);
-  const [connectionStatus, setConnectionStatus] = useState('未连接');
+  const [connectionStatus, setConnectionStatus] = useState('Disconnected');
   const [chainStatus, setChainStatus] = useState(null);
   const [blockHeight, setBlockHeight] = useState(null);
   const [currentBlock, setCurrentBlock] = useState(null);
@@ -29,7 +29,7 @@ export default function ChainComponent() {
       setAelf(aelfInstance);
 
       const isConnected = aelfInstance.isConnected();
-      setConnectionStatus(isConnected ? '已连接' : '连接失败');
+      setConnectionStatus(isConnected ? 'Connected' : 'Connection Failed');
 
       if (isConnected) {
         await getChainStatus();
@@ -37,7 +37,7 @@ export default function ChainComponent() {
     } catch (error) {
       console.error('Failed to initialize AElf:', error);
       setError('Failed to initialize AElf: ' + error.message);
-      setConnectionStatus('初始化失败');
+      setConnectionStatus('Initialization Failed');
     } finally {
       setLoading(false);
     }
@@ -191,7 +191,7 @@ export default function ChainComponent() {
             ))}
           </select>
         </div>
-        <p className={`status ${connectionStatus === '已连接' ? 'connected' : 'disconnected'}`}>
+        <p className={`status ${connectionStatus === 'Connected' ? 'connected' : 'disconnected'}`}>
           {connectionStatus}
         </p>
         <div className="button-group">

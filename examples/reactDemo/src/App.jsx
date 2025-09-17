@@ -12,7 +12,7 @@ window.AElf = AElf;
 
 function App() {
   const [activeTab, setActiveTab] = useState('chain');
-  const [connectionStatus, setConnectionStatus] = useState('未连接');
+  const [connectionStatus, setConnectionStatus] = useState('Disconnected');
   const [aelf, setAelf] = useState(null);
   const [wallet, setWallet] = useState(null);
   const [chainInfo, setChainInfo] = useState(null);
@@ -23,30 +23,30 @@ function App() {
 
   const initializeAElf = async () => {
     try {
-      // 创建 AElf 实例
+      // Create AElf instance
       const aelfInstance = createAElfInstance(AElf);
       setAelf(aelfInstance);
 
-      // 检查连接状态
+      // Check connection status
       const isConnected = aelfInstance.isConnected();
-      setConnectionStatus(isConnected ? '已连接' : '连接失败');
+      setConnectionStatus(isConnected ? 'Connected' : 'Connection Failed');
 
       if (isConnected) {
-        // 创建钱包
+        // Create wallet
         const walletInstance = getDefaultWallet(AElf);
         setWallet(walletInstance);
 
-        // 获取链信息
+        // Get chain information
         try {
           const chainInfo = await aelfInstance.chain.getChainStatus();
           setChainInfo(chainInfo);
         } catch (error) {
-          console.error('获取链信息失败:', error);
+          console.error('Failed to get chain information:', error);
         }
       }
     } catch (error) {
-      console.error('初始化 AElf 失败:', error);
-      setConnectionStatus('初始化失败');
+      console.error('Failed to initialize AElf:', error);
+      setConnectionStatus('Initialization Failed');
     }
   };
 
@@ -64,9 +64,9 @@ function App() {
     <div className="app">
       <header className="app-header">
         <h1>AElf Web3.js Demo</h1>
-        <p>基于 Vite + React 的 AElf 完整功能测试应用</p>
+        <p>Complete AElf functionality testing application built with Vite + React</p>
         <div className="connection-status">
-          <span className={`status-indicator ${connectionStatus === '已连接' ? 'connected' : 'disconnected'}`}>
+          <span className={`status-indicator ${connectionStatus === 'Connected' ? 'connected' : 'disconnected'}`}>
             {connectionStatus}
           </span>
           <span className="endpoint-info">Endpoint: {CONFIG.ENDPOINTS.TEST_NET}</span>
@@ -90,7 +90,7 @@ function App() {
         <div className="status-overview">
           <div className="status-item">
             <span className="label">Connection:</span>
-            <span className={`value ${connectionStatus === '已连接' ? 'connected' : 'disconnected'}`}>
+            <span className={`value ${connectionStatus === 'Connected' ? 'connected' : 'disconnected'}`}>
               {connectionStatus}
             </span>
           </div>
