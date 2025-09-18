@@ -209,10 +209,9 @@ describe('AElf ESM Build Artifact Basic Tests', () => {
             expect(hash.length).toBe(64); // SHA256 produces 64 character hex string
         });
 
-        test.skip('should handle base58 encoding/decoding', () => {
-            // Skip this test due to checksum validation issues in the build
+        test('should handle base58 encoding/decoding', () => {
             const testData = 'hello world';
-            const encoded = AElf.utils.base58.encode(testData);
+            const encoded = AElf.utils.base58.encode(testData, 'utf8');
             const decoded = AElf.utils.base58.decode(encoded, 'utf8');
 
             expect(encoded).toBeDefined();
@@ -235,7 +234,7 @@ describe('AElf ESM Build Artifact Basic Tests', () => {
         test('should generate hash for token contract name', () => {
             const tokenContractName = 'AElf.ContractNames.Token';
             const hash = AElf.utils.sha256(tokenContractName);
-            
+
             expect(hash).toBeDefined();
             expect(typeof hash).toBe('string');
             expect(hash.length).toBe(64); // SHA256 produces 64 character hex string
