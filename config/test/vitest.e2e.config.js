@@ -21,9 +21,7 @@ export default defineConfig({
 
     // 模块解析
     resolve: {
-      alias: {
-        '^scryptsy$': path.resolve('src/scrypt-polyfill.js')
-      }
+      alias: {}
     },
 
     // 报告配置
@@ -34,3 +32,4 @@ export default defineConfig({
     }
   }
 });
+

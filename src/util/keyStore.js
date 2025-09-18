@@ -2,9 +2,9 @@
  * @file AElf keyStore tools
  * @author atom-yang
  */
-import scrypt from 'scryptsy';
 import { createCipheriv, createDecipheriv } from 'browserify-cipher';
 import randomBytes from 'randombytes';
+import scrypt from './scrypt-polyfill.js';
 import { keccak256 } from './keccak.js';
 import { KEY_STORE_ERRORS } from '../common/keyStoreConstants.js';
 
