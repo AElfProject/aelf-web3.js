@@ -1,3 +1,4 @@
+import { vi } from 'vitest';
 import { RequestError } from '../../../src/util/errors';
 describe('test errors', () => {
   test('test throws an error when invalid number of input parameters', () => {
@@ -17,7 +18,7 @@ describe('test errors', () => {
     expect(result).toEqual(new Error('Provider not set or invalid'));
   });
   test('test throws an error when response is invalid', () => {
-    console.error = jest.fn();
+    console.error = vi.fn();
     const result = RequestError.InvalidResponse(
       {
         message: 'The requested resource does not exist',

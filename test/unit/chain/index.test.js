@@ -1,3 +1,4 @@
+import { vi } from 'vitest';
 import Chain from '../../../src/chain/index';
 import RequestManager from '../../../src/util/requestManage';
 import HttpProvider from '../../../src/util/httpProvider';
@@ -53,7 +54,7 @@ describe('chain should work', () => {
     const address = 'ELF_iUY5CLwzU8L8vjVgH95vx3ZRuvD5d9hVK3EdPMVD8v9EaQT75_AELF';
     const args = [{ sync: true }];
     // mock contractFileDescriptorSet
-    chain.getContractFileDescriptorSet = jest.fn(() => {
+    chain.getContractFileDescriptorSet = vi.fn(() => {
       return {
         file: []
       };
@@ -68,13 +69,13 @@ describe('chain should work', () => {
   });
   test('test is invalid contract when async', async () => {
     const address = 'ELF_iUY5CLwzU8L8vjVgH95vx3ZRuvD5d9hVK3EdPMVD8v9EaQT75_AELF';
-    chain.getContractFileDescriptorSet = jest.fn(() => {
+    chain.getContractFileDescriptorSet = vi.fn(() => {
       return Promise.resolve({
         file: []
       });
     });
     let error;
-    chain.extractArgumentsIntoObject = jest.fn(() => {
+    chain.extractArgumentsIntoObject = vi.fn(() => {
       return {
         callback: e => {
           error = e;
@@ -87,7 +88,7 @@ describe('chain should work', () => {
   }, 5000);
   test('test is invalid contract with noop callback', async () => {
     const address = 'ELF_iUY5CLwzU8L8vjVgH95vx3ZRuvD5d9hVK3EdPMVD8v9EaQT75_AELF';
-    chain.getContractFileDescriptorSet = jest.fn(() => {
+    chain.getContractFileDescriptorSet = vi.fn(() => {
       return Promise.resolve({
         file: []
       });

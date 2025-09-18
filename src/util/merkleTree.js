@@ -1,6 +1,6 @@
 import sha256 from './sha256.js';
 
-const fromTwoBuffers = data => {
+export const fromTwoBuffers = data => {
   if (data.length !== 2) throw new TypeError('Wrong data size.');
 
   const compared = Buffer.compare(data[0], data[1]);
@@ -13,7 +13,7 @@ const fromTwoBuffers = data => {
   return buffer;
 };
 
-const generateMerkleTree = data => {
+export const generateMerkleTree = data => {
   if (data.length === 0) {
     return null;
   }

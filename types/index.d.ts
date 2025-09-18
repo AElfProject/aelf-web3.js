@@ -6,6 +6,7 @@ import * as utils from './util/utils';
 import sha256 from './util/sha256';
 import * as transform from './util/transform';
 import * as transaction from './util/transaction';
+import * as keyStore from './util/keyStore';
 import {
   arrayToHex,
   padLeft,
@@ -81,6 +82,8 @@ type TUtilsType = IUtils &
     transform: typeof transform;
   } & {
     transaction: typeof transaction;
+  } & {
+    keyStore: typeof keyStore;
   };
 interface IVersion {
   api?: string;

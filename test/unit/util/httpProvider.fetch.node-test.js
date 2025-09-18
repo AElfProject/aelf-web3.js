@@ -5,12 +5,13 @@ import { blockByHeightRes } from './httpProvider.data';
 import { tdvwEndPoint } from '../constant';
 const fetch = require('node-fetch');
 // for test timeout
-jest.useFakeTimers();
-jest.spyOn(global, 'setTimeout');
+import { vi } from 'vitest';
+vi.useFakeTimers();
+vi.spyOn(global, 'setTimeout');
 
 describe('test httpProvider', () => {
   beforeEach(() => {
-    jest.resetModules();
+    vi.resetModules();
   });
 
   test('test get request send by fetch', async () => {

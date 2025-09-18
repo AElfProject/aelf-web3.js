@@ -1,3 +1,4 @@
+import { vi } from 'vitest';
 import ContractMethod from '../../../src/contract/contractMethod';
 import ContractFactory from '../../../src/contract/index';
 import AElf from '../../../src/index';
@@ -173,7 +174,7 @@ describe('token contract with GetBalance method', () => {
     });
   });
   test('test extract arguments into object', () => {
-    const mockCallback = jest.fn(x => x);
+    const mockCallback = vi.fn(x => x);
     const result = contractMethod.extractArgumentsIntoObject([
       {
         symbol: 'ELF',
@@ -267,7 +268,7 @@ describe('token contract with GetBalance method', () => {
     });
   });
   test('test request', async () => {
-    const mockCallback = jest.fn(x => x);
+    const mockCallback = vi.fn(x => x);
     const result = contractMethod.request(
       {
         symbol: 'ELF',

@@ -4,7 +4,7 @@
  */
 import elliptic from 'elliptic';
 import * as bip39 from 'bip39';
-import hdkey from 'hdkey';
+import { HDKey as hdkey } from '@scure/bip32';
 import AES from 'crypto-js/aes.js';
 import encUTF8 from 'crypto-js/enc-utf8.js';
 import BN from 'bn.js';
@@ -65,10 +65,9 @@ const getAddressFromPubKey = pubKey => {
   return encodeAddressRep(hash);
 };
 
-const _getWallet = (type, value, BIP44Path = "m/44'/1616'/0'/0/0", seedWithBuffer = true) => {
+const _getWallet = (type, value, BIP44Path = "m/44'/1616'/0'/0/0") => {
   // m/purpose'/coin_type'/account'/change/address_index
   // "m/44'/1616'/0'/0/0"
-
   let mnemonic = '';
   let rootSeed = '';
   let childWallet = '';
@@ -77,15 +76,16 @@ const _getWallet = (type, value, BIP44Path = "m/44'/1616'/0'/0/0", seedWithBuffe
   switch (type) {
   case 'createNewWallet':
     mnemonic = bip39.generateMnemonic();
-    rootSeed = bip39.mnemonicToSeedSync(mnemonic).toString('hex');
-    hdWallet = hdkey.fromMasterSeed(seedWithBuffer ? Buffer.from(rootSeed, 'hex') : rootSeed);
+    rootSeed = bip39.mnemonicToSeedSync(mnemonic); // .toString('hex');
+    // hdWallet = hdkey.fromMasterSeed(seedWithBuffer ? Buffer.from(rootSeed, 'hex') : rootSeed);
+    hdWallet = hdkey.fromMasterSeed(new Uint8Array(rootSeed));
     childWallet = hdWallet.derive(BIP44Path);
     keyPair = ellipticEc.keyFromPrivate(childWallet.privateKey);
     break;
   case 'getWalletByMnemonic':
     mnemonic = value;
-    rootSeed = bip39.mnemonicToSeedSync(mnemonic).toString('hex');
-    hdWallet = hdkey.fromMasterSeed(seedWithBuffer ? Buffer.from(rootSeed, 'hex') : rootSeed);
+    rootSeed = bip39.mnemonicToSeedSync(mnemonic);
+    hdWallet = hdkey.fromMasterSeed(new Uint8Array(rootSeed));
     childWallet = hdWallet.derive(BIP44Path);
     keyPair = ellipticEc.keyFromPrivate(childWallet.privateKey);
     break;
@@ -155,8 +155,12 @@ const getSignature = (bytesToBeSign, keyPair) => {
  * //     address: "5uhk3434242424"
  * // }
  */
-const createNewWallet = (BIP44Path = "m/44'/1616'/0'/0/0", seedWithBuffer = true) =>
-  _getWallet('createNewWallet', '', BIP44Path, seedWithBuffer);
+const createNewWallet = (BIP44Path = "m/44'/1616'/0'/0/0", seedWithBuffer = true) => {
+  if (seedWithBuffer) {
+    console.warn('seedWithBuffer is deprecated (>=3.5.0), always use Buffer now');
+  }
+  return _getWallet('createNewWallet', '', BIP44Path);
+};
 
 /**
  * create a wallet by mnemonic
@@ -171,8 +175,11 @@ const createNewWallet = (BIP44Path = "m/44'/1616'/0'/0/0", seedWithBuffer = true
  * const mnemonicWallet = aelf.wallet.getWalletByMnemonic('hello world');
  */
 const getWalletByMnemonic = (mnemonic, BIP44Path = "m/44'/1616'/0'/0/0", seedWithBuffer = true) => {
+  if (seedWithBuffer) {
+    console.warn('seedWithBuffer is deprecated (>=3.5.0), always use Buffer now');
+  }
   if (bip39.validateMnemonic(mnemonic)) {
-    return _getWallet('getWalletByMnemonic', mnemonic, BIP44Path, seedWithBuffer);
+    return _getWallet('getWalletByMnemonic', mnemonic, BIP44Path);
   }
   return false;
 };

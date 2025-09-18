@@ -3,7 +3,7 @@ import {
   isAddressInBloom,
   isEventInBloom,
   isIndexedInBloom,
-  __RewireAPI__ as BloomModuleRewireAPI,
+  codePointToInt,
 } from '../../../src/util/bloom';
 import { keccak256 } from '../../../src/util/keccak';
 const bloom =
@@ -51,8 +51,6 @@ describe('test bloom', () => {
     ).toThrow('Invalid Bloom');
   });
   test('code point to int', () => {
-    const codePointToInt =
-      BloomModuleRewireAPI.__GetDependency__('codePointToInt');
     expect(() => codePointToInt(0)).toThrow('invalid bloom');
   });
   test('test is event in', () => {

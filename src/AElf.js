@@ -12,6 +12,7 @@ import * as utils from './util/utils.js';
 import * as proto from './util/proto.js';
 import * as transform from './util/transform.js';
 import * as transaction from './util/transaction.js';
+import * as keyStore from './util/keyStore.js';
 import Settings from './util/settings.js';
 import sha256 from './util/sha256.js';
 
@@ -41,9 +42,10 @@ export default class AElf {
   static utils = {
     ...utils,
     ...bloom,
-    ...transaction,
     sha256,
-    transform
+    transform,
+    keyStore,
+    transaction,
   };
 
   providers = {

@@ -1,4 +1,5 @@
 const gbk = require('gbk-string');
+import { vi } from 'vitest';
 import ChainMethod from '../../../src/chain/chainMethod';
 import { inputAddressFormatter, outputFileDescriptorSetFormatter } from '../../../src/util/formatters';
 import HttpProvider from '../../../src/util/httpProvider';
@@ -145,7 +146,7 @@ describe('chainMethod should work', () => {
     const httpProvider = new HttpProvider(tdvwEndPoint);
     const manager = new RequestManager(httpProvider);
     chainMethod.setRequestManager(manager);
-    const fn = jest.fn();
+    const fn = vi.fn();
     const result = await chainMethod.run(fn);
     expect(result.ChainId).toEqual('tDVW');
     expect(fn).toHaveBeenCalled();
@@ -162,7 +163,7 @@ describe('chainMethod should work', () => {
     const manager = new RequestManager(httpProvider);
     chainMethod.setRequestManager(manager);
     // mock
-    chainMethod.requestManager.sendAsync = jest.fn(() => {
+    chainMethod.requestManager.sendAsync = vi.fn(() => {
       return Promise.reject('error');
     });
     await expect(chainMethod.run('1')).rejects.toEqual('error');
