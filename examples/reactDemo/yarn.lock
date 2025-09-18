@@ -757,10 +757,10 @@ abort-controller@^3.0.0:
   dependencies:
     event-target-shim "^5.0.0"
 
-aelf-sdk@^3.5.0-beta.5:
-  version "3.5.0-beta.5"
-  resolved "https://registry.npmjs.org/aelf-sdk/-/aelf-sdk-3.5.0-beta.5.tgz#ae08a23e16f69c19317b5e172353f941016d2106"
-  integrity sha512-yoBcXty8nlUTG8TWAJlyywUmRa9NFjWBWavcyfbgprpAri+jWMr2+U7HVArA8rjADzwKhu0yIOMxvaRff83BuQ==
+aelf-sdk@^3.5.0-beta.8:
+  version "3.5.0-beta.8"
+  resolved "https://registry.npmjs.org/aelf-sdk/-/aelf-sdk-3.5.0-beta.8.tgz#cc8d0d9d60d62342518282250ccb49dc6abfc6ff"
+  integrity sha512-MpIo9SlcYMSInz9xOew9849xfd2zH5RozAp/gLT0bZGKRxoVhBN+Ygl75NNCsZRr7sUbvsD6O5HbqdnL0cC9xw==
   dependencies:
     "@aelfqueen/protobufjs" "^6.8.11"
     "@aws-crypto/sha256-js" "^5.0.0"
@@ -786,7 +786,7 @@ aelf-sdk@^3.5.0-beta.5:
     query-string "5.1.1"
     randombytes "^2.1.0"
     readable-stream "^4.3.0"
-    scryptsy "^2.1.0"
+    scrypt-js "^3.0.1"
     stream-browserify "^3.0.0"
     typescript "^5.0.4"
     xhr2 "^0.2.1"
@@ -1634,10 +1634,10 @@ scheduler@^0.23.2:
   dependencies:
     loose-envify "^1.1.0"
 
-scryptsy@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.npmjs.org/scryptsy/-/scryptsy-2.1.0.tgz#8d1e8d0c025b58fdd25b6fa9a0dc905ee8faa790"
-  integrity sha512-1CdSqHQowJBnMAFyPEBRfqag/YP9OF394FV+4YREIJX4ljD7OxvQRDayyoyyCk+senRjSkP6VnUNQmVQqB6g7w==
+scrypt-js@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.npmjs.org/scrypt-js/-/scrypt-js-3.0.1.tgz#d314a57c2aef69d1ad98a138a21fe9eafa9ee312"
+  integrity sha512-cdwTTnqPu0Hyvf5in5asVdZocVDTNRmR7XEcJuIzMjJeSHybHl7vpB66AzwTaIg6CLSbtjcxc8fqcySfnTkccA==
 
 semver@^6.3.1:
   version "6.3.1"

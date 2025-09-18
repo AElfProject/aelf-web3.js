@@ -12,7 +12,11 @@ const pkg = require('../../package.json');
 
 const { version, name } = pkg;
 
-const banner = `/*! ${name}.js v${version} \n(c) 2019-${new Date().getFullYear()} AElf \nReleased under MIT License */`;
+const banner = `/*! ${name}.js v${version} \n(c) 2019-${new Date().getFullYear()} AElf \nReleased under MIT License */
+import { Buffer } from 'buffer';
+if (typeof globalThis.Buffer === 'undefined') {
+  globalThis.Buffer = Buffer;
+}`;
 
 export default defineConfig({
   build: {

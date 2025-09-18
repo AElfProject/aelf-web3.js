@@ -194,7 +194,7 @@ export default function WalletComponent() {
   return (
     <div className="info-card">
       <h2>Wallet Management</h2>
-      
+
       {/* Wallet Creation and Import */}
       <div className="section">
         <h3>Create/Import Wallet</h3>
@@ -202,7 +202,7 @@ export default function WalletComponent() {
           <button onClick={createNewWallet}>Create New Wallet</button>
           <button onClick={initializeDefaultWallet}>Load Default Wallet</button>
         </div>
-        
+
         <div className="input-group">
           <label>Private Key:</label>
           <input
@@ -213,7 +213,7 @@ export default function WalletComponent() {
           />
           <button onClick={importWalletFromPrivateKey}>Import from Private Key</button>
         </div>
-        
+
         <div className="input-group">
           <label>Mnemonic:</label>
           <textarea
@@ -254,14 +254,14 @@ export default function WalletComponent() {
           />
           <button onClick={signData} disabled={!currentWallet}>Sign Data</button>
         </div>
-        
+
         {signatureResult && (
           <div className="result">
             <p><strong>Signature:</strong> {signatureResult.signature}</p>
             <button onClick={verifySignature}>Verify Signature</button>
           </div>
         )}
-        
+
         {verificationResult && (
           <div className="result">
             <p className={verificationResult.isValid ? 'success' : 'error'}>
@@ -283,7 +283,7 @@ export default function WalletComponent() {
             placeholder="Enter data to encrypt"
           />
         </div>
-        
+
         <div className="input-group">
           <label>Password:</label>
           <input
@@ -294,14 +294,14 @@ export default function WalletComponent() {
           />
           <button onClick={encryptData}>Encrypt</button>
         </div>
-        
+
         {encryptionResult && (
           <div className="result">
             <p><strong>Encrypted:</strong> {encryptionResult.encrypted}</p>
             <button onClick={decryptData}>Decrypt</button>
           </div>
         )}
-        
+
         {decryptionResult && (
           <div className="result">
             <p><strong>Decrypted:</strong> {decryptionResult.decrypted}</p>
