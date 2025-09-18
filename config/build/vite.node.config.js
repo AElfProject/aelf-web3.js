@@ -1,6 +1,10 @@
 import { defineConfig } from 'vite';
-import { resolve } from 'path';
+import { resolve, dirname } from 'path';
 import { createRequire } from 'module';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const require = createRequire(import.meta.url);
 const pkg = require('../../package.json');
@@ -10,7 +14,7 @@ const banner = `/*! ${name}.js v${version} \n(c) 2019-${new Date().getFullYear()
 
 export default defineConfig({
   build: {
-    outDir: '../../dist',
+    outDir: resolve(__dirname, '../../dist'),
     lib: {
       entry: resolve(__dirname, '../../src/index.js'),
       name: 'AElf',
