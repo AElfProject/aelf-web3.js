@@ -18,6 +18,14 @@ A comprehensive React demo application showcasing the complete functionality of 
 - **Encryption/Decryption**: AES encrypt and decrypt sensitive data
 - **Address Operations**: Get addresses from public keys
 
+### 🔐 KeyStore Management
+- **KeyStore Generation**: Create encrypted keyStore files from wallet data
+- **KeyStore Import/Export**: Import and export keyStore JSON files
+- **Password Protection**: Secure wallet data with password-based encryption
+- **Multiple Cipher Support**: Support for various AES encryption modes
+- **KeyStore Unlocking**: Decrypt and unlock keyStore files with passwords
+- **Password Validation**: Check if passwords are correct for keyStore files
+
 ### 📋 Contract Operations
 - **Contract Initialization**: Initialize and interact with smart contracts
 - **Token Operations**: Get token information, balances, and perform transfers
@@ -50,6 +58,7 @@ src/
 ├── components/
 │   ├── Chain.jsx         # Chain operations component
 │   ├── Wallet.jsx        # Wallet management component
+│   ├── KeyStore.jsx      # KeyStore management component
 │   ├── contract.jsx      # Contract operations component
 │   ├── Transaction.jsx   # Transaction management component
 │   └── Utils.jsx         # Utils operations component
@@ -94,19 +103,26 @@ Navigate to `http://localhost:5173`
 - Encrypt/decrypt sensitive data
 - View wallet information and addresses
 
-### 3. Contract Operations Tab
+### 3. KeyStore Management Tab
+- Generate encrypted keyStore files from wallet data
+- Import and export keyStore JSON files
+- Test password protection and validation
+- Unlock keyStore files with passwords
+- Support for multiple AES encryption modes
+
+### 4. Contract Operations Tab
 - Initialize token contracts
 - Get token information and balances
 - Perform transfers and approvals
 - Query contract methods and parameters
 
-### 4. Transaction Management Tab
+### 5. Transaction Management Tab
 - Create custom transactions
 - Sign and broadcast transactions
 - Track transaction status and results
 - Query blocks and merkle paths
 
-### 5. Utils Operations Tab
+### 6. Utils Operations Tab
 - Test hash functions and encoding
 - Perform string operations and conversions
 - Handle BigNumber operations
@@ -203,6 +219,28 @@ const result = await tokenContract.Transfer.sendTransaction({
   memo: 'Test transfer'
 });
 console.log('Transaction ID:', result.TransactionId);
+```
+
+### KeyStore Generation and Unlocking
+```javascript
+// Generate keyStore
+const walletData = {
+  mnemonic: wallet.mnemonic,
+  privateKey: wallet.privateKey,
+  nickName: 'My Wallet',
+  address: wallet.address
+};
+const keyStore = AElf.utils.keyStore.getKeystore(walletData, 'password123', {
+  cipher: 'aes-256-cbc'
+});
+
+// Unlock keyStore
+const unlocked = AElf.utils.keyStore.unlockKeystore(keyStore, 'password123');
+console.log('Unlocked private key:', unlocked.privateKey);
+
+// Check password
+const isValid = AElf.utils.keyStore.checkPassword(keyStore, 'password123');
+console.log('Password valid:', isValid);
 ```
 
 ## 🚨 Important Notes

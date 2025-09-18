@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import AElf from 'aelf-sdk';
+import Wallet from 'aelf-sdk/wallet';
+import sha256 from 'aelf-sdk/sha256';
 import { CONFIG } from '../config';
-
-const Wallet = AElf.wallet;
-const { sha256 } = AElf.utils;
 
 export default function WalletComponent() {
   const [currentWallet, setCurrentWallet] = useState(null);

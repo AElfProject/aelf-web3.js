@@ -318,6 +318,47 @@
   font-weight: 500;
 }
 
+.keystore-info {
+  background: #f8f9fa;
+  border-radius: 6px;
+  padding: 15px;
+  margin: 15px 0;
+}
+
+.keystore-info p {
+  margin: 8px 0;
+  color: #495057;
+  word-break: break-all;
+  font-size: 14px;
+}
+
+.info-content {
+  background: #f8f9fa;
+  border-radius: 6px;
+  padding: 15px;
+  margin: 15px 0;
+}
+
+.info-content h4 {
+  margin-top: 0;
+  color: #495057;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.info-content ul {
+  margin: 10px 0;
+  padding-left: 20px;
+}
+
+.info-content li {
+  margin: 5px 0;
+  color: #495057;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
 .chain-info,
 .pool-info,
 .peers-info,

@@ -7,6 +7,7 @@ import ChainComponent from './components/Chain';
 import Contract from './components/contract';
 import TransactionComponent from './components/Transaction';
 import UtilsComponent from './components/Utils';
+import KeyStoreComponent from './components/KeyStore';
 
 window.AElf = AElf;
 
@@ -53,6 +54,7 @@ function App() {
   const tabs = [
     { id: 'chain', label: 'Chain Operations', component: ChainComponent },
     { id: 'wallet', label: 'Wallet Management', component: WalletComponent },
+    { id: 'keystore', label: 'KeyStore Management', component: KeyStoreComponent },
     { id: 'contract', label: 'Contract Operations', component: Contract },
     { id: 'transaction', label: 'Transaction Management', component: TransactionComponent },
     { id: 'utils', label: 'Utils Operations', component: UtilsComponent }

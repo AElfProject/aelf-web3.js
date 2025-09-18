@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import AElf from 'aelf-sdk';
+import * as AElfUtils from 'aelf-sdk/utils';
+import sha256 from 'aelf-sdk/sha256';
 import { CONFIG } from '../config';
 
-const { sha256, arrayToHex, padLeft, padRight, decodeAddressRep, encodeAddressRep,
-        toBigNumber, fromWei, toWei, base58 } = AElf.utils;
+// sha256,
+const { arrayToHex, padLeft, padRight, decodeAddressRep, encodeAddressRep,
+        toBigNumber, fromWei, toWei, base58 } = AElfUtils;
 
 export default function UtilsComponent() {
   const [results, setResults] = useState({});
