@@ -5,12 +5,15 @@
  * @date 2015
  */
 import descriptor from '@aelfqueen/protobufjs/ext/descriptor/index.js';
-import bs58 from 'bs58';
+// import bs58 from 'bs58';
+import { base58 as bs58 } from '@scure/base';
 import { base58 } from './utils.js';
 
 const getByteCountByAddress = base58Str => {
   // convert a Base58 string to a binary array and get its byte count
-  const buffer = bs58.decode(base58Str);
+  // @scure/base returns Uint8Array, convert to Buffer
+  const decoded = bs58.decode(base58Str);
+  const buffer = Buffer.from(decoded);
   // get byte
   const byteCount = buffer.length;
   // last four digits are the checksum
