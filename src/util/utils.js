@@ -4,7 +4,8 @@
  */
 
 import BigNumber from 'bignumber.js';
-import bs58 from 'bs58';
+// import bs58 from 'bs58';
+import { base58 as bs58 } from '@scure/base';
 import { UNIT_MAP, UNSIGNED_256_INT } from '../common/unitConstants.js';
 import sha256 from './sha256.js';
 
@@ -21,10 +22,13 @@ export const base58 = {
     hash = Buffer.from(sha256(result), 'hex');
     hash = Buffer.from(sha256(hash), 'hex');
     hash = Buffer.from(result.toString('hex') + hash.slice(0, 4).toString('hex'), 'hex');
-    return bs58.encode(hash);
+    // Convert Buffer to Uint8Array for @scure/base
+    return bs58.encode(new Uint8Array(hash));
   },
   decode(str, encoding) {
-    const buffer = Buffer.from(bs58.decode(str));
+    // @scure/base returns Uint8Array, convert to Buffer
+    const decoded = bs58.decode(str);
+    const buffer = Buffer.from(decoded);
     let data = buffer.slice(0, -4);
     let hash = data;
     hash = Buffer.from(sha256(hash), 'hex');
@@ -47,10 +51,13 @@ export const chainIdConvertor = {
     const bufferTemp = Buffer.alloc(4);
     bufferTemp.writeInt32LE(`0x${chainId.toString('16')}`, 0);
     const bytes = Buffer.concat([bufferTemp], 3);
-    return bs58.encode(bytes);
+    // Convert Buffer to Uint8Array for @scure/base
+    return bs58.encode(new Uint8Array(bytes));
   },
   base58ToChainId(base58String) {
-    return Buffer.concat([bs58.decode(base58String)], 4).readInt32LE(0);
+    // @scure/base returns Uint8Array, convert to Buffer
+    const decoded = bs58.decode(base58String);
+    return Buffer.concat([Buffer.from(decoded)], 4).readInt32LE(0);
   }
 };
 
