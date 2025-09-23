@@ -1,6 +1,6 @@
 {
   "name": "aelf-sdk",
-  "version": "3.5.0-beta.10",
+  "version": "3.5.0-beta.11",
   "description": "aelf-sdk js library",
   "type": "module",
   "main": "dist/aelf.cjs",
@@ -19,27 +19,33 @@
     },
     "./wallet": {
       "import": "./src/wallet/index.js",
-      "require": "./src/wallet/index.js"
+      "require": "./src/wallet/index.js",
+      "types": "./types/wallet/index.d.ts"
     },
     "./utils": {
       "import": "./src/util/utils.js",
-      "require": "./src/util/utils.js"
+      "require": "./src/util/utils.js",
+      "types": "./types/util/utils.d.ts"
     },
     "./chain": {
       "import": "./src/chain/index.js",
-      "require": "./src/chain/index.js"
+      "require": "./src/chain/index.js",
+      "types": "./types/chain/index.d.ts"
     },
     "./sha256": {
       "import": "./src/util/sha256.js",
-      "require": "./src/util/sha256.js"
+      "require": "./src/util/sha256.js",
+      "types": "./types/util/sha256.d.ts"
     },
     "./keyStore": {
       "import": "./src/util/keyStore.js",
-      "require": "./src/util/keyStore.js"
+      "require": "./src/util/keyStore.js",
+      "types": "./types/util/keyStore.d.ts"
     },
     "./AElf": {
       "import": "./src/AElf.js",
-      "require": "./src/AElf.js"
+      "require": "./src/AElf.js",
+      "types": "./types/index.d.ts"
     }
   },
   "scripts": {
